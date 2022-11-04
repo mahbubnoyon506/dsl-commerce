@@ -26,7 +26,7 @@ function MiddleHeader() {
         console.log("data in");
         console.log(data?.data?.products.length);
       });
-    // console.log("wishlistLength");
+    console.log("wishlistLength");
     console.log(wishlistLength);
   };
   useEffect(() => {
@@ -102,18 +102,18 @@ function MiddleHeader() {
           <div className="col-lg-3">
             <ul className="middle-header-optional">
               <li className="">
-                <Link to="/cart">
-                  <i className="flaticon-shopping-cart"></i>
-                  {carts?.length >= 1 && (
-                    <span className="cart_counter">{carts?.length}</span>
-                  )}
-                </Link>
-              </li>
-              <li className="">
                 <Link to="/wishlist">
                   <i className="flaticon-heart"></i>
                   {wishlistLength >= 1 && (
                     <span className="cart_counter">{wishlistLength}</span>
+                  )}
+                </Link>
+              </li>
+              <li className="">
+                <Link to="/cart">
+                  <i className="flaticon-shopping-cart"></i>
+                  {carts?.length >= 1 && (
+                    <span className="cart_counter">{carts?.length}</span>
                   )}
                 </Link>
               </li>

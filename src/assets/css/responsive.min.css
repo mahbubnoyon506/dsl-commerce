@@ -7,7 +7,6 @@
     display: none;
   }
 
-
   .single-offer-products-box .offer-products-content,
   .single-arrivals-products .arrivals-products-content,
   .single-special-products .special-products-content {
@@ -524,8 +523,11 @@
   .cart-buttons .shopping-coupon-code {
     margin-bottom: 30px;
   }
-  .text-right {
+  /* .text-right {
     text-align: center !important;
+  } */
+  .text-right {
+    text-align: right !important;
   }
   .cart-totals {
     padding: 15px;
@@ -717,7 +719,7 @@
 
   .owl-carousel .owl-item {
     padding: 11px;
-}
+  }
 
   .main-slider-content {
     text-align: center;

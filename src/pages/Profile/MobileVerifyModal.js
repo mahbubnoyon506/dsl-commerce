@@ -33,11 +33,15 @@ export default function MobileVerifyModal({
   mobile,
   handleVerifyOTP,
   setOtpVerify,
+  setDisableAfterActivationMobile,
 }) {
   const [otpCode, setOtpCode] = useState();
   const [isOtpError, setOtpError] = useState(false);
 
-  const handleClose = () => setOpenMobile(false);
+  const handleClose = () => {
+    setOpenMobile(false);
+    setOtpError(false);
+  };
 
   // Re-send OTP states
   const [forEnable, setForEnable] = useState(false);
@@ -53,7 +57,7 @@ export default function MobileVerifyModal({
 
       if (otpVerify == "OTP verified") {
         swal({
-          text: "Verified.",
+          text: "Verified!.",
           icon: "success",
           button: "OK!",
           className: "modal_class_success",
@@ -64,6 +68,8 @@ export default function MobileVerifyModal({
         return;
       }
       if (count > 0) {
+        console.log("count if");
+        console.log(count);
         let content2 = document.createElement("p");
         content2.innerHTML =
           'You have entered wrong OTP. Please try again. You have another <br/><span style="color: #0d6efd;">0' +
@@ -75,6 +81,12 @@ export default function MobileVerifyModal({
           button: "OK!",
           className: "modal_class_success",
         });
+
+        setDisableAfterActivationMobile(false);
+        setCount(2);
+        setOtpVerify("");
+        setDisabled(false);
+        setOtpError(false);
       } else {
         setDisabled(true);
         swal({
@@ -84,6 +96,7 @@ export default function MobileVerifyModal({
           className: "modal_class_success",
         });
       }
+
       setOtpVerify("");
       setError("Mobile OTP Code not matched");
       setOtpError(true);
@@ -92,6 +105,7 @@ export default function MobileVerifyModal({
 
   const hendelSubmit = async (e) => {
     // setCount(count - 1);
+    console.log("hendelSubmit");
     e.preventDefault();
     await handleVerifyOTP(otpCode);
 

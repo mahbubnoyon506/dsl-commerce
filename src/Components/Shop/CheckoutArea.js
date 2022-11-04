@@ -38,7 +38,7 @@ function CheckoutArea({ expiryTimestamp }) {
   const [openEmail, setOpenEmail] = useState(false);
   const [openMobile, setopenMobile] = useState(false);
   const [isError, setError] = useState(false);
-  console.log("totalPrice for test", totalPrice);
+  // console.log("totalPrice for test", totalPrice);
   // Total Cart Calculation
   let subTotal = 0;
   let shipping = 30;
@@ -139,6 +139,8 @@ function CheckoutArea({ expiryTimestamp }) {
   };
 
   const handleVerifyMobileOTP = async (otpCode) => {
+    console.log("handleVerifyMobileOTP");
+
     await axios
       .post(`https://backend.dslcommerce.com/api/number/otp`, {
         phone: mobileNo,
@@ -146,6 +148,7 @@ function CheckoutArea({ expiryTimestamp }) {
       })
 
       .then((res) => {
+        console.log(res);
         if (res.status === 200) {
           setOtpVerify(res.data.message);
         }
@@ -159,6 +162,8 @@ function CheckoutArea({ expiryTimestamp }) {
   const handleVerifyMobile = async (e) => {
     console.log("handleVerifyMobile");
     setDisableAfterActivationMobile(true);
+    console.log("mobileNo");
+    console.log(mobileNo);
     if (mobileNo.length > 0) {
       // setLoading(true);
       // setEmailVerify(true);
@@ -167,6 +172,9 @@ function CheckoutArea({ expiryTimestamp }) {
           phone: mobileNo,
         })
         .then((res) => {
+          console.log("res");
+          console.log(res);
+
           if (res.status === 200) {
             // alert(res.data.message);
             // setSendMail(res.data.email)
@@ -184,10 +192,11 @@ function CheckoutArea({ expiryTimestamp }) {
               setDisableAfterActivation(false);
             }, 120000);
           }
+          console.log("setopenMobile");
           setopenMobile(true);
         })
         .catch((err) => {
-          // alert(err.response.data.message);
+          console.log(err.response.data.message);
           setopenMobile(false);
           swal({
             title: "Attention",
@@ -198,6 +207,7 @@ function CheckoutArea({ expiryTimestamp }) {
           });
         })
         .finally(() => {
+          console.log("finally");
           // setLoading(false);
         });
     } else {
@@ -272,8 +282,9 @@ function CheckoutArea({ expiryTimestamp }) {
         {message !== "" && (
           <div
             className={`
-        ${message === "Order successfully added"
-              } ? alert alert-success : alert alert-danger 
+        ${
+          message === "Order successfully added"
+        } ? alert alert-success : alert alert-danger 
       `}
             role="alert"
           >
@@ -429,7 +440,7 @@ function CheckoutArea({ expiryTimestamp }) {
                             onClick={handleVerifyMobile}
                             disabled={
                               mobileNo.length === 0 ||
-                                disableAfterActivationMobile
+                              disableAfterActivationMobile
                                 ? true
                                 : false
                             }
@@ -574,9 +585,9 @@ function CheckoutArea({ expiryTimestamp }) {
                     type="submit"
                     className="default-btn"
                     style={{ cursor: "pointer" }}
-                  // onClick={() => {
-                  //   navigate("/shop")
-                  // }}
+                    // onClick={() => {
+                    //   navigate("/shop")
+                    // }}
                   >
                     Place Order
                   </button>
@@ -596,6 +607,7 @@ function CheckoutArea({ expiryTimestamp }) {
           setError={setError}
           email={setEmail}
           setOtpVerify={setOtpVerify}
+          setDisableAfterActivation={setDisableAfterActivation}
         />
 
         <MobileVerifyModal
@@ -609,6 +621,7 @@ function CheckoutArea({ expiryTimestamp }) {
           setError={setError}
           mobile={setmobileNo}
           setOtpVerify={setOtpVerify}
+          setDisableAfterActivationMobile={setDisableAfterActivationMobile}
         />
       </div>
     </section>
