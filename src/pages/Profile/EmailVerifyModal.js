@@ -32,11 +32,15 @@ export default function EmailVerifyModal({
   email,
   handleVerifyOTP,
   setOtpVerify,
+  setDisableAfterActivation,
 }) {
   const [otpCode, setOtpCode] = useState();
   const [isOtpError, setOtpError] = useState(false);
 
-  const handleClose = () => setOpenEmail(false);
+  const handleClose = () => {
+    setOpenEmail(false);
+    setOtpError(false);
+  };
 
   // Re-send OTP states
   const [forEnable, setForEnable] = useState(false);
@@ -52,7 +56,7 @@ export default function EmailVerifyModal({
 
       if (otpVerify == "OTP verified") {
         swal({
-          text: "Verified.",
+          text: "Verified!.",
           icon: "success",
           button: "OK!",
           className: "modal_class_success",
@@ -74,6 +78,11 @@ export default function EmailVerifyModal({
           button: "OK!",
           className: "modal_class_success",
         });
+        setDisableAfterActivation(false);
+        setCount(2);
+        setOtpVerify("");
+        setDisabled(false);
+        setOtpError(false);
       } else {
         setDisabled(true);
         swal({
@@ -170,6 +179,7 @@ export default function EmailVerifyModal({
                 color: "white",
                 backgroundColor: "transparent",
                 border: "none",
+                textAlign: "right",
               }}
               onClick={otpVerify == otpCode ? handleClose : verifyAlert}
             >

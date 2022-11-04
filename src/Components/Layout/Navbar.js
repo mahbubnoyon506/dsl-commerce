@@ -427,7 +427,7 @@ function Navbar() {
                       <ul className="dropdown-menu">
                         <li className="nav-item">
                           <NavLink to="/profile" className="nav-link">
-                            Profile
+                            PROFILE
                           </NavLink>
                         </li>
                         {/* <li className="nav-item">
@@ -450,7 +450,7 @@ function Navbar() {
                               toggleMenu();
                             }}
                           >
-                            Orders
+                            ORDERS
                           </NavLink>
                         </li>
 
@@ -463,17 +463,19 @@ function Navbar() {
                               toggleMenu();
                             }}
                           >
-                            Wishlist
+                            WISHLIST
                           </NavLink>
                         </li>
                         <hr />
 
                         <li className="nav-item">
                           <button
-                            onClick={handleLogout}
+                            // onClick={handleLogout}
                             className="nav-logout-btn"
                           >
-                            Logout
+                            <Link to="/wishlist">
+                              <i className="flaticon-heart"></i>
+                            </Link>
                           </button>
                         </li>
                       </ul>
