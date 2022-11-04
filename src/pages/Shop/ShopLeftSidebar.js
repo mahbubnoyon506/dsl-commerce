@@ -1,0 +1,43 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+import PageTitle from "../../components/Common/PageTitle";
+import Partner from "../../components/Common/Partner";
+import Footer from "../../components/Layout/Footer/Footer";
+import ShopLeftSidebarArea from "../../components/Shop/ShopLeftSidebarArea";
+import QuickView from "../../components/Products/QuickView";
+
+function ShopLeftSidebar() {
+  const [products, setProducts] = useState([]);
+  const [product, setProduct] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get("/products/")
+      .then((res) => {
+        setProducts(res.data.products);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const showQuickView = (product) => {
+    setIsOpen(true);
+    setProduct(product);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    setProduct({});
+  };
+
+  return (
+    <div className="shop-left-sidebar-wrapper">
+      <PageTitle title="Shop Left Sidebar" />
+      <ShopLeftSidebarArea products={products} showQuickView={showQuickView} />
+      <Partner paddingclassName=" pbt-50" />
+      <QuickView isOpen={isOpen} closeModal={closeModal} product={product} />
+    </div>
+  );
+}
+
+export default ShopLeftSidebar;
