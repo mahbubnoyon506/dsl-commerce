@@ -18,7 +18,7 @@ export default function CartProvider({ children }) {
   }
 
   const addItemToCart = async (item) => {
-    // console.log("cartItem" , item);
+    console.log("cartItem" , item);
     await axios
       .post(`https://backend.dslcommerce.com/api/cart/`, item)
       .then((res) => {

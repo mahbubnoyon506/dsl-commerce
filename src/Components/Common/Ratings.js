@@ -2,6 +2,9 @@ import React from 'react';
 import ReactStars from 'react-rating-stars-component';
 
 const Ratings = ({ ratings }) => {
+    const r = parseFloat(ratings)
+    console.log(r);
+
     if(ratings === undefined){
         return ''
     }
@@ -13,7 +16,7 @@ const Ratings = ({ ratings }) => {
             <ReactStars
                 count={5}
                 edit={false}
-                value={ratings}
+                value={r}
                 onChange={ratingChanged}
                 size={24}
                 isHalf={true}

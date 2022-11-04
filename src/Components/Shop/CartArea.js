@@ -107,6 +107,7 @@ function CartArea() {
                 <div className="cart-buttons">
                   <div className="row align-items-center">
                     <div className="col-lg-7 col-sm-7 col-md-7">
+                        <p>Use our coupon "DSL10" for get discount</p>
                       <div className="shopping-coupon-code">
                         <input
                           type="text"
