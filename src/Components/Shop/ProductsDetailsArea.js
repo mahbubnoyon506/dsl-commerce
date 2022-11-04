@@ -24,7 +24,7 @@ function ProductsDetailsArea() {
     useContext(DSLCommerceContext);
   const [userReviews, setUserReviews] = useState([]);
   const navigate = useNavigate();
-  // console.log(userReviews);
+  console.log(userReviews);
 
   const writeReview = (product) => {
     setIsOpen(true);
@@ -338,9 +338,9 @@ function ProductsDetailsArea() {
                 </div>
 
                 <div className="review-comments">
-                  {userReviews?.map((review) => {
+                  {userReviews?.map((review,index) => {
                     return (
-                      <div className="py-3">
+                      <div className="py-3" key={index}>
                         <div>
                           {review && (
                             <Ratings ratings={review?.rating}></Ratings>

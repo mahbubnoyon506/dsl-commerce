@@ -237,7 +237,7 @@ function Footer() {
                       autoComplete="off"
                     />
 
-                    <button type="submit" className="text-uppercase btn-Sub">
+                    <button type="submit" className=" text-uppercase btn-Sub">
                       Subscribe
                     </button>
                     <div
