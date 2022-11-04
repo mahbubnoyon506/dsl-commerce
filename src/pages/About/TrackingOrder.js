@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Preloader from "../../components/Common/Preloader";
-import TrackingOrderArea from "../../components/About/TrackingOrderArea";
-import PageTitle from "../../components/Common/PageTitle";
-import Support from "../../components/Common/Support";
-import Footer from "../../components/Layout/Footer/Footer";
+import Preloader from "../../Components/Common/Preloader";
+import TrackingOrderArea from "../../Components/About/TrackingOrderArea";
+import PageTitle from "../../Components/Common/PageTitle";
+import Support from "../../Components/Common/Support";
+import Footer from "../../Components/Layout/Footer/Footer";
 
 function TrackingOrder() {
   // const [isLoading, setisLoading] = useState(true);
@@ -19,12 +19,12 @@ function TrackingOrder() {
       {/* {isLoading === true ? (
         <Preloader />
       ) : ( */}
-        <div className="tracking-order-wrapper">
-          <PageTitle title="Tracking Order" />
-          <TrackingOrderArea />
-          <Support />
-        </div>
-      
+      <div className="tracking-order-wrapper">
+        <PageTitle title="Tracking Order" />
+        <TrackingOrderArea />
+        <Support />
+      </div>
+
     </>
   );
 }

@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import PageTitle from "../../components/Common/PageTitle";
-import Partner from "../../components/Common/Partner";
-import ShopArea from "../../components/Shop/ShopArea";
-import QuickView from "../../components/Products/QuickView";
+import PageTitle from "../../Components/Common/PageTitle";
+import Partner from "../../Components/Common/Partner";
+import ShopArea from "../../Components/Shop/ShopArea";
+import QuickView from "../../Components/Products/QuickView";
 import { CartContext } from "../../contexts/cart-context";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 

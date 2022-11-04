@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../../contexts/auth-context";
-import PageTitle from "../../components/Common/PageTitle";
-import ProductsArea from "../../components/Products/ProductsArea";
+import PageTitle from "../../Components/Common/PageTitle";
+import ProductsArea from "../../Components/Products/ProductsArea";
 import axios from "axios";
-import Footer from "../../components/Layout/Footer/Footer";
+import Footer from "../../Components/Layout/Footer/Footer";
 
 function Products() {
   const [products, setProducts] = useState([]);

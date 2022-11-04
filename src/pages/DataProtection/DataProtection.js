@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import PageTitle from '../../components/Common/PageTitle';
+import PageTitle from '../../Components/Common/PageTitle';
 import parse from 'html-react-parser';
 import axios from 'axios';
 

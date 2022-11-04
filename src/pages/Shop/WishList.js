@@ -1,5 +1,5 @@
-import PageTitle from "../../components/Common/PageTitle";
-import WishListArea from "../../components/Shop/WishListArea";
+import PageTitle from "../../Components/Common/PageTitle";
+import WishListArea from "../../Components/Shop/WishListArea";
 
 function WishList() {
   return (

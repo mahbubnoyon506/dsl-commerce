@@ -1,15 +1,15 @@
 import React from "react";
-// import OwlCarousel from "react-owl-carousel";
+import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
-import ReactOwlCarousel from "react-owl-carousel";
+// import ReactOwlCarousel from "react-owl-carousel";
 
 
 function Testimonial({ paddingClass = "" }) {
   return (
     <section className={"testimonial-area" + paddingClass}>
       <div className="container">
-        <ReactOwlCarousel
+        <OwlCarousel
           className="owl-theme"
           items={1}
           loop
@@ -85,7 +85,7 @@ function Testimonial({ paddingClass = "" }) {
               </div>
             </div>
           </div>
-        </ReactOwlCarousel>
+        </OwlCarousel>
       </div>
     </section>
   );

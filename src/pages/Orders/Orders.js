@@ -1,5 +1,5 @@
 import React from "react";
-import PageTitle from "../../components/Common/PageTitle";
+import PageTitle from "../../Components/Common/PageTitle";
 
 const Orders = () => {
   return (

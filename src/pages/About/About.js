@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import parse from "html-react-parser";
-import PageTitle from "../../components/Common/PageTitle";
-import Preloader from "../../components/Common/Preloader";
+import PageTitle from "../../Components/Common/PageTitle";
+import Preloader from "../../Components/Common/Preloader";
 
 
 function About() {

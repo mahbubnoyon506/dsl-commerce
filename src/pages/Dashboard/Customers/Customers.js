@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Typography, Modal, Box } from "@mui/material";
 import Table from "react-bootstrap/Table";
-import Search from "../../../components/Widgets/Search";
+import Search from "../../../Components/Widgets/Search";
 import { Link, useNavigate } from "react-router-dom";
 // import { Link, useNavigate, useParams } from 'react-router-dom';
 

@@ -1,13 +1,13 @@
 import React from "react";
-import PasswordResetArea from "../../components/Auth/PasswordResetArea";
-import PageTitle from "../../components/Common/PageTitle";
-import Footer from "../../components/Layout/Footer/Footer";
+import PasswordResetArea from "../../Components/Auth/PasswordResetArea";
+import PageTitle from "../../Components/Common/PageTitle";
+import Footer from "../../Components/Layout/Footer/Footer";
 
 const ResetPassword = () => {
   return (
     <>
       <PageTitle title="Reset Password" />
-      <PasswordResetArea/>
+      <PasswordResetArea />
       <Footer />
     </>
   );

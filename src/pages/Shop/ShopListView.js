@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import PageTitle from "../../components/Common/PageTitle";
-import Partner from "../../components/Common/Partner";
-import Footer from "../../components/Layout/Footer/Footer";
-import ShopListViewArea from "../../components/Shop/ShopListViewArea";
-import QuickView from "../../components/Products/QuickView";
+import PageTitle from "../../Components/Common/PageTitle";
+import Partner from "../../Components/Common/Partner";
+import Footer from "../../Components/Layout/Footer/Footer";
+import ShopListViewArea from "../../Components/Shop/ShopListViewArea";
+import QuickView from "../../Components/Products/QuickView";
 
 function ShopListView() {
   const [products, setProducts] = useState([]);

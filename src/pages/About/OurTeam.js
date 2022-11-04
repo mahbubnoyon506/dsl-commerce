@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import TeamMembers from "../../components/About/TeamMembers";
-import PageTitle from "../../components/Common/PageTitle";
-import Partner from "../../components/Common/Partner";
-import Preloader from "../../components/Common/Preloader";
+import TeamMembers from "../../Components/About/TeamMembers";
+import PageTitle from "../../Components/Common/PageTitle";
+import Partner from "../../Components/Common/Partner";
+import Preloader from "../../Components/Common/Preloader";
 
 function OurTeam() {
   // const [isLoading, setisLoading] = useState(true);

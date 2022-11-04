@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Preloader from "../../components/Common/Preloader";
-import SearchArea from "../../components/About/SearchArea";
-import PageTitle from "../../components/Common/PageTitle";
-import Partner from "../../components/Common/Partner";
+import Preloader from "../../Components/Common/Preloader";
+import SearchArea from "../../Components/About/SearchArea";
+import PageTitle from "../../Components/Common/PageTitle";
+import Partner from "../../Components/Common/Partner";
 
 function Search() {
   // const [isLoading, setisLoading] = useState(true);

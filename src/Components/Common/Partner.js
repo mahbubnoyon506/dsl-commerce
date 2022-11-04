@@ -1,7 +1,7 @@
-// import OwlCarousel from "react-owl-carousel";
+import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
-import ReactOwlCarousel from "react-owl-carousel";
+// import ReactOwlCarousel from "react-owl-carousel";
 import partner1 from "../../assets/img/partner/partner-1.png";
 import partner2 from "../../assets/img/partner/partner-2.png";
 import partner3 from "../../assets/img/partner/partner-3.png";
@@ -39,7 +39,7 @@ function Partner({ paddingClass = "" }) {
   return (
     <div className={"partner-area" + paddingClass}>
       <div className="container">
-        <ReactOwlCarousel
+        <OwlCarousel
           className="owl-theme"
           margin={20}
           {...options}
@@ -74,7 +74,7 @@ function Partner({ paddingClass = "" }) {
               <img src={partner5} alt="image" />
             </a>
           </div>
-        </ReactOwlCarousel>
+        </OwlCarousel>
       </div>
     </div>
   );

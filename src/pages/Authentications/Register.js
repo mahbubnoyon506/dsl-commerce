@@ -1,6 +1,6 @@
-import RegisterArea from "../../components/Auth/RegisterArea";
-import PageTitle from "../../components/Common/PageTitle";
-import Support from "../../components/Common/Support";
+import RegisterArea from "../../Components/Auth/RegisterArea";
+import PageTitle from "../../Components/Common/PageTitle";
+import Support from "../../Components/Common/Support";
 
 function Register() {
   return (

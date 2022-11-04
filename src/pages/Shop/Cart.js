@@ -1,5 +1,5 @@
-import PageTitle from "../../components/Common/PageTitle";
-import CartArea from "../../components/Shop/CartArea";
+import PageTitle from "../../Components/Common/PageTitle";
+import CartArea from "../../Components/Shop/CartArea";
 
 function Cart() {
   return (

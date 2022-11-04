@@ -1,5 +1,5 @@
-import BlogArea from "../../components/Blog/BlogArea";
-import PageTitle from "../../components/Common/PageTitle";
+import BlogArea from "../../Components/Blog/BlogArea";
+import PageTitle from "../../Components/Common/PageTitle";
 
 function Blog() {
   return (

@@ -1,15 +1,15 @@
 import React from "react";
-// import OwlCarousel from "react-owl-carousel";
+import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import { Link } from 'react-router-dom';
-import ReactOwlCarousel from "react-owl-carousel";
+// import ReactOwlCarousel from "react-owl-carousel";
 
 function Banner() {
   const currentYear = new Date().getFullYear();
   // console.log(currentYear);
   return (
-    <ReactOwlCarousel className="home-slides-two owl-theme" items={1} loop autoplay={true}>
+    <OwlCarousel className="home-slides-two owl-theme" items={1} loop autoplay={true}>
       <div className="main-slider-item-box">
         <div className="main-slider-content">
           <b>Big Sale Offer</b>
@@ -63,7 +63,7 @@ function Banner() {
           </div>
         </div>
       </div>
-    </ReactOwlCarousel>
+    </OwlCarousel>
   );
 }
 

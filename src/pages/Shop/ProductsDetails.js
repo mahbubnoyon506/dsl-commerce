@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import NewArrivals from "../../components/Common/NewArrivals";
-import PageTitle from "../../components/Common/PageTitle";
-import Support from "../../components/Common/Support";
-import QuickView from "../../components/Products/QuickView";
-import ProductsDetailsArea from "../../components/Shop/ProductsDetailsArea";
+import NewArrivals from "../../Components/Common/NewArrivals";
+import PageTitle from "../../Components/Common/PageTitle";
+import Support from "../../Components/Common/Support";
+import QuickView from "../../Components/Products/QuickView";
+import ProductsDetailsArea from "../../Components/Shop/ProductsDetailsArea";
 import { CartContext } from "../../contexts/cart-context";
 
 function ProductsDetails() {

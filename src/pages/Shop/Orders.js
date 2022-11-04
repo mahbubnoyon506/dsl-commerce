@@ -1,5 +1,5 @@
-import PageTitle from "../../components/Common/PageTitle";
-import OrderArea from "../../components/Shop/OrderArea";
+import PageTitle from "../../Components/Common/PageTitle";
+import OrderArea from "../../Components/Shop/OrderArea";
 import cart1 from "../../assets/img/collection/collection-1.png";
 import cart2 from "../../assets/img/collection/collection-1.png";
 import cart3 from "../../assets/img/collection/collection-2.png";
@@ -16,7 +16,7 @@ const Orders = () => {
 
       <div className="container">
         <div className="wishlist-table table-responsive">
-          
+
 
           <table className="table table-bordered">
             <tbody>
@@ -47,7 +47,7 @@ const Orders = () => {
 
                 <td className="product-btn">
                   <a href="#" className="default-btn">
-                    <TbListDetails className="me-2"/>
+                    <TbListDetails className="me-2" />
                     Details
                   </a>
                 </td>
@@ -80,7 +80,7 @@ const Orders = () => {
 
                 <td className="product-btn">
                   <a href="#" className="default-btn">
-                    <TbListDetails className="me-2"/>
+                    <TbListDetails className="me-2" />
                     Details
                   </a>
                 </td>
@@ -113,7 +113,7 @@ const Orders = () => {
 
                 <td className="product-btn">
                   <a href="#" className="default-btn">
-                    <TbListDetails className="me-2"/>
+                    <TbListDetails className="me-2" />
                     Details
                   </a>
                 </td>
@@ -146,7 +146,7 @@ const Orders = () => {
 
                 <td className="product-btn">
                   <a href="#" className="default-btn">
-                    <TbListDetails className="me-2"/>
+                    <TbListDetails className="me-2" />
                     Details
                   </a>
                 </td>
@@ -179,7 +179,7 @@ const Orders = () => {
 
                 <td className="product-btn">
                   <a href="#" className="default-btn">
-                    <TbListDetails className="me-2"/>
+                    <TbListDetails className="me-2" />
                     Details
                   </a>
                 </td>
@@ -188,7 +188,7 @@ const Orders = () => {
           </table>
         </div>
       </div>
-      
+
     </div>
   );
 };
