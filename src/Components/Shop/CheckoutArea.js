@@ -9,9 +9,13 @@ import swal from "sweetalert";
 import { useTimer } from "react-timer-hook";
 import EmailVerifyModal from "../../pages/Profile/EmailVerifyModal";
 import MobileVerifyModal from "../../pages/Profile/MobileVerifyModal";
+import PhoneInput from 'react-phone-number-input';
+import CryptoMethod from "./PaymentMethod/CryptoMethod";
+import PayNowMethod from "./PaymentMethod/PayNowMethod";
 
 function CheckoutArea({ expiryTimestamp }) {
   const { totalPrice } = useParams();
+  // console.log(totalPrice)
   let navigate = useNavigate();
   const { user, openWalletModal } = useContext(DSLCommerceContext);
   const { carts } = useContext(CartContext);
@@ -19,7 +23,6 @@ function CheckoutArea({ expiryTimestamp }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   // const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -29,40 +32,34 @@ function CheckoutArea({ expiryTimestamp }) {
   const [transactionId, settransactionId] = useState("");
   const [emailVerify, setEmailVerify] = useState(false);
   const [email1, setEmail] = useState("");
-  const [mobileNo, setmobileNo] = useState("");
+  // const [mobileNo, setmobileNo] = useState("");
+  const [value, setValue] = useState();
   const [mobileNoVerify, setmobileNoVerify] = useState(false);
   const [disableAfterActivation, setDisableAfterActivation] = useState(false);
-  const [disableAfterActivationMobile, setDisableAfterActivationMobile] =
-    useState(false);
+  const [disableAfterActivationMobile, setDisableAfterActivationMobile] = useState(false);
   const [otpVerify, setOtpVerify] = useState();
   const [openEmail, setOpenEmail] = useState(false);
   const [openMobile, setopenMobile] = useState(false);
   const [isError, setError] = useState(false);
-  // console.log("totalPrice for test", totalPrice);
-  // Total Cart Calculation
-  let subTotal = 0;
-  let shipping = 30;
-  let total = 0;
-  carts?.forEach((element) => {
-    // console.log(element);
-    subTotal = Number(subTotal + element.price * element.count);
-    total = parseInt(subTotal + shipping);
-  });
+  const [cryptoPayment, setCryptoPayment] = useState(null)
+  const [payNowPayment, setPayNowPayment] = useState(null)
 
   const submitOrder = (e) => {
     const walletAddress = user?.walletAddress;
-    const totalPay = total;
+    const totalPay = parseFloat(totalPrice);
+    const phone = value
+    const email = email1
     const orderItems = carts;
     e.preventDefault();
     if (!user?.walletAddress) {
       openWalletModal();
       return;
     }
-    console.log("first");
+
     const OrderData = {
       firstName,
       lastName,
-      // email,
+      email,
       phone,
       country,
       address,
@@ -143,7 +140,7 @@ function CheckoutArea({ expiryTimestamp }) {
 
     await axios
       .post(`https://backend.dslcommerce.com/api/number/otp`, {
-        phone: mobileNo,
+        phone: value,
         otp: otpCode,
       })
 
@@ -160,16 +157,15 @@ function CheckoutArea({ expiryTimestamp }) {
   };
 
   const handleVerifyMobile = async (e) => {
-    console.log("handleVerifyMobile");
+    // console.log("handleVerifyMobile");
     setDisableAfterActivationMobile(true);
-    console.log("mobileNo");
-    console.log(mobileNo);
-    if (mobileNo.length > 0) {
+    // console.log("mobileNo" , value);
+    if (value.length > 0) {
       // setLoading(true);
       // setEmailVerify(true);
       await axios
         .post("https://backend.dslcommerce.com/api/number/", {
-          phone: mobileNo,
+          phone: value,
         })
         .then((res) => {
           console.log("res");
@@ -282,9 +278,8 @@ function CheckoutArea({ expiryTimestamp }) {
         {message !== "" && (
           <div
             className={`
-        ${
-          message === "Order successfully added"
-        } ? alert alert-success : alert alert-danger 
+        ${message === "Order successfully added"
+              } ? alert alert-success : alert alert-danger 
       `}
             role="alert"
           >
@@ -331,33 +326,6 @@ function CheckoutArea({ expiryTimestamp }) {
                   </div>
 
                   {/* Email */}
-
-                  {/* <div className="col-lg-12 col-md-12">
-                    <div className="form-group">
-                      <label>
-                        Email Address <span className="required">*</span>
-                      </label>
-                      <div className="d-flex">
-                        <input
-                          type="email"
-                          className="form-control"
-                          placeholder="Email Address"
-                          required
-                          // value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <button
-                          type="button"
-                          // onClick={handleVerifyEmail}
-
-                          style={{ backgroundColor: "#15407f", color: "#fff" }}
-                          className={"border bg-secondary text-white"}
-                        >
-                          Verify
-                        </button>
-                      </div>
-                    </div>
-                  </div> */}
 
                   <div className="col-lg-12 col-md-12">
                     <div className="form-group">
@@ -420,7 +388,7 @@ function CheckoutArea({ expiryTimestamp }) {
                         Phone
                       </label>
                       <div className="d-flex">
-                        <input
+                        {/* <input
                           type="tel"
                           id="Mobile"
                           name="Mobile"
@@ -433,14 +401,30 @@ function CheckoutArea({ expiryTimestamp }) {
                           value={user.mobileNo ? user.mobileNo : mobileNo}
                           disabled={user.mobileNo ? true : false}
                           required
+                        /> */}
+                        <PhoneInput
+                          international
+                          defaultCountry="SG"
+                          countryCallingCodeEditable={true}
+                          className='form-control '
+                          type="text"
+                          onChange={setValue}
+                          value={value}
+                          disabled={user.mobileNo ? true : false}
+                          required
+                          inputProps={{
+                            name: 'phone',
+                            required: true,
+                            autoFocus: true
+                          }}
                         />
                         {!user.mobileNo && (
                           <button
                             type="button"
                             onClick={handleVerifyMobile}
                             disabled={
-                              mobileNo.length === 0 ||
-                              disableAfterActivationMobile
+                              value?.length === 0 ||
+                                disableAfterActivationMobile
                                 ? true
                                 : false
                             }
@@ -449,7 +433,7 @@ function CheckoutArea({ expiryTimestamp }) {
                               color: "#fff",
                             }}
                             className={
-                              (mobileNo.length === 0 ||
+                              (value?.length === 0 ||
                                 disableAfterActivationMobile) &&
                               "border bg-secondary text-white"
                             }
@@ -569,6 +553,10 @@ function CheckoutArea({ expiryTimestamp }) {
                         type="radio"
                         id="pay-by-crypto"
                         name="radio-group"
+                        onChange={(e) => {
+                          setCryptoPayment(e.target.value)
+                          setPayNowPayment(null)
+                        }}
                       />
                       <label htmlFor="pay-by-crypto">Pay by Crypto</label>
                     </p>
@@ -577,17 +565,28 @@ function CheckoutArea({ expiryTimestamp }) {
                         type="radio"
                         id="pay-by-paynow"
                         name="radio-group"
+                        onChange={(e) => {
+                          setCryptoPayment(null)
+                          setPayNowPayment(e.target.value)
+                        }}
                       />
                       <label htmlFor="pay-by-paynow">Pay by PayNow</label>
                     </p>
                   </div>
+                  {/* Crypto payment method */}
+                  {
+                    cryptoPayment &&
+                    <CryptoMethod totalPrice={totalPrice} />
+                  }
+                  {/* PayNow payment method */}
+                  {
+                    payNowPayment &&
+                    <PayNowMethod totalPrice={totalPrice} />
+                  }
                   <button
                     type="submit"
                     className="default-btn"
                     style={{ cursor: "pointer" }}
-                    // onClick={() => {
-                    //   navigate("/shop")
-                    // }}
                   >
                     Place Order
                   </button>
@@ -619,7 +618,7 @@ function CheckoutArea({ expiryTimestamp }) {
           setOpenMobile={setopenMobile}
           otpVerify={otpVerify}
           setError={setError}
-          mobile={setmobileNo}
+          mobile={setValue}
           setOtpVerify={setOtpVerify}
           setDisableAfterActivationMobile={setDisableAfterActivationMobile}
         />
