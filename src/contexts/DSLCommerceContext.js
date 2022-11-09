@@ -200,7 +200,7 @@ export default function DslProvider({ children }) {
     localStorage.removeItem("token");
   };
 
-  const mintTicketNFTTestnetBNB = async (data) => {
+  const payByTestnetBNB = async (data) => {
     try {
       if (ethereum) {
         const chainid = await window.ethereum.request({
@@ -261,7 +261,7 @@ export default function DslProvider({ children }) {
     }
   };
 
-  const mintTicketNFTTestnetUSDSC = async (data) => {
+  const payByTestnetUSDSC = async (data) => {
     try {
       if (ethereum) {
         const MintNFTContract = getMintContractTestnet();
@@ -350,7 +350,7 @@ export default function DslProvider({ children }) {
     }
   };
 
-  const mintTicketNFTTestnetDSL = async (data) => {
+  const payByTestnetDSL = async (data) => {
     try {
       if (ethereum) {
         const chainid = await window.ethereum.request({
@@ -420,7 +420,7 @@ export default function DslProvider({ children }) {
   }
 };
 
-  const mintTitleNFTTestnetS39 = async (data) => {
+  const payByTestnetS39 = async (data) => {
     try {
       if (ethereum) {
         const chainid = await window.ethereum.request({
@@ -491,7 +491,7 @@ export default function DslProvider({ children }) {
     }
   };
 
-  const mintTitleNFTTestnetQuest = async (data) => {
+  const payByTestnetQuest = async (data) => {
     try {
       if (ethereum) {
         const MintNFTContract = getMintContractTestnet();
@@ -913,11 +913,11 @@ export default function DslProvider({ children }) {
       S39tokenAddressTestnet,
       QuesttokenAddressTestnet,
       getBalanceTestnet,
-      mintTicketNFTTestnetBNB,
-      mintTicketNFTTestnetUSDSC,
-      mintTicketNFTTestnetDSL,
-      mintTitleNFTTestnetS39,
-      mintTitleNFTTestnetQuest,
+      payByTestnetBNB,
+      payByTestnetUSDSC,
+      payByTestnetDSL,
+      payByTestnetS39,
+      payByTestnetQuest,
     }}>
       {children}
     </DSLCommerceContext.Provider>
