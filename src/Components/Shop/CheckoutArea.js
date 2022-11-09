@@ -1,6 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-// import CartContext from "../../contexts/cart-context";
-// import AuthContext from "../../contexts/auth-context";
+import React, { useContext,  useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
@@ -41,7 +39,7 @@ function CheckoutArea({ expiryTimestamp }) {
   const [openEmail, setOpenEmail] = useState(false);
   const [openMobile, setopenMobile] = useState(false);
   const [isError, setError] = useState(false);
-  const [cryptoPayment, setCryptoPayment] = useState(null)
+  const [cryptoPayment, setCryptoPayment] = useState('on')
   const [payNowPayment, setPayNowPayment] = useState(null)
 
   const submitOrder = (e) => {
@@ -522,6 +520,7 @@ function CheckoutArea({ expiryTimestamp }) {
                         type="radio"
                         id="pay-by-crypto"
                         name="radio-group"
+                        defaultChecked={true}
                         onChange={(e) => {
                           setCryptoPayment(e.target.value)
                           setPayNowPayment(null)
@@ -536,6 +535,7 @@ function CheckoutArea({ expiryTimestamp }) {
                         name="radio-group"
                         onChange={(e) => {
                           setCryptoPayment(null)
+                          // console.log(e.target.value)
                           setPayNowPayment(e.target.value)
                         }}
                       />
