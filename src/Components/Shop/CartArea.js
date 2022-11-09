@@ -12,7 +12,8 @@ function CartArea() {
   const [coupon, setCoupon] = useState([])
   const [total, setTotal] = useState(0)
   const [subTotal, setSubTotal] = useState(0)
-  const [shipping,setShipping] = useState(0)
+  const [shipping, setShipping] = useState(0)
+  const [couponError, setCouponError] = useState('')
   // console.log(total);
 
   // Total Cart Calculation
@@ -21,19 +22,27 @@ function CartArea() {
     carts?.forEach((element) => {
       getSubTotal = (Number(getSubTotal + element.price * element.count))
       // console.log(getSubTotal);
-      setShipping(parseFloat((getSubTotal * 2.5) / 100 ) )
+      setShipping(parseFloat((getSubTotal * 2.5) / 100))
     });
     setSubTotal(getSubTotal)
-    setTotal(Number(getSubTotal + parseFloat((getSubTotal * 2.5) / 100 )))
+    setTotal(Number(getSubTotal + parseFloat((getSubTotal * 2.5) / 100)))
   }, [carts])
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const value = e.target.couponCode.value
+    // if(coupon.find(c) )
     var result = coupon.find(item => item?.name === value);
-    const couponC = result?.value
-    const finalTotal = total - (total * couponC)
-    setTotal(finalTotal)
+    if (result) {
+      const couponC = result?.value
+      const finalTotal = total - (total * couponC)
+      setTotal(finalTotal)
+      setCouponError(null)
+    }
+    else {
+      setCouponError('Coupon Not Valid !')
+    }
+
   }
 
   // Remove Item To Cart
@@ -107,7 +116,7 @@ function CartArea() {
                 <div className="cart-buttons">
                   <div className="row align-items-center">
                     <div className="col-lg-7 col-sm-7 col-md-7">
-                        <p>Use our coupon "DSL10" for get discount</p>
+                      <p>Use our coupon "DSL10" for get discount</p>
                       <div className="shopping-coupon-code">
                         <input
                           type="text"
@@ -121,6 +130,7 @@ function CartArea() {
                           Apply Coupon
                         </button>
                       </div>
+                      <p className="text-danger pt-1">{couponError}</p>
                     </div>
                   </div>
                 </div>
@@ -156,16 +166,16 @@ function CartArea() {
 
               <ul>
                 <li>
-                  Subtotal <span>$ {subTotal}.00</span>
+                  Subtotal <span>$ {subTotal}</span>
                 </li>
                 <li>
-                  Shipping <span>${shipping}.00</span>
+                  Shipping <span>${shipping}</span>
                 </li>
                 <li>
-                  Total <span>$ {total}.00</span>
+                  Total <span>$ {total}</span>
                 </li>
                 <li>
-                  Payable Total <span>$ {total}.00</span>
+                  Payable Total <span>$ {total}</span>
                 </li>
               </ul>
 
