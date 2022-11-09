@@ -39,6 +39,7 @@ const selectOptions = [
 
 const CryptoMethod = ({ totalPrice }) => {
   // console.log(parseFloat(totalPrice))
+  const totalUsd = parseFloat(totalPrice)
   const { user } = useContext(DSLCommerceContext);
   const [affiliateCode, setAffiliateCode] = useState("");
   const [token, setToken] = useState("bnb");
@@ -140,7 +141,7 @@ const CryptoMethod = ({ totalPrice }) => {
       </div>
       {/* Need To Pay  */}
       <div style={{ color: '#ffffff', marginTop: '2rem', textAlign: 'start' }}>
-        {token === "bnb" && <p style={{ margin: '0' }}>You need to pay 0.01 BNB</p>}
+        {token === "bnb" && <p style={{ margin: '0' }}>You need to pay {totalUsd} BNB</p>}
       </div>
     </>
   );
