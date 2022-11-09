@@ -5,13 +5,31 @@ import { Button, Typography, Modal, Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import swal from "sweetalert";
+import Pagination from '../../../../Components/Pagination/Pagination';
 
 
-const AllProduct = () => {
+const AllProduct = ({ page = 1 }) => {
 
   const [open, setOpen] = useState(false);
   const [allProduct, setAllProduct] = useState([]);
   const [refetch, setRefetch] = useState(false);
+
+  // Pagination
+  const [getPage, setPage] = useState(1);
+  const [show, setShow] = useState(10);
+  const [lastPage, setLastPage] = useState(0)
+
+  const totalFiles = allProduct.length;
+  useEffect(() => {
+    const lastPage = Math.ceil(totalFiles / show); // lastPage = 10
+    setLastPage(lastPage)
+  }, [])
+
+  const pageHandle = (jump) => {
+    setPage(jump)
+  }
+
+
 
   useEffect(() => {
     axios.get('https://backend.dslcommerce.com/api/product/')
@@ -97,6 +115,22 @@ const AllProduct = () => {
             </tbody>
           </Table>
         </div>
+      </div>
+      <div className="">
+        {allProduct?.length ?
+          <>
+            <Pagination
+              lastPage={lastPage}
+              page={getPage}
+              pageHandle={pageHandle}
+            />
+          </>
+          :
+          <div>
+
+          </div>
+        }
+
       </div>
     </div>
   );

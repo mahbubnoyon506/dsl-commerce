@@ -28,23 +28,7 @@ function CartArea() {
     setTotal(Number(getSubTotal + parseFloat((getSubTotal * 2.5) / 100)))
   }, [carts])
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const value = e.target.couponCode.value
-    // if(coupon.find(c) )
-    var result = coupon.find(item => item?.name === value);
-    if (result) {
-      const couponC = result?.value
-      const finalTotal = total - (total * couponC)
-      setTotal(finalTotal)
-      setCouponError(null)
-    }
-    else {
-      setCouponError('Coupon Not Valid !')
-    }
-
-  }
-
+  
   // Remove Item To Cart
   const removeCartItem = async (id) => {
     const data = { walletAddress: `${user?.walletAddress}` };
@@ -61,16 +45,32 @@ function CartArea() {
       });
   };
 
-  useEffect(() => {
-    axios.get(`https://backend.dslcommerce.com/api/coupons/`)
-      .then(res => {
-        // console.log(res.data);
-        setCoupon(res.data);
-      })
-      .catch(error => {
-        console.log('object');
-      });
-  }, [])
+  // useEffect(() => {
+  //   axios.get(`https://backend.dslcommerce.com/api/coupons/`)
+  //     .then(res => {
+  //       // console.log(res.data);
+  //       setCoupon(res.data);
+  //     })
+  //     .catch(error => {
+  //       console.log('object');
+  //     });
+  // }, [])
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // const value = e.target.couponCode.value
+    // // if(coupon.find(c) )
+    // var result = coupon.find(item => item?.name === value);
+    // if (result) {
+    //   const couponC = result?.value
+    //   const finalTotal = total - (total * couponC)
+    //   setTotal(finalTotal)
+    //   setCouponError(null)
+    // }
+    // else {
+    //   setCouponError('Coupon Not Valid !')
+    // }
+
+  }
 
   return (
     <section className="cart-area ptb-50">
@@ -112,7 +112,7 @@ function CartArea() {
               )}
 
 
-              {carts.length > 0 ?
+              {/* {carts.length > 0 ?
                 <div className="cart-buttons">
                   <div className="row align-items-center">
                     <div className="col-lg-7 col-sm-7 col-md-7">
@@ -154,7 +154,7 @@ function CartArea() {
                   </div>
                 </div>
 
-              }
+              } */}
 
 
             </form>
