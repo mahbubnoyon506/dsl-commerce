@@ -9,6 +9,7 @@ import { useState } from "react";
 
 const CustomerOrders = () => {
   const [allOrder, setAllOrder] = useState(allOrders);
+  const [orderStatus, setOrderStatus] = useState("");
 
   const handleOrderDelete = (id) => {
     console.log("Delete Order", id);
@@ -16,7 +17,7 @@ const CustomerOrders = () => {
 
   return (
     <div className="productBody">
-      <h5 className="text-white-50 text-start pb-2 text-uppercase"> Orders</h5>
+      <h5 className="text-white-50 text-start pb-2 text-uppercase">ORDERS</h5>
       <Row className="g-5">
         <Col className="py-2">
           <Card className="customerCard">
@@ -62,7 +63,7 @@ const CustomerOrders = () => {
             <thead>
               <tr>
                 <th className="text-center">Order Time</th>
-                <th className="text-center">Product Name</th>
+                {/* <th className="text-center">Product Name</th> */}
                 <th className="text-center">Phone</th>
                 <th className="text-center ">Method</th>
                 <th className="text-center ">Amount</th>
@@ -77,9 +78,9 @@ const CustomerOrders = () => {
                   <td className="text-center text-transparent">
                     {order.orderTime}
                   </td>
-                  <td className="text-center text-capitalize">
+                  {/* <td className="text-center text-capitalize">
                     {order.productName}
-                  </td>
+                  </td> */}
                   <td className="text-center ">{order?.phone}</td>
                   <td className="text-center text-capitalize ">
                     {order?.paymentMethod}
@@ -92,20 +93,22 @@ const CustomerOrders = () => {
                       className="btn btn-sm bg-danger text-white"
                       style={{ borderRadius: "20px" }}
                     >
-                      Pending
+                      {/* Pending */}
+                      {orderStatus}
                     </button>
                   </td>
                   <td className="text-center">
                     <select
                       className="bg-white-50"
                       style={{ cursor: "pointer", borderRadius: "5px" }}
+                      onChange={(e) => setOrderStatus(e.target.value)}
                     >
                       <option value="pending">Pending</option>
                       <option value="delivered">Delivered</option>
                       <option value="processing">Processing</option>
                     </select>
                   </td>
-                  <td className="action d-flex">
+                  <td className="action d-flex justify-content-center">
                     <div className="actionDiv text-center">
                       <Link to={`/admin/orderDetail/${order?._id}`}>
                         <button className="editBtn">
