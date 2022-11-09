@@ -21,7 +21,7 @@ const AllProduct = ({ page = 1 }) => {
 
   const totalFiles = allProduct.length;
   useEffect(() => {
-    const lastPage = Math.ceil(totalFiles / show); // lastPage = 10
+    const lastPage = Math.ceil(totalFiles / show); 
     setLastPage(lastPage)
   }, [])
 
