@@ -7,6 +7,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { SocialIcon } from "react-social-icons";
+import copy from "copy-to-clipboard";
 import {
   FacebookShareButton,
   FacebookIcon,
@@ -29,14 +30,29 @@ const Profile = ({ expiryTimestamp }) => {
   const [otpVerify, setOtpVerify] = useState();
   const [openEmail, setOpenEmail] = useState(false);
   const [isError, setError] = useState(false);
+  const [copyTextWalletAddress, setCopyTextWalletAddress] = useState("");
+  const [copyTextReferralID, setCopyTextReferralID] = useState("");
+  const [copyTextAffiliateLink, setCopyTextAffiliateLink] = useState("");
   const navigate = useNavigate();
   // let history = useHistory();
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text);
-    alert("Copied!");
-  };
+  // const copyToClipboard = (text) => {
+  //   navigator.clipboard.writeText(text);
+  //   alert("Copied!");
+  // };
 
   useEffect(() => {
+    setCopyTextWalletAddress(user.walletAddress ? user.walletAddress : "");
+    setCopyTextReferralID(user?.myReferralCode ? user?.myReferralCode : "");
+    // setCopyTextAffiliateLink(
+    //   window.location.origin || user?.myReferralCode
+    //     ? window.location.origin + "/" + user?.myReferralCode
+    //     : ""
+    // );
+    setCopyTextAffiliateLink(
+      window.location.origin || user?.myReferralCode
+        ? window.location.origin + "/" + user?.myReferralCode
+        : ""
+    );
     if (!user.email || !user.email === "undefined") {
       swal({
         text: "Please update your email before proceeding further. You stand to win attractive prizes monthly.",
@@ -126,6 +142,65 @@ const Profile = ({ expiryTimestamp }) => {
     }
   };
 
+  const copyToClipboardWalletAddress = () => {
+    copy(copyTextWalletAddress);
+    // alert(`You have copied "${copyTextWalletAddress}"`);
+    copyTextWalletAddress !== ""
+      ? swal({
+          title: "Copied",
+          text: `You have copied "${copyTextWalletAddress}"`,
+          icon: "success",
+          button: "OK",
+          className: "modal_class_success",
+        })
+      : swal({
+          title: "Not Copied",
+          text: "Nothing to Copy",
+          icon: "warning",
+          button: "OK",
+          className: "modal_class_warning",
+        });
+  };
+
+  const copyToClipboardReferralID = () => {
+    copy(copyTextReferralID);
+    // alert(`You have copied "${copyTextReferralID}"`);
+    copyTextReferralID !== ""
+      ? swal({
+          title: "Copied",
+          text: `You have copied "${copyTextReferralID}"`,
+          icon: "success",
+          button: "OK",
+          className: "modal_class_success",
+        })
+      : swal({
+          title: "Not Copied",
+          text: "Nothing to Copy",
+          icon: "warning",
+          button: "OK",
+          className: "modal_class_warning",
+        });
+  };
+
+  const copyToClipboardAffiliateLink = () => {
+    copy(copyTextAffiliateLink);
+    // alert(`You have copied "${copyTextAffiliateLink}"`);
+    copyTextAffiliateLink !== ""
+      ? swal({
+          title: "Copied",
+          text: `You have copied "${copyTextAffiliateLink}"`,
+          icon: "success",
+          button: "OK",
+          className: "modal_class_success",
+        })
+      : swal({
+          title: "Not Copied",
+          text: "Nothing to Copy",
+          icon: "warning",
+          button: "OK",
+          className: "modal_class_warning",
+        });
+  };
   const updateProfile = (e) => {
     e.preventDefault();
 
@@ -218,6 +293,8 @@ const Profile = ({ expiryTimestamp }) => {
                   <button
                     className="copyBtn"
                     style={{ backgroundColor: "#15407f" }}
+                    type="button"
+                    onClick={copyToClipboardWalletAddress}
                   >
                     <ContentCopyIcon />
                   </button>
@@ -388,6 +465,8 @@ const Profile = ({ expiryTimestamp }) => {
                   <button
                     className="copyBtn"
                     style={{ backgroundColor: "#15407f" }}
+                    type="button"
+                    onClick={copyToClipboardReferralID}
                   >
                     <ContentCopyIcon />
                   </button>
@@ -411,6 +490,8 @@ const Profile = ({ expiryTimestamp }) => {
                   <button
                     className="copyBtn"
                     style={{ backgroundColor: "#15407f" }}
+                    type="button"
+                    onClick={copyToClipboardAffiliateLink}
                   >
                     <ContentCopyIcon />
                   </button>
