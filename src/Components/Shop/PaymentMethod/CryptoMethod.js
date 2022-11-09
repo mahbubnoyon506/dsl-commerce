@@ -141,7 +141,7 @@ const CryptoMethod = ({ totalPrice }) => {
       </div>
       {/* Need To Pay  */}
       <div style={{ color: '#ffffff', marginTop: '2rem', textAlign: 'start' }}>
-        {token === "bnb" && <p style={{ margin: '0' }}>You need to pay {totalUsd} BNB</p>}
+        {token === "bnb" && <p style={{ margin: '0' }}>You need to pay {totalUsd} USD</p>}
       </div>
     </>
   );
