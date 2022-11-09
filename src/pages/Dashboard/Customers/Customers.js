@@ -63,32 +63,33 @@ const Customers = ({ page, pages, keyword }) => {
 
       <div className="productCard py-2">
         <div className="tableNormal ">
-          <Table className="text-white productDataTable ">
+          <Table responsive="sm" className="text-white productDataTable ">
             <thead>
               <tr>
-                <th className="text-left d-md-block d-none">USER ID</th>
+                {/* <th className="text-left d-md-block d-none">USER ID</th> */}
+                <th className="text-left productHidden">USER ID</th>
                 <th className="text-left productHidden">WALLET ADDRESS</th>
-                <th className="text-left ">EMAIL</th>
                 <th className="text-left productHidden">PHONE</th>
+                <th className="text-left ">EMAIL</th>
                 <th className="text-left">ACTIONS</th>
               </tr>
             </thead>
             <tbody>
               {tableary?.map((tabledata) => (
                 <tr className="tableRow" key={tabledata?.USER_ID}>
-                  <td className="text-left text-capitalize">
+                  <td className="text-left text-capitalize productHidden">
                     {tabledata.USER_ID}
                   </td>
                   <td className="text-left productHidden">
                     {tabledata.WALLET_ADDRESS}
                   </td>
-                  <td className="text-left text-capitalize ">
-                    {tabledata.EMAIL}
-                  </td>
                   <td className="text-left text-capitalize productHidden">
                     {tabledata.PHONE}
                   </td>
-                  <td className="action">
+                  <td className="text-left text-capitalize ">
+                    {tabledata.EMAIL}
+                  </td>
+                  <td className="action col-sm-12 d-flex">
                     <div className="actionDiv text-left">
                       <button
                         className="viewBtn"

@@ -1,10 +1,10 @@
-import './App.css';
+import "./App.css";
 import { createContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import PublicLayout from "./Components/Layout/PublicLayout";
 import HomeTwo from "./pages/Home/HomeTwo";
 import About from "./pages/About/About";
-import Search from './pages/About/Search';
+import Search from "./pages/About/Search";
 import ResetPassword from "./pages/Authentications/ResetPassword";
 import OurTeam from "./pages/About/OurTeam";
 import Faqs from "./pages/About/Faqs";
@@ -21,19 +21,18 @@ import AddProduct from "./pages/Products/AddProduct";
 import User from "./pages/User/User";
 import Products from "./pages/Products/Products";
 import News from "./pages/News/News";
-import './App.css'
+import "./App.css";
 import CheckoutArea from "./Components/Shop/CheckoutArea";
 import SubscriptionVerify from "./Components/Layout/Footer/SubscriptionVerify";
 import Profile from "./pages/Profile/Profile";
 
-
-// Login 
+// Login
 import Login from "./pages/Authentications/Login";
 import Register from "./pages/Authentications/Register";
 import ForgetPassword from "./Components/Auth/ForgetPassword";
 import Otp from "./Components/Auth/Otp";
 
-// Dashboard 
+// Dashboard
 import Dashboard from "./pages/Dashboard/Dashboard";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard/AdminDashboard";
 
@@ -63,9 +62,8 @@ import CatPath from "./pages/Shop/PathCheck/CatPath";
 import SearchPath from "./pages/Shop/PathCheck/SearchPath";
 import SingleOrderDetail from "./pages/Dashboard/CustomerOrders/SingleOrderDetail";
 
-export const ProductContext = createContext()
+export const ProductContext = createContext();
 function App() {
-
   return (
     <>
       <WalletModal></WalletModal>
@@ -74,6 +72,7 @@ function App() {
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<HomeTwo />} />
           <Route path="/about" element={<About />} />
+          <Route path="/:affiliateLink" element={<HomeTwo />} />
           <Route path="/our-team" element={<OurTeam />} />
           <Route path="/search" element={<Search />} />
           <Route path="/faqs" element={<Faqs />} />
@@ -85,18 +84,19 @@ function App() {
           <Route path="/data-protection-notice" element={<DataProtection />} />
           <Route path="/help-desk" element={<HelpDesk />} />
 
-
           {/* <Route path="/my-account" element={<MyAccount />} /> */}
           <Route path="/profile" element={<Profile />} />
           <Route path="/tracking-order" element={<TrackingOrder />} />
-
 
           {/* SHOP START */}
 
           <Route path="/shop" element={<MainShop />} />
           <Route path="/shop/page/:page" element={<Page />} />
           <Route path="/shop/cat/:keyword/page/:page" element={<CatPath />} />
-          <Route path="/shop/cat/:keyword/search/:query/:page" element={<SearchPath />} />
+          <Route
+            path="/shop/cat/:keyword/search/:query/:page"
+            element={<SearchPath />}
+          />
 
           {/* SHOP END */}
 
@@ -116,53 +116,62 @@ function App() {
           {/* <Route path="/coming-soon" element={<ComingSoon />} /> */}
           <Route path="/verify-email/" element={<SubscriptionVerify />} />
           <Route path="/user" element={<User />} />
-
         </Route>
 
         {/* Login System  */}
 
         <Route path="/admin/login" element={<Login />} />
         <Route path="/admin/register" element={<Register />} />
-        <Route path="/admin/login/forgetPassword" element={<ForgetPassword />} />
+        <Route
+          path="/admin/login/forgetPassword"
+          element={<ForgetPassword />}
+        />
         <Route path="/admin/otp/:token" element={<Otp />} />
-
 
         {/* Dashboard  */}
 
-        <Route path="/admin" element={
-          // <AdminRoutes>
-          <Dashboard />
-          // </AdminRoutes>
-        }>
+        <Route
+          path="/admin"
+          element={
+            // <AdminRoutes>
+            <Dashboard />
+            // </AdminRoutes>
+          }
+        >
           <Route index element={<AdminDashboard />} />
-          <Route path='dashboard' element={<AdminDashboard />} />
-          <Route path='adminUser' element={<Admins />} />
-          <Route path="/admin/adminprofile/:id" element={<DashboardAdminEditProfile />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="adminUser" element={<Admins />} />
+          <Route
+            path="/admin/adminprofile/:id"
+            element={<DashboardAdminEditProfile />}
+          />
 
           {/* Customers  */}
-          <Route path='customers' element={<Customers />} />
-          <Route path='customers-update' element={<CustomersUpdate />} />
-          <Route path='orders' element={<CustomerOrders />} />
-          <Route path='/admin/orderDetail/:id' element={<SingleOrderDetail />} />
+          <Route path="customers" element={<Customers />} />
+          <Route path="customers-update" element={<CustomersUpdate />} />
+          <Route path="orders" element={<CustomerOrders />} />
+          <Route
+            path="/admin/orderDetail/:id"
+            element={<SingleOrderDetail />}
+          />
 
           {/* Product  */}
-          <Route path='products' element={<AllProduct />} />
-          <Route path='create-product' element={<CreateProduct />} />
-          <Route path='/admin/editProduct/:id' element={<UpdateProduct />} />
+          <Route path="products" element={<AllProduct />} />
+          <Route path="create-product" element={<CreateProduct />} />
+          <Route path="/admin/editProduct/:id" element={<UpdateProduct />} />
 
           {/* Category  */}
-          <Route path='all-category' element={<AllCategory />} />
-          <Route path='add-category' element={< AddCategory />} />
+          <Route path="all-category" element={<AllCategory />} />
+          <Route path="add-category" element={<AddCategory />} />
 
-          <Route path='data' element={< Data />} />
-          <Route path='faq-dashboard' element={< FaqDashboard />} />
-          <Route path='help-desk-dashboard' element={< HelpDeskDashborad />} />
-          <Route path='customer-services-dashboard' element={< CustomerServicesDashboard />} />
-
+          <Route path="data" element={<Data />} />
+          <Route path="faq-dashboard" element={<FaqDashboard />} />
+          <Route path="help-desk-dashboard" element={<HelpDeskDashborad />} />
+          <Route
+            path="customer-services-dashboard"
+            element={<CustomerServicesDashboard />}
+          />
         </Route>
-
-
-
 
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/products" element={<Products />} />
