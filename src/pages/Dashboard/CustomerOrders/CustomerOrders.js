@@ -1,16 +1,57 @@
 import { Card, Col, Row, Table } from "react-bootstrap";
 import { AiOutlineCloudDownload } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "./CustomerOrders.css";
 import { GrView } from "react-icons/gr";
 import { AiFillDelete } from "react-icons/ai";
 import { allOrders } from "./orderData";
 import { useEffect, useState } from "react";
+import Pagination from "../../../Components/Pagination/Pagination";
 
 const CustomerOrders = () => {
   const [allOrder, setAllOrder] = useState(allOrders);
   // const [orderStatus, setOrderStatus] = useState(allOrders.status);
   const [orderStatus, setOrderStatus] = useState("");
+
+
+  //****************************** Pagination Start ******************************/
+  const { orderPerPage } = useParams()
+  const navigate = useNavigate()
+  const [getPage, setPage] = useState(1);
+  const [show, setShow] = useState(10);
+  const [lastPage, setLastPage] = useState(0);
+  const [sliceOrders, setSliceOrders] = useState([]);
+  // console.log(sliceProducts)
+
+  useEffect(() => {
+    const lastPage = Math.ceil(allOrder?.length / show);
+    setLastPage(lastPage);
+  }, [allOrder, show]);
+
+
+  useEffect(() => {
+    if (orderPerPage) {
+      const page = parseInt(orderPerPage)
+      const getSlicingCategory = allOrder.slice(
+        (page - 1) * show,
+        page * show
+      );
+      setSliceOrders([...getSlicingCategory]);
+      setPage(parseInt(page));
+    }
+    else {
+      const getSlicingProduct = allOrder.slice(0, show);
+      setSliceOrders([...getSlicingProduct]);
+    }
+
+  }, [allOrder, show, orderPerPage]);
+
+  const pageHandle = (jump) => {
+    navigate(`/admin/orders/${jump}`);
+    setPage(parseInt(jump));
+  };
+  //****************************** Pagination End ******************************/
+
 
   const handleOrderDelete = (id) => {
     console.log("Delete Order", id);
@@ -77,7 +118,7 @@ const CustomerOrders = () => {
               </tr>
             </thead>
             <tbody>
-              {allOrder?.map((order, index) => (
+              {sliceOrders?.map((order, index) => (
                 <tr className="tableRow" key={order?._id}>
                   <td className="text-center text-transparent">
                     {order.orderTime}
@@ -155,6 +196,25 @@ const CustomerOrders = () => {
           </Table>
         </div>
       </div>
+
+      {/*********************************** Pagination  Start***********************************/}
+      <div className="">
+        {sliceOrders?.length ?
+          (
+            <Pagination
+              lastPage={lastPage}
+              page={getPage}
+              pageHandle={pageHandle}
+            />
+          )
+          :
+          (<></>)
+        }
+      </div>
+
+      {/*********************************** Pagination  End *************************************/}
+
+
     </div>
   );
 };

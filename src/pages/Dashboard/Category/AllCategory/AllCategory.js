@@ -35,7 +35,7 @@ const AllCategory = () => {
   });
 
 
-  // Pagination
+    //****************************** Pagination Start ******************************/
   const navigate = useNavigate()
   const [getPage, setPage] = useState(1);
   const [show, setShow] = useState(10);
@@ -71,7 +71,7 @@ const AllCategory = () => {
     setPage(parseInt(jump));
   };
 
-
+  //****************************** Pagination End ******************************/
 
 
   const getCategory = () => {
