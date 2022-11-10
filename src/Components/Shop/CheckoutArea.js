@@ -19,7 +19,6 @@ function CheckoutArea({ expiryTimestamp }) {
   const { carts } = useContext(CartContext);
 
   const [name, setName] = useState("");
-  // const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
