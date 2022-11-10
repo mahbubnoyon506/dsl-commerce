@@ -26,7 +26,7 @@ function MiddleHeader() {
         console.log("data in");
         console.log(data?.data?.products.length);
       });
-    console.log("wishlistLength");
+    console.log("wishlistLengths");
     console.log(wishlistLength);
   };
   useEffect(() => {
