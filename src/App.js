@@ -61,6 +61,7 @@ import Page from "./pages/Shop/PathCheck/Page";
 import CatPath from "./pages/Shop/PathCheck/CatPath";
 import SearchPath from "./pages/Shop/PathCheck/SearchPath";
 import SingleOrderDetail from "./pages/Dashboard/CustomerOrders/SingleOrderDetail";
+import MintDetails from "./pages/MintDetails/MintDetails";
 
 export const ProductContext = createContext();
 function App() {
@@ -103,6 +104,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<Orders />} />
           <Route path="/wishlist" element={<WishList />} />
+          <Route path="/mintednft/:id/:address" element={<MintDetails />} />
           <Route path="/checkout/:totalPrice" element={<CheckoutArea />} />
           <Route
             path="/shop/products-details/:productId"
