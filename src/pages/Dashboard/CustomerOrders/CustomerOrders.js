@@ -5,16 +5,20 @@ import "./CustomerOrders.css";
 import { GrView } from "react-icons/gr";
 import { AiFillDelete } from "react-icons/ai";
 import { allOrders } from "./orderData";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CustomerOrders = () => {
   const [allOrder, setAllOrder] = useState(allOrders);
+  // const [orderStatus, setOrderStatus] = useState(allOrders.status);
   const [orderStatus, setOrderStatus] = useState("");
 
   const handleOrderDelete = (id) => {
     console.log("Delete Order", id);
   };
-
+  useEffect(() => {
+    console.log("allOrders");
+    console.log(allOrders);
+  }, []);
   return (
     <div className="productBody">
       <h5 className="text-white-50 text-start pb-2 text-uppercase">ORDERS</h5>
@@ -73,7 +77,7 @@ const CustomerOrders = () => {
               </tr>
             </thead>
             <tbody>
-              {allOrder?.map((order) => (
+              {allOrder?.map((order, index) => (
                 <tr className="tableRow" key={order?._id}>
                   <td className="text-center text-transparent">
                     {order.orderTime}
@@ -94,18 +98,39 @@ const CustomerOrders = () => {
                       style={{ borderRadius: "20px" }}
                     >
                       {/* Pending */}
-                      {orderStatus}
+                      {/* {orderStatus} */}
+                      {order?.status}
                     </button>
                   </td>
                   <td className="text-center">
                     <select
                       className="bg-white-50"
                       style={{ cursor: "pointer", borderRadius: "5px" }}
-                      onChange={(e) => setOrderStatus(e.target.value)}
+                      onChange={(e) => {
+                        const temp = [...allOrder];
+                        temp[index].status = e.target.value;
+                        setAllOrder(temp);
+                        // setOrderStatus(e.target.value)
+                      }}
                     >
-                      <option value="pending">Pending</option>
-                      <option value="delivered">Delivered</option>
-                      <option value="processing">Processing</option>
+                      <option
+                        value="pending"
+                        selected={order?.status === "pending"}
+                      >
+                        Pending
+                      </option>
+                      <option
+                        value="delivered"
+                        selected={order?.status === "delivered"}
+                      >
+                        Delivered
+                      </option>
+                      <option
+                        value="processing"
+                        selected={order?.status === "processing"}
+                      >
+                        Processing
+                      </option>
                     </select>
                   </td>
                   <td className="action d-flex justify-content-center">
