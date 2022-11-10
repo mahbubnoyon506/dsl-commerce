@@ -1,4 +1,4 @@
-import React, { useContext,  useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
@@ -18,8 +18,7 @@ function CheckoutArea({ expiryTimestamp }) {
   const { user, openWalletModal } = useContext(DSLCommerceContext);
   const { carts } = useContext(CartContext);
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [name, setName] = useState("");
   // const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
@@ -42,12 +41,19 @@ function CheckoutArea({ expiryTimestamp }) {
   const [cryptoPayment, setCryptoPayment] = useState('on')
   const [payNowPayment, setPayNowPayment] = useState(null)
 
+  const [token, setToken] = useState('test1')
+  const [date, setDate] = useState('9/11/22')
+  const [payAmount, setPayAmount] = useState('50000')
+  const [tokenAddress, setTokenAddress] = useState('123test')
+  const [refAddress, setRefAddress] = useState('test3')
+  const [payMethod, setPayMethod] = useState('cryptoTest')
+
   const submitOrder = (e) => {
     const walletAddress = user?.walletAddress;
-    const totalPay = parseFloat(totalPrice);
     const phone = value
     const email = email1
     const orderItems = carts;
+    const status = 'pending'
     e.preventDefault();
     if (!user?.walletAddress) {
       openWalletModal();
@@ -55,8 +61,7 @@ function CheckoutArea({ expiryTimestamp }) {
     }
 
     const OrderData = {
-      firstName,
-      lastName,
+      name,
       email,
       phone,
       country,
@@ -65,12 +70,17 @@ function CheckoutArea({ expiryTimestamp }) {
       postCode,
       orderNotes,
       walletAddress,
-      totalPay,
       orderItems,
-      transactionId,
+      token,
+      payAmount,
+      tokenAddress,
+      refAddress,
+      payMethod,
+      status,
+      date,
     };
     console.log(OrderData);
-    
+
   };
 
   // Re-send OTP functionality
@@ -260,41 +270,25 @@ function CheckoutArea({ expiryTimestamp }) {
                 <h3 className="title">Billing Details</h3>
 
                 <div className="row">
-                  <div className="col-lg-6 col-md-6">
+                  <div className="col-md-12">
                     <div className="form-group">
                       <label>
-                        First Name <span className="required">*</span>
+                        Your Name <span className="required">*</span>
                       </label>
                       <input
                         type="text"
                         className="form-control"
-                        placeholder="First Name"
+                        placeholder="Your Name"
                         required
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-lg-6 col-md-6">
-                    <div className="form-group">
-                      <label>
-                        Last Name <span className="required">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Last Name"
-                        required
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                       />
                     </div>
                   </div>
 
                   {/* Email */}
 
-                  <div className="col-lg-12 col-md-12">
+                  <div className="col-md-12">
                     <div className="form-group">
                       <label
                         htmlFor="email"
@@ -545,7 +539,7 @@ function CheckoutArea({ expiryTimestamp }) {
                   {/* Crypto payment method */}
                   {
                     cryptoPayment &&
-                    <CryptoMethod totalPrice={totalPrice} />
+                    <CryptoMethod totalPrice={totalPrice} setPayAmount={setPayAmount}/>
                   }
                   {/* PayNow payment method */}
                   {

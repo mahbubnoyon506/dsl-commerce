@@ -209,7 +209,6 @@ const CryptoMethod = ({ totalPrice }) => {
               }}
               value={user?.affiliateCode ? user?.affiliateCode : affiliateCode}
               disabled={user.affiliateCode ? true : false}
-              required
               className="form-control "
             />
             {affiliateCode.length === 0 ? (
