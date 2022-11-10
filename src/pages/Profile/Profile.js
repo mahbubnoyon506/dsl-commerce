@@ -2,11 +2,13 @@ import axios from "axios";
 import React, { useEffect, useState, useContext } from "react";
 import swal from "sweetalert";
 import "./Profile.css";
+import MobileVerifyModal from "../../pages/Profile/MobileVerifyModal";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { SocialIcon } from "react-social-icons";
+import PhoneInput from "react-phone-number-input";
 import copy from "copy-to-clipboard";
 import {
   FacebookShareButton,
@@ -33,6 +35,11 @@ const Profile = ({ expiryTimestamp }) => {
   const [copyTextWalletAddress, setCopyTextWalletAddress] = useState("");
   const [copyTextReferralID, setCopyTextReferralID] = useState("");
   const [copyTextAffiliateLink, setCopyTextAffiliateLink] = useState("");
+  const [openMobile, setopenMobile] = useState(false);
+  const [value, setValue] = useState();
+  const [disableAfterActivationMobile, setDisableAfterActivationMobile] =
+    useState(false);
+
   const navigate = useNavigate();
   // let history = useHistory();
   // const copyToClipboard = (text) => {
@@ -88,6 +95,87 @@ const Profile = ({ expiryTimestamp }) => {
     time.setSeconds(time.getSeconds() + sec);
     restart(time);
   };
+  const handleVerifyMobile = async (e) => {
+    // console.log("handleVerifyMobile");
+    setDisableAfterActivationMobile(true);
+    // console.log("mobileNo" , value);
+    if (value.length > 0) {
+      // setLoading(true);
+      // setEmailVerify(true);
+      await axios
+        .post("https://backend.dslcommerce.com/api/number/", {
+          phone: value,
+        })
+        .then((res) => {
+          console.log("res");
+          console.log(res);
+
+          if (res.status === 200) {
+            // alert(res.data.message);
+            // setSendMail(res.data.email)
+            restarting(180);
+            swal({
+              text: res.data.message,
+              icon: "success",
+              button: "OK!",
+              className: "modal_class_success",
+            });
+
+            setOtpVerify(res.data.otp);
+
+            setTimeout(() => {
+              setDisableAfterActivation(false);
+            }, 120000);
+          }
+          console.log("setopenMobile");
+          setopenMobile(true);
+        })
+        .catch((err) => {
+          console.log(err.response.data.message);
+          setopenMobile(false);
+          swal({
+            title: "Attention",
+            text: err.response.data.message,
+            icon: "warning",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+        })
+        .finally(() => {
+          console.log("finally");
+          // setLoading(false);
+        });
+    } else {
+      swal({
+        title: "Attention",
+        text: "Please enter a valid email address",
+        icon: "warning",
+        button: "OK!",
+        className: "modal_class_success",
+      });
+    }
+  };
+
+  const handleVerifyMobileOTP = async (otpCode) => {
+    console.log("handleVerifyMobileOTP");
+
+    await axios
+      .post(`https://backend.dslcommerce.com/api/number/otp`, {
+        phone: value,
+        otp: otpCode,
+      })
+
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          setOtpVerify(res.data.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+        setOtpVerify(err.response.data.message);
+      });
+  };
 
   const handleVerifyEmail = async (e) => {
     // check if email is valid
@@ -96,7 +184,7 @@ const Profile = ({ expiryTimestamp }) => {
       // setLoading(true);
       setEmailVerify(true);
       await axios
-        .post("https://backendpub.celebrity.sg/api/v1/verifymint/mail", {
+        .post("https://backend.dslcommerce.com/api/email/emailsend", {
           email: email1,
         })
         .then((res) => {
@@ -142,7 +230,24 @@ const Profile = ({ expiryTimestamp }) => {
       });
     }
   };
+  const handleVerifyOTP = async (otpCode) => {
+    console.log("handleVerifyOTP");
+    console.log(otpCode);
+    await axios
+      .post(`https://backend.dslcommerce.com/api/email/otp/${email1}`, {
+        otp: otpCode,
+      })
 
+      .then((res) => {
+        if (res.status === 200) {
+          setOtpVerify(res.data.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+        setOtpVerify(err.response.data.message);
+      });
+  };
   const copyToClipboardWalletAddress = () => {
     copy(copyTextWalletAddress);
     // alert(`You have copied "${copyTextWalletAddress}"`);
@@ -332,7 +437,10 @@ const Profile = ({ expiryTimestamp }) => {
                         ? true
                         : false
                     }
-                    style={{ backgroundColor: "#15407f", color: "#fff" }}
+                    style={{
+                      backgroundColor: "#15407f",
+                      color: "#fff",
+                    }}
                     className={
                       (email1.length === 0 || disableAfterActivation) &&
                       "border bg-secondary text-white"
@@ -344,6 +452,48 @@ const Profile = ({ expiryTimestamp }) => {
                 )}
               </div>
             </div>
+
+            {/* <div className="mb-1">
+              <label htmlFor="email" className="text-dark d-flex pb-1 pt-2">
+                Email Address
+              </label>
+              <div className="d-flex">
+                <input
+                  style={{ textTransform: "lowercase" }}
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Email Address"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setEmailVerify(false);
+                  }}
+                  value={user.email ? user.email : email1}
+                  disabled={user.email ? true : false}
+                  required
+                  className="form-control profileInput"
+                />
+                {!user.email && (
+                  <button
+                    type="button"
+                    onClick={handleVerifyEmail}
+                    disabled={
+                      email1.length === 0 || disableAfterActivation
+                        ? true
+                        : false
+                    }
+                    style={{ backgroundColor: "#15407f", color: "#fff" }}
+                    className={
+                      (email1.length === 0 || disableAfterActivation) &&
+                      "border bg-secondary text-white"
+                    }
+                  >
+                    {" "}
+                    Verify
+                  </button>
+                )}
+              </div>
+            </div> */}
 
             <div className="mb-1">
               <label htmlFor="USDSC" className="text-dark d-flex pb-1 pt-2">
@@ -432,20 +582,44 @@ const Profile = ({ expiryTimestamp }) => {
                 Mobile
               </label>
               <div className="d-flex">
-                <input
-                  type="tel"
-                  id="Mobile"
-                  name="Mobile"
-                  placeholder="Enter Mobile Number"
-                  className="form-control profileInput"
+                <PhoneInput
+                  international
+                  defaultCountry="SG"
+                  countryCallingCodeEditable={true}
+                  className="form-control "
+                  type="text"
+                  onChange={setValue}
+                  value={value}
+                  disabled={user.mobileNo ? true : false}
+                  required
+                  inputProps={{
+                    name: "phone",
+                    required: true,
+                    autoFocus: true,
+                  }}
                 />
-                <button
-                  style={{ backgroundColor: "#15407f", color: "#fff" }}
-                  className="border bg-secondary text-white"
-                  type="button"
-                >
-                  Verify
-                </button>
+                {!user.mobileNo && (
+                  <button
+                    type="button"
+                    onClick={handleVerifyMobile}
+                    disabled={
+                      value?.length === 0 || disableAfterActivationMobile
+                        ? true
+                        : false
+                    }
+                    style={{
+                      backgroundColor: "#15407f",
+                      color: "#fff",
+                    }}
+                    className={
+                      (value?.length === 0 || disableAfterActivationMobile) &&
+                      "border bg-secondary text-white"
+                    }
+                  >
+                    {" "}
+                    Verify
+                  </button>
+                )}
               </div>
             </div>
 
@@ -565,13 +739,39 @@ const Profile = ({ expiryTimestamp }) => {
 
       <EmailVerifyModal
         handleVerifyEmail={handleVerifyEmail}
+        handleVerifyOTP={handleVerifyOTP}
         minutes={minutes}
         seconds={seconds}
         open={openEmail}
         setOpenEmail={setOpenEmail}
         otpVerify={otpVerify}
         setError={setError}
+        email={setEmail}
+        setOtpVerify={setOtpVerify}
+        setDisableAfterActivation={setDisableAfterActivation}
       />
+      <MobileVerifyModal
+        handleVerifyMobile={handleVerifyMobile}
+        handleVerifyOTP={handleVerifyMobileOTP}
+        minutes={minutes}
+        seconds={seconds}
+        open={openMobile}
+        setOpenMobile={setopenMobile}
+        otpVerify={otpVerify}
+        setError={setError}
+        mobile={setValue}
+        setOtpVerify={setOtpVerify}
+        setDisableAfterActivationMobile={setDisableAfterActivationMobile}
+      />
+      {/* <EmailVerifyModal
+        handleVerifyEmail={handleVerifyEmail}
+        minutes={minutes}
+        seconds={seconds}
+        open={openEmail}
+        setOpenEmail={setOpenEmail}
+        otpVerify={otpVerify}
+        setError={setError}
+      /> */}
     </div>
   );
 };
