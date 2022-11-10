@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 import { useNavigate, useParams } from "react-router-dom";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 import { CartContext } from "../../contexts/cart-context";
@@ -50,38 +51,11 @@ const selectOptions = [
 function CheckoutArea({ expiryTimestamp }) {
   const { totalPrice } = useParams();
   // console.log(totalPrice)
-  const { connectWallet,
-    currentAccount,
-    loginModal,
-    setLoginModal,
-    requestLoading,
-    setRequestLoading,
-    walletModal,
+  const { setRequestLoading,
     user,
-    setUser,
-    logOut,
-    loading,
-    Id,
     signBuyFunction,
-    setID,
-    setUserRefetch,
-    chain,
-    pageLoading,
     payAmount,
-    setPayAmount,
-    metamaskBalance,
-    coinbaseModal,
-    metamaskBalanceLoading,
-    getBalanceTestnet,
-    closeWalletModal,
-    closeCoinbaseModal,
     openWalletModal,
-    openCoinbaseModal,
-    openLoginModal,
-    closeLoginModal,
-    setMetamaskBalanceLoading,
-    connectToCoinbase,
-    connectToMetamask,
     mintAddressTestnet,
     DSLtokenAddressTestnet,
     USDSCtokenAddressTestnet,
@@ -555,23 +529,23 @@ function CheckoutArea({ expiryTimestamp }) {
 
   const paymentCrypto = async (priceByToken, tokenAddress, affiliateWalletAddress) => {
 
-    // if (!user.email) {
-    //   return swal({
-    //     text: "Before payment please update your profile. We will send the details to you.",
-    //     icon: "warning",
-    //     button: true,
-    //     dangerMode: true,
-    //     className: "modal_class_success",
-    //   })
-    //     .then((willDelete) => {
-    //       if (willDelete) {
-    //         navigate(`/profile`)
+    if (!user.email) {
+      return swal({
+        text: "Before payment please update your profile. We will send the details to you.",
+        icon: "warning",
+        button: true,
+        dangerMode: true,
+        className: "modal_class_success",
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+            navigate(`/profile`)
 
-    //       } else {
-    //         console.log("ok")
-    //       }
-    //     });
-    // }
+          } else {
+            console.log("ok")
+          }
+        });
+    }
     // console.log("enter1");
     // setIsClickedMint(true)
     setRequestLoading(true);
@@ -584,8 +558,9 @@ function CheckoutArea({ expiryTimestamp }) {
     data.append('id', generateId.toString());
     data.append('price', priceByToken);
     data.append('tokenAddress', tokenAddress);
+    data.append('nonce', uuidv4());
     data.append('refAddress', affiliateWalletAddress);
-    data.append('walletaddress', user.walletAddress);
+    data.append('walletAddress', user.walletAddress);
     // console.log("enter2");
 
     // ************************ Data *************************//
@@ -652,7 +627,7 @@ function CheckoutArea({ expiryTimestamp }) {
             status,
             date,
           };
-          console.log('Emtiaz Emon Data',  data2)
+          console.log('Emtiaz Emon Data', data2)
           data.append("mint_hash", Obj.mint_hash);
           // setTokenId(Obj.ID);
           // console.log(data);
