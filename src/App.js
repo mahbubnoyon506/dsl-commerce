@@ -117,19 +117,16 @@ function App() {
           <Route path="/verify-email/" element={<SubscriptionVerify />} />
           <Route path="/user" element={<User />} />
         </Route>
-
         {/* Login System  */}
-
         <Route path="/admin/login" element={<Login />} />
         <Route path="/admin/register" element={<Register />} />
         <Route
           path="/admin/login/forgetPassword"
           element={<ForgetPassword />}
         />
-        <Route path="/admin/otp/:token" element={<Otp />} />
-
+        /admin
+        <Route path="/otp/:token" element={<Otp />} />
         {/* Dashboard  */}
-
         <Route
           path="/admin"
           element={
@@ -148,6 +145,7 @@ function App() {
 
           {/* Customers  */}
           <Route path="customers" element={<Customers />} />
+          <Route path="customers/:customerPerPage" element={<Customers />} />
           <Route path="customers-update" element={<CustomersUpdate />} />
           <Route path="orders" element={<CustomerOrders />} />
           <Route path="orders/:orderPerPage" element={<CustomerOrders />} />
@@ -165,7 +163,10 @@ function App() {
 
           {/* Category  */}
           <Route path="all-category" element={<AllCategory />} />
-          <Route path="all-category/:categoryPerPage" element={<AllCategory />} />
+          <Route
+            path="all-category/:categoryPerPage"
+            element={<AllCategory />}
+          />
           <Route path="add-category" element={<AddCategory />} />
 
           <Route path="data" element={<Data />} />
@@ -176,7 +177,6 @@ function App() {
             element={<CustomerServicesDashboard />}
           />
         </Route>
-
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/products" element={<Products />} />
         <Route path="/reset" element={<ResetPassword />} />

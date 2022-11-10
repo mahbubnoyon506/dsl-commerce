@@ -5,6 +5,7 @@ import { allOrders } from "../CustomerOrders/orderData";
 const RecentOrders = () => {
   // const [allOrder, setAllOrder] = useState([]);
   const [allOrder, setAllOrder] = useState(allOrders);
+  const [recentNum, setRecentNum] = useState(10);
 
   // const allOrder = [
   //   {_id:1 , orderTime: '3-10-2022', productName:'Hp Core' , phone : '1233333' , paymentMethod  : 'paypal' , orderAmount : 333},
@@ -34,7 +35,7 @@ const RecentOrders = () => {
               </tr>
             </thead>
             <tbody>
-              {allOrder?.map((order) => (
+              {allOrder?.slice(0, recentNum).map((order) => (
                 <tr className="tableRow" key={order?._id}>
                   <td className="text-center text-transparent">
                     {order.orderTime}

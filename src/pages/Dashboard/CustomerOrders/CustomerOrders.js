@@ -13,10 +13,9 @@ const CustomerOrders = () => {
   // const [orderStatus, setOrderStatus] = useState(allOrders.status);
   const [orderStatus, setOrderStatus] = useState("");
 
-
   //****************************** Pagination Start ******************************/
-  const { orderPerPage } = useParams()
-  const navigate = useNavigate()
+  const { orderPerPage } = useParams();
+  const navigate = useNavigate();
   const [getPage, setPage] = useState(1);
   const [show, setShow] = useState(10);
   const [lastPage, setLastPage] = useState(0);
@@ -28,22 +27,16 @@ const CustomerOrders = () => {
     setLastPage(lastPage);
   }, [allOrder, show]);
 
-
   useEffect(() => {
     if (orderPerPage) {
-      const page = parseInt(orderPerPage)
-      const getSlicingCategory = allOrder.slice(
-        (page - 1) * show,
-        page * show
-      );
+      const page = parseInt(orderPerPage);
+      const getSlicingCategory = allOrder.slice((page - 1) * show, page * show);
       setSliceOrders([...getSlicingCategory]);
       setPage(parseInt(page));
-    }
-    else {
+    } else {
       const getSlicingProduct = allOrder.slice(0, show);
       setSliceOrders([...getSlicingProduct]);
     }
-
   }, [allOrder, show, orderPerPage]);
 
   const pageHandle = (jump) => {
@@ -51,7 +44,6 @@ const CustomerOrders = () => {
     setPage(parseInt(jump));
   };
   //****************************** Pagination End ******************************/
-
 
   const handleOrderDelete = (id) => {
     console.log("Delete Order", id);
@@ -199,22 +191,18 @@ const CustomerOrders = () => {
 
       {/*********************************** Pagination  Start***********************************/}
       <div className="">
-        {sliceOrders?.length ?
-          (
-            <Pagination
-              lastPage={lastPage}
-              page={getPage}
-              pageHandle={pageHandle}
-            />
-          )
-          :
-          (<></>)
-        }
+        {sliceOrders?.length ? (
+          <Pagination
+            lastPage={lastPage}
+            page={getPage}
+            pageHandle={pageHandle}
+          />
+        ) : (
+          <></>
+        )}
       </div>
 
       {/*********************************** Pagination  End *************************************/}
-
-
     </div>
   );
 };
