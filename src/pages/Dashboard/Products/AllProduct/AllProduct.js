@@ -1,5 +1,5 @@
 import { Table } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import './AllProduct.css';
 import { Button, Typography, Modal, Box } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -8,7 +8,9 @@ import swal from "sweetalert";
 import Pagination from '../../../../Components/Pagination/Pagination';
 
 
-const AllProduct = ({ page = 1 }) => {
+const AllProduct = () => {
+  const { productPerPage } = useParams()
+  // console.log(productPerPage);
 
   const navigate = useNavigate()
 
@@ -17,7 +19,6 @@ const AllProduct = ({ page = 1 }) => {
   const [refetch, setRefetch] = useState(false);
 
   // Pagination
-  const [locationState, setLocation] = useState("");
   const [getPage, setPage] = useState(1);
   const [show, setShow] = useState(10);
   const [lastPage, setLastPage] = useState(0);
@@ -25,30 +26,30 @@ const AllProduct = ({ page = 1 }) => {
   // console.log(sliceProducts)
 
   useEffect(() => {
-    if (page) {
-      setPage(Number(page));
-    } else {
-      setPage(1);
-    }
-  }, [page]);
-
-  useEffect(() => {
     const lastPage = Math.ceil(allProduct?.length / show);
     setLastPage(lastPage);
   }, [allProduct, show]);
 
+
   useEffect(() => {
-    const getSlicingProduct = allProduct.slice(
-      (page - 1) * show,
-      page * show
-    );
-    console.log(getSlicingProduct)
-    setSliceProducts([...getSlicingProduct]);
-  }, [allProduct, page, show]);
+    if (productPerPage) {
+      const page = parseInt(productPerPage)
+      const getSlicingProduct = allProduct.slice(
+        (page - 1) * show,
+        page * show
+      );
+      setSliceProducts([...getSlicingProduct]);
+      setPage(parseInt(page));
+    }
+    else{
+      const getSlicingProduct = allProduct.slice(0,show);
+      setSliceProducts([...getSlicingProduct]);
+    }
+
+  }, [allProduct, show,productPerPage]);
 
   const pageHandle = (jump) => {
-    // navigate(`/admin/products/${jump}`);
-    console.log(jump);
+    navigate(`/admin/products/${jump}`);
     setPage(parseInt(jump));
   };
 
@@ -139,21 +140,20 @@ const AllProduct = ({ page = 1 }) => {
           </Table>
         </div>
       </div>
+
+      {/* Pagination  */}
       <div className="">
         {sliceProducts?.length ?
-          <>
+          (
             <Pagination
               lastPage={lastPage}
               page={getPage}
               pageHandle={pageHandle}
             />
-          </>
+          )
           :
-          <div>
-
-          </div>
+          (<></>)
         }
-
       </div>
     </div>
   );

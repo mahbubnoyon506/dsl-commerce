@@ -28,7 +28,7 @@ function CartArea() {
     setTotal(Number(getSubTotal + parseFloat((getSubTotal * 2.5) / 100)))
   }, [carts])
 
-  
+
   // Remove Item To Cart
   const removeCartItem = async (id) => {
     const data = { walletAddress: `${user?.walletAddress}` };
@@ -190,7 +190,13 @@ function CartArea() {
                     <span></span>
                   </Link>
                 ) : (
-                  <Link to={`/checkout/${total}`} className="default-btn" onClick={() => addTotalPrice(total)}>
+                  <Link to={`/checkout/${total}`}
+                    className="default-btn"
+                    onClick={() => {
+                      addTotalPrice(total)
+                      window.scrollTo(0, 0);
+                    }}
+                  >
                     Proceed to Checkout
                     <span></span>
                   </Link>

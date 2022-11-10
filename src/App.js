@@ -157,11 +157,14 @@ function App() {
 
           {/* Product  */}
           <Route path="products" element={<AllProduct />} />
+          <Route path="products/:productPerPage" element={<AllProduct />} />
+
           <Route path="create-product" element={<CreateProduct />} />
           <Route path="/admin/editProduct/:id" element={<UpdateProduct />} />
 
           {/* Category  */}
           <Route path="all-category" element={<AllCategory />} />
+          <Route path="all-category/:categoryPerPage" element={<AllCategory />} />
           <Route path="add-category" element={<AddCategory />} />
 
           <Route path="data" element={<Data />} />

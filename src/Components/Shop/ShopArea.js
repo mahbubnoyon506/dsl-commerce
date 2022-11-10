@@ -194,7 +194,7 @@ function ShopArea({
 
   // Pagination
   const [getPage, setPage] = useState(1);
-  const [show, setShow] = useState(12);
+  const [show, setShow] = useState(20);
   const [lastPage, setLastPage] = useState(0);
 
   useEffect(() => {

@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Button, Typography, Modal, Box } from "@mui/material";
 import Table from "react-bootstrap/Table";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import toast from "react-hot-toast";
 import swal from "sweetalert";
 import axios from "axios";
 import CategoryModal from "./CategoryModal";
 import "./AllCatergory.css";
 import "./CategoryModal.css";
+import { useNavigate, useParams } from "react-router-dom";
+import Pagination from "../../../../Components/Pagination/Pagination";
 
-// import Box from '@mui/material/Box';
-// import Typography from '@mui/material/Typography';
-// import Modal from '@mui/material/Modal';
 
 const style = {
   position: "absolute",
@@ -26,6 +23,7 @@ const style = {
 };
 
 const AllCategory = () => {
+  const { categoryPerPage } = useParams()
   const [open, setOpen] = React.useState(false);
   const [modal, setModal] = useState(false);
   const [name, setCategoryName] = useState("");
@@ -35,6 +33,46 @@ const AllCategory = () => {
     loading: false,
     value: null,
   });
+
+
+  // Pagination
+  const navigate = useNavigate()
+  const [getPage, setPage] = useState(1);
+  const [show, setShow] = useState(10);
+  const [lastPage, setLastPage] = useState(0);
+  const [sliceCategories, setSliceCategories] = useState([]);
+  // console.log(sliceProducts)
+
+  useEffect(() => {
+    const lastPage = Math.ceil(categories?.length / show);
+    setLastPage(lastPage);
+  }, [categories, show]);
+
+
+  useEffect(() => {
+    if (categoryPerPage) {
+      const page = parseInt(categoryPerPage)
+      const getSlicingCategory = categories.slice(
+        (page - 1) * show,
+        page * show
+      );
+      setSliceCategories([...getSlicingCategory]);
+      setPage(parseInt(page));
+    }
+    else {
+      const getSlicingProduct = categories.slice(0, show);
+      setSliceCategories([...getSlicingProduct]);
+    }
+
+  }, [categories, show, categoryPerPage]);
+
+  const pageHandle = (jump) => {
+    navigate(`/admin/all-category/${jump}`);
+    setPage(parseInt(jump));
+  };
+
+
+
 
   const getCategory = () => {
     fetch(`https://backend.dslcommerce.com/api/category/`)
@@ -264,8 +302,8 @@ const AllCategory = () => {
             </tr>
           </thead>
           <tbody>
-            {categories &&
-              categories.map((category) => (
+            {sliceCategories &&
+              sliceCategories.map((category) => (
                 <tr key={category._id}>
                   <td>{category.name}</td>
 
@@ -299,6 +337,23 @@ const AllCategory = () => {
               ))}
           </tbody>
         </Table>
+
+        {/* Pagination  */}
+        <div className="">
+          {sliceCategories?.length ?
+            (
+              <Pagination
+                lastPage={lastPage}
+                page={getPage}
+                pageHandle={pageHandle}
+              />
+            )
+            :
+            (<></>)
+          }
+        </div>
+
+
       </div>
 
       {categoryUpdate.show && (
