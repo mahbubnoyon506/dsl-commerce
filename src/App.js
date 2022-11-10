@@ -150,6 +150,7 @@ function App() {
           <Route path="customers" element={<Customers />} />
           <Route path="customers-update" element={<CustomersUpdate />} />
           <Route path="orders" element={<CustomerOrders />} />
+          <Route path="orders/:orderPerPage" element={<CustomerOrders />} />
           <Route
             path="/admin/orderDetail/:id"
             element={<SingleOrderDetail />}
