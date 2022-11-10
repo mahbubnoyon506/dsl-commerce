@@ -22,7 +22,7 @@ import { useTimer } from "react-timer-hook";
 import EmailVerifyModal from "./EmailVerifyModal";
 
 const Profile = ({ expiryTimestamp }) => {
-  const { user, metamaskBalance, logOut, setUserRefetch } =
+  const { user, metamaskBalance, logOut, setUserRefetch, getBalanceTestnet } =
     useContext(DSLCommerceContext);
   const [email1, setEmail] = useState("");
   const [emailVerify, setEmailVerify] = useState(false);
@@ -41,6 +41,7 @@ const Profile = ({ expiryTimestamp }) => {
   // };
 
   useEffect(() => {
+    getBalanceTestnet();
     setCopyTextWalletAddress(user.walletAddress ? user.walletAddress : "");
     setCopyTextReferralID(user?.myReferralCode ? user?.myReferralCode : "");
     // setCopyTextAffiliateLink(
@@ -147,19 +148,19 @@ const Profile = ({ expiryTimestamp }) => {
     // alert(`You have copied "${copyTextWalletAddress}"`);
     copyTextWalletAddress !== ""
       ? swal({
-          title: "Copied",
-          text: `You have copied "${copyTextWalletAddress}"`,
-          icon: "success",
-          button: "OK",
-          className: "modal_class_success",
-        })
+        title: "Copied",
+        text: `You have copied "${copyTextWalletAddress}"`,
+        icon: "success",
+        button: "OK",
+        className: "modal_class_success",
+      })
       : swal({
-          title: "Not Copied",
-          text: "Nothing to Copy",
-          icon: "warning",
-          button: "OK",
-          className: "modal_class_warning",
-        });
+        title: "Not Copied",
+        text: "Nothing to Copy",
+        icon: "warning",
+        button: "OK",
+        className: "modal_class_warning",
+      });
   };
 
   const copyToClipboardReferralID = () => {
@@ -167,19 +168,19 @@ const Profile = ({ expiryTimestamp }) => {
     // alert(`You have copied "${copyTextReferralID}"`);
     copyTextReferralID !== ""
       ? swal({
-          title: "Copied",
-          text: `You have copied "${copyTextReferralID}"`,
-          icon: "success",
-          button: "OK",
-          className: "modal_class_success",
-        })
+        title: "Copied",
+        text: `You have copied "${copyTextReferralID}"`,
+        icon: "success",
+        button: "OK",
+        className: "modal_class_success",
+      })
       : swal({
-          title: "Not Copied",
-          text: "Nothing to Copy",
-          icon: "warning",
-          button: "OK",
-          className: "modal_class_warning",
-        });
+        title: "Not Copied",
+        text: "Nothing to Copy",
+        icon: "warning",
+        button: "OK",
+        className: "modal_class_warning",
+      });
   };
 
   const copyToClipboardAffiliateLink = () => {
@@ -187,19 +188,19 @@ const Profile = ({ expiryTimestamp }) => {
     // alert(`You have copied "${copyTextAffiliateLink}"`);
     copyTextAffiliateLink !== ""
       ? swal({
-          title: "Copied",
-          text: `You have copied "${copyTextAffiliateLink}"`,
-          icon: "success",
-          button: "OK",
-          className: "modal_class_success",
-        })
+        title: "Copied",
+        text: `You have copied "${copyTextAffiliateLink}"`,
+        icon: "success",
+        button: "OK",
+        className: "modal_class_success",
+      })
       : swal({
-          title: "Not Copied",
-          text: "Nothing to Copy",
-          icon: "warning",
-          button: "OK",
-          className: "modal_class_warning",
-        });
+        title: "Not Copied",
+        text: "Nothing to Copy",
+        icon: "warning",
+        button: "OK",
+        className: "modal_class_warning",
+      });
   };
   const updateProfile = (e) => {
     e.preventDefault();
