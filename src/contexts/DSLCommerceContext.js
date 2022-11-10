@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState, createContext } from 'react';
 import { ethers, Contract, BigNumber } from "ethers";
 import { v4 as uuidv4 } from "uuid";
+import abi from "../utils/nftAbi.json";
 import swal from "sweetalert";
 import {
   DSLtokenABITestnet,
@@ -80,14 +81,70 @@ const getQuesttokenContractTestnet = () => {
   return tokenContract;
 };
 
-// const getAllItemBlockchain = async () => {
-//   const provider = new ethers.providers.JsonRpcProvider(RPC);
-//   return {
-//     provider,
-//     deployer: new ethers.Wallet(private_key, provider),
-//     NFTContract: new Contract(mintAddressTestnet, abi, provider)
-//   };
-// };
+const getAllItemBlockchain = async () => {
+  const provider = new ethers.providers.JsonRpcProvider(RPC);
+  return {
+    provider,
+    // deployer: new ethers.Wallet(private_key, provider),
+    NFTContract: new Contract(mintAddressTestnet, abi, provider)
+  };
+};
+
+const genSignature = async (types, voucher, auth) => {
+  const domain = {
+    name: "NFT-Voucher",
+    version: "1",
+    verifyingContract: auth.contract,
+    chainId: chainId
+  };
+  const BuyNFTVoucher = {
+    id: voucher.id,
+    price: voucher.price,
+    tokenAddress: voucher.tokenAddress,
+    nonce: voucher.nonce
+  };
+
+  // const signature = await auth.signer._signTypedData(domain, types, BuyNFTVoucher);
+
+  return {
+    ...voucher,
+    // signature,
+  };
+};
+
+const signBuyFunction = async (id, price, tokenAddress, refAddress, uri) => {
+
+  const contracts = await getAllItemBlockchain();
+  const auth = {
+    signer: contracts.deployer,
+    contract: contracts.NFTContract.address,
+  };
+
+  const types = {
+    BuyNFTStruct: [
+      { name: "id", type: "string" },
+      { name: "price", type: "uint256" },
+      { name: "tokenAddress", type: "address" },
+      { name: "nonce", type: "string" },
+    ],
+  };
+  console.log('111111111111111: ', id, price, tokenAddress, refAddress, uri)
+
+  // Generate nonce as transaction id
+  const nonce = uuidv4();
+  const voucher = {
+    id: id,
+    price: BigNumber.from(price),
+    tokenAddress: tokenAddress,
+    refAddress: refAddress.length !== 0 ? refAddress : "0x0000000000000000000000000000000000000000",
+    nonce: nonce,
+    uri: uri,
+  };
+  return {
+    ...(await genSignature(types, voucher, auth)),
+    price: price.toString(),
+  };
+}
 
 export default function DslProvider({ children }) {
   const [loginModal, setLoginModal] = useState(false);
@@ -212,21 +269,22 @@ export default function DslProvider({ children }) {
           console.log(MintNFTContract);
           const provider = new ethers.providers.Web3Provider(ethereum);
 
-          
+
           // const parsedAmount = ethers.utils.parseEther(mintPrice);
           const admin = "0x626D20125da6a371aA48023bF9dad94BD66588F7";
           const object = {
             id: data.id,
             price: data.price,
             tokenAddress: data.tokenAddress,
+            walletAddress: data.walletAddress,
             refAddress: data.refAddress,
             nonce: data.nonce,
             uri: data.uri,
             signature: data.signature
           }
-          console.log("valueeee",object)
+          console.log("valueeee", object)
 
-          const Val = await MintNFTContract.buyNFT(object,{ value: BigNumber.from(object.price)})
+          const Val = await MintNFTContract.buyNFT(object, { value: BigNumber.from(object.price) })
           await Val.wait()
           let txn_test = await provider.getTransaction(Val.hash);
           while (txn_test.blockNumber === null) {
@@ -268,8 +326,8 @@ export default function DslProvider({ children }) {
         const USDSCTokenContract = getUSDSCtokenContractTestnet();
         console.log(USDSCTokenContract);
         const provider = new ethers.providers.Web3Provider(ethereum);
-        console.log("USDC",MintNFTContract.address,
-        BigNumber.from(ethers.constants.MaxUint256))
+        console.log("USDC", MintNFTContract.address,
+          BigNumber.from(ethers.constants.MaxUint256))
         const payment = await USDSCTokenContract.approve(
           MintNFTContract.address,
           BigNumber.from(ethers.constants.MaxUint256)
@@ -286,12 +344,13 @@ export default function DslProvider({ children }) {
           id: data.id,
           price: data.price,
           tokenAddress: data.tokenAddress,
+          walletAddress: data.walletaddress,
           refAddress: data.refAddress,
           nonce: data.nonce,
           uri: data.uri,
           signature: data.signature
         }
-        console.log("valueeee",object)
+        console.log("valueeee", object)
 
         const Val = await MintNFTContract.buyNFT(object)
         await Val.wait()
@@ -358,67 +417,68 @@ export default function DslProvider({ children }) {
         });
         console.log("This is Chain ID: ", chainid);
         if (chainid === "0x38" || chainid === "0x61") {
-        const MintNFTContract = getMintContractTestnet();
-        console.log(MintNFTContract);
-        const DSLTokenContract = getDSLtokenContractTestnet();
-        console.log(DSLTokenContract);
-        const provider = new ethers.providers.Web3Provider(ethereum);
+          const MintNFTContract = getMintContractTestnet();
+          console.log(MintNFTContract);
+          const DSLTokenContract = getDSLtokenContractTestnet();
+          console.log(DSLTokenContract);
+          const provider = new ethers.providers.Web3Provider(ethereum);
 
-        console.log("USDC",MintNFTContract.address,
-        BigNumber.from(ethers.constants.MaxUint256))
-        const payment = await DSLTokenContract.approve(
-          MintNFTContract.address,
-          BigNumber.from(ethers.constants.MaxUint256)
-        );
-        let payment_test = await provider.getTransaction(payment.hash);
-        while (payment_test.blockNumber === null) {
-          console.log("Approve In Progress...");
-          payment_test = await provider.getTransaction(payment.hash);
-        }
-        console.log(payment_test.blockNumber);
-        let payment_hash = "https://testnet.bscscan.com/tx/" + payment.hash;
-        console.log("Payment link: " + payment_hash);
-        const object = {
-          id: data.id,
-          price: data.price,
-          tokenAddress: data.tokenAddress,
-          refAddress: data.refAddress,
-          nonce: data.nonce,
-          uri: data.uri,
-          signature: data.signature
-        }
-        console.log("valueeee",object)
+          console.log("USDC", MintNFTContract.address,
+            BigNumber.from(ethers.constants.MaxUint256))
+          const payment = await DSLTokenContract.approve(
+            MintNFTContract.address,
+            BigNumber.from(ethers.constants.MaxUint256)
+          );
+          let payment_test = await provider.getTransaction(payment.hash);
+          while (payment_test.blockNumber === null) {
+            console.log("Approve In Progress...");
+            payment_test = await provider.getTransaction(payment.hash);
+          }
+          console.log(payment_test.blockNumber);
+          let payment_hash = "https://testnet.bscscan.com/tx/" + payment.hash;
+          console.log("Payment link: " + payment_hash);
+          const object = {
+            id: data.id,
+            price: data.price,
+            tokenAddress: data.tokenAddress,
+            walletAddress: data.walletaddress,
+            refAddress: data.refAddress,
+            nonce: data.nonce,
+            uri: data.uri,
+            signature: data.signature
+          }
+          console.log("valueeee", object)
 
-        const Val = await MintNFTContract.buyNFT(object)
-        await Val.wait()
-        let txn_test = await provider.getTransaction(Val.hash);
+          const Val = await MintNFTContract.buyNFT(object)
+          await Val.wait()
+          let txn_test = await provider.getTransaction(Val.hash);
           while (txn_test.blockNumber === null) {
             console.log("Minting...");
             txn_test = await provider.getTransaction(Val.hash);
           }
           console.log("txn_test.blockNumber: " + txn_test.blockNumber);
-        const ID = await MintNFTContract.totalSupply();
-        console.log(ID.toString());
-        let mint_hash = "https://testnet.bscscan.com/tx/" + Val.hash;
-        console.log("Mint link: " + mint_hash);
-        console.log("this is Token ID: 10000" + ID.toString());
+          const ID = await MintNFTContract.totalSupply();
+          console.log(ID.toString());
+          let mint_hash = "https://testnet.bscscan.com/tx/" + Val.hash;
+          console.log("Mint link: " + mint_hash);
+          console.log("this is Token ID: 10000" + ID.toString());
           console.log("this is Contract Address: : " + mintAddressTestnet);
-        
+
           return {
-          mint_hash: mint_hash,
-          ID: "10000" + ID.toString(),
-          mintPrice: data.price,
-          address: DSLtokenAddressTestnet,
-        };
-      } else {
-        console.log("No ethereum object");
+            mint_hash: mint_hash,
+            ID: "10000" + ID.toString(),
+            mintPrice: data.price,
+            address: DSLtokenAddressTestnet,
+          };
+        } else {
+          console.log("No ethereum object");
+        }
       }
+    } catch (error) {
+      console.log(error);
+      throw new Error("No ethereum object");
     }
-  } catch (error) {
-    console.log(error);
-    throw new Error("No ethereum object");
-  }
-};
+  };
 
   const payByTestnetS39 = async (data) => {
     try {
@@ -434,8 +494,8 @@ export default function DslProvider({ children }) {
           console.log(S39TokenContract);
           const provider = new ethers.providers.Web3Provider(ethereum);
 
-          console.log("USDC",MintNFTContract.address,
-          BigNumber.from(ethers.constants.MaxUint256))
+          console.log("USDC", MintNFTContract.address,
+            BigNumber.from(ethers.constants.MaxUint256))
           const payment = await S39TokenContract.approve(
             MintNFTContract.address,
             BigNumber.from(ethers.constants.MaxUint256)
@@ -448,21 +508,22 @@ export default function DslProvider({ children }) {
           console.log(payment_test.blockNumber);
           let payment_hash = "https://testnet.bscscan.com/tx/" + payment.hash;
           console.log("Payment link: " + payment_hash);
-  
+
           const object = {
             id: data.id,
             price: data.price,
             tokenAddress: data.tokenAddress,
+            walletAddress: data.walletaddress,
             refAddress: data.refAddress,
             nonce: data.nonce,
             uri: data.uri,
             signature: data.signature
           }
-          console.log("valueeee",object)
-  
+          console.log("valueeee", object)
+
           const Val = await MintNFTContract.buyNFT(object)
           await Val.wait()
-            let txn_test = await provider.getTransaction(Val.hash);
+          let txn_test = await provider.getTransaction(Val.hash);
           while (txn_test.blockNumber === null) {
             console.log("Minting...");
             txn_test = await provider.getTransaction(Val.hash);
@@ -497,8 +558,8 @@ export default function DslProvider({ children }) {
         const MintNFTContract = getMintContractTestnet();
         const USDSCTokenContract = getQuesttokenContractTestnet();
         const provider = new ethers.providers.Web3Provider(ethereum);
-        console.log("USDC",MintNFTContract.address,
-        BigNumber.from(ethers.constants.MaxUint256))
+        console.log("USDC", MintNFTContract.address,
+          BigNumber.from(ethers.constants.MaxUint256))
         const payment = await USDSCTokenContract.approve(
           MintNFTContract.address,
           BigNumber.from(ethers.constants.MaxUint256)
@@ -515,12 +576,13 @@ export default function DslProvider({ children }) {
           id: data.id,
           price: data.price,
           tokenAddress: data.tokenAddress,
+          walletAddress: data.walletaddress,
           refAddress: data.refAddress,
           nonce: data.nonce,
           uri: data.uri,
           signature: data.signature
         }
-        console.log("valueeee",object)
+        console.log("valueeee", object)
 
         const Val = await MintNFTContract.buyNFT(object)
         await Val.wait();
@@ -865,7 +927,7 @@ export default function DslProvider({ children }) {
   useEffect(() => {
     if (requestLoading) {
       const wrapper = document.createElement("div");
-      wrapper.innerHTML = `<p></p><div className="loader"></div> <p className="success"><b>Please wait...<b></p> `;
+      wrapper.innerHTML = `<p></p><div class="loaders"></div> <p class="wait"><b>Please wait, don't exit screen...<b></p> `;
       swal({
         content: wrapper,
         button: false,
@@ -888,6 +950,7 @@ export default function DslProvider({ children }) {
       logOut,
       loading,
       Id,
+      signBuyFunction,
       setID,
       setUserRefetch,
       chain,
@@ -912,7 +975,6 @@ export default function DslProvider({ children }) {
       USDSCtokenAddressTestnet,
       S39tokenAddressTestnet,
       QuesttokenAddressTestnet,
-      getBalanceTestnet,
       payByTestnetBNB,
       payByTestnetUSDSC,
       payByTestnetDSL,

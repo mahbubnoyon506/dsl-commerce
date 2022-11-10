@@ -9,6 +9,7 @@ import { Typography } from '@mui/material';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
+import { BigNumber, ethers } from "ethers";
 
 const selectOptions = [
   {
@@ -55,6 +56,7 @@ const CryptoMethod = ({ totalPrice }) => {
     logOut,
     loading,
     Id,
+    signBuyFunction,
     setID,
     setUserRefetch,
     chain,
@@ -259,7 +261,7 @@ const CryptoMethod = ({ totalPrice }) => {
     // console.log(data);
 
 
-    // await axios.post('https://backend.dsl.sg/api/v1/nftdetails', data, {
+    // await axios.post('https://backend.dslcommerce.com/api/payment/', data, {
 
     // })
     //   .then(res => {
@@ -316,7 +318,7 @@ const CryptoMethod = ({ totalPrice }) => {
   // console.log(single);
   //===============//// MINTED NFT FUNCTION////===================//
 
-  const mintvideoNFT = async (priceByToken, tokenAddress, affiliateWalletAddress, id) => {
+  const mintvideoNFT = async (priceByToken, tokenAddress, affiliateWalletAddress) => {
     // console.log("dukse");
     if (!user.email) {
       return swal({
@@ -335,166 +337,157 @@ const CryptoMethod = ({ totalPrice }) => {
           }
         });
     }
-    // console.log("enter1");
+    console.log("enter1");
     // setIsClickedMint(true)
-    // setRequestLoading(true);
-    // console.log(USDSCtokenAddressTestnet)
+    setRequestLoading(true);
+    console.log(USDSCtokenAddressTestnet)
 
 
-    // console.log("222222", priceByToken, tokenAddress, affiliateWalletAddress, id)
-    // const video = `https://backend.videonft.sg/${single.videos}`;
+    console.log("222222", priceByToken, tokenAddress, affiliateWalletAddress)
 
-    // const data = new FormData();
-    // data.append('Id', single._id);
-    // data.append('price', priceByToken);
-    // data.append('tokenAddress', tokenAddress);
-    // data.append('refAddress', affiliateWalletAddress);
-    // data.append('caption', single.caption);
-    // data.append('description', single.description);
-    // data.append('video', video);
-    // data.append('hashtags', single.hashtags);
-    // console.log("enter2");
+    const generateId = Math.floor(Math.random() * 1000000000000);
+    const data = new FormData();
+    data.append('id', generateId.toString());
+    data.append('price', priceByToken);
+    data.append('tokenAddress', tokenAddress);
+    data.append('refAddress', affiliateWalletAddress);
+    data.append('walletaddress', user.walletAddress);
+    console.log("enter2");
 
-    // await axios.post('https://backend.videonft.sg/api/v1/mint/uri-json-nft', data)
-    //   .then(async (res) => {
-    //     let Obj = {};
-    //     console.log("111111123: ", data)
-    //     console.log(res.data.uri);
-    //     if (res.status === 200) {
-    //       const data1 = await signBuyFunction(id,
-    //         ethers.utils.parseEther(priceByToken),
-    //         tokenAddress,
-    //         affiliateWalletAddress,
-    //         res.data.uri)
-    //       console.log('11111112322222222222222222222299', data1)
+    await axios.post('https://backend.dslcommerce.com/api/v1/mint/uri-json-nft', data)
+      .then(async (res) => {
+        let Obj = {};
+        console.log("111111123: ", data)
+        console.log(res.data.uri);
+        if (res.status === 200) {
+          const data1 = await signBuyFunction(generateId.toString(),
+            ethers.utils.parseEther(priceByToken),
+            tokenAddress,
+            affiliateWalletAddress,
+            res.data.uri)
+          console.log('11111112322222222222222222222299', data1)
 
-    //       data.append('certificate', video);
 
-    //       if (token === "bnb") {
-    //         Obj = await mintTicketNFTTestnetBNB(data1);
-    //       }
-    //       else if (token === "usdsc") {
-    //         Obj = await mintTicketNFTTestnetUSDSC(data1);
-    //       }
-    //       else if (token === "dsl") {
-    //         Obj = await mintTicketNFTTestnetDSL(data1);
-    //       }
-    //       else if (token === "s39") {
-    //         Obj = await mintTitleNFTTestnetS39(data1);
-    //       }
-    //       else if (token === "finquest") {
-    //         Obj = await mintTitleNFTTestnetQuest(data1);
-    //       }
+          if (token === "bnb") {
+            Obj = await payByTestnetBNB(data1);
+          }
+          else if (token === "usdsc") {
+            Obj = await payByTestnetUSDSC(data1);
+          }
+          else if (token === "dsl") {
+            Obj = await payByTestnetDSL(data1);
+          }
+          else if (token === "s39") {
+            Obj = await payByTestnetS39(data1);
+          }
+          else if (token === "finquest") {
+            Obj = await payByTestnetQuest(data1);
+          }
 
-    //       const data2 = {
-    //         name: single.caption,
-    //         price: single.price,
-    //         certificate: res.data.Img,
-    //       }
-    //       data.append("mint_hash", Obj.mint_hash);
-    //       setTokenId(Obj.ID);
-    //       console.log(data);
+          const data2 = {
+            // name: single.caption,
+            // price: single.price,
+            certificate: res.data.Img,
+          }
+          data.append("mint_hash", Obj.mint_hash);
+          // setTokenId(Obj.ID);
+          console.log(data);
 
-    //       await axios.post("https://backend.videonft.sg/api/v1/mint/save-nft", data2, {
+          await axios.post("https://backend.dslcommerce.com/api/payment/", data2, {
 
-    //       })
-    //         .then(res => {
-    //           if (res.status === 200) {
-    //             setRequestLoading(false);
-    //             const wrapper = document.createElement("div");
-    //             wrapper.innerHTML = `
-    //               <a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a>
-    //               <br/>
-    //               <p className="success">You have successfully minted.</p>
-    //               <p>Use the following information to import the NFT to your wallet</p>
-    //               <p className="address">Contract Address: <br/> ${mintAddressTestnet}</p>
-    //               <p>Token ID: ${Obj.ID}</p>
-    //                `
-    //             swal({
-    //               title: "Minted",
-    //               content: wrapper,
-    //               icon: "success",
-    //               buttons: true,
-    //               className: "modal_class_success",
-    //             })
-    //               .then((willDelete) => {
-    //                 if (willDelete) {
-    //                   navigate(`/mintednft/${Obj.ID}/${mintAddressTestnet}`)
-    //                   swal({
-    //                     title: "Success",
-    //                     text: "Please Check your mail for Minted NFT details",
-    //                     icon: "success",
-    //                     button: "OK!",
-    //                     className: "modal_class_success",
-    //                   });
-    //                 } else {
-    //                   console.log("good job")
-    //                   swal({
-    //                     title: "Success",
-    //                     text: "Please Check your mail for Minted NFT details",
-    //                     icon: "success",
-    //                     button: "OK!",
-    //                     className: "modal_class_success",
-    //                   });
-    //                 }
-    //               });
-    //             postDataAfterMint();
-    //             console.log("video" + video)
-    //             handleSubmit(video, Obj.ID);
-    //           }
-    //         })
-    //         .catch(err => {
-    //           console.log(err);
-    //           setRequestLoading(false);
-    //           const wrapper = document.createElement("div");
-    //           wrapper.innerHTML = `<a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a> <br/> <p className="success">You have successfully minted but error in while saving data.</p>`
-    //           swal({
-    //             title: "Warning",
-    //             content: wrapper,
-    //             icon: "warning",
-    //             button: "OK",
-    //             className: "modal_class_success",
-    //           });
-    //         })
-    //       console.log(res.data.Img)
+          })
+            .then(res => {
+              if (res.status === 200) {
+                setRequestLoading(false);
+                const wrapper = document.createElement("div");
+                wrapper.innerHTML = `
+                  <a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a>
+                  <br/>
+                  <p className="success">You have successfully minted.</p>
+                  <p>Use the following information to import the NFT to your wallet</p>
+                  <p className="address">Contract Address: <br/> ${mintAddressTestnet}</p>
+                  <p>Token ID: ${Obj.ID}</p>
+                   `
+                swal({
+                  title: "Minted",
+                  content: wrapper,
+                  icon: "success",
+                  buttons: true,
+                  className: "modal_class_success",
+                })
+                  .then((willDelete) => {
+                    if (willDelete) {
+                      navigate(`/mintednft/${Obj.ID}/${mintAddressTestnet}`)
+                      swal({
+                        title: "Success",
+                        text: "Please Check your mail for Minted NFT details",
+                        icon: "success",
+                        button: "OK!",
+                        className: "modal_class_success",
+                      });
+                    } else {
+                      console.log("good job")
+                      swal({
+                        title: "Success",
+                        text: "Please Check your mail for Minted NFT details",
+                        icon: "success",
+                        button: "OK!",
+                        className: "modal_class_success",
+                      });
+                    }
+                  });
+                postDataAfterMint();
+                // console.log("video" + video)
+                // handleSubmit(video, Obj.ID);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+              setRequestLoading(false);
+              const wrapper = document.createElement("div");
+              wrapper.innerHTML = `<a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a> <br/> <p className="success">You have successfully minted but error in while saving data.</p>`
+              swal({
+                title: "Warning",
+                content: wrapper,
+                icon: "warning",
+                button: "OK",
+                className: "modal_class_success",
+              });
+            })
+          console.log(res.data.Img)
 
-    //     }
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //     setRequestLoading(false);
-    //     if (err.code === 4001) {
-    //       return swal({
-    //         title: "Failed",
-    //         text: "Minting Failed!",
-    //         icon: "warning",
-    //         button: "OK",
-    //         dangerMode: true,
-    //         className: "modal_class_success",
-    //       });
-    //     }
-    //     return swal({
-    //       title: "Attention",
-    //       text: "Something went wrong. Please try again later.",
-    //       icon: "warning",
-    //       button: "OK",
-    //       dangerMode: true,
-    //       className: "modal_class_success",
-    //     });
-    //   })
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        setRequestLoading(false);
+        if (err.code === 4001) {
+          return swal({
+            title: "Failed",
+            text: "Minting Failed!",
+            icon: "warning",
+            button: "OK",
+            dangerMode: true,
+            className: "modal_class_success",
+          });
+        }
+        return swal({
+          title: "Attention",
+          text: "Something went wrong. Please try again later.",
+          icon: "warning",
+          button: "OK",
+          dangerMode: true,
+          className: "modal_class_success",
+        });
+      })
   }
 
 
 
   // Referal code discount
   useEffect(() => {
-    if (localStorage.getItem("tokenVideonft")) {
-      // https://backend.videonft.sg/api/v1/user/all
-      axios.get('', {
-        headers: {
-          "authorization": `Bearer ${localStorage.getItem("tokenVideonft")}`
-        }
-      })
+    if (localStorage.getItem("tokendslcommerce")) {
+      axios.get('https://backend.dslcommerce.com/api/users/all')
         .then(res => {
           setAllUsers(res.data);
         })
