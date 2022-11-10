@@ -675,7 +675,7 @@ function CheckoutArea({ expiryTimestamp }) {
                       });
                     }
                   });
-                postDataAfterMint();
+                // postDataAfterMint();
                 // handleSubmit(video, Obj.ID);
               }
             })
