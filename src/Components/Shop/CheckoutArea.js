@@ -553,11 +553,11 @@ function CheckoutArea({ expiryTimestamp }) {
   // console.log(single);
   //===============//// MINTED NFT FUNCTION////===================//
 
-  const mintvideoNFT = async (priceByToken, tokenAddress, affiliateWalletAddress) => {
-    // console.log("dukse");
+  const paymentCrypto = async (priceByToken, tokenAddress, affiliateWalletAddress) => {
+
     // if (!user.email) {
     //   return swal({
-    //     text: "Before minting please update your profile. We will send the details to you.",
+    //     text: "Before payment please update your profile. We will send the details to you.",
     //     icon: "warning",
     //     button: true,
     //     dangerMode: true,
@@ -572,11 +572,10 @@ function CheckoutArea({ expiryTimestamp }) {
     //       }
     //     });
     // }
-    console.log("enter1");
+    // console.log("enter1");
     // setIsClickedMint(true)
     setRequestLoading(true);
-    console.log(USDSCtokenAddressTestnet)
-
+    // console.log(USDSCtokenAddressTestnet)
 
     console.log("222222", priceByToken, tokenAddress, affiliateWalletAddress)
 
@@ -587,7 +586,7 @@ function CheckoutArea({ expiryTimestamp }) {
     data.append('tokenAddress', tokenAddress);
     data.append('refAddress', affiliateWalletAddress);
     data.append('walletaddress', user.walletAddress);
-    console.log("enter2");
+    // console.log("enter2");
 
     await axios.post('https://backend.dslcommerce.com/api/v1/mint/uri-json-nft', data)
       .then(async (res) => {
@@ -638,13 +637,13 @@ function CheckoutArea({ expiryTimestamp }) {
                 wrapper.innerHTML = `
                 <a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a>
                 <br/>
-                <p className="success">You have successfully minted.</p>
+                <p className="success">Your payment has been completed.</p>
                 <p>Use the following information to import the NFT to your wallet</p>
                 <p className="address">Contract Address: <br/> ${mintAddressTestnet}</p>
                 <p>Token ID: ${Obj.ID}</p>
                  `
                 swal({
-                  title: "Minted",
+                  title: "Payment are completed",
                   content: wrapper,
                   icon: "success",
                   buttons: true,
@@ -655,7 +654,7 @@ function CheckoutArea({ expiryTimestamp }) {
                       navigate(`/mintednft/${Obj.ID}/${mintAddressTestnet}`)
                       swal({
                         title: "Success",
-                        text: "Please Check your mail for Minted NFT details",
+                        text: "Please Check your mail for payment",
                         icon: "success",
                         button: "OK!",
                         className: "modal_class_success",
@@ -664,7 +663,7 @@ function CheckoutArea({ expiryTimestamp }) {
                       console.log("good job")
                       swal({
                         title: "Success",
-                        text: "Please Check your mail for Minted NFT details",
+                        text: "Please Check your mail for payment",
                         icon: "success",
                         button: "OK!",
                         className: "modal_class_success",
@@ -679,7 +678,7 @@ function CheckoutArea({ expiryTimestamp }) {
               console.log(err);
               setRequestLoading(false);
               const wrapper = document.createElement("div");
-              wrapper.innerHTML = `<a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a> <br/> <p className="success">You have successfully minted but error in while saving data.</p>`
+              wrapper.innerHTML = `<a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a> <br/> <p className="success">Your payment has been successful but error in while saving data.</p>`
               swal({
                 title: "Warning",
                 content: wrapper,
@@ -698,7 +697,7 @@ function CheckoutArea({ expiryTimestamp }) {
         if (err.code === 4001) {
           return swal({
             title: "Failed",
-            text: "Minting Failed!",
+            text: "Payment Failed!",
             icon: "warning",
             button: "OK",
             dangerMode: true,
@@ -1179,23 +1178,23 @@ function CheckoutArea({ expiryTimestamp }) {
                               {token === "bnb" &&
                                 <button type="submit"
                                   className="default-btn"
-                                  style={{ cursor: "pointer" }} onClick={() => mintvideoNFT(bnbTwoDec, "0x0000000000000000000000000000000000000000", affiliateWalletAddress)} href="#!">Place Order FOR ${bnbTwoDec} BNB</button>}
+                                  style={{ cursor: "pointer" }} onClick={() => paymentCrypto(bnbTwoDec, "0x0000000000000000000000000000000000000000", affiliateWalletAddress)} href="#!">Place Order FOR ${bnbTwoDec} BNB</button>}
                               {token === "usdsc" &&
                                 <button type="submit"
                                   className="default-btn"
-                                  style={{ cursor: "pointer" }} onClick={() => mintvideoNFT(usdsc, USDSCtokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${usdsc} USDSC</button>}
+                                  style={{ cursor: "pointer" }} onClick={() => paymentCrypto(usdsc, USDSCtokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${usdsc} USDSC</button>}
                               {token === "dsl" &&
                                 <button type="submit"
                                   className="default-btn"
-                                  style={{ cursor: "pointer" }} onClick={() => mintvideoNFT(dslTwoDec, DSLtokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${dslTwoDec} DSl</button>}
+                                  style={{ cursor: "pointer" }} onClick={() => paymentCrypto(dslTwoDec, DSLtokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${dslTwoDec} DSl</button>}
                               {token === "s39" &&
                                 <button type="submit"
                                   className="default-btn"
-                                  style={{ cursor: "pointer" }} onClick={() => mintvideoNFT(s39TwoDec, S39tokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${s39TwoDec} S39</button>}
+                                  style={{ cursor: "pointer" }} onClick={() => paymentCrypto(s39TwoDec, S39tokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${s39TwoDec} S39</button>}
                               {token === "finquest" &&
                                 <button type="submit"
                                   className="default-btn"
-                                  style={{ cursor: "pointer" }} onClick={() => mintvideoNFT(finquestTwoDec, QuesttokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${finquestTwoDec} FINQUEST</button>}
+                                  style={{ cursor: "pointer" }} onClick={() => paymentCrypto(finquestTwoDec, QuesttokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${finquestTwoDec} FINQUEST</button>}
                             </Typography>
                         }
                       </div>
