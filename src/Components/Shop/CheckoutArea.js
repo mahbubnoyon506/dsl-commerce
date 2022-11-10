@@ -78,7 +78,7 @@ function CheckoutArea({ expiryTimestamp }) {
       status,
       date,
     };
-    console.log(OrderData);
+    // console.log(OrderData);
 
   };
 
@@ -538,20 +538,20 @@ function CheckoutArea({ expiryTimestamp }) {
                   {/* Crypto payment method */}
                   {
                     cryptoPayment &&
-                    <CryptoMethod totalPrice={totalPrice} setPayAmount={setPayAmount}/>
+                    <CryptoMethod totalPrice={totalPrice} setPayAmount={setPayAmount} />
                   }
                   {/* PayNow payment method */}
                   {
                     payNowPayment &&
                     <PayNowMethod totalPrice={totalPrice} />
                   }
-                  <button
+                  {/* <button
                     type="submit"
                     className="default-btn"
                     style={{ cursor: "pointer" }}
                   >
                     Place Order
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
