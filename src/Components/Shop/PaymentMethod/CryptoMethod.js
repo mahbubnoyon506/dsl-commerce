@@ -174,10 +174,7 @@ const CryptoMethod = ({ totalPrice }) => {
     totalUsd = totalPrice - disRefTwoDec;
   }
 
-  const usdPerSgd = 0.72;
-  const rsPerSgd = 57.45;
-  const usd = totalUsd * usdPerSgd;
-  const rs = totalUsd * rsPerSgd;
+  const usd = totalUsd;
 
   // BNB Price
   const bnb = usd / bnbToken;
@@ -188,7 +185,7 @@ const CryptoMethod = ({ totalPrice }) => {
   const dslTwoDec = dsl.toFixed(2);
 
   // USDSC Price
-  const usdsc = usd.toFixed(2);
+  const usdsc = parseFloat(usd).toFixed(2);
 
   // S39 Price
   const s39 = usd / s39Token;
@@ -198,42 +195,30 @@ const CryptoMethod = ({ totalPrice }) => {
   const finquest = usd / 0.0005;
   const finquestTwoDec = finquest.toFixed(2);
 
-  // Discount (30%)
-  const discountSgd = 30 / 100 * totalUsd;
-  const disSgdTwoDec = discountSgd.toFixed(2);
-
-  // RS Discount
-  const discountRs = 30 / 100 * rs;
-  const disRsTwoDec = discountRs.toFixed(2);
-
   // USD Discount
   const discountUsd = 30 / 100 * usd;
   const disUsdTwoDec = discountUsd.toFixed(2);
 
 
   // Calculation without discounts
-  const allSgdCost = totalPrice;
-
-  const usdPerSgd01 = 0.72;
-  const usd01 = allSgdCost * usdPerSgd01;
 
   // BNB Price
-  const bnb01 = usd01 / bnbToken;
+  const bnb01 = totalPrice / bnbToken;
   const bnbTwoDec01 = bnb01.toFixed(4);
 
   // DSL Price
-  const dsl01 = usd01 / dslToken;
+  const dsl01 = totalPrice / dslToken;
   const dslTwoDec01 = dsl01.toFixed(2);
 
   // USDSC Price
-  const usdsc01 = usd01.toFixed(2);
+  const usdsc01 = parseFloat(totalPrice).toFixed(2);
 
   // S39 Price
-  const s3901 = usd01 / s39Token;
+  const s3901 = totalPrice / s39Token;
   const s39TwoDec01 = s3901.toFixed(2);
 
   // FINQUEST Price
-  const finquest01 = usd01 / 0.0005;
+  const finquest01 = totalPrice / 0.0005;
   const finquestTwoDec01 = finquest01.toFixed(2);
 
 
@@ -606,6 +591,24 @@ const CryptoMethod = ({ totalPrice }) => {
           ( <span className="spanDiscount ">30% discount if paid with DSL tokens</span>)
         </Typography>
         {/* {token === "dsl" && <p style={{ margin: '0' }}>You saved {savedUsdAmount} USD</p>} */}
+        {/* Saved bucks */}
+        {gotRefCode && <div style={{ textAlign: 'start' }}>
+          {token === "bnb" && <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
+            <span className="spanDiscount ">You saved {savedBNB4Digit} BNB</span>
+          </Typography>}
+          {token === "usdsc" && <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
+            <span className="spanDiscount ">You saved {savedUSDSC4Digit} USDSC</span>
+          </Typography>}
+          {token === "dsl" && <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
+            <span className="spanDiscount ">You saved {savedDSL4Digit} DSL</span>
+          </Typography>}
+          {token === "s39" && <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
+            <span className="spanDiscount ">You saved {savedS394Digit} S39</span>
+          </Typography>}
+          {token === "finquest" && <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
+            <span className="spanDiscount ">You saved {savedFINQ4Digit} FINQUEST</span>
+          </Typography>}
+        </div>}
 
         <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
           <span className="spanDiscount ">Enjoy 10% if you have affiliate code.</span>
@@ -616,14 +619,12 @@ const CryptoMethod = ({ totalPrice }) => {
           <div className="d-flex" style={{ width: '100%' }}>
             <input
               type="text"
-              onChange={(e) => {
-                setAffiliateCode(e.target.value);
-              }}
-              value={user?.affiliateCode ? user?.affiliateCode : affiliateCode}
-              disabled={user.affiliateCode ? true : false}
+              onChange={handleAffiliateCode}
+              // value={user?.affiliateCode ? user?.affiliateCode : affiliateCode}
+              // disabled={user.affiliateCode ? true : false}
               className="form-control "
             />
-            {affiliateCode.length === 0 ? (
+            {!gotRefCode ? (
               <>
                 <button disabled className='bg-danger text-white border-0'><ImCross /></button>
               </>
@@ -647,13 +648,42 @@ const CryptoMethod = ({ totalPrice }) => {
         {token === "finquest" && <p style={{ margin: '0' }}>You need to pay {finquestTwoDec} FINQUEST</p>}
 
       </div>
-      <button
-        type="submit"
-        className="default-btn"
-        style={{ cursor: "pointer" }}
-      >
-        Place Order
-      </button>
+      <div className="dslDiscountForPayment">
+        {token === "dsl" && <p style={{ margin: '0', color: "green" }} className='fw-bold'>YOU GET DISCOUNT OF : USD {disUsdTwoDec}</p>}
+      </div>
+      <div className="d-flex" style={{ alignItems: 'flex-end', justifyContent: 'start' }}>
+        {
+          (!user.walletAddress || user.walletAddress === "undefined") ?
+            <button type="submit"
+              className="default-btn"
+              style={{ cursor: "pointer" }} onClick={openWalletModal}><i className="fas fa-wallet me-1"></i> <span>Connect Wallet</span></button>
+
+            :
+
+            <Typography>
+              {token === "bnb" &&
+                <button type="submit"
+                  className="default-btn"
+                  style={{ cursor: "pointer" }} onClick={() => mintvideoNFT(bnbTwoDec, "0x0000000000000000000000000000000000000000", affiliateWalletAddress)} href="#!">Place Order FOR ${bnbTwoDec} BNB</button>}
+              {token === "usdsc" &&
+                <button type="submit"
+                  className="default-btn"
+                  style={{ cursor: "pointer" }} onClick={() => mintvideoNFT(usdsc, USDSCtokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${usdsc} USDSC</button>}
+              {token === "dsl" &&
+                <button type="submit"
+                  className="default-btn"
+                  style={{ cursor: "pointer" }} onClick={() => mintvideoNFT(dslTwoDec, DSLtokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${dslTwoDec} DSl</button>}
+              {token === "s39" &&
+                <button type="submit"
+                  className="default-btn"
+                  style={{ cursor: "pointer" }} onClick={() => mintvideoNFT(s39TwoDec, S39tokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${s39TwoDec} S39</button>}
+              {token === "finquest" &&
+                <button type="submit"
+                  className="default-btn"
+                  style={{ cursor: "pointer" }} onClick={() => mintvideoNFT(finquestTwoDec, QuesttokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${finquestTwoDec} FINQUEST</button>}
+            </Typography>
+        }
+      </div>
     </>
   );
 };
