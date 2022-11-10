@@ -21,13 +21,13 @@ export const DSLtokenAddressTestnet =
   "0x203507762cF4B63bFEF530a87497c7F5FDad7b0B";
 export const DSLtokenABITestnet = dsltestnet.abi;
 
-export const USDSCtokenAddressMainnet =
-  "0x13b852e276f10281C72ccF33EdF81d81DD198Aae";
-export const USDSCtokenABIMainnet = usdsc.abi;
+// export const USDSCtokenAddressMainnet =
+//   "0x13b852e276f10281C72ccF33EdF81d81DD198Aae";
+// export const USDSCtokenABIMainnet = usdsc.abi;
 
-export const DSLtokenAddressMainnet =
-  "0x4A1530Fb85BdB9250Db2bE251584874179eB8Dc5";
-export const DSLtokenABIMainnet = dslmainnet.abi;
+// export const DSLtokenAddressMainnet =
+//   "0x4A1530Fb85BdB9250Db2bE251584874179eB8Dc5";
+// export const DSLtokenABIMainnet = dslmainnet.abi;
 
 export const S39tokenAddressTestnet =
   "0x80aAeA2450F81a67fcEB2dEDABCbC57ebF346Ee7";

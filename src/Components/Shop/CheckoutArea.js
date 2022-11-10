@@ -72,38 +72,7 @@ function CheckoutArea({ expiryTimestamp }) {
       transactionId,
     };
     console.log(OrderData);
-    // axios
-    //   .post("/order/add-order-info", {
-    //     // userId: authContext.userId,
-    //     firstName,
-    //     lastName,
-    //     companyName,
-    //     email,
-    //     phone,
-    //     country,
-    //     address,
-    //     city,
-    //     postCode,
-    //     orderNotes,
-    //     // totalPrice:   context.cartItems.itemsPrice
-    //   })
-    //   .then((res) => {
-    //     if (res?.data?.message === "Order successfully added") {
-    //       localStorage.removeItem("cart-items");
-    //       setFirstName("");
-    //       setLastName("");
-    //       setCompanyName("");
-    //       setEmail("");
-    //       setPhone("");
-    //       setCountry("");
-    //       setAddress("");
-    //       setCity("");
-    //       setPostCode("");
-    //       setOrderNotes("");
-    //       setMessage(res.data.message);
-    //     }
-    //   })
-    //   .catch((err) => console.log(err));
+    
   };
 
   // Re-send OTP functionality

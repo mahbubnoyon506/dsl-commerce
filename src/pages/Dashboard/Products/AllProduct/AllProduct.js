@@ -1,5 +1,5 @@
 import { Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './AllProduct.css';
 import { Button, Typography, Modal, Box } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -10,31 +10,54 @@ import Pagination from '../../../../Components/Pagination/Pagination';
 
 const AllProduct = ({ page = 1 }) => {
 
+  const navigate = useNavigate()
+
   const [open, setOpen] = useState(false);
   const [allProduct, setAllProduct] = useState([]);
   const [refetch, setRefetch] = useState(false);
 
   // Pagination
+  const [locationState, setLocation] = useState("");
   const [getPage, setPage] = useState(1);
   const [show, setShow] = useState(10);
-  const [lastPage, setLastPage] = useState(0)
+  const [lastPage, setLastPage] = useState(0);
+  const [sliceProducts, setSliceProducts] = useState([]);
+  // console.log(sliceProducts)
 
-  const totalFiles = allProduct.length;
   useEffect(() => {
-    const lastPage = Math.ceil(totalFiles / show); 
-    setLastPage(lastPage)
-  }, [])
+    if (page) {
+      setPage(Number(page));
+    } else {
+      setPage(1);
+    }
+  }, [page]);
+
+  useEffect(() => {
+    const lastPage = Math.ceil(allProduct?.length / show);
+    setLastPage(lastPage);
+  }, [allProduct, show]);
+
+  useEffect(() => {
+    const getSlicingProduct = allProduct.slice(
+      (page - 1) * show,
+      page * show
+    );
+    console.log(getSlicingProduct)
+    setSliceProducts([...getSlicingProduct]);
+  }, [allProduct, page, show]);
 
   const pageHandle = (jump) => {
-    setPage(jump)
-  }
+    // navigate(`/admin/products/${jump}`);
+    console.log(jump);
+    setPage(parseInt(jump));
+  };
 
 
 
   useEffect(() => {
     axios.get('https://backend.dslcommerce.com/api/product/')
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         setAllProduct(res.data);
       })
   }, [open, refetch])
@@ -97,7 +120,7 @@ const AllProduct = ({ page = 1 }) => {
             </thead>
             <tbody>
               {
-                allProduct?.map(product => (
+                sliceProducts?.map(product => (
                   <tr className='tableRow' key={product?._id}>
                     <td align='left'> <img className='imgProduct' src={product?.product_images} alt="Product Img" /></td>
                     <td className='text-left text-capitalize'>{product.productName}</td>
@@ -117,7 +140,7 @@ const AllProduct = ({ page = 1 }) => {
         </div>
       </div>
       <div className="">
-        {allProduct?.length ?
+        {sliceProducts?.length ?
           <>
             <Pagination
               lastPage={lastPage}
