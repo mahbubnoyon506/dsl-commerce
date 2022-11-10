@@ -589,6 +589,18 @@ function CheckoutArea({ expiryTimestamp }) {
     data.append('walletaddress', user.walletAddress);
     console.log("enter2");
 
+    // ************************ Data *************************//
+    const walletAddress = user?.walletAddress;
+    const phone = value
+    const email = email1
+    const orderItems = carts;
+    const status = 'pending'
+    const date = newDate
+    const refAddress = affiliateWalletAddress
+    const payMethod = 'crypto'
+    // ************************ Data *************************//
+
+
     await axios.post('https://backend.dslcommerce.com/api/v1/mint/uri-json-nft', data)
       .then(async (res) => {
         let Obj = {};
@@ -619,11 +631,29 @@ function CheckoutArea({ expiryTimestamp }) {
             Obj = await payByTestnetQuest(data1);
           }
 
+
           const data2 = {
 
             //  put all of data here @emon 
-
+            name,
+            email,
+            phone,
+            country,
+            address,
+            city,
+            postCode,
+            orderNotes,
+            walletAddress,
+            orderItems,
+            token,
+            payAmount,
+            tokenAddress,
+            refAddress,
+            payMethod,
+            status,
+            date,
           };
+          console.log('Emtiaz Emon Data',  data2)
           data.append("mint_hash", Obj.mint_hash);
           // setTokenId(Obj.ID);
           // console.log(data);
