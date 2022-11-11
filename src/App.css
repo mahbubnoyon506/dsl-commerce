@@ -167,13 +167,13 @@
   background-color: #0c2347;
 }
 
-.modal_class_success .swal-icon::before {
+/* .modal_class_success .swal-icon::before {
   background-color: transparent;
 }
 
 .modal_class_success .swal-icon::after {
   background-color: transparent;
-}
+} */
 
 .swal-icon--success__hide-corners {
   background-color: transparent;
@@ -205,13 +205,13 @@
   text-align: center !important;
 }
 
-.modal_class_success .swal-icon::before {
+/* .modal_class_success .swal-icon::before {
   background-color: transparent;
 }
 
 .modal_class_success .swal-icon::after {
   background-color: transparent;
-}
+} */
 
 .swal-icon--success__hide-corners {
   background-color: transparent;

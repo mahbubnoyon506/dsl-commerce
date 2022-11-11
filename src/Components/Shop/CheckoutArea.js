@@ -529,23 +529,23 @@ function CheckoutArea({ expiryTimestamp }) {
 
   const paymentCrypto = async (priceByToken, tokenAddress, affiliateWalletAddress) => {
 
-    if (!user.email) {
-      return swal({
-        text: "Before payment please update your profile. We will send the details to you.",
-        icon: "warning",
-        button: true,
-        dangerMode: true,
-        className: "modal_class_success",
-      })
-        .then((willDelete) => {
-          if (willDelete) {
-            navigate(`/profile`)
+    // if (!user.email) {
+    //   return swal({
+    //     text: "Before payment please update your profile. We will send the details to you.",
+    //     icon: "warning",
+    //     button: true,
+    //     dangerMode: true,
+    //     className: "modal_class_success",
+    //   })
+    //     .then((willDelete) => {
+    //       if (willDelete) {
+    //         navigate(`/profile`)
 
-          } else {
-            console.log("ok")
-          }
-        });
-    }
+    //       } else {
+    //         console.log("ok")
+    //       }
+    //     });
+    // }
     // console.log("enter1");
     // setIsClickedMint(true)
     setRequestLoading(true);

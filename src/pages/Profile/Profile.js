@@ -329,7 +329,7 @@ const Profile = ({ expiryTimestamp }) => {
     } else {
       axios
         .put(
-          `https://backendpub.celebrity.sg/api/v1/user/update/${user?._id}`,
+          `https://backend.dslcommerce.com/api/v1/users/update/${user?._id}`,
           email,
           {
             headers: {
