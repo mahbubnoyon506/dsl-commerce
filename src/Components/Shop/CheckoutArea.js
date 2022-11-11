@@ -575,149 +575,148 @@ function CheckoutArea({ expiryTimestamp }) {
     // ************************ Data *************************//
 
 
-    await axios.post('https://backend.dslcommerce.com/api/v1/mint/uri-json-nft', data)
-      .then(async (res) => {
-        let Obj = {};
-        console.log("111111123: ", data)
-        console.log(res.data.uri);
-        if (res.status === 200) {
-          const data1 = await signBuyFunction(generateId.toString(),
-            ethers.utils.parseEther(priceByToken),
-            tokenAddress,
-            affiliateWalletAddress,
-            res.data.uri)
-          console.log('11111112322222222222222222222299', data1)
+    // await axios.post('https://backend.dslcommerce.com/api/v1/mint/uri-json-nft', data)
+    //   .then(async (res) => {
+    //     let Obj = {};
+    //     console.log("111111123: ", data)
+    //     console.log(res.data.uri);
+    //     if (res.status === 200) {
+    //       const data1 = await signBuyFunction(generateId.toString(),
+    //         ethers.utils.parseEther(priceByToken),
+    //         tokenAddress,
+    //         affiliateWalletAddress,
+    //         res.data.uri)
+    //       console.log('11111112322222222222222222222299', data1)
 
 
-          if (token === "bnb") {
-            Obj = await payByTestnetBNB(data1);
-          }
-          else if (token === "usdsc") {
-            Obj = await payByTestnetUSDSC(data1);
-          }
-          else if (token === "dsl") {
-            Obj = await payByTestnetDSL(data1);
-          }
-          else if (token === "s39") {
-            Obj = await payByTestnetS39(data1);
-          }
-          else if (token === "finquest") {
-            Obj = await payByTestnetQuest(data1);
-          }
+    //       if (token === "bnb") {
+    //         Obj = await payByTestnetBNB(data1);
+    //       }
+    //       else if (token === "usdsc") {
+    //         Obj = await payByTestnetUSDSC(data1);
+    //       }
+    //       else if (token === "dsl") {
+    //         Obj = await payByTestnetDSL(data1);
+    //       }
+    //       else if (token === "s39") {
+    //         Obj = await payByTestnetS39(data1);
+    //       }
+    //       else if (token === "finquest") {
+    //         Obj = await payByTestnetQuest(data1);
+    //       }
 
 
-          const data2 = {
+    const data2 = {
 
-            //  put all of data here @emon 
-            name,
-            email,
-            phone,
-            country,
-            address,
-            city,
-            postCode,
-            orderNotes,
-            walletAddress,
-            orderItems,
-            token,
-            payAmount,
-            tokenAddress,
-            refAddress,
-            payMethod,
-            status,
-            date,
-          };
-          console.log('Emtiaz Emon Data', data2)
-          data.append("mint_hash", Obj.mint_hash);
-          // setTokenId(Obj.ID);
-          // console.log(data);
+      name,
+      email,
+      phone,
+      country,
+      address,
+      city,
+      postCode,
+      orderNotes,
+      walletAddress,
+      orderItems,
+      token,
+      payAmount,
+      tokenAddress,
+      refAddress,
+      payMethod,
+      status,
+      date,
+    };
+    // console.log('Emtiaz Emon Data', data2)
+    // data.append("mint_hash", Obj.mint_hash);
+    // setTokenId(Obj.ID);
+    // console.log(data);
 
-          await axios.post("https://backend.dslcommerce.com/api/payment/", data2, {
+    //     await axios.post("https://backend.dslcommerce.com/api/payment/", data2, {
 
-          })
-            .then(res => {
-              if (res.status === 200) {
-                setRequestLoading(false);
-                const wrapper = document.createElement("div");
-                wrapper.innerHTML = `
-                <a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a>
-                <br/>
-                <p className="success">Your payment has been completed.</p>
-                <p>Use the following information to import the NFT to your wallet</p>
-                <p className="address">Contract Address: <br/> ${mintAddressTestnet}</p>
-                <p>Token ID: ${Obj.ID}</p>
-                 `
-                swal({
-                  title: "Payment are completed",
-                  content: wrapper,
-                  icon: "success",
-                  buttons: true,
-                  className: "modal_class_success",
-                })
-                  .then((willDelete) => {
-                    if (willDelete) {
-                      navigate(`/mintednft/${Obj.ID}/${mintAddressTestnet}`)
-                      swal({
-                        title: "Success",
-                        text: "Please Check your mail for payment",
-                        icon: "success",
-                        button: "OK!",
-                        className: "modal_class_success",
-                      });
-                    } else {
-                      console.log("good job")
-                      swal({
-                        title: "Success",
-                        text: "Please Check your mail for payment",
-                        icon: "success",
-                        button: "OK!",
-                        className: "modal_class_success",
-                      });
-                    }
-                  });
-                // postDataAfterMint();
-                // handleSubmit(video, Obj.ID);
-              }
-            })
-            .catch(err => {
-              console.log(err);
-              setRequestLoading(false);
-              const wrapper = document.createElement("div");
-              wrapper.innerHTML = `<a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a> <br/> <p className="success">Your payment has been successful but error in while saving data.</p>`
-              swal({
-                title: "Warning",
-                content: wrapper,
-                icon: "warning",
-                button: "OK",
-                className: "modal_class_success",
-              });
-            })
-          // console.log(res.data.Img)
+    //     })
+    //       .then(res => {
+    //         if (res.status === 200) {
+    //           setRequestLoading(false);
+    //           const wrapper = document.createElement("div");
+    //           wrapper.innerHTML = `
+    //           <a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a>
+    //           <br/>
+    //           <p className="success">Your payment has been completed.</p>
+    //           <p>Use the following information to import the NFT to your wallet</p>
+    //           <p className="address">Contract Address: <br/> ${mintAddressTestnet}</p>
+    //           <p>Token ID: ${Obj.ID}</p>
+    //            `
+    //           swal({
+    //             title: "Payment are completed",
+    //             content: wrapper,
+    //             icon: "success",
+    //             buttons: true,
+    //             className: "modal_class_success",
+    //           })
+    //             .then((willDelete) => {
+    //               if (willDelete) {
+    //                 navigate(`/mintednft/${Obj.ID}/${mintAddressTestnet}`)
+    //                 swal({
+    //                   title: "Success",
+    //                   text: "Please Check your mail for payment",
+    //                   icon: "success",
+    //                   button: "OK!",
+    //                   className: "modal_class_success",
+    //                 });
+    //               } else {
+    //                 console.log("good job")
+    //                 swal({
+    //                   title: "Success",
+    //                   text: "Please Check your mail for payment",
+    //                   icon: "success",
+    //                   button: "OK!",
+    //                   className: "modal_class_success",
+    //                 });
+    //               }
+    //             });
+    //           // postDataAfterMint();
+    //           // handleSubmit(video, Obj.ID);
+    //         }
+    //       })
+    //       .catch(err => {
+    //         console.log(err);
+    //         setRequestLoading(false);
+    //         const wrapper = document.createElement("div");
+    //         wrapper.innerHTML = `<a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a> <br/> <p className="success">Your payment has been successful but error in while saving data.</p>`
+    //         swal({
+    //           title: "Warning",
+    //           content: wrapper,
+    //           icon: "warning",
+    //           button: "OK",
+    //           className: "modal_class_success",
+    //         });
+    //       })
+    //     // console.log(res.data.Img)
 
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        setRequestLoading(false);
-        if (err.code === 4001) {
-          return swal({
-            title: "Failed",
-            text: "Payment Failed!",
-            icon: "warning",
-            button: "OK",
-            dangerMode: true,
-            className: "modal_class_success",
-          });
-        }
-        return swal({
-          title: "Attention",
-          text: "Something went wrong. Please try again later.",
-          icon: "warning",
-          button: "OK",
-          dangerMode: true,
-          className: "modal_class_success",
-        });
-      })
+    //   }
+    // })
+    // .catch(err => {
+    //   console.log(err);
+    //   setRequestLoading(false);
+    //   if (err.code === 4001) {
+    //     return swal({
+    //       title: "Failed",
+    //       text: "Payment Failed!",
+    //       icon: "warning",
+    //       button: "OK",
+    //       dangerMode: true,
+    //       className: "modal_class_success",
+    //     });
+    //   }
+    //   return swal({
+    //     title: "Attention",
+    //     text: "Something went wrong. Please try again later.",
+    //     icon: "warning",
+    //     button: "OK",
+    //     dangerMode: true,
+    //     className: "modal_class_success",
+    //   });
+    // })
   }
 
 

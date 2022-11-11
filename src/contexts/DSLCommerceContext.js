@@ -81,70 +81,70 @@ const getQuesttokenContractTestnet = () => {
   return tokenContract;
 };
 
-const getAllItemBlockchain = async () => {
-  const provider = new ethers.providers.JsonRpcProvider(RPC);
-  return {
-    provider,
-    // deployer: new ethers.Wallet(private_key, provider),
-    NFTContract: new Contract(mintAddressTestnet, abi, provider)
-  };
-};
+// const getAllItemBlockchain = async () => {
+//   const provider = new ethers.providers.JsonRpcProvider(RPC);
+//   return {
+//     provider,
+//     // deployer: new ethers.Wallet(private_key, provider),
+//     NFTContract: new Contract(mintAddressTestnet, abi, provider)
+//   };
+// };
 
-const genSignature = async (types, voucher, auth) => {
-  const domain = {
-    name: "NFT-Voucher",
-    version: "1",
-    verifyingContract: auth.contract,
-    chainId: chainId
-  };
-  const BuyNFTVoucher = {
-    id: voucher.id,
-    price: voucher.price,
-    tokenAddress: voucher.tokenAddress,
-    nonce: voucher.nonce
-  };
+// const genSignature = async (types, voucher, auth) => {
+//   const domain = {
+//     name: "NFT-Voucher",
+//     version: "1",
+//     verifyingContract: auth.contract,
+//     chainId: chainId
+//   };
+//   const BuyNFTVoucher = {
+//     id: voucher.id,
+//     price: voucher.price,
+//     tokenAddress: voucher.tokenAddress,
+//     nonce: voucher.nonce
+//   };
 
-  // const signature = await auth.signer._signTypedData(domain, types, BuyNFTVoucher);
+//   // const signature = await auth.signer._signTypedData(domain, types, BuyNFTVoucher);
 
-  return {
-    ...voucher,
-    // signature,
-  };
-};
+//   return {
+//     ...voucher,
+//     // signature,
+//   };
+// };
 
-const signBuyFunction = async (id, price, tokenAddress, refAddress, uri) => {
+// const signBuyFunction = async (id, price, tokenAddress, refAddress, uri) => {
 
-  const contracts = await getAllItemBlockchain();
-  const auth = {
-    signer: contracts.deployer,
-    contract: contracts.NFTContract.address,
-  };
+//   const contracts = await getAllItemBlockchain();
+//   const auth = {
+//     signer: contracts.deployer,
+//     contract: contracts.NFTContract.address,
+//   };
 
-  const types = {
-    BuyNFTStruct: [
-      { name: "id", type: "string" },
-      { name: "price", type: "uint256" },
-      { name: "tokenAddress", type: "address" },
-      { name: "nonce", type: "string" },
-    ],
-  };
-  console.log('111111111111111: ', id, price, tokenAddress, refAddress, uri)
+//   const types = {
+//     BuyNFTStruct: [
+//       { name: "id", type: "string" },
+//       { name: "price", type: "uint256" },
+//       { name: "tokenAddress", type: "address" },
+//       { name: "nonce", type: "string" },
+//     ],
+//   };
+//   console.log('111111111111111: ', id, price, tokenAddress, refAddress, uri)
 
-  // Generate nonce as transaction id
-  const nonce = uuidv4();
-  const voucher = {
-    id: id,
-    price: BigNumber.from(price),
-    tokenAddress: tokenAddress,
-    refAddress: refAddress.length !== 0 ? refAddress : "0x0000000000000000000000000000000000000000",
-    nonce: nonce,
-    uri: uri,
-  };
-  return {
-    ...(await genSignature(types, voucher, auth)),
-    price: price.toString(),
-  };
-}
+//   // Generate nonce as transaction id
+//   const nonce = uuidv4();
+//   const voucher = {
+//     id: id,
+//     price: BigNumber.from(price),
+//     tokenAddress: tokenAddress,
+//     refAddress: refAddress.length !== 0 ? refAddress : "0x0000000000000000000000000000000000000000",
+//     nonce: nonce,
+//     uri: uri,
+//   };
+//   return {
+//     ...(await genSignature(types, voucher, auth)),
+//     price: price.toString(),
+//   };
+// }
 
 export default function DslProvider({ children }) {
   const [loginModal, setLoginModal] = useState(false);
@@ -950,7 +950,7 @@ export default function DslProvider({ children }) {
       logOut,
       loading,
       Id,
-      signBuyFunction,
+      // signBuyFunction,
       setID,
       setUserRefetch,
       chain,
