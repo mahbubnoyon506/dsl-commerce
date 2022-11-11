@@ -13,6 +13,7 @@ import AdminProvider from './contexts/AdminContext'
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import CartProvider from "./contexts/cart-context";
+import WishlistProvider from './contexts/wishlist-context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -21,9 +22,12 @@ root.render(
       <AdminProvider>
         <DslProvider>
           <CartProvider>
-            <Provider store={store}>
-              <App />
-            </Provider>
+            <WishlistProvider>
+              <Provider store={store}>
+                <App />
+              </Provider>
+            </WishlistProvider>
+
           </CartProvider>
         </DslProvider>
       </AdminProvider>
