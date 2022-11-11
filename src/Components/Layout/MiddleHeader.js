@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 import { CartContext } from "../../contexts/cart-context";
-
+import { WishlistContext } from "../../contexts/wishlist-context";
 import "./MiddleHeader.css";
 
 function MiddleHeader() {
@@ -10,31 +10,15 @@ function MiddleHeader() {
   const navigate = useNavigate();
   const { user } = useContext(DSLCommerceContext);
   const walletAddress = user.walletAddress;
-  const [wishlistLength, setwishlistLength] = useState([]);
 
   const { carts } = useContext(CartContext);
-  const getWishList = () => {
-    console.log("walletAddress");
-    console.log(walletAddress);
-
-    fetch(`https://backend.dslcommerce.com/api/wishlist/${walletAddress}`)
-      // fetch(
-      //   `https://backend.dslcommerce.com/api/wishlist/0x265aadc097a9b2956a24baeb0da3e464872931ca`)
-      .then((res) => res.json())
-      .then((data) => {
-        setwishlistLength(data?.data?.products.length);
-        console.log("data in");
-        console.log(data?.data?.products.length);
-      });
-    console.log("wishlistLengths");
-    console.log(wishlistLength);
-  };
+  const { wishlistProducts } = useContext(WishlistContext);
+  // console.log(wishlistProducts);
+  
   useEffect(() => {
     fetch("https://backend.dslcommerce.com/api/category/")
       .then((res) => res.json())
       .then((data) => setGetCategory(data));
-
-    getWishList();
   }, []);
 
   const submitHandler = (e) => {
@@ -104,8 +88,8 @@ function MiddleHeader() {
               <li className="">
                 <Link to="/wishlist">
                   <i className="flaticon-heart"></i>
-                  {wishlistLength >= 1 && (
-                    <span className="cart_counter">{wishlistLength}</span>
+                  {wishlistProducts?.length >= 1 && (
+                    <span className="cart_counter">{wishlistProducts?.length}</span>
                   )}
                 </Link>
               </li>

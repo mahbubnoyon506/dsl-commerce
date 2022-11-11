@@ -7,18 +7,15 @@ export const WishlistContext = createContext();
 
 export default function WishlistProvider({ children }) {
   const [loading, setLoading] = useState(false);
-  const [wishlists, setWishlists] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
+  const [wishlistProducts, setWishlistProducts] = useState([])
   const [wishlistRefetch, setWishlistRefetch] = useState(false);
   const { user } = useContext(DSLCommerceContext);
+  // console.log(wishlist?.data?.products.length);
 
 
   const addProductToWishlist = async (product) => {
-    console.log("wishlist", product);
-    let currentItem = {
-      walletAddress: user?.walletAddress,
-      productId: product._id,
-    };
-    // console.log(currentItem);
+    // console.log("wishlist", product);
 
     await axios
       .post(`https://backend.dslcommerce.com/api/wishlist/create`, {
@@ -29,12 +26,12 @@ export default function WishlistProvider({ children }) {
         if (res.status === 200) {
           swal({
             title: "Success",
-            // text: `${res.data.message}`,
             text: "Successfully added to wishlist",
             icon: "success",
             button: "OK!",
             className: "modal_class_success",
           });
+          setWishlistRefetch(true);
         }
       })
       .catch((err) => {
@@ -47,8 +44,41 @@ export default function WishlistProvider({ children }) {
           className: "modal_class_success",
         });
       });
-
   };
+
+
+  // Get All Wishlist Product 
+
+  useEffect(() => {
+    if (wishlist) {
+      fetch(`https://backend.dslcommerce.com/api/product/`)
+        .then((res) => res.json())
+        .then((result) => {
+          setWishlistProducts(
+            result.filter((e) => wishlist?.data?.products.includes(e._id))
+          );
+        });
+    }
+  }, [wishlist]);
+
+  
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`https://backend.dslcommerce.com/api/wishlist/${user?.walletAddress}`)
+      .then((res) => {
+        setWishlist(res.data);
+      })
+      .catch((err) => {
+        // console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+      setWishlistRefetch(false);
+  }, [user?.walletAddress]);
+
+  // console.log(wishlistProducts);
 
 
 
@@ -57,8 +87,9 @@ export default function WishlistProvider({ children }) {
     <WishlistContext.Provider
       value={{
         addProductToWishlist,
-        wishlists,
-        setWishlists,
+        wishlist,
+        setWishlist,
+        wishlistProducts,
         wishlistRefetch,
         setWishlistRefetch,
         loading,

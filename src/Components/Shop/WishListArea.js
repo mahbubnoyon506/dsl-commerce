@@ -1,111 +1,49 @@
-import cart1 from "../../assets/img/collection/collection-1.png";
-import cart2 from "../../assets/img/collection/collection-1.png";
-import cart3 from "../../assets/img/collection/collection-2.png";
-import cart4 from "../../assets/img/collection/collection-1.png";
-import cart5 from "../../assets/img/collection/collection-2.png";
 import { Link } from "react-router-dom";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext } from "react";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
-import swal from "sweetalert";
+import { WishlistContext } from "../../contexts/wishlist-context";
 import axios from "axios";
-// import { useDispatch, useSelector } from "react-redux";
-//action
-// import { listProducts } from "../../redux/Product/ProductAction";
+import { CartContext } from "../../contexts/cart-context";
 
 function WishListArea() {
-  const [wishlist, setwishlist] = useState([]);
-  const [wishlistList, setWishlistList] = useState([]);
-  const { user } = useContext(DSLCommerceContext);
-  const walletAddress = user.walletAddress;
-  // const dispatch = useDispatch();
-  // const { products } = useSelector((state) => state.productReducer);
+  const { user, openWalletModal } = useContext(DSLCommerceContext);
+  const { addItemToCart } = useContext(CartContext);
+  const { wishlistProducts, setWishlistProducts, setWishlistRefetch } = useContext(WishlistContext);
 
-  // useEffect(() => {
-  //   console.log("products1");
-  //   console.log(products);
-  // }, []);
 
-  useEffect(() => {
-    if (wishlist) {
-      fetch(`https://backend.dslcommerce.com/api/product/`)
-        .then((res) => res.json())
-        .then((result) => {
-          // setAllProduct(result);
-          console.log("result");
-          console.log(result);
-          console.log("wishlist");
-          console.log(wishlist.data.products);
+  //Delete wishlist
+  const handleDelete = async (id) => {
+    // console.log("handleDelete", id);
 
-          setWishlistList(
-            result.filter((e) => wishlist.data.products.includes(e._id))
-          );
-        });
-    }
-  }, [wishlist]);
+    const body = { "productId": id }
 
-  const getWishList = () => {
-    console.log("walletAddress");
-    console.log(walletAddress);
-
-    fetch(`https://backend.dslcommerce.com/api/wishlist/${walletAddress}`)
-      // fetch(
-      //   `https://backend.dslcommerce.com/api/wishlist/0x265aadc097a9b2956a24baeb0da3e464872931ca`)
-      .then((res) => res.json())
-      .then((data) => {
-        setwishlist(data);
-        console.log("data in");
-        console.log(data);
+    await axios
+      .put(`https://backend.dslcommerce.com/api/wishlist/delete/${user?.walletAddress}`, body)
+      .then((res) => {
+        if (res.status === 200) {
+          setWishlistProducts(wishlistProducts.filter((product) => product._id !== id));
+        }
+        setWishlistRefetch(true)
+      })
+      .catch((error) => {
+        // alert("Something went wrong, Try Again .");
       });
 
-    console.log(wishlist);
-
-    // console.log(wishlist.products[0]);
-  };
-  useEffect(() => {
-    getWishList();
-    // console.log(data)
-  }, []);
-
-  const deleteWarning = (wishlist) => {
-    swal({
-      title: "Are you sure to delete " + "wishlist" + "?",
-      // text: "Once deleted, you will not be able to recover this imaginary file!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        handleDelete(wishlist._id);
-      } else {
-        swal("Your file is safe!");
-      }
-    });
   };
 
-  //delete wishlist
-  const handleDelete = async (id) => {
-    console.log("handleDelete");
-    console.log(id);
-    try {
-      const response = await axios.put(
-        "https://backend.dslcommerce.com/api/wishlist/delete" + walletAddress,
-        { productId: id }
-      );
-      if (response.status === 200) {
-        swal({
-          title: "Deleted",
-          text: response.data.message,
-          icon: "success",
-          button: "OK!",
-          className: "modal_class_success",
-        });
-      }
-      console.log(response);
-      getWishList();
-    } catch (error) {
-      console.log("error");
-      console.log(error);
-    }
+  // Add To Cart From Wishlist 
+  const addToCart = (product) => {
+    let currentItem = {
+      walletAddress: user?.walletAddress,
+      productId: product?._id,
+      price: product?.price,
+      product_images: product?.product_images,
+      productName: product?.productName,
+      count: 1,
+    };
+    // console.log(currentItem);
+
+    addItemToCart(currentItem);
   };
 
   return (
@@ -117,25 +55,17 @@ function WishListArea() {
           </div>
 
           <table className="table table-bordered">
-            {/* <thead>
-              <tr className="border-0">
-                <th className="product-remove"></th>
-                <th className="product-thumbnail">PRODUCT IMAGE</th>
-                <th className="product-name">PRODUCT NAME</th>
-                <th className="product-price">PRODUCT PRICE</th>
-                <th className="product-btn">ACTIONS</th>
-              </tr>
-            </thead> */}
+
             <tbody>
-              {wishlistList &&
-                wishlistList.map((wishlist) => (
+              {wishlistProducts &&
+                wishlistProducts.map((wishlist) => (
                   <tr>
                     <td className="product-remove">
                       <span
                         className="remove"
                         role={"button"}
                         onClick={() => {
-                          deleteWarning(wishlist);
+                          handleDelete(wishlist?._id);
                         }}
                       >
                         <i className="bx bx-x "></i>
@@ -143,25 +73,40 @@ function WishListArea() {
                     </td>
 
                     <td className="product-thumbnail">
-                      <a href="#">
-                        <img src={wishlist.product_images} alt="item" />
-                      </a>
+                      <Link to={`/shop/products-details/${wishlist?._id}`}>
+                        <img src={wishlist?.product_images} alt="item" />
+                      </Link>
                     </td>
 
                     <td className="product-name">
-                      <span>{wishlist.productName}</span>
+                      <Link to={`/shop/products-details/${wishlist?._id}`}>
+                        <span>{wishlist?.productName.slice(0, 20)}</span>
+                      </Link>
                     </td>
 
                     <td className="product-price">
-                      <span>{wishlist.price}</span>
+                      <span>$ {wishlist?.price}</span>
                     </td>
 
                     <td className="product-btn">
-                      <a href="#" className="default-btn">
-                        <i className="flaticon-shopping-cart"></i>
-                        Add to Cart
-                        <span></span>
-                      </a>
+                      {user?.walletAddress ? (
+                        <button
+                          className="default-btn"
+                          onClick={() => addToCart(wishlist)}
+                        >
+                          <i className="flaticon-shopping-cart"></i>
+                          Add to Cart
+                        </button>
+                      ) : (
+                        <button
+                          className="default-btn"
+                          onClick={() => openWalletModal()}
+                        >
+                          <i className="flaticon-shopping-cart"></i>
+                          Add to Cart
+                        </button>
+                      )}
+
                     </td>
                   </tr>
                 ))}
