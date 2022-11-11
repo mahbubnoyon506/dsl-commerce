@@ -1,10 +1,7 @@
 import { useState, useContext } from "react";
-import { Image } from "cloudinary-react";
-import { Link, useNavigate } from "react-router-dom";
-// import { CartContext } from "../../contexts/cart-context";
+import { Link } from "react-router-dom";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
-import axios from "axios";
-import swal from "sweetalert";
+import { WishlistContext } from "../../contexts/wishlist-context";
 
 function BestSellers({
   paddingClass = null,
@@ -12,46 +9,14 @@ function BestSellers({
   showQuickView,
   addToCart,
 }) {
-  const navigate = useNavigate();
   const [filterBy, setFilterBy] = useState("computers");
   const { user, openWalletModal } = useContext(DSLCommerceContext);
+  const { addProductToWishlist } = useContext(WishlistContext);
 
   const filterBestSellers = (filterBy) => {
     setFilterBy(filterBy);
   };
-  const createWishlist = async (product) => {
-    // console.log("create wishlist");
-
-    await axios
-      .post(`https://backend.dslcommerce.com/api/wishlist/create`, {
-        walletAddress: user.walletAddress,
-        productId: product._id,
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          swal({
-            title: "Success",
-            // text: `${res.data.message}`,
-            text: "Successfully added to wishlist",
-            icon: "success",
-            button: "OK!",
-            className: "modal_class_success",
-          });
-        }
-      })
-      .catch((err) => {
-        console.log("error wishlist");
-        // openWalletModal();
-
-        swal({
-          title: "Attention",
-          text: `${err.response.data.message}`,
-          icon: "warning",
-          button: "OK!",
-          className: "modal_class_success",
-        });
-      });
-  };
+  
 
   return (
     <section className={"bestsellers-area " + paddingClass}>
@@ -64,25 +29,22 @@ function BestSellers({
           <ul className="tabs">
             <li
               onClick={() => filterBestSellers("computers")}
-              className={`tab-item${
-                filterBy === "computers" ? " tab-active" : ""
-              }`}
+              className={`tab-item${filterBy === "computers" ? " tab-active" : ""
+                }`}
             >
               <span>Computers</span>
             </li>
             <li
               onClick={() => filterBestSellers("cameras")}
-              className={`tab-item${
-                filterBy === "cameras" ? " tab-active" : ""
-              }`}
+              className={`tab-item${filterBy === "cameras" ? " tab-active" : ""
+                }`}
             >
               <span>Cameras</span>
             </li>
             <li
               onClick={() => filterBestSellers("electronics")}
-              className={`tab-item${
-                filterBy === "electronics" ? " tab-active" : ""
-              }`}
+              className={`tab-item${filterBy === "electronics" ? " tab-active" : ""
+                }`}
             >
               <span>Electronics</span>
             </li>
@@ -94,41 +56,36 @@ function BestSellers({
             </li>
             <li
               onClick={() => filterBestSellers("accessories")}
-              className={`tab-item${
-                filterBy === "accessories" ? " tab-active" : ""
-              }`}
+              className={`tab-item${filterBy === "accessories" ? " tab-active" : ""
+                }`}
             >
               <span>Accessories</span>
             </li>
             <li
               onClick={() => filterBestSellers("laptop")}
-              className={`tab-item${
-                filterBy === "laptop" ? " tab-active" : ""
-              }`}
+              className={`tab-item${filterBy === "laptop" ? " tab-active" : ""
+                }`}
             >
               <span>Laptop</span>
             </li>
             <li
               onClick={() => filterBestSellers("watches")}
-              className={`tab-item${
-                filterBy === "watches" ? " tab-active" : ""
-              }`}
+              className={`tab-item${filterBy === "watches" ? " tab-active" : ""
+                }`}
             >
               <span>Watches</span>
             </li>
             <li
               onClick={() => filterBestSellers("mobile")}
-              className={`tab-item${
-                filterBy === "mobile" ? " tab-active" : ""
-              }`}
+              className={`tab-item${filterBy === "mobile" ? " tab-active" : ""
+                }`}
             >
               <span>Mobile</span>
             </li>
             <li
               onClick={() => filterBestSellers("headphone")}
-              className={`tab-item${
-                filterBy === "headphone" ? " tab-active" : ""
-              }`}
+              className={`tab-item${filterBy === "headphone" ? " tab-active" : ""
+                }`}
             >
               <span>Headphone</span>
             </li>
@@ -145,11 +102,10 @@ function BestSellers({
                       <div className="single-bestsellers-products at-time">
                         <div className="bestsellers-products-image  d-flex flex-column align-items-center">
                           <Link
-                            to={`/shop/products-details/${
-                              products.filter(
-                                (product) => product.type === filterBy
-                              )[0]?._id
-                            }`}
+                            to={`/shop/products-details/${products.filter(
+                              (product) => product.type === filterBy
+                            )[0]?._id
+                              }`}
                             onClick={() => {
                               window.scrollTo(0, 0);
                             }}
@@ -173,21 +129,8 @@ function BestSellers({
                           </Link>
                           <div className="tag">New</div>
                           <ul className="bestsellers-action">
-                            {/* <li>
-                              <span
-                                className="addtocart-icon-wrap"
-                                // onClick={() => addToCart()}
-                                onClick={() =>
-                                  addToCart(
-                                    products.filter(
-                                      (product) => product.type === filterBy
-                                    )[0]
-                                  )
-                                }
-                              >
-                                <i className="flaticon-shopping-cart"></i>
-                              </span>
-                            </li> */}
+
+                            {/*********************** Add To Cart *************************** */}
                             <li>
                               {user?.walletAddress ? (
                                 <span
@@ -212,20 +155,33 @@ function BestSellers({
                                 </span>
                               )}
                             </li>
+
+                            {/***********************WishList *************************** */}
                             <li>
-                              <span
-                                className="addtocart-icon-wrap"
-                                onClick={() =>
-                                  createWishlist(
-                                    products.filter(
-                                      (product) => product.type === filterBy
-                                    )[0]
-                                  )
-                                }
-                              >
-                                <i className="flaticon-heart"></i>
-                              </span>
+                              {user?.walletAddress ? (
+                                <span
+                                  className="addtocart-icon-wrap"
+                                  onClick={() =>
+                                    addProductToWishlist(
+                                      products.filter(
+                                        (product) => product.type === filterBy
+                                      )[0]
+                                    )
+                                  }
+                                >
+                                  <i className="flaticon-heart"></i>
+                                </span>
+                              ) : (
+                                <span
+                                  onClick={() => openWalletModal()}
+                                  className="addtocart-icon-wrap"
+                                >
+                                  <i className="flaticon-heart"></i>
+                                </span>
+                              )}
                             </li>
+
+                            {/*********************** Quick View *************************** */}
                             <li>
                               <span
                                 className="quickview-icon-wrap"
@@ -246,11 +202,10 @@ function BestSellers({
                         <div className="bestsellers-products-content">
                           <h3>
                             <Link
-                              to={`/shop/products-details/${
-                                products.filter(
-                                  (product) => product.type === filterBy
-                                )[0]._id
-                              }`}
+                              to={`/shop/products-details/${products.filter(
+                                (product) => product.type === filterBy
+                              )[0]._id
+                                }`}
                               onClick={() => {
                                 window.scrollTo(0, 0);
                               }}
@@ -298,9 +253,8 @@ function BestSellers({
       </div>
       <div className="collection-btn text-center mb-5">
         <Link
-          to={`/shop/cat/${
-            products.filter((product) => product.type === filterBy)[0]?.category
-          }/page/1`}
+          to={`/shop/cat/${products.filter((product) => product.type === filterBy)[0]?.category
+            }/page/1`}
           className="default-btn"
         >
           {/* <i className="flaticon-shopping-cart"></i> */}

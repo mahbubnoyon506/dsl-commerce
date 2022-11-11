@@ -50,7 +50,7 @@ export default function WishlistProvider({ children }) {
 
   };
 
-  
+
 
 
   return (

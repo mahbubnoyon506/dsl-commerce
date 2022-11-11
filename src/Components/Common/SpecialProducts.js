@@ -1,9 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
-import { Image } from "cloudinary-react";
+import { Link} from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
-import axios from "axios";
-import swal from "sweetalert";
+import { WishlistContext } from "../../contexts/wishlist-context";
 
 function SpecialProducts({
   paddingClass = "",
@@ -12,45 +10,9 @@ function SpecialProducts({
   showQuickView,
 }) {
   const [newProduct, setNewProduct] = useState([]);
-  const navigate = useNavigate();
-  const { user,openWalletModal } = useContext(DSLCommerceContext);
+  const { user, openWalletModal } = useContext(DSLCommerceContext);
+  const { addProductToWishlist } = useContext(WishlistContext);
 
-  const createWishlist = async (product) => {
-    console.log("create wishlist SP");
-    let currentItem = {
-      walletAddress: user.walletAddress,
-      productId: product._id,
-    };
-    console.log(currentItem);
-
-    await axios
-      .post(`https://backend.dslcommerce.com/api/wishlist/create`, {
-        walletAddress: user.walletAddress,
-        productId: product._id,
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          swal({
-            title: "Success",
-            // text: `${res.data.message}`,
-            text: "Successfully added to wishlist",
-            icon: "success",
-            button: "OK!",
-            className: "modal_class_success",
-          });
-        }
-      })
-      .catch((err) => {
-        // openWalletModal()
-        swal({
-          title: "Attention",
-          text: `${err.response.data.message}`,
-          icon: "warning",
-          button: "OK!",
-          className: "modal_class_success",
-        });
-      });
-  };
 
   useEffect(() => {
     fetch("https://backend.dslcommerce.com/api/product/")
@@ -61,9 +23,7 @@ function SpecialProducts({
       });
   }, []);
 
-  // const addToCart = () => {
-  //   navigate("/cart");
-  // };
+  
 
   return (
     <section className={"special-products-area " + paddingClass}>
@@ -95,6 +55,8 @@ function SpecialProducts({
                           </Link>
                           <div className="tag">New</div>
                           <ul className="special-action">
+
+                            {/*********************** Add To Cart *************************** */}
                             <li>
                               {user?.walletAddress ? (
                                 <span
@@ -112,14 +74,27 @@ function SpecialProducts({
                                 </span>
                               )}
                             </li>
+                              
+                            {/*********************** WishList *************************** */}
                             <li>
-                              <span
-                                className="addtocart-icon-wrap"
-                                onClick={() => createWishlist(product)}
-                              >
-                                <i className="flaticon-heart"></i>
-                              </span>
+                              {user?.walletAddress ? (
+                                <span
+                                  className="addtocart-icon-wrap"
+                                  onClick={() => addProductToWishlist(product)}
+                                >
+                                  <i className="flaticon-heart"></i>
+                                </span>
+                              ) : (
+                                <span
+                                  onClick={() => openWalletModal()}
+                                  className="addtocart-icon-wrap"
+                                >
+                                    <i className="flaticon-heart"></i>
+                                </span>
+                              )}
                             </li>
+
+                            {/*********************** Quick View *************************** */}
                             <li>
                               <span
                                 className="quick-icon"
