@@ -26,7 +26,7 @@ function WishListArea() {
         setWishlistRefetch(true)
       })
       .catch((error) => {
-        // alert("Something went wrong, Try Again .");
+        // console.log('error', error)
       });
 
   };
