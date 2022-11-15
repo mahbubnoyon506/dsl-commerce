@@ -81,7 +81,7 @@ function News() {
                            {/* <div style={{ width: "80px", height: "auto" }}>
                               <img src={news?.thumbnail} style={{ width: "80px", height: "100%" }} />
                            </div> */}
-                           <div className="text-start ms-2 text-decoration-none">
+                           <div className="text-start text-decoration-none">
                               <p className='mb-2 ' style={{ fontSize: 14 }}>{news?.title}</p>
                               <p className="mb-0 " style={{ fontSize: 12, fontWeight: 500 }}>{news?.publication_date}</p>
                            </div>

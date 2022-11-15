@@ -47,7 +47,7 @@ function MiddleHeader() {
                   <div className="col-4 select-column">
                     <div className="form-group ">
                       <select
-                        className="px-4 text-white"
+                        className="customCat text-white"
                         style={{ cursor: "pointer", background: "#15407F" }}
                         name="category"
                       >
