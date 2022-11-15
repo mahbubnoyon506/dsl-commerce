@@ -17,6 +17,7 @@ export default function CartProvider({ children }) {
     setPayablePrice(total);
   }
 
+  //************************************** Add Item To Cart **************************************
   const addItemToCart = async (item) => {
     console.log("cartItem" , item);
     await axios
@@ -43,7 +44,7 @@ export default function CartProvider({ children }) {
       });
   };
 
-  // Get All Cart Item 
+  //************************************** Get All Cart Item **************************************
   useEffect(() => {
     setLoading(true);
     axios

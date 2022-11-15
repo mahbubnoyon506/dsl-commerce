@@ -11,6 +11,7 @@ export default function WishlistProvider({ children }) {
   const [refetch, setRefetch] = useState(false);
   const { user } = useContext(DSLCommerceContext);
 
+  //************************************** Add Product To Wishlist **************************************
   const addProductToWishlist = async (product) => {
     // console.log("wishlist", product);
 
@@ -45,7 +46,7 @@ export default function WishlistProvider({ children }) {
   };
 
 
-  // Get All Wishlist Product 
+  //************************************** Get All Wishlist Product **************************************
 
   useEffect(() => {
     axios

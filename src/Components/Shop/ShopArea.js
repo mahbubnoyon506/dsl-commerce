@@ -17,7 +17,7 @@ function ShopArea({
   const [allProduct, setAllProduct] = useState([]);
   const [searchProducts, setSearchProducts] = useState([]);
 
-  //SLICE PRODUCT AND SHOW PER PAGE ONLY
+  //*******************SLICE PRODUCT AND SHOW PER PAGE ONLY
   const [sliceProducts, setSliceProducts] = useState([]);
   const [sortP, setSortP] = useState('default')
 
@@ -34,7 +34,7 @@ function ShopArea({
     window.scrollTo(0, 0);
   }, []);
 
-  //FILTERING PRODUCT
+  //************************************** FILTERING PRODUCT **************************************
   useEffect(() => {
     if (keyword && !query) {
       if (keyword === "all") {
@@ -72,7 +72,7 @@ function ShopArea({
 
 
 
-
+//*************************************** Sort Handle **************************************
   const sortHandle = (e) => {
     const method = e?.target?.value || e;
     setSortP(method)
@@ -152,7 +152,7 @@ function ShopArea({
     }
   };
 
-  // Pagination
+  //************************************** Pagination **************************************
   const [getPage, setPage] = useState(1);
   const [show, setShow] = useState(20);
   const [lastPage, setLastPage] = useState(0);

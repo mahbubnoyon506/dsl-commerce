@@ -102,10 +102,10 @@ function News() {
                 return (
                   <div className="mt-5" key={index}>
                     <div className="row">
-                      <div className="col-md-3">
+                      {/* <div className="col-md-3">
                         <img src={item.thumbnail} style={{ width: 80 }} />
-                      </div>
-                      <div className="col-md-9">
+                      </div> */}
+                      <div className="col-md-12">
                         <p className="mb-2" style={{ fontSize: 14 }}>
                           {item.title}
                         </p>

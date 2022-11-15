@@ -11,7 +11,7 @@ function WishListArea() {
   const { wishlistProducts, setWishlistProducts, setWishlistRefetch } = useContext(WishlistContext);
 
 
-  //Delete wishlist
+  //********************** Delete wishlist **************************************
   const handleDelete = async (id) => {
     // console.log("handleDelete", id);
 
@@ -31,7 +31,7 @@ function WishListArea() {
 
   };
 
-  // Add To Cart From Wishlist 
+  //************************************** Add To Cart From Wishlist *******************
   const addToCart = (product) => {
     let currentItem = {
       walletAddress: user?.walletAddress,
