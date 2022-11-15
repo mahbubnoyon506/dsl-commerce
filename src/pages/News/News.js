@@ -1,125 +1,102 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import parse from "html-react-parser";
-import { Button } from "@mui/material";
-import PageTitle from "../../Components/Common/PageTitle";
-import Preloader from "../../Components/Common/Preloader";
+import PersonIcon from '@mui/icons-material/Person';
+import { Typography } from '@mui/material';
+import { Fragment, useEffect, useState } from 'react';
+import { Container } from 'react-bootstrap';
+
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import './News.css';
+import PageTitle from '../../Components/Common/PageTitle';
 
 function News() {
-  const [data, setData] = useState([]);
-  const [isShowMore, setisShowMore] = useState(false);
-  // const [isLoading, setisLoading] = useState(true);
-  const [isLoading, setisLoading] = useState(true);
+   const [loading, setLoading] = useState(false);
+   const [allNews, setAllNews] = useState([]);
+   const [news, setNews] = useState({});
 
-  useEffect(() => {
-    setTimeout(() => {
-      setisLoading(false);
-    }, 1000);
-    window.scrollTo(0, 0);
-  }, []);
+   const search = window.location.search;
+   const params = new URLSearchParams(search);
+   const title = params.get('news');
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setisLoading(false);
-  //   }, 1000);
-  //   window.scrollTo(0, 0);
-  // }, []);
 
-  useEffect(() => {
-    // get data from api
-    const getData = async () => {
-      await axios
-        .get(
-          "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@dslsingapore"
-        )
-        .then((res) => {
-          // console.log(res.data)
-          setData(res.data.items);
-        });
-    };
-    window.scrollTo(0, 0);
-    getData();
-  }, []);
 
-  if (isLoading) {
-    return <Preloader />;
-  }
+   useEffect(() => {
+      setNews(allNews.find(news => news.title === title));
+   }, [title])
 
-  return (
-    <div className="news-wrapper">
-      <PageTitle title="News" />
-      {/* {isLoading === true ? (
-        <Preloader />
-      ) : ( */}
-      <div className="container">
-        <div className="row ">
-          <div className="col-md-8">
-            {data.length > 0 && (
-              <div>
-                {parse(data[0].description)}
-                {!isShowMore && (
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      console.log("click");
-                      setisShowMore(true);
-                    }}
-                  >
-                    Show more
-                  </Button>
-                )}
-              </div>
-            )}
+   console.log(title)
 
-            {isShowMore &&
-              data.length > 0 &&
-              data.slice(1).map((item, index) => {
-                return (
-                  <div className="mt-5" key={index}>
-                    {parse(item.description)}
+   useEffect(() => {
+      axios.get("https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@dslsingapore")
+         .then(res => {
+            const allNewsObj = res.data.items;
+            const allNews = [];
+            for (const item in allNewsObj) {
+               allNews.push(allNewsObj[item]);
+            }
+            setAllNews(allNews);
+            setNews(allNews[0]);
+         })
+   }, []);
+
+   useEffect(() => {
+      if (allNews.length <= 0) {
+         setLoading(true);
+      }
+   }, [allNews.length])
+
+   return (
+      <div className="news-wrapper" >
+         <PageTitle title="News" />
+         <div>
+            <Container className='section-pading2'>
+               <div className='row'>
+                  <div className="col-12 col-lg-8">
+                     <img src={news?.thumbnail} alt="" className=' w-100 mx-auto' />
+
+                     <div className="d-flex justify-content-between mt-2">
+                        <Link className='d-flex footerLink' to='# '>
+                           <PersonIcon className='personIcon' />
+                           <div>
+                              <p className="byAdmin ">
+                                 By Admin
+                              </p>
+                           </div>
+                        </Link>
+                        {/* {loading && <LoaderTop></LoaderTop>}
+                        <p className="local_text">
+                           {news?.publication_date}
+                        </p> */}
+                     </div>
+                     <div className="text-start pb-3">
+                        <Link to={`/news?news=${news?.title}`} className="news-title py-4">
+                           {news?.title}
+                        </Link>
+                     </div>
+                     <div className='news-description text-start ' dangerouslySetInnerHTML={{ __html: news?.description }}></div>
                   </div>
-                );
-              })}
-            <div>
-              {isShowMore && (
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    console.log("click");
-                    setisShowMore(false);
-                  }}
-                >
-                  Show less
-                </Button>
-              )}
-            </div>
-          </div>
+                  <div className="col-12 col-lg-4 text-start mt-4">
+                  <h4>RECENT NEWS</h4>
+                     {
+                        allNews.map((news, index) => <Link className="d-flex mt-4 align-items-center text-decoration-none text-dark" to={`/news?news=${news?.title}`} key={index}>
+                           {/* <div style={{ width: "80px", height: "auto" }}>
+                              <img src={news?.thumbnail} style={{ width: "80px", height: "100%" }} />
+                           </div> */}
+                           <div className="text-start ms-2 text-decoration-none">
+                              <p className='mb-2 ' style={{ fontSize: 14 }}>{news?.title}</p>
+                              <p className="mb-0 " style={{ fontSize: 12, fontWeight: 500 }}>{news?.publication_date}</p>
+                           </div>
+                        </Link>
+                        )
+                     }
 
-          <div className="col-md-4 mt-5">
-            <h4>RECENT NEWS</h4>
-            {data.length > 0 &&
-              data.map((item, index) => {
-                return (
-                  <div className="mt-5" key={index}>
-                    <div className="row">
-                      {/* <div className="col-md-3">
-                        <img src={item.thumbnail} style={{ width: 80 }} />
-                      </div> */}
-                      <div className="col-md-12">
-                        <p className="mb-2" style={{ fontSize: 14 }}>
-                          {item.title}
-                        </p>
-                      </div>
-                    </div>
                   </div>
-                );
-              })}
-          </div>
-        </div>
+
+               </div>
+
+            </Container>
+         </div>
       </div>
-      {/* )} */}
-    </div>
-  );
+   );
 }
 
 export default News;
