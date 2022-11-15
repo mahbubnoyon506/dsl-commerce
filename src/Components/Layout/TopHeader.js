@@ -47,7 +47,7 @@ function TopHeader({ shippingMessage, history }) {
 
           <div className="col-md-4 pt-lg-0 ">
             {user.walletAddress ? (
-              <>
+              <div className="d-flex justify-content-between align-items-center">
                 <div className="float-start d-md-none">
                   <Link to="/">
                     <img src={companyLogo} alt="dsl logo" width={50} />
@@ -57,7 +57,7 @@ function TopHeader({ shippingMessage, history }) {
                   <button
                     onClick={Logout}
                     className="bg-danger text-white px-4 py-2 "
-                    style={{border:'none',borderRadius:'100px'}}
+                    style={{ border: 'none', borderRadius: '100px' }}
                   >
                     <AccountBalanceWalletIcon className="walletIcon" />
                     <span className="pl-1">
@@ -65,25 +65,27 @@ function TopHeader({ shippingMessage, history }) {
                     </span>
                   </button>
                 </span>
-              </>
+              </div>
             ) : (
               <div className="text-center  float-md-end  mt-md-0">
-                <div className="float-start d-md-none mt-1">
-                  <Link to="/">
-                    <img src={companyLogo} alt="dsl logo" width={45} />
-                  </Link>
-                </div>
-                <div className="float-end">
-                  <button
-                    onClick={() => openWalletModal()}
-                    className="bg-danger text-white px-4 py-2 "
-                    style={{border:'none',borderRadius:'100px'}}
-                  >
-                    <AccountBalanceWalletIcon className="walletIcon" />
-                    <span className="pl-1">
-                      Login With Wallet
-                    </span>
-                  </button>
+                <div className="d-flex justify-content-between align-items-center">
+                  <div className="float-start d-md-none mt-1">
+                    <Link to="/">
+                      <img src={companyLogo} alt="dsl logo" width={45} />
+                    </Link>
+                  </div>
+                  <div className="float-end">
+                    <button
+                      onClick={() => openWalletModal()}
+                      className="bg-danger text-white px-4 py-2 "
+                      style={{ border: 'none', borderRadius: '100px' }}
+                    >
+                      <AccountBalanceWalletIcon className="walletIcon" />
+                      <span className="pl-1">
+                        Login With Wallet
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
