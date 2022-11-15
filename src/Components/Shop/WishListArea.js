@@ -28,7 +28,6 @@ function WishListArea() {
       .catch((error) => {
         // console.log('error', error)
       });
-
   };
 
   //************************************** Add To Cart From Wishlist *******************
