@@ -32,11 +32,11 @@ const WalletModal = () => {
 
 
             <DialogContentText id="alert-dialog-slide-description">
-              <div className="">
+              {/* <div className="">
                 <p className=' contents  mt-1 text-center' style={{ fontSize: 14 }}>Please note:</p>
                 <p className='contents text-center mb-0' style={{ fontSize: 14 }}>1. Login to Metamask before clicking the metamask icon below.</p>
                 <p className='contents text-center mb-0' style={{ fontSize: 14 }}>2. Click again if you are not connected.</p>
-              </div>
+              </div> */}
 
               <Row xs={1} md={1} className="g-2">
                 <Col>
@@ -44,7 +44,7 @@ const WalletModal = () => {
                     <Card.Img variant="top" src="https://i.ibb.co/vVf533V/1.png" className="imgWallet" />
                     <Card.Body>
                       <Card.Title className='walletName'>Metamask</Card.Title>
-                      <p>Click here to login</p>
+                      <button className='px-4 py-1  ' style={{backgroundColor:'orange', fontSize:'18px',border:'none',borderRadius:'8px'}}>Click here to login</button>
                     </Card.Body>
                   </Card>
                 </Col>

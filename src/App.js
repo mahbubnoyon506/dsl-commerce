@@ -62,6 +62,8 @@ import CatPath from "./pages/Shop/PathCheck/CatPath";
 import SearchPath from "./pages/Shop/PathCheck/SearchPath";
 import SingleOrderDetail from "./pages/Dashboard/CustomerOrders/SingleOrderDetail";
 import MintDetails from "./pages/MintDetails/MintDetails";
+import Subscribers from "./pages/Dashboard/Subscribers/Subscribers";
+import AdminRoutes from "./Components/AdminRoute/AdminRoutes";
 
 export const ProductContext = createContext();
 function App() {
@@ -119,7 +121,7 @@ function App() {
           <Route path="/verify-email/" element={<SubscriptionVerify />} />
           <Route path="/user" element={<User />} />
         </Route>
-        {/* Login System  */}
+        {/*************************** Login System ****************************** */}
         <Route path="/admin/login" element={<Login />} />
         <Route path="/admin/register" element={<Register />} />
         <Route
@@ -127,14 +129,15 @@ function App() {
           element={<ForgetPassword />}
         />
         /admin
-        <Route path="/otp/:token" element={<Otp />} />
-        {/* Dashboard  */}
+        <Route path="/admin/otp/:token" element={<Otp />} />
+
+        {/*************************** Dashboard ************************** */}
         <Route
           path="/admin"
           element={
-            // <AdminRoutes>
-            <Dashboard />
-            // </AdminRoutes>
+            <AdminRoutes>
+              <Dashboard />
+            </AdminRoutes>
           }
         >
           <Route index element={<AdminDashboard />} />
@@ -145,7 +148,7 @@ function App() {
             element={<DashboardAdminEditProfile />}
           />
 
-          {/* Customers  */}
+          {/*************************** Customers  ***************************/}
           <Route path="customers" element={<Customers />} />
           <Route path="customers/:customerPerPage" element={<Customers />} />
           <Route path="customers-update" element={<CustomersUpdate />} />
@@ -156,20 +159,21 @@ function App() {
             element={<SingleOrderDetail />}
           />
 
-          {/* Product  */}
+          {/*************************** Product  ***************************/}
           <Route path="products" element={<AllProduct />} />
           <Route path="products/:productPerPage" element={<AllProduct />} />
 
           <Route path="create-product" element={<CreateProduct />} />
           <Route path="/admin/editProduct/:id" element={<UpdateProduct />} />
 
-          {/* Category  */}
+          {/*************************** Category  ***************************/}
           <Route path="all-category" element={<AllCategory />} />
-          <Route
-            path="all-category/:categoryPerPage"
-            element={<AllCategory />}
-          />
+          <Route path="all-category/:categoryPerPage" element={<AllCategory />} />
           <Route path="add-category" element={<AddCategory />} />
+
+          <Route path="all-subscribers" element={<Subscribers />} />
+          <Route path="all-subscribers/:emailPerPage" element={<Subscribers />} />
+
 
           <Route path="data" element={<Data />} />
           <Route path="faq-dashboard" element={<FaqDashboard />} />

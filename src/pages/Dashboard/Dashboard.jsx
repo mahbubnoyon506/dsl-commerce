@@ -15,9 +15,10 @@ import { Divider } from "@mui/material";
 import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
 import { AdminContext } from "../../contexts/AdminContext";
 import { FaUsers, FaProductHunt, FaDatabase } from "react-icons/fa";
-import { MdDashboard, MdCategory } from "react-icons/md";
+import { MdDashboard, MdCategory , MdOutlineUnsubscribe} from "react-icons/md";
 import { RiAdminFill } from "react-icons/ri";
 import { GiShoppingBag } from "react-icons/gi";
+import { useEffect } from "react";
 
 const menuLinkStyles = ({ isActive }) => {
   return {
@@ -27,14 +28,14 @@ const menuLinkStyles = ({ isActive }) => {
 const drawerWidth = 280;
 
 function Dashboard(props) {
-  // const { admin, logout } = React.useContext(AdminContext);
+  const { admin, logout } = React.useContext(AdminContext);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (admin?.role !== "admin") {
-  //     navigate("/");
-  //   }
-  // }, [admin, navigate])
+  useEffect(() => {
+    if (admin?.role !== "admin") {
+      navigate("/");
+    }
+  }, [admin, navigate])
 
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -48,7 +49,7 @@ function Dashboard(props) {
   };
 
   const handleLogout = () => {
-    // logout();
+    logout();
     navigate("/");
   };
 
@@ -136,6 +137,18 @@ function Dashboard(props) {
             <MdCategory style={{ fontSize: "20px" }} />
           </span>
           CATEGORIES
+        </NavLink>
+        <br />
+        <NavLink
+          className="dashboardMenu"
+          style={menuLinkStyles}
+          onClick={handleClose}
+          to="all-subscribers"
+        >
+          <span className="navIconAdmin">
+            <MdOutlineUnsubscribe style={{ fontSize: "20px" }} />
+          </span>
+          ALL SUBSCRIBERS
         </NavLink>
         <br />
 

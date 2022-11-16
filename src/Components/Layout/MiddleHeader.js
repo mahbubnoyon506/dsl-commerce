@@ -47,12 +47,12 @@ function MiddleHeader() {
                   <div className="col-4 select-column">
                     <div className="form-group ">
                       <select
-                        className="px-4 text-white"
+                        className="customCat text-white"
                         style={{ cursor: "pointer", background: "#15407F" }}
                         name="category"
                       >
                         <option value="">All Category</option>
-                        {getCategory.map((category, index) => (
+                        {getCategory.slice(0,3).map((category, index) => (
                           <option
                             key={index}
                             style={{ padding: "5px" }}

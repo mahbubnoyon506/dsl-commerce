@@ -25,7 +25,7 @@ const DashboardAdminEditProfile = () => {
     // console.log(singleAdmin)
     useEffect(() => {
         if (id) {
-            axios.get(`https://mainnetbackend.indianfilmtitles.com/api/v1/admin/${id}`)
+            axios.get(`https://backend.dslcommerce.com/api/admin/${id}`)
                 .then(res => {
                     setSingleAdmin(res.data.admin);
                     setValueProfilePhn(res.data.admin.phone);
@@ -63,7 +63,7 @@ const DashboardAdminEditProfile = () => {
         setonLoading(true);
 
         if (password === cPassword) {
-            await axios.put(`https://mainnetbackend.indianfilmtitles.com/api/v1/admin/update/${id}`, formDataSingleAdmin, {
+            await axios.put(`https://backend.dslcommerce.com/api/admin/update/${id}`, formDataSingleAdmin, {
                 headers: {
                     'authorization': `Bearer ${localStorage.getItem('admin')}`
                 }
@@ -117,7 +117,7 @@ const DashboardAdminEditProfile = () => {
             return alert("Confirm Password not match!")
         }
         setonLoading(true);
-        await axios.put(`https://mainnetbackend.indianfilmtitles.com/api/v1/admin/update/password/${id}`, { currentPassword, newPassword }, {
+        await axios.put(`https://backend.dslcommerce.com/api/admin/update/password/${id}`, { currentPassword, newPassword }, {
             headers: {
                 'authorization': `Bearer ${localStorage.getItem('admin')}`
             }
