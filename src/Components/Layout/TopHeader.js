@@ -47,7 +47,7 @@ function TopHeader({ shippingMessage, history }) {
 
           <div className="col-md-4 pt-lg-0 ">
             {user.walletAddress ? (
-              <div className="d-flex justify-content-between align-items-center">
+              <div className="">
                 <div className="float-start d-md-none">
                   <Link to="/">
                     <img src={companyLogo} alt="dsl logo" width={50} />
@@ -59,7 +59,8 @@ function TopHeader({ shippingMessage, history }) {
                     className="bg-danger text-white px-4 py-2 "
                     style={{ border: 'none', borderRadius: '100px' }}
                   >
-                    <AccountBalanceWalletIcon className="walletIcon" />
+                    {/* <AccountBalanceWalletIcon className="walletIcon" /> */}
+                    <img src={companyLogo} alt="dsl logo" width={25} />
                     <span className="pl-1">
                       Logout
                     </span>
@@ -80,7 +81,8 @@ function TopHeader({ shippingMessage, history }) {
                       className="bg-danger text-white px-4 py-2 "
                       style={{ border: 'none', borderRadius: '100px' }}
                     >
-                      <AccountBalanceWalletIcon className="walletIcon" />
+                      {/* <AccountBalanceWalletIcon className="walletIcon" /> */}
+                      <img src={companyLogo} alt="dsl logo" width={25} />
                       <span className="pl-1">
                         Login With Wallet
                       </span>

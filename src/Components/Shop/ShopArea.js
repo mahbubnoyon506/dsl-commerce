@@ -223,7 +223,8 @@ function ShopArea({
         <div className="products-filter-options">
           <div className="row align-items-center">
             <div className="col-lg-9 col-md-9">
-              <p>Total Product {sliceProducts?.length}</p>
+              {/* <p>Total Product {sliceProducts?.length}</p> */}
+              <p>Products </p>
             </div>
 
             <div className="col-lg-3 col-md-3">
@@ -246,7 +247,7 @@ function ShopArea({
             <>
               {sliceProducts?.length ?
                 <>
-                  {sliceProducts.map((product) => (
+                  {sliceProducts.slice(0,3).map((product) => (
                     <div className="col-lg-3 col-sm-6" key={product?._id}>
                       <div className="single-shop-products">
                         <div className="shop-products-image">

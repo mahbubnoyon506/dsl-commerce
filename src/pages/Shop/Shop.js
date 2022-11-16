@@ -51,7 +51,7 @@ function Shop({ page = 1, query = undefined, keyword = undefined }) {
         page={page}
         query={query}
       />
-      <Partner paddingclassName="ptb-50" />
+      {/* <Partner paddingclassName="ptb-50" /> */}
       <QuickView isOpen={isOpen} closeModal={closeModal} product={product} />
     </div>
   );

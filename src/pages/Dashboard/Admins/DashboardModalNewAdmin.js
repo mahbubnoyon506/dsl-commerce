@@ -51,7 +51,7 @@ const DashboardModalNewAdmin = (props) => {
         }
 
         else {
-            await axios.post("https://mainnetbackend.indianfilmtitles.com/api/v1/admin/", formDataAddAdmin, {
+            await axios.post("https://backend.dslcommerce.com/api/admin/", formDataAddAdmin, {
                 headers: {
                     'authorization': `Bearer ${localStorage.getItem('admin')}`
                 }

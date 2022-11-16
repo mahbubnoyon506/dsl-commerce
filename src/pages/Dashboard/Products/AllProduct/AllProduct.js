@@ -9,8 +9,8 @@ import Pagination from "../../../../Components/Pagination/Pagination";
 
 const AllProduct = () => {
   const { productPerPage } = useParams();
-  console.log("productPerPage");
-  console.log(productPerPage);
+  // console.log("productPerPage");
+  // console.log(productPerPage);
 
   const navigate = useNavigate();
 
@@ -97,7 +97,7 @@ const AllProduct = () => {
   return (
     <div className="productBody">
       <div className="d-flex flex-column flex-lg-row mb-3 justify-content-lg-between align-items-center">
-        <h5 className="text-white text-start text-uppercase">ALL PRODUCTS</h5>
+        <h5 className="text-white text-start text-uppercase">PRODUCTS</h5>
         <button className="btn btn-primary text-uppercase ">
           <Link to="/admin/create-product" className="text-white">
             add product

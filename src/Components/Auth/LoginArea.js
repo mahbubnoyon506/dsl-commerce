@@ -6,6 +6,8 @@ import Form from "react-bootstrap/Form";
 
 import AuthContext from "../../contexts/auth-context";
 import { AdminContext } from "../../contexts/AdminContext";
+import axios from "axios";
+import swal from "sweetalert";
 
 function LoginArea({ customClass = "" }) {
   const [visiblePassword, setVisiblePassword] = useState(false);
@@ -25,48 +27,35 @@ function LoginArea({ customClass = "" }) {
     if (admin?._id) {
       navigate("/admin", { replace: true });
     }
-  }, [admin, navigate, isAuthenticating]);
+  }, [admin]);
 
   const handleLogin = (e) => {
     e.preventDefault();
 
     const email = e.target.email.value;
     const password = e.target.password.value;
-    console.log(email);
-    console.log(password);
-
-    login(email, password);
-    fetch("https://backend.dslcommerce.com/api/admin/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: email.current.value,
-        password: password.current.value,
-      }),
+    // console.log(email);
+    // console.log(password);
+    axios.post("https://backend.dslcommerce.com/api/admin/login", {
+      email, password
     })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log("res");
-        console.log(res);
-        if (res.id) {
-          email.current.value = "";
-          password.current.value = "";
-          context.login(res.token, res.id, res.tokenExpiration);
-          localStorage.setItem("token", JSON.stringify(res.token));
-          localStorage.setItem("userId", JSON.stringify(res.id));
-          localStorage.setItem(
-            "tokenExpiration",
-            JSON.stringify(res.tokenExpiration)
-          );
-          // navigate("/");
-        } else if (res.error) {
-          setAlertMsg(res.error);
-        } else if (res.errors) {
-          let errors = Object.values(res.errors);
-          setAlertMsg(errors);
+      .then(res => {
+        if (res.status === 200) {
+          navigate(`/admin/otp/${res.data.token}`)
+          localStorage.setItem('admin', res.data.token);
         }
       })
-      .catch((err) => console.log(err));
+      .catch(err => {
+        // alert(err.response.data.message);
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      })
+
   };
 
   return (
@@ -148,11 +137,11 @@ function LoginArea({ customClass = "" }) {
         <button type="submit">Login</button>
       </form>
 
-      <div className="important-text">
+      {/* <div className="important-text">
         <p>
           Don't have an account? <Link to="/admin/register">Register now!</Link>
         </p>
-      </div>
+      </div> */}
     </div>
   );
 }

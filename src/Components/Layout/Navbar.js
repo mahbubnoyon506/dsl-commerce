@@ -4,6 +4,8 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 import { FaUser } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import companyLogo from "../../assets/img/logoDSL.jpeg";
+import companyLogo from "../../assets/img/logoDSL.jpeg";
 
 // import AuthContext from "../../contexts/auth-context";
 
@@ -509,8 +511,8 @@ function Navbar() {
               onClick={() => {
                 navigate("/");
               }}
-            >
-              DSLCOMMERCE
+            > <span className="pr-2"><img src={companyLogo} alt="dsl logo" style={{ width: '7%' }} /></span>
+              DSLCOMMERCE.COM
             </span>
           </div>
           <div className="dot-menu" onClick={() => toggleHotline()}>

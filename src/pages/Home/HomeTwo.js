@@ -82,7 +82,7 @@ function HomeTwo() {
           addToCart={addToCart}
           showQuickView={showQuickView}
         />
-        <Collection />
+        {/* <Collection /> */}
 
         {/* <SpecialOffer
             paddingclassName=" pt-50 pb-50"
@@ -91,18 +91,18 @@ function HomeTwo() {
             showQuickView={showQuickView}
           /> */}
 
-        <NewArrivals
+        {/* <NewArrivals
           paddingclassName="pb-20"
           products={products}
           addToCart={addToCart}
           showQuickView={showQuickView}
-        />
-        <SpecialProducts
+        /> */}
+        {/* <SpecialProducts
           paddingclassName="pb-50"
           products={products}
           addToCart={addToCart}
           showQuickView={showQuickView}
-        />
+        /> */}
         {/* <Testimonial /> */}
         {/* <LatestNews paddingclassName="pt-50 pb-20" /> */}
         {/* <Partner paddingclassName=" ptb-50" /> */}

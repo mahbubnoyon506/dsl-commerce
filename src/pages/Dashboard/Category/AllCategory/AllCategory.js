@@ -35,7 +35,7 @@ const AllCategory = () => {
   });
 
 
-    //****************************** Pagination Start ******************************/
+  //****************************** Pagination Start ******************************/
   const navigate = useNavigate()
   const [getPage, setPage] = useState(1);
   const [show, setShow] = useState(10);
@@ -204,27 +204,18 @@ const AllCategory = () => {
   const handleClose = () => setOpen(false);
   return (
     <>
-      {/* <div className="d-flex justify-content-center align-items-center">
-        <h2 className="text-white">CATEGORIES</h2>
-      </div> */}
-      <h5 className="text-white text-start">CATEGORIES</h5>
-
-      {/* <div className="categoryBtnDiv"> */}
-      <div className="row">
-        <div className="col-md-6"></div>
-        <div className="col-md-6 text-center">
-          <Button
-            variant="contained"
-            xs={{ size: "large" }}
-            sx={{ my: "2rem" }}
-            onClick={handleOpen}
-          >
-            ADD CATEGORY
-          </Button>
-        </div>
+      
+      <div className="d-flex flex-column flex-lg-row mb-3 justify-content-lg-between align-items-center">
+        <h5 className="text-white text-start text-uppercase pt-1">CATEGORIES</h5>
+        <Button
+          variant="contained"
+          xs={{ size: "large" }}
+          sx={{ my: "2rem" }}
+          onClick={handleOpen}
+        >
+          ADD CATEGORY
+        </Button>
       </div>
-
-      {/* </div> */}
 
       <div>
         <Modal
@@ -298,7 +289,7 @@ const AllCategory = () => {
           <thead>
             <tr>
               <th>CATEGORIES</th>
-              <th className="text-center">ACTIONS</th>
+              <th className="text-end">ACTIONS</th>
             </tr>
           </thead>
           <tbody>
@@ -308,7 +299,7 @@ const AllCategory = () => {
                   <td>{category.name}</td>
 
                   <td>
-                    <div className="text-center">
+                    <div className="text-end">
                       <button
                         type="button"
                         className="editBtn"

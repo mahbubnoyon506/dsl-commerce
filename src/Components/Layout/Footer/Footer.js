@@ -10,30 +10,34 @@ function Footer() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
-  const handleSignUp = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
+    // console.log(email)
 
-    axios
-      .post("https://backend.dslcommerce.com/api/mail/newsletter", { email })
+    await axios
+      .post(`https://backend.dslcommerce.com/api/subscribe/`, {
+        email: email,
+      })
       .then((res) => {
         if (res.status === 200) {
-          setSuccess(true);
           swal({
-            title: "Good job!",
-            text: res.data,
+            title: "Success",
+            text: "Successfully subscribed !",
             icon: "success",
-            button: "Aww yiss!",
+            button: "OK!",
+            className: "modal_class_success",
           });
+          e.target.reset()
         }
       })
       .catch((err) => {
-        setError(true);
         swal({
-          title: "Sorry!",
-          text: err.response.data,
+          title: "Attention",
+          text: `Something went wrong`,
           icon: "warning",
-          button: "Aww yiss!",
+          button: "OK!",
+          className: "modal_class_success",
         });
       });
   };
@@ -61,20 +65,7 @@ function Footer() {
                       22 Sin Ming Lane #06-76 Midview City Singapore 573969
                     </a>
                   </li>
-                  {/* //more address adding */}
-                  {/* <li>
-                    <p className="text-danger font-weight-bold">Our South East Asia Representative:-</p>
-                    <h6 className="font-weight-bold">
-                      DS Legends (Malaysia) Sdn Bhd
-                    </h6>
-                   <p className="address-text font-weight-normal">Co No: 202201012165 (1457862-K)</p>
-                   <p className="address-text font-weight-normal">Suite 506 Level 5</p>
-                   <p className="address-text font-weight-normal">Wisma Cosway</p>
-                   <p className="address-text font-weight-normal">Jalan Raja Chulan</p>
-                   <p className="address-text font-weight-normal">50200 Kuala Lumpur</p>
-                   
 
-                  </li> */}
 
                   <li>
                     <span>Email:</span>
@@ -89,38 +80,7 @@ function Footer() {
                   </li>
                 </ul>
 
-                {/* <ul className="footer-social">
-                  <li>
-                    <a href={link.facebook} target="_any">
-                      <i className="bx bxl-facebook border-round text-white bg-dark"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href={link.instagram} target="_any">
-                      <i className="bx bxl-instagram border-round text-white bg-dark"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href={link.pinterest} target="_any">
-                      <i className="bx bxl-pinterest-alt border-round text-white bg-dark"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href={link.twitter} target="_any">
-                      <i className="bx bxl-twitter border-round text-white bg-dark"></i>
-                    </a>
-                  </li>
-                  <li className="mt-2">
-                    <a href={link.linkedin} target="_any">
-                      <i className="bx bxl-linkedin border-round text-white bg-dark"></i>
-                    </a>
-                  </li>
-                  <li className="mt-2">
-                    <a href={link.medium} target="_any">
-                      <i className="bx bxl-medium border-round text-white bg-dark"></i>
-                    </a>
-                  </li>
-                </ul> */}
+
               </div>
             </div>
 
@@ -225,7 +185,7 @@ function Footer() {
                   <form
                     className="newsletter-form"
                     data-toggle="validator"
-                    onSubmit={handleSignUp}
+                    onSubmit={handleSubmit}
                   >
                     <input
                       type="email"
