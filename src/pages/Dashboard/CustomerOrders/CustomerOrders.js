@@ -20,6 +20,7 @@ const CustomerOrders = () => {
   const [show, setShow] = useState(10);
   const [lastPage, setLastPage] = useState(0);
   const [sliceOrders, setSliceOrders] = useState([]);
+  const [sliceOrderss] = useState([]);
   // console.log(sliceProducts)
 
   useEffect(() => {
@@ -110,7 +111,7 @@ const CustomerOrders = () => {
               </tr>
             </thead>
             <tbody>
-              {sliceOrders?.map((order, index) => (
+              {sliceOrderss?.map((order, index) => (
                 <tr className="tableRow" key={order?._id}>
                   <td className="text-center text-transparent">
                     {order.orderTime}

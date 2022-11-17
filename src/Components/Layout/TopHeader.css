@@ -22,6 +22,9 @@
 .shippingMessage{
   padding-top: 10px !important;
 }
+.ColorBg {
+  background-image: linear-gradient(90deg,#0b545d,#057481)!important;
+}
 
 @media only screen and (max-width: 425px) {
   .shippingMessage{
