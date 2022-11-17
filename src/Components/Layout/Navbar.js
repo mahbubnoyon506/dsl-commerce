@@ -511,7 +511,9 @@ function Navbar() {
               onClick={() => {
                 navigate("/");
               }}
-            > <span className="pr-2"><img src={companyLogo} alt="dsl logo" style={{ width: '7%' }} /></span>
+            > <span className="pr-2">
+                {/* <img src={companyLogo} alt="dsl logo" style={{ width: '7%' }} /> */}
+              </span>
               DSLCOMMERCE.COM
             </span>
           </div>

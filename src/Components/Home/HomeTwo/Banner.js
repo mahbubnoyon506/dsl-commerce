@@ -11,7 +11,7 @@ function Banner() {
   return (
     <OwlCarousel className="home-slides-two owl-theme" items={1} loop autoplay={true}>
       <div className="main-slider-item-box">
-        <div className="main-slider-content">
+        {/* <div className="main-slider-content">
           <b>Big Sale Offer</b>
           <h1>Get the Best Deals on Headphone</h1>
           <p>
@@ -25,11 +25,11 @@ function Banner() {
               <span></span>
             </Link>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="main-slider-item-box item-two">
-        <div className="main-slider-content">
+        {/* <div className="main-slider-content">
           <b>Popular in {currentYear}</b>
           <h1>New Arrivals CCTV Camera</h1>
           <p>
@@ -43,11 +43,11 @@ function Banner() {
               <span></span>
             </Link>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="main-slider-item-box item-three">
-        <div className="main-slider-content">
+        {/* <div className="main-slider-content">
           <b>Big Sale Offer</b>
           <h1>High-Quality Product Camera</h1>
           <p>
@@ -61,7 +61,7 @@ function Banner() {
               <span></span>
             </Link>
           </div>
-        </div>
+        </div> */}
       </div>
     </OwlCarousel>
   );

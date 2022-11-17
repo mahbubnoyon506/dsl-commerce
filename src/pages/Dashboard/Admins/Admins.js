@@ -114,11 +114,8 @@ const Admins = () => {
               {
                 allAdmin?.map(admin => (
                   <tr className='tableRow' key={admin._id}>
-                    {/* <td align='center'>
-                      {admin?.avatar ? <img className='imgAdmin' src={`https://backend.dslcommerce.com/${admin?.avatar}`} alt="profilePic" /> : <img className='imgAdmin' src="https://backend.dslcommerce.com/assets/1660396587217.jpeg" alt="profilePic" />}
-                    </td> */}
                     <td align='center'>
-                      {admin?.avatar ? <img className='imgAdmin' src="https://backend.indianfilmtitles.com/public/1664967652213.jpeg" alt="profilePic" /> : <img className='imgAdmin' src="https://backend.indianfilmtitles.com/public/1664967652213.jpeg" alt="profilePic" />}
+                      {admin?.avatar ? <img className='imgAdmin' src={admin?.avatar} alt="profilePic" /> : <img className='imgAdmin' src="https://backend.dslcommerce.com/assets/1660396587217.jpeg" alt="profilePic" />}
                     </td>
 
                     <td style={{ textTransform: 'lowercase' }} className='text-start'>{admin.username}</td>

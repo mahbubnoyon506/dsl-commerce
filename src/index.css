@@ -1074,7 +1074,7 @@ h6:last-child {
 
 .navbar-category {
   /* margin-right: 41px; */
-  margin-right: 5.5rem;
+  margin-right: 2rem;
 }
 
 .main-navbar .navbar .navbar-nav .nav-item a i {
@@ -2396,22 +2396,22 @@ h6:last-child {
 }
 
 .main-slider-item-box {
-  background-image: url(assets/img/main-slider/slider-bg-1.jpg);
+  background-image: url(assets/img/main-slider/slider-bg-1.jpeg);
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  padding-top: 82px;
-  padding-bottom: 125px;
+  padding-top: 250px;
+  padding-bottom: 275px;
   padding-left: 50px;
   padding-right: 50px;
 }
 
 .main-slider-item-box.item-two {
-  background-image: url(assets/img/main-slider/slider-bg-2.jpg);
+  background-image: url(assets/img/main-slider/slider-bg-2.jpeg);
 }
 
 .main-slider-item-box.item-three {
-  background-image: url(assets/img/main-slider/slider-bg-3.jpg);
+  background-image: url(assets/img/main-slider/slider-bg-3.jpeg);
 }
 
 .main-slider-item-box .main-slider-content {

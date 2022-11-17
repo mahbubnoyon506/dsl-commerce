@@ -88,7 +88,7 @@ const Customers = () => {
               </tr>
             </thead>
             <tbody>
-              {sliceOrders?.map((sliceOrder) => (
+              {/* {sliceOrders?.map((sliceOrder) => (
                 <tr className="tableRow" key={sliceOrder?.USER_ID}>
                   <td className="text-left text-capitalize productHidden">
                     {sliceOrder.USER_ID}
@@ -116,7 +116,7 @@ const Customers = () => {
                     </div>
                   </td>
                 </tr>
-              ))}
+              ))} */}
             </tbody>
           </Table>
         </div>
