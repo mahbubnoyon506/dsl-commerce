@@ -64,6 +64,7 @@ import SingleOrderDetail from "./pages/Dashboard/CustomerOrders/SingleOrderDetai
 import MintDetails from "./pages/MintDetails/MintDetails";
 import Subscribers from "./pages/Dashboard/Subscribers/Subscribers";
 import AdminRoutes from "./Components/AdminRoute/AdminRoutes";
+import AdministerOrders from "./pages/Dashboard/AdministerOrders/AdministerOrders";
 
 export const ProductContext = createContext();
 function App() {
@@ -74,7 +75,7 @@ function App() {
       <Routes>
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<HomeTwo />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/aboutus" element={<About />} />
           <Route path="/:affiliateLink" element={<HomeTwo />} />
           <Route path="/our-team" element={<OurTeam />} />
           <Route path="/search" element={<Search />} />
@@ -153,6 +154,7 @@ function App() {
           <Route path="customers/:customerPerPage" element={<Customers />} />
           <Route path="customers-update" element={<CustomersUpdate />} />
           <Route path="orders" element={<CustomerOrders />} />
+          <Route path="administer-orders" element={<AdministerOrders />} />
           <Route path="orders/:orderPerPage" element={<CustomerOrders />} />
           <Route
             path="/admin/orderDetail/:id"

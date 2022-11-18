@@ -52,7 +52,7 @@ function MiddleHeader() {
                         name="category"
                       >
                         <option value="">All Category</option>
-                        {getCategory.slice(0,3).map((category, index) => (
+                        {getCategory.map((category, index) => (
                           <option
                             key={index}
                             style={{ padding: "5px" }}

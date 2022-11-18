@@ -3,11 +3,13 @@ import axios from "axios";
 import parse from "html-react-parser";
 import PageTitle from "../../Components/Common/PageTitle";
 import Preloader from "../../Components/Common/Preloader";
+import CertificatModal from "./CertificatModal";
 
 
 function About() {
   const [data, setData] = useState("");
   const [isLoading, setisLoading] = useState(true);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -30,6 +32,13 @@ function About() {
     getData();
   }, []);
 
+
+  const handelOnclik = () => {
+    setOpen(true)
+  }
+
+
+
   return (
     <div className="about-wrapper">
       <PageTitle title="About Us" />
@@ -38,8 +47,12 @@ function About() {
       ) : (
         <div className="container">
           <p>{parse(data)}</p>
+          <button onClick={handelOnclik}
+            className="ColorBg border border-0 btn btn-primary "
+            style={{ fontSize: '16px' }} id="CertificatModalButton" >  <span>FINTECH CERTIFICATE</span> </button>
         </div>
       )}
+      <CertificatModal open={open} setOpen={setOpen} />
     </div>
   );
 }

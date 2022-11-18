@@ -247,7 +247,7 @@ function ShopArea({
             <>
               {sliceProducts?.length ?
                 <>
-                  {sliceProducts.slice(0,3).map((product) => (
+                  {sliceProducts.map((product) => (
                     <div className="col-lg-3 col-sm-6" key={product?._id}>
                       <div className="single-shop-products">
                         <div className="shop-products-image">

@@ -1,14 +1,13 @@
 import { Card, Col, Row, Table } from "react-bootstrap";
 import { AiOutlineCloudDownload } from "react-icons/ai";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import "./CustomerOrders.css";
 import { GrView } from "react-icons/gr";
 import { AiFillDelete } from "react-icons/ai";
-import { allOrders } from "./orderData";
 import { useEffect, useState } from "react";
 import Pagination from "../../../Components/Pagination/Pagination";
+import { allOrders } from "../CustomerOrders/orderData";
 
-const CustomerOrders = () => {
+const AdministerOrders = () => {
   const [allOrder, setAllOrder] = useState(allOrders);
   // const [orderStatus, setOrderStatus] = useState(allOrders.status);
   const [orderStatus, setOrderStatus] = useState("");
@@ -55,7 +54,7 @@ const CustomerOrders = () => {
   }, []);
   return (
     <div className="productBody">
-      <h5 className="text-white-50 text-start pb-2 text-uppercase"> User ORDERS</h5>
+      <h5 className="text-white-50 text-start pb-2 text-uppercase">Administer Orders</h5>
       <Row className="g-5">
         <Col className="py-2">
           <Card className="customerCard">
@@ -208,4 +207,4 @@ const CustomerOrders = () => {
   );
 };
 
-export default CustomerOrders;
+export default AdministerOrders;
