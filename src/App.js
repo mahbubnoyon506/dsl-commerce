@@ -74,7 +74,7 @@ function App() {
       <Routes>
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<HomeTwo />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/aboutus" element={<About />} />
           <Route path="/:affiliateLink" element={<HomeTwo />} />
           <Route path="/our-team" element={<OurTeam />} />
           <Route path="/search" element={<Search />} />
