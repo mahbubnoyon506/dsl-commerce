@@ -60,8 +60,8 @@ export default function AdminProvider({ children }) {
             otp
         }, {
             headers: {
-                "authorization": `Bearer ${localStorage.getItem('verify-tokens')}`
-         }
+                Authorization: `Bearer ${token}`
+            }
         })
             .then(res => {
                 if (res.status === 200) {
