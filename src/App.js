@@ -1,6 +1,6 @@
 import "./App.css";
-import { createContext } from "react";
-import { Route, Routes } from "react-router-dom";
+import { createContext, useEffect, useState } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
 import PublicLayout from "./Components/Layout/PublicLayout";
 import HomeTwo from "./pages/Home/HomeTwo";
 import About from "./pages/About/About";
@@ -65,9 +65,28 @@ import MintDetails from "./pages/MintDetails/MintDetails";
 import Subscribers from "./pages/Dashboard/Subscribers/Subscribers";
 import AdminRoutes from "./Components/AdminRoute/AdminRoutes";
 import AdministerOrders from "./pages/Dashboard/AdministerOrders/AdministerOrders";
+import Preloader from "./Components/Common/Preloader";
+import Merchant from "./pages/Merchant/Merchant";
 
 export const ProductContext = createContext();
 function App() {
+
+  const time = new Date();
+  time.setSeconds(time.getSeconds() + 180);
+  const [isLoading, setIsLoading] = useState(true);
+  const [modalShow, setModalShow] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
+  if (isLoading) {
+    return <Preloader/>
+  }
+
+
   return (
     <>
       <WalletModal></WalletModal>
@@ -81,8 +100,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/faqs" element={<Faqs />} />
           <Route path="/news" element={<News />} />
-          <Route path="/contact" element={<ContactArea />} />
-          <Route path="/cart" element={<CartArea />} />
+          <Route path="/merchant-add-product" element={<Merchant />} />
 
           <Route path="/terms-of-use" element={<TermsOfUse />} />
           <Route path="/data-protection-notice" element={<DataProtection />} />
@@ -103,7 +121,8 @@ function App() {
           />
 
           {/* SHOP END */}
-
+          <Route path="/contact" element={<ContactArea />} />
+          <Route path="/cart" element={<CartArea />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<Orders />} />
           <Route path="/wishlist" element={<WishList />} />
@@ -122,6 +141,7 @@ function App() {
           <Route path="/verify-email/" element={<SubscriptionVerify />} />
           <Route path="/user" element={<User />} />
         </Route>
+
         {/*************************** Login System ****************************** */}
         <Route path="/admin/login" element={<Login />} />
         <Route path="/admin/register" element={<Register />} />
@@ -130,9 +150,9 @@ function App() {
           element={<ForgetPassword />}
         />
         /admin
-        <Route path="/admin/otp/:token" element={<Otp />} />
+        <Route path="/admin/otp/:token" element={<Otp  expiryTimestamp={time}/>} />
 
-        {/*************************** Dashboard ************************** */}
+        {/*************************** Dashboard Start************************** */}
         <Route
           path="/admin"
           element={
@@ -185,6 +205,9 @@ function App() {
             element={<CustomerServicesDashboard />}
           />
         </Route>
+
+        {/*************************** Dashboard End************************** */}
+
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/products" element={<Products />} />
         <Route path="/reset" element={<ResetPassword />} />

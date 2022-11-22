@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 import { WishlistContext } from "../../contexts/wishlist-context";
@@ -9,14 +9,35 @@ function BestSellers({
   showQuickView,
   addToCart,
 }) {
-  const [filterBy, setFilterBy] = useState("computers");
+  const [getCategory, setGetCategory] = useState([]);
+  const [filterBy, setFilterBy] = useState('');
   const { user, openWalletModal } = useContext(DSLCommerceContext);
   const { addProductToWishlist } = useContext(WishlistContext);
+  // console.log(filterBy)
+  const [catId, setCatId] = useState(null)
 
-  const filterBestSellers = (filterBy) => {
-    setFilterBy(filterBy);
+  const filterBestSellers = (cat) => {
+    // console.log(cat);
+    setCatId(cat?._id)
+    setFilterBy(cat?.name);
   };
-  
+
+  useEffect(() => {
+    fetch("https://backend.dslcommerce.com/api/category/")
+      .then((res) => res.json())
+      .then((data) => {
+        setGetCategory(data)
+        setFilterBy(data[0]?.name)
+        filterBestSellers(data[0])
+      });
+
+  }, []);
+
+  // console.log(getCategory)
+  // console.log(products)
+  // console.log(catId);
+
+
 
   return (
     <section className={"bestsellers-area " + paddingClass}>
@@ -27,100 +48,40 @@ function BestSellers({
 
         <div className="tab bestsellers-list-tab">
           <ul className="tabs">
-            <li
-              onClick={() => filterBestSellers("computers")}
-              className={`tab-item${filterBy === "computers" ? " tab-active" : ""
-                }`}
-            >
-              <span>Computers</span>
-            </li>
-            <li
-              onClick={() => filterBestSellers("cameras")}
-              className={`tab-item${filterBy === "cameras" ? " tab-active" : ""
-                }`}
-            >
-              <span>Cameras</span>
-            </li>
-            <li
-              onClick={() => filterBestSellers("electronics")}
-              className={`tab-item${filterBy === "electronics" ? " tab-active" : ""
-                }`}
-            >
-              <span>Electronics</span>
-            </li>
-            <li
-              onClick={() => filterBestSellers("audio")}
-              className={`tab-item${filterBy === "audio" ? " tab-active" : ""}`}
-            >
-              <span>Audio</span>
-            </li>
-            <li
-              onClick={() => filterBestSellers("accessories")}
-              className={`tab-item${filterBy === "accessories" ? " tab-active" : ""
-                }`}
-            >
-              <span>Accessories</span>
-            </li>
-            <li
-              onClick={() => filterBestSellers("laptop")}
-              className={`tab-item${filterBy === "laptop" ? " tab-active" : ""
-                }`}
-            >
-              <span>Laptop</span>
-            </li>
-            <li
-              onClick={() => filterBestSellers("watches")}
-              className={`tab-item${filterBy === "watches" ? " tab-active" : ""
-                }`}
-            >
-              <span>Watches</span>
-            </li>
-            <li
-              onClick={() => filterBestSellers("mobile")}
-              className={`tab-item${filterBy === "mobile" ? " tab-active" : ""
-                }`}
-            >
-              <span>Mobile</span>
-            </li>
-            <li
-              onClick={() => filterBestSellers("headphone")}
-              className={`tab-item${filterBy === "headphone" ? " tab-active" : ""
-                }`}
-            >
-              <span>Headphone</span>
-            </li>
+            {getCategory.map((category, index) => (
+              <li
+                key={index}
+                onClick={() => filterBestSellers(category)}
+                className={`tab-item${filterBy === `${category?.name}` ? " tab-active" : ""
+                  }`}
+              >
+                <span>{category?.name}</span>
+              </li>
+            ))}
+            
           </ul>
           <div className="tab_content">
             <div className="tabs_item">
               <div className="row">
-                {/* {products.length>0 &&
-                  products.slice(1).map((product, index) => { */}
                 {products.length > 0 &&
-                  products.filter((product) => product.type === filterBy)
+                  products.filter((product) => product.category === catId)
                     .length > 0 && (
                     <div className="col-lg-3 col-sm-6 text-center">
                       <div className="single-bestsellers-products at-time">
                         <div className="bestsellers-products-image  d-flex flex-column align-items-center">
                           <Link
                             to={`/shop/products-details/${products.filter(
-                              (product) => product.type === filterBy
+                              (product) => product.category === catId
                             )[0]?._id
                               }`}
                             onClick={() => {
                               window.scrollTo(0, 0);
                             }}
                           >
-                            {/* <Image
-                            key={product._id}
-                            cloudName={process.env.REACT_APP_CLOUDINARY_NAME}
-                            publicId={product.image_public_id}
-                            width="300"
-                            crop="scale"
-                          /> */}
                             <img
                               src={
                                 products.filter(
-                                  (product) => product.type === filterBy
+                                  (product) => product.category === catId
                                 )[0]?.product_images
                               }
                               style={{ width: "300px", height: "250px" }}
@@ -139,7 +100,7 @@ function BestSellers({
                                   onClick={() =>
                                     addToCart(
                                       products.filter(
-                                        (product) => product.type === filterBy
+                                        (product) => product.category === catId
                                       )[0]
                                     )
                                   }
@@ -164,7 +125,7 @@ function BestSellers({
                                   onClick={() =>
                                     addProductToWishlist(
                                       products.filter(
-                                        (product) => product.type === filterBy
+                                        (product) => product.category === catId
                                       )[0]
                                     )
                                   }
@@ -188,7 +149,7 @@ function BestSellers({
                                 onClick={() =>
                                   showQuickView(
                                     products.filter(
-                                      (product) => product.type === filterBy
+                                      (product) => product.category === catId
                                     )[0]
                                   )
                                 }
@@ -203,7 +164,7 @@ function BestSellers({
                           <h3>
                             <Link
                               to={`/shop/products-details/${products.filter(
-                                (product) => product.type === filterBy
+                                (product) => product.category === catId
                               )[0]._id
                                 }`}
                               onClick={() => {
@@ -212,7 +173,7 @@ function BestSellers({
                             >
                               {
                                 products.filter(
-                                  (product) => product.type === filterBy
+                                  (product) => product.category === catId
                                 )[0].productName
                               }
                             </Link>
@@ -238,7 +199,7 @@ function BestSellers({
                             $
                             {
                               products.filter(
-                                (product) => product.type === filterBy
+                                (product) => product.category === catId
                               )[0].price
                             }
                           </span>
@@ -253,11 +214,10 @@ function BestSellers({
       </div>
       <div className="collection-btn text-center mb-5">
         <Link
-          to={`/shop/cat/${products.filter((product) => product.type === filterBy)[0]?.category
+          to={`/shop/cat/${products.filter((product) => product.category === catId)[0]?.category
             }/page/1`}
           className="default-btn"
         >
-          {/* <i className="flaticon-shopping-cart"></i> */}
           See ALL Products
           <span></span>
         </Link>

@@ -1,17 +1,16 @@
+import axios from 'axios';
+import { useContext, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { AiFillLock } from 'react-icons/ai';
-import { BiPaste } from 'react-icons/bi';
+import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import swal from "sweetalert";
-import { AdminContext } from "../../contexts/AdminContext";
+import { useTimer } from 'react-timer-hook';
+import { AdminContext } from '../../contexts/AdminContext';
 
-const Otp = () => {
+const Otp = ({ expiryTimestamp }) => {
     const { token } = useParams();
     const { admin, setAdmin } = useContext(AdminContext);
     const [forEnable, setForEnable] = useState(false);
@@ -19,7 +18,7 @@ const Otp = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (admin) {
+        if (admin?._id) {
             navigate("/admin");
         }
     }, [admin, navigate]);
@@ -30,9 +29,20 @@ const Otp = () => {
     }
 
     setTimeout(enableing, 180000);
+    const {
+        seconds,
+        minutes,
+        hours,
+        days,
+        isRunning,
+        start,
+        pause,
+        resume,
+        restart,
+    } = useTimer({ expiryTimestamp, onExpire: () => console.warn('onExpire called') });
 
-    const resendOTP = async () => {
-        await axios.get(`https://backend.dslcommerce.com/api/admin/resend-otp`,
+    const resendOTP = () => {
+        axios.get(`https://backend.dslcommerce.com/api/admin/resend-otp`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -41,33 +51,19 @@ const Otp = () => {
             .then(res => {
                 if (res.status === 200) {
                     // alert(res.data.message);
-                    // alert("OTP resent");
-                    swal({
-                        title: "Success",
-                        text: "OTP resent",
-                        icon: "success",
-                        button: "OK!",
-                        className: "modal_class_success",
-                    });
+                    alert("OTP resent");
                     setForEnable(false);
                 }
             })
             .catch(err => {
-                // alert(err.res.data.message);
-                swal({
-                    title: "Attention",
-                    text: `${err.response.data.message}`,
-                    icon: "warning",
-                    button: "OK!",
-                    className: "modal_class_success",
-                });
+                alert(err.res.data.message);
             })
     }
 
-    const handleOTP = async (e) => {
+    const handleOTP = (e) => {
         e.preventDefault();
         const otp = e.target.otp.value;
-        await axios.post(`https://backend.dslcommerce.com/api/admin/verify-otp/`, {
+        axios.post(`https://backend.dslcommerce.com/api/admin/verify-otp/`, {
             otp
         }, {
             headers: {
@@ -76,15 +72,16 @@ const Otp = () => {
         })
             .then(res => {
                 if (res.status === 200) {
-                    localStorage.setItem("admin", res.data.token);
                     setAdmin(res.data.admin);
+                    localStorage.setItem('adminDslCommerce', res.data.token);
+                    localStorage.removeItem('verify-tokens');
+                    navigate("/admin/dashboard")
                 }
             })
             .catch(err => {
                 alert(err.response.data.message);
             })
     }
-
 
     const CustomTooltip = styled(({ className, ...props }) => (
         <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -124,24 +121,26 @@ const Otp = () => {
                                     <InputGroup.Text className='bg-dark text-light border-0'><AiFillLock></AiFillLock></InputGroup.Text>
                                     <Form.Control aria-label="Amount (to the nearest dollar)" className='inputBackground' defaultValue={pasteText} placeholder='Enter OTP' type="number" name="otp" required />
                                     <CustomTooltip title="paste">
-                                        <InputGroup.Text style={{ cursor: 'pointer' }} className='bg-dark border-0' onClick={() => handlePasteText()}>
-                                            <BiPaste style={{ fontSize: '20px' }} />
-                                        </InputGroup.Text></CustomTooltip>
+                                        <InputGroup.Text style={{ cursor: 'pointer' }} className='bg-dark text-light border-0' onClick={() => handlePasteText()}><i className="fas fa-paste"></i></InputGroup.Text></CustomTooltip>
                                 </InputGroup>
 
                                 <br />
                                 <div className='mx-auto text-center'>
-                                    <Button className='button-34 submit_OTP_btn px-5' type="submit">
+                                    <Button className='button-34 submit_OTP_btn ps-4 pe-4' type="submit">
                                         Submit
                                     </Button>
                                 </div>
                             </form>
                             <div className='mx-auto text-center mt-3'>
-                                <Button disabled={!forEnable} className='button-34 resend_OTP_btn border-0 text-center px-4 pt-2 pb-2' type="button" onClick={() => resendOTP()}>
+                                <Button disabled={!forEnable} className='button-34 resend_OTP_btn border-0 text-center ps-4 pe-4 pt-2 pb-2' type="button" onClick={() => resendOTP()}>
                                     Re-Send OTP
                                 </Button>
                             </div>
+                            <div className='text-center text-dark fw-bolder mt-3'>
+                                <span>{minutes}</span>:<span>{seconds < 10 ? `0${seconds}` : seconds}</span>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
