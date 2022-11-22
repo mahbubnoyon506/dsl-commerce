@@ -15,19 +15,19 @@ function LoginArea({ customClass = "" }) {
   const password = useRef();
   const [alertMsg, setAlertMsg] = useState(null);
   const context = useContext(AuthContext);
-  const admincontext = useContext(AdminContext);
-  const { admin, token, isAuthenticating, login } = admincontext;
+  const { admin, token, isAuthenticating, login } = useContext(AdminContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // if (isAuthenticating) {
-    //   navigate(`/otp`, { replace: true });
-    // }
-    if (admin?._id) {
-      navigate("/admin", { replace: true });
+    if (isAuthenticating) {
+        navigate(`/admin/otp/${token}`, { replace: true });
     }
-  }, [admin]);
+    if (admin?._id) {
+        navigate('/admin', { replace: true });
+    }
+}, [admin, navigate, isAuthenticating,token])
+
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -36,25 +36,8 @@ function LoginArea({ customClass = "" }) {
     const password = e.target.password.value;
     // console.log(email);
     // console.log(password);
-    axios.post("https://backend.dslcommerce.com/api/admin/login", {
-      email, password
-    })
-      .then(res => {
-        if (res.status === 200) {
-          navigate(`/admin/otp/${res.data.token}`)
-          localStorage.setItem('admin', res.data.token);
-        }
-      })
-      .catch(err => {
-        // alert(err.response.data.message);
-        swal({
-          title: "Attention",
-          text: `${err.response.data.message}`,
-          icon: "warning",
-          button: "OK!",
-          className: "modal_class_success",
-        });
-      })
+    login(email, password);
+    
 
   };
 

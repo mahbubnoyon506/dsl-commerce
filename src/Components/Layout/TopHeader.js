@@ -37,10 +37,11 @@ function TopHeader({ shippingMessage, history }) {
           </div>
           <div className="col-md-4 text-center">
             <div className="top-header-content shippingMessage">
-              <span>
-                <i className="flaticon-check"></i>
-                {shippingMessage}
-              </span>
+              {user?.walletAddress ? (
+                <Link to='/merchant-add-product' className="text-white" style={{ textDecoration: 'underline' }}>Become Our Merchant</Link>
+              ) : (
+                <span onClick={() => openWalletModal()} className="text-white" style={{ textDecoration: 'underline',cursor:'pointer' }}>Become Our Merchant</span>
+              )}
             </div>
           </div>
           <div className="border-top border-secondary d-md-none"></div>
@@ -56,13 +57,13 @@ function TopHeader({ shippingMessage, history }) {
                 <span className="float-end">
                   <button
                     onClick={Logout}
-                      // className="btn btn-primary text-white px-4 py-2 "
-                      className="ColorBg border border-0 btn btn-primary "
-                      // style={{ border: 'none', borderRadius: '100px' }}
-                      style={{fontSize: '12px'}}
+                    // className="btn btn-primary text-white px-4 py-2 "
+                    className="ColorBg border border-0 btn btn-primary "
+                    // style={{ border: 'none', borderRadius: '100px' }}
+                    style={{ fontSize: '12px' }}
                   >
                     {/* <AccountBalanceWalletIcon className="walletIcon" /> */}
-                    <img src={companyLogo} alt="dsl logo" style={{width: '25px' , marginRight:'5px'}} />
+                    <img src={companyLogo} alt="dsl logo" style={{ width: '25px', marginRight: '5px' }} />
                     <span className="pl-1">
                       Logout
                     </span>
@@ -83,10 +84,10 @@ function TopHeader({ shippingMessage, history }) {
                       // className="btn btn-primary text-white px-4 py-2 "
                       className="ColorBg border border-0 btn btn-primary "
                       // style={{ border: 'none', borderRadius: '100px' }}
-                      style={{fontSize: '12px'}}
+                      style={{ fontSize: '12px' }}
                     >
                       {/* <AccountBalanceWalletIcon className="walletIcon" /> */}
-                      <img src={companyLogo} alt="dsl logo" style={{width: '25px' , marginRight:'5px'}} />
+                      <img src={companyLogo} alt="dsl logo" style={{ width: '25px', marginRight: '5px' }} />
                       <span className="pl-1">
                         Login With Wallet
                       </span>
