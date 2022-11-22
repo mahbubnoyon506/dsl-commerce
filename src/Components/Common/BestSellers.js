@@ -48,7 +48,7 @@ function BestSellers({
             >
               <span>Electronics</span>
             </li>
-            <li
+            {/* <li
               onClick={() => filterBestSellers("audio")}
               className={`tab-item${filterBy === "audio" ? " tab-active" : ""}`}
             >
@@ -88,7 +88,7 @@ function BestSellers({
                 }`}
             >
               <span>Headphone</span>
-            </li>
+            </li> */}
           </ul>
           <div className="tab_content">
             <div className="tabs_item">
