@@ -122,7 +122,8 @@ const Subscribers = () => {
                   <td className="text-left text-capitalize">
                     {index + 1}
                   </td>
-                  <td className="text-left ">
+                  <td className="text-left "
+                    style={{ textTransform: 'lowercase' }}>
                     {email.email}
                   </td>
 

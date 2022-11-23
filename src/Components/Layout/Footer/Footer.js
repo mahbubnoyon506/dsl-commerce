@@ -9,37 +9,61 @@ function Footer() {
   const [link, setLink] = useState({});
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [email, setEmail] = useState("");
+
+  //********************************** Handle Email ****************************************
+  // const handleEmail = event => {
+  //   const emailValue = event.target.value
+  //   if (/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-z]{2,7}$/.test(emailValue)) {
+  //     setEmailError(null);
+  //   } else {
+  //     setEmailError("Please Provide a valid Email");
+  //   }
+  // }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const email = e.target.email.value;
+    // const email = e.target.email.value;
     // console.log(email)
-
-    await axios
-      .post(`https://backend.dslcommerce.com/api/subscribe/`, {
-        email: email,
-      })
-      .then((res) => {
-        if (res.status === 200) {
+    if (!email || email.length === 0) {
+      swal({
+        title: "Attention",
+        text: "Please enter your email",
+        icon: "warning",
+        button: "OK!",
+        className: "modal_class_success",
+      });
+    }
+    else {
+      await axios
+        .post(`https://backend.dslcommerce.com/api/subscribe/`, {
+          email: email,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            swal({
+              title: "Success",
+              text: "Successfully subscribed !",
+              icon: "success",
+              button: "OK!",
+              className: "modal_class_success",
+            });
+            e.target.reset()
+          }
+        })
+        .catch((err) => {
           swal({
-            title: "Success",
-            text: "Successfully subscribed !",
-            icon: "success",
+            title: "Attention",
+            text: `Something went wrong`,
+            icon: "warning",
             button: "OK!",
             className: "modal_class_success",
           });
-          e.target.reset()
-        }
-      })
-      .catch((err) => {
-        swal({
-          title: "Attention",
-          text: `Something went wrong`,
-          icon: "warning",
-          button: "OK!",
-          className: "modal_class_success",
         });
-      });
+    }
+
+
   };
 
   useEffect(() => {
@@ -125,7 +149,7 @@ function Footer() {
                       onClick={() => {
                         window.scrollTo(0, 0);
                       }}
-                      to="/about"
+                      to="/aboutus"
                     >
                       About Us
                     </Link>
@@ -191,11 +215,16 @@ function Footer() {
                       type="email"
                       id="email"
                       className="input-newsletter border-dark rounded"
+                      style={{ textTransform: 'lowercase' }}
                       placeholder="Email address"
                       name="email"
+                      // onChange={handleEmail}
+                      onChange={e => setEmail(e.target.value)}
+                      // onBlur={handleEmail}
                       required
                       autoComplete="off"
                     />
+                    {/* <p className=' text-danger pl-1 pt-2'> {emailError}</p> */}
 
                     <button type="submit" className=" text-uppercase btn-Sub">
                       Subscribe

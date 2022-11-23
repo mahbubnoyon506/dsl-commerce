@@ -67,6 +67,7 @@ function LoginArea({ customClass = "" }) {
             className=""
             placeholder="Enter Email"
             type="email"
+            style={{ textTransform: 'lowercase' }}
             name="email"
             ref={email}
             required
