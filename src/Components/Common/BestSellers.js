@@ -58,7 +58,7 @@ function BestSellers({
                 <span>{category?.name}</span>
               </li>
             ))}
-            
+
           </ul>
           <div className="tab_content">
             <div className="tabs_item">
