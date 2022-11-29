@@ -74,12 +74,13 @@ function CheckoutArea({ expiryTimestamp }) {
   const [city, setCity] = useState("");
   const [postCode, setPostCode] = useState("");
   const [orderNotes, setOrderNotes] = useState("");
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [emailVerify, setEmailVerify] = useState(false);
   const [email1, setEmail] = useState("");
   const [tokenId, setTokenId] = useState();
   // const [mobileNo, setmobileNo] = useState("");
-  const [value, setValue] = useState();
+  const [mobile, setMobile] = useState();
   const [mobileNoVerify, setmobileNoVerify] = useState(false);
   const [disableAfterActivation, setDisableAfterActivation] = useState(false);
   const [disableAfterActivationMobile, setDisableAfterActivationMobile] = useState(false);
@@ -117,7 +118,7 @@ function CheckoutArea({ expiryTimestamp }) {
     },
   };
 
-
+  console.log("carts", carts);
 
   useEffect(() => {
     axios.get('https://dslegends.org/api/get-asset-price.php?asset=BNB', {
@@ -167,43 +168,6 @@ function CheckoutArea({ expiryTimestamp }) {
   }, []);
 
 
-
-
-  const submitOrder = (e) => {
-    const walletAddress = user?.walletAddress;
-    const phone = value
-    const email = email1
-    const orderItems = carts;
-    const status = 'pending'
-    e.preventDefault();
-    if (!user?.walletAddress) {
-      openWalletModal();
-      return;
-    }
-
-    const OrderData = {
-      name,
-      email,
-      phone,
-      country,
-      address,
-      city,
-      postCode,
-      orderNotes,
-      walletAddress,
-      orderItems,
-      token,
-      payAmount,
-      // tokenAddress,
-      // refAddress,
-      // payMethod,
-      // status,
-      // date,
-    };
-    // console.log(OrderData);
-
-  };
-
   // Re-send OTP functionality
   const { seconds, minutes, resume, restart } = useTimer({
     expiryTimestamp,
@@ -238,7 +202,7 @@ function CheckoutArea({ expiryTimestamp }) {
 
     await axios
       .post(`https://backend.dslcommerce.com/api/number/otp`, {
-        phone: value,
+        phone: mobile,
         otp: otpCode,
       })
 
@@ -258,12 +222,12 @@ function CheckoutArea({ expiryTimestamp }) {
     // console.log("handleVerifyMobile");
     setDisableAfterActivationMobile(true);
     // console.log("mobileNo" , value);
-    if (value.length > 0) {
+    if (mobile.length > 0) {
       // setLoading(true);
       // setEmailVerify(true);
       await axios
         .post("https://backend.dslcommerce.com/api/number/", {
-          phone: value,
+          phone: mobile,
         })
         .then((res) => {
           console.log("res");
@@ -458,84 +422,83 @@ function CheckoutArea({ expiryTimestamp }) {
   // const nftId = random?.toString();
 
 
-  const postDataAfterPayment = async (e) => {
-    // const perkStatus = false;
+  const postDataAfterPayment = async (name, email, phone, country, address, city, postCode, orderNotes, walletAddress, orderItems, token, payAmount, tokenAddress, refAddress, payMethod, status, date,) => {
 
-    // const data = {
-    //   NFTWebsite: "https://dslcommerce.net",
-    //   name,
-    //   email1,
-    //   phone,
-    //   country,
-    //   address,
-    //   city,
-    //   postCode,
-    //   orderNotes,
-    //   walletAddress,
-    //   orderItems,
-    //   token,
-    //   payAmount,
-    //   tokenAddress,
-    //   refAddress,
-    //   payMethod,
-    //   status,
-    //   date,
-    // }
-    // console.log(data);
+    const data = {
+      NFTWebsite: "https://dslcommerce.net",
+      name,
+      email,
+      phone,
+      country,
+      address,
+      city,
+      postCode,
+      orderNotes,
+      walletAddress,
+      orderItems,
+      token,
+      payAmount,
+      tokenAddress,
+      refAddress,
+      payMethod,
+      status,
+      date,
+    }
+    console.log(data);
 
 
-    // await axios.post('https://backend.dslcommerce.com/api/payment/', data, {
+    await axios.post('https://backend.dslcommerce.com/api/payment/', data, {
 
-    // })
-    //   .then(res => {
-    //     if (res.status === 200) {
+    })
+      .then(res => {
+        if (res.status === 200) {
 
-    //       console.log("Successfully data passed")
-    //     }
-    //   }).catch(err => {
+          console.log("Successfully data passed")
+        }
+      }).catch(err => {
 
-    //     swal({
-    //       title: "Attention",
-    //       text: err.response.data.message,
-    //       icon: "warning",
-    //       button: "OK!",
-    //       className: "modal_class_success",
-    //     });
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
+        swal({
+          title: "Attention",
+          text: err.response.data.message,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
 
   }
 
   // console.log(affiliateWalletAddress);
+
   /// send full details to user
-  const handleSubmit = async (videos, TokeNID) => {
+  const handleSubmit = async (urlByPayment, priceAmmount) => {
     // console.log("token", tokenId, TokeNID);
-    // const NFTID = TokeNID
-    // const email = user?.email
-    // const address = mintAddressTestnet
-    // const hashtags = single.hashtags
-    // const caption = single.caption
-    // const price = single.price
-    // const video = videos
+    // const NFTID = TokeNID;
+    const transactionURL = urlByPayment;
+    const email = email1;
+    const price = priceAmmount + " " + selectedOption.value;
+    const orderItems = carts.map(cart => cart.productName);
+    const estimatedArrival = "10 Days";
+    const contact = "Email: support@dslcommerce.com, Phone: +60149939183";
 
+    console.log('44444')
 
-    // console.log('44444')
+    await axios.post("https://backend.dslcommerce.com/api/v1/mint/send-user", {
+      transactionURL, price, orderItems, estimatedArrival, contact, email
+    }, {
+    })
+      .then(res => {
+        if (res.status === 200) {
+          console.log(res.data.message)
 
-    // await axios.post("https://backend.videonft.sg/api/v1/verifymint/send-user", {
-    //   NFTID, address, hashtags, caption, price, email, video
-    // }, {
-    // })
-    //   .then(res => {
-    //     if (res.status === 200) {
-    //       console.log(res.data.message)
-
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //   });
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      });
   }
 
   // console.log(single);
@@ -560,7 +523,6 @@ function CheckoutArea({ expiryTimestamp }) {
     //       }
     //     });
     // }
-    console.log("enter1");
     // setIsClickedMint(true)
     setRequestLoading(true);
     console.log(USDSCtokenAddressTestnet)
@@ -575,11 +537,10 @@ function CheckoutArea({ expiryTimestamp }) {
     data.append('nonce', uuidv4());
     data.append('refAddress', affiliateWalletAddress);
     data.append('walletAddress', user.walletAddress);
-    // console.log("enter2");
 
     // ************************ Data *************************//
     const walletAddress = user?.walletAddress;
-    const phone = value
+    const phone = mobile
     const email = email1
     const orderItems = carts;
     const status = 'pending'
@@ -587,7 +548,6 @@ function CheckoutArea({ expiryTimestamp }) {
     const refAddress = affiliateWalletAddress
     const payMethod = 'crypto'
     // ************************ Data *************************//
-    console.log("enter1");
 
     await axios.post('https://backend.dslcommerce.com/api/v1/mint/uri-json-nft', data, {
       headers: {
@@ -604,7 +564,6 @@ function CheckoutArea({ expiryTimestamp }) {
             tokenAddress,
             affiliateWalletAddress,
             res.data.uri)
-          console.log("enter2");
           console.log('11111112322222222222222222222299', data1)
 
 
@@ -625,56 +584,50 @@ function CheckoutArea({ expiryTimestamp }) {
           }
 
 
-          const data2 = {
-
-            name,
-            email,
-            phone,
-            country,
-            address,
-            city,
-            postCode,
-            orderNotes,
-            walletAddress,
-            orderItems,
-            token,
-            payAmount,
-            tokenAddress,
-            refAddress,
-            payMethod,
-            status,
-            date,
-          };
           // const data2 = {
-          //   id: generateId.toString(),
-          //   price: priceByToken,
-          //   walletAddress: walletAddress,
-          //   phone: phone,
-          //   email: email,
-          //   orderItems: orderItems,
-          //   status: status,
-          //   date: date,
-          //   refAddress: refAddress,
-          //   payMethod: payMethod,
-          // }
+
+          // name,
+          // email,
+          // phone,
+          // country,
+          // address,
+          // city,
+          // postCode,
+          // orderNotes,
+          // walletAddress,
+          // orderItems,
+          // token,
+          // payAmount,
+          // tokenAddress,
+          // refAddress,
+          // payMethod,
+          // status,
+          // date,
+          // };
+          const data2 = {
+            id: generateId.toString(),
+            price: priceByToken,
+            walletAddress: walletAddress,
+            tokenAddress: tokenAddress,
+            orderItems: orderItems,
+            refAddress: refAddress
+          }
           console.log('Emtiaz Emon Data', data2)
           data.append("mint_hash", Obj.mint_hash);
           setTokenId(Obj.ID);
-          console.log(data);
-          console.log("enter3");
-          await axios.post("https://backend.dslcommerce.com/api/payment/", data2, {
-
+          console.log(data2);
+          await axios.post("https://backend.dslcommerce.com/api/v1/mint/save-nft", data2, {
+            // headers: {
+            //   'authorization': `Bearer ${localStorage.getItem('tokendslcommerce')}`
+            // }
           })
             .then(res => {
-              console.log("enter4");
               if (res.status === 200) {
-                console.log("enter5");
                 setRequestLoading(false);
                 const wrapper = document.createElement("div");
                 wrapper.innerHTML = `
               <a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a>
               <br/>
-              <p className="success">Your payment has been completed.</p>
               <p>Use the following information to import the NFT to your wallet</p>
               <p className="address">Contract Address: <br/> ${mintAddressTestnet}</p>
               <p>Token ID: ${Obj.ID}</p>
@@ -707,12 +660,11 @@ function CheckoutArea({ expiryTimestamp }) {
                       });
                     }
                   });
-                // postDataAfterMint();
-                // handleSubmit(video, Obj.ID);
+                postDataAfterPayment(name, email, phone, country, address, city, postCode, orderNotes, walletAddress, orderItems, token, payAmount, tokenAddress, refAddress, payMethod, status, date);
+                handleSubmit(Obj.mint_hash, priceByToken);
               }
             })
             .catch(err => {
-              console.log("enter5");
               console.log(err);
               setRequestLoading(false);
               const wrapper = document.createElement("div");
@@ -731,7 +683,6 @@ function CheckoutArea({ expiryTimestamp }) {
       })
       .catch(err => {
         console.log(err);
-        console.log("enter6");
         setRequestLoading(false);
         if (err.code === 4001) {
           return swal({
@@ -815,7 +766,9 @@ function CheckoutArea({ expiryTimestamp }) {
   // finquest Price
   // const finquest = totalPrice / 0.0005;
   // const finquestTwoDec = finquest.toFixed(4);
-
+  const subNo = e => {
+    e.preventDefault();
+  }
 
   return (
     <section className="checkout-area ptb-50">
@@ -831,7 +784,7 @@ function CheckoutArea({ expiryTimestamp }) {
             {message}
           </div>
         )}
-        <form onSubmit={submitOrder}>
+        <form onSubmit={subNo}>
           <div className="row">
             <div className="col-lg-8 col-md-12">
               <div className="billing-details">
@@ -937,8 +890,8 @@ function CheckoutArea({ expiryTimestamp }) {
                           countryCallingCodeEditable={true}
                           className='form-control '
                           type="text"
-                          onChange={setValue}
-                          value={value}
+                          onChange={setMobile}
+                          value={mobile}
                           disabled={user.mobileNo ? true : false}
                           required
                           inputProps={{
@@ -952,7 +905,7 @@ function CheckoutArea({ expiryTimestamp }) {
                             type="button"
                             onClick={handleVerifyMobile}
                             disabled={
-                              value?.length === 0 ||
+                              mobile?.length === 0 ||
                                 disableAfterActivationMobile
                                 ? true
                                 : false
@@ -962,7 +915,7 @@ function CheckoutArea({ expiryTimestamp }) {
                               color: "#fff",
                             }}
                             className={
-                              (value?.length === 0 ||
+                              (mobile?.length === 0 ||
                                 disableAfterActivationMobile) &&
                               "border bg-secondary text-white"
                             }
@@ -1279,7 +1232,7 @@ function CheckoutArea({ expiryTimestamp }) {
           setOpenMobile={setopenMobile}
           otpVerify={otpVerify}
           setError={setError}
-          mobile={setValue}
+          mobile={setMobile}
           setOtpVerify={setOtpVerify}
           setDisableAfterActivationMobile={setDisableAfterActivationMobile}
         />

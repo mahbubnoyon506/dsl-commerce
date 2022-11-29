@@ -37,27 +37,27 @@ const MintDetails = () => {
 
     return (
         <div className='mintDetails'>
-            <div className="container pb-3 pt-2 text-white">
+            <div className="container pb-3 pt-2 text-dark">
                 <h3 className='mb-3 ms-4'>Information of Minted NFT</h3>
                 <div className=' px-4'>
                     <div className="mb-2">
                         <label htmlFor='referralID'>Contract Address</label>
                         <div className='d-flex'>
-                            <input type="text" id='referralID' value={address} name="referralID" className='form-control bg-transparent text-white' disabled />
+                            <input type="text" id='referralID' value={address} name="referralID" className='form-control bg-transparent text-dark' disabled />
                             <button type="button" onClick={() => copyToClipboard(address)} className="border"><i className="fa-regular fa-copy"></i></button>
                         </div>
                     </div>
                     <div className="mb-2">
                         <label htmlFor='referralID'>Token ID</label>
                         <div className="d-flex">
-                            <input type="text" id='referralID' name="referralID" defaultValue={id} className='form-control bg-transparent text-white' disabled />
+                            <input type="text" id='referralID' name="referralID" value={id} className='form-control bg-transparent text-dark' disabled />
                             <button type="button" onClick={() => copyToClipboard(id)} className="border"><i className="fa-regular fa-copy"></i></button>
                         </div>
                     </div>
                     <div className="mb-2">
                         <label htmlFor='referralID'>Timestamp</label>
                         <div className="d-flex">
-                            <input type="text" id='referralID' name="referralID" value={newDate} className='form-control bg-transparent text-white' disabled />
+                            <input type="text" id='referralID' name="referralID" value={newDate} className='form-control bg-transparent text-dark' disabled />
                         </div>
                     </div>
                     <div className="d-flex justify-content-evenly align-items-center my-3">
