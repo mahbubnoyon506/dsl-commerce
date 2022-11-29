@@ -314,8 +314,15 @@ const Profile = ({ expiryTimestamp }) => {
     // const VerifiedName = e.target.name.value;
     console.log(verifiedEmail);
 
-    const email = JSON.stringify({ email: verifiedEmail });
-    // const name = JSON.stringify({ name: VerifiedName });
+    // const email = JSON.stringify({ email: verifiedEmail, phone: value });
+    // const data = { email: email, phone: value };
+    const data = JSON.stringify({ email: email1, phone: value });
+    const form = new FormData();
+    form.append('email', email1);
+    form.append('phone', value)
+
+
+    console.log(data);
 
     if (!otpVerify) {
       return swal({
@@ -326,40 +333,39 @@ const Profile = ({ expiryTimestamp }) => {
         dangerMode: true,
         className: "modal_class_success",
       });
-    } else {
-      axios
-        .put(
-          `https://backend.dslcommerce.com/api/v1/users/update/${user?._id}`,
-          email,
-          {
-            headers: {
-              "content-type": "application/json",
-            },
-          }
-        )
-        .then((res) => {
-          if (res.status === 200) {
-            swal({
-              title: "Success",
-              text: "Profile updated successfully",
-              icon: "success",
-              button: "OK!",
-              className: "modal_class_success",
-            });
-            setUserRefetch(true);
-          }
-          setUserRefetch(true);
-        })
-        .catch((err) => {
+    }
+
+
+    axios.put(`https://backend.dslcommerce.com/api/users/update/${user?._id}`, data,
+      {
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        if (res.status === 200) {
           swal({
-            title: "Attention",
-            text: `${err.response.data.message}`,
-            icon: "warning",
+            title: "Success",
+            text: "Profile updated successfully",
+            icon: "success",
             button: "OK!",
             className: "modal_class_success",
           });
+          setUserRefetch(true);
+        }
+        setUserRefetch(true);
+      })
+      .catch((err) => {
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
         });
-    }
+      });
+
   };
 
   return (
@@ -371,14 +377,14 @@ const Profile = ({ expiryTimestamp }) => {
         className="mb-5 shadow-lg rounded-lg pt-3 pb-5 px-4 p-md-5 align-items-center"
         onSubmit={updateProfile}
       >
-        <div className="text-center">
+        {/* <div className="text-center">
           <p>
             <a style={{ color: "#15407f" }}>
               <strong>Click here</strong>
             </a>{" "}
             for your SFF 2022 Wheel of Fortune QR Code
           </p>
-        </div>
+        </div> */}
 
         <div className="row" style={{ rowGap: "10px" }}>
           <div className="col-md-6 px-3">
