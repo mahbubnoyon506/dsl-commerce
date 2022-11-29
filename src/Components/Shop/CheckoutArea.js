@@ -716,7 +716,7 @@ function CheckoutArea({ expiryTimestamp }) {
               console.log(err);
               setRequestLoading(false);
               const wrapper = document.createElement("div");
-              wrapper.innerHTML = `<a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a> <br/> <p className="success">Your payment has been successful but error in while saving data.</p>`
+              wrapper.innerHTML = `<a href=${Obj.mint_hash} target="_any" className="link_hash text-primary">${Obj.mint_hash}</a> <br/> <p className="success text-light">Your payment has been successful but error in while saving data.</p>`
               swal({
                 title: "Warning",
                 content: wrapper,
