@@ -27,7 +27,7 @@ const TrackingOrderArea = () => {
 
                                 <div className="form-group">
                                     <label className="float-start">Billing Email</label>
-                                    <input type="email" className="form-control" />
+                                    <input type="email" className="form-control text-lowercase" />
                                 </div>
                                 <div className="form-group">
                                     <label className="float-start">Wallet Address</label>

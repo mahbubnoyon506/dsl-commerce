@@ -166,16 +166,16 @@ function CartArea() {
 
               <ul>
                 <li>
-                  Subtotal <span>$ {subTotal}</span>
+                  Subtotal <span>$ {subTotal.toFixed(3)}</span>
                 </li>
                 <li>
-                  Shipping <span>${shipping}</span>
+                  Shipping <span>${shipping.toFixed(3)}</span>
                 </li>
                 <li>
-                  Total <span>$ {total}</span>
+                  Total <span>$ {total.toFixed(3)}</span>
                 </li>
                 <li>
-                  Payable Total <span>$ {total}</span>
+                  Payable Total <span>$ {total.toFixed(3)}</span>
                 </li>
               </ul>
 
@@ -190,7 +190,7 @@ function CartArea() {
                     <span></span>
                   </Link>
                 ) : (
-                  <Link to={`/checkout/${total}`}
+                  <Link to={`/checkout/${total.toFixed(3)}`}
                     className="default-btn"
                     onClick={() => {
                       addTotalPrice(total)

@@ -72,7 +72,7 @@ function ShopArea({
 
 
 
-//*************************************** Sort Handle **************************************
+  //*************************************** Sort Handle **************************************
   const sortHandle = (e) => {
     const method = e?.target?.value || e;
     setSortP(method)
@@ -220,14 +220,14 @@ function ShopArea({
   return (
     <section className="shop-area bg-ffffff pt-50 pb-50">
       <div className="container">
-        <div className="products-filter-options">
+        <div className="products-filter-options container text-center text-lg-left ">
           <div className="row align-items-center">
-            <div className="col-lg-9 col-md-9">
+            <div className="col-lg-9 col-md-9 px-lg-0">
               {/* <p>Total Product {sliceProducts?.length}</p> */}
               <p>Products </p>
             </div>
 
-            <div className="col-lg-3 col-md-3">
+            <div className="col-lg-3 col-md-3 text-center px-5 px-lg-0">
               <div className="products-ordering-list py-1">
                 <select className="form-control" onChange={sortHandle}>
                   <option value="default" className="py-3">
@@ -249,8 +249,8 @@ function ShopArea({
                 <>
                   {sliceProducts.map((product) => (
                     <div className="col-lg-3 col-sm-6" key={product?._id}>
-                      <div className="single-shop-products">
-                        <div className="shop-products-image">
+                      <div className="single-shop-products ">
+                        <div className="shop-products-image text-center">
                           <Link
                             to={`/shop/products-details/${product?._id}`}
                             onClick={() => {
@@ -263,7 +263,16 @@ function ShopArea({
                               alt=""
                             />
                           </Link>
-                          <div className="tag">New</div>
+                          {
+                            new Date(product?.createdAt).getDate() + 7 <= new Date().getDate() ? (
+                              <>
+                              </>
+                            ) : (
+                              <>
+                                <div className="tag">New</div>
+                              </>
+                            )
+                          }
                           <ul className="shop-action">
                             <li>
                               {user?.walletAddress ? (

@@ -5193,6 +5193,29 @@ h6:last-child {
   transition: 0.5s;
 }
 
+/* @media only screen and (max-width: 768px) {
+  .single-shop-products .shop-products-image .tag {
+    top: 15px;
+    right: 50px;
+  }
+} */
+@media only screen and (max-width: 440px) {
+  .single-shop-products .shop-products-image .tag {
+    top: 15px;
+    right: 40px;
+  }
+}
+@media only screen and (max-width: 390px) {
+  .single-shop-products .shop-products-image .tag {
+    right: 35px;
+  }
+}
+@media only screen and (max-width: 340px) {
+  .single-shop-products .shop-products-image .tag {
+    right: 10px;
+  }
+}
+
 .single-shop-products .shop-products-image .shop-action {
   padding-left: 0;
   margin-bottom: 0;

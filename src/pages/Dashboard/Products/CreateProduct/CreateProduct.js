@@ -206,7 +206,10 @@ const CreateProduct = () => {
                   style={{ cursor: 'pointer' }}
                   name="type"
                 >
-                  <option>Product Type </option>
+                  {getCategory.map(category => (
+                    <option value={category?._id}>{category?.name}</option>
+                  ))}
+                  {/* <option>Product Type </option>
                   <option value="cameras">Cameras</option>
                   <option value="electronics">Electronics</option>
                   <option value="audio">Audio</option>
@@ -217,7 +220,7 @@ const CreateProduct = () => {
                   <option value="tablet">Tablet</option>
                   <option value="watches">Watches</option>
                   <option value="mobile">Mobile</option>
-                  <option value="headphone">Headphone</option>
+                  <option value="headphone">Headphone</option> */}
                 </select>
               </div>
             </div>

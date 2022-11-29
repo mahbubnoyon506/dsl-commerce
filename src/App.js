@@ -107,7 +107,7 @@ function App() {
           <Route path="/help-desk" element={<HelpDesk />} />
 
           {/* <Route path="/my-account" element={<MyAccount />} /> */}
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile expiryTimestamp={time}/>} />
           <Route path="/tracking-order" element={<TrackingOrder />} />
 
           {/* SHOP START */}

@@ -85,9 +85,9 @@ function Footer() {
                 <ul className="footer-contact-info">
                   <li>
                     <span>Address:</span>
-                    <a href="#" target="_blank">
+                    <>
                       22 Sin Ming Lane #06-76 Midview City Singapore 573969
-                    </a>
+                    </>
                   </li>
 
 
