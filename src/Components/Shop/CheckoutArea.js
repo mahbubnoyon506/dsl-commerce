@@ -628,7 +628,7 @@ function CheckoutArea({ expiryTimestamp }) {
                 wrapper.innerHTML = `
               <a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a>
               <br/>
-              <p>Use the following information to import the NFT to your wallet</p>
+              <p>Save the following information for your reference</p>
               <p className="address">Contract Address: <br/> ${mintAddressTestnet}</p>
               <p>Token ID: ${Obj.ID}</p>
                `
