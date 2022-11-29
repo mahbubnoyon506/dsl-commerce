@@ -39,7 +39,7 @@ const UpdateProduct = () => {
     const img = e.target.img.files[0];
     const brand = e.target.brand.value;
     const color = e.target.color.value;
-    // const type = e.target.type.value;
+    const type = e.target.type.value;
     const price = e.target.price.value;
     const offeringProduct = e.target.offeringProduct.value;
     const availableProduct = e.target.availableProduct.value;
@@ -54,7 +54,7 @@ const UpdateProduct = () => {
     formData.append('img', img)
     formData.append('brand', brand)
     formData.append('color', color)
-    // formData.append('type', type)
+    formData.append('type', type)
     formData.append('price', price)
     formData.append('offeringProduct', offeringProduct)
     formData.append('availableProduct', availableProduct)
@@ -157,7 +157,7 @@ const UpdateProduct = () => {
                 </div>
               </div>
 
-              {/* <div className="col-lg-12 col-md-12">
+              <div className="col-lg-12 col-md-12">
                 <div className="form-group">
                   <p className='mb-1 text-white '>Product Type </p>
                   <select
@@ -166,7 +166,7 @@ const UpdateProduct = () => {
                     name="type"
                   >
                     <option value={productDetail?.type} > {productDetail?.type} </option>
-                    <option value="cameras">Cameras</option>
+                    {/* <option value="cameras">Cameras</option>
                     <option value="electronics">Electronics</option>
                     <option value="audio">Audio</option>
                     <option value="computers">Computers</option>
@@ -174,10 +174,10 @@ const UpdateProduct = () => {
                     <option value="laptop">Laptop</option>
                     <option value="watches">Watches</option>
                     <option value="mobile">Mobile</option>
-                    <option value="headphone">Headphone</option>
+                    <option value="headphone">Headphone</option> */}
                   </select>
                 </div>
-              </div> */}
+              </div>
 
               <div className="col-lg-12 col-md-12">
                 <div className="form-group">

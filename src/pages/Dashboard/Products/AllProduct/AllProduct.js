@@ -18,6 +18,19 @@ const AllProduct = () => {
   const [allProduct, setAllProduct] = useState([]);
   const [refetch, setRefetch] = useState(false);
 
+  const [getCategory, setGetCategory] = useState([]);
+  // console.log(allProduct)
+
+  useEffect(() => {
+    fetch("https://backend.dslcommerce.com/api/category/")
+      .then((res) => res.json())
+      .then((data) => setGetCategory(data));
+  }, []);
+
+  console.log(getCategory);
+
+
+
   // Pagination
   const [getPage, setPage] = useState(1);
   const [show, setShow] = useState(10);
@@ -94,6 +107,8 @@ const AllProduct = () => {
     }
   };
 
+  console.log(sliceProducts);
+
   return (
     <div className="productBody">
       <div className="d-flex flex-column flex-lg-row mb-3 justify-content-lg-between align-items-center">
@@ -133,7 +148,9 @@ const AllProduct = () => {
                   </td>
                   <td className="text-left productHidden">{product?.price}</td>
                   <td className="text-left text-capitalize productHidden">
-                    {product?.type}
+                    {
+                      getCategory?.find((cat) => cat?._id === product?.category)?.name
+                    }
                   </td>
                   <td className="action">
                     <div className="actionDiv text-left">

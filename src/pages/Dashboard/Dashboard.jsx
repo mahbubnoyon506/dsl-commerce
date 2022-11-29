@@ -29,14 +29,16 @@ const menuLinkStyles = ({ isActive }) => {
 const drawerWidth = 280;
 
 function Dashboard(props) {
-  // const { admin, logout } = React.useContext(AdminContext);
-  // const navigate = useNavigate();
+  const { admin, logout } = React.useContext(AdminContext);
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (admin?.role !== "admin") {
-  //     navigate("/");
-  //   }
-  // }, [admin, navigate])
+  useEffect(() => {
+    if (admin?.role !== "admin") {
+      navigate("/");
+    }
+  }, [admin, navigate])
+
+
 
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -49,10 +51,10 @@ function Dashboard(props) {
     setMobileOpen(false);
   };
 
-  // const handleLogout = () => {
-  //   logout();
-  //   navigate("/");
-  // };
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   const drawer = (
     <div className="sideBar">
@@ -169,14 +171,14 @@ function Dashboard(props) {
 
 
 
-        {/* <Button
+        <Button
           variant="danger"
           onClick={() => handleLogout()}
           className="mt-3 text-uppercase ms-3"
           size="sm"
         >
           Log Out
-        </Button> */}
+        </Button>
       </div>
     </div>
   );
