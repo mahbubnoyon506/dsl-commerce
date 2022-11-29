@@ -81,70 +81,70 @@ const getQuesttokenContractTestnet = () => {
   return tokenContract;
 };
 
-// const getAllItemBlockchain = async () => {
-//   const provider = new ethers.providers.JsonRpcProvider(RPC);
-//   return {
-//     provider,
-//     // deployer: new ethers.Wallet(private_key, provider),
-//     NFTContract: new Contract(mintAddressTestnet, abi, provider)
-//   };
-// };
+const getAllItemBlockchain = async () => {
+  const provider = new ethers.providers.JsonRpcProvider(RPC);
+  return {
+    provider,
+    // deployer: new ethers.Wallet(private_key, provider),
+    NFTContract: new Contract(mintAddressTestnet, abi, provider)
+  };
+};
 
-// const genSignature = async (types, voucher, auth) => {
-//   const domain = {
-//     name: "NFT-Voucher",
-//     version: "1",
-//     verifyingContract: auth.contract,
-//     chainId: chainId
-//   };
-//   const BuyNFTVoucher = {
-//     id: voucher.id,
-//     price: voucher.price,
-//     tokenAddress: voucher.tokenAddress,
-//     nonce: voucher.nonce
-//   };
+const genSignature = async (types, voucher, auth) => {
+  const domain = {
+    name: "NFT-Voucher",
+    version: "1",
+    verifyingContract: auth.contract,
+    chainId: chainId
+  };
+  const BuyNFTVoucher = {
+    id: voucher.id,
+    price: voucher.price,
+    tokenAddress: voucher.tokenAddress,
+    nonce: voucher.nonce
+  };
 
-//   // const signature = await auth.signer._signTypedData(domain, types, BuyNFTVoucher);
+  // const signature = await auth.signer._signTypedData(domain, types, BuyNFTVoucher);
 
-//   return {
-//     ...voucher,
-//     // signature,
-//   };
-// };
+  return {
+    ...voucher,
+    // signature,
+  };
+};
 
-// const signBuyFunction = async (id, price, tokenAddress, refAddress, uri) => {
+const signBuyFunction = async (id, price, tokenAddress, refAddress, uri) => {
 
-//   const contracts = await getAllItemBlockchain();
-//   const auth = {
-//     signer: contracts.deployer,
-//     contract: contracts.NFTContract.address,
-//   };
+  const contracts = await getAllItemBlockchain();
+  const auth = {
+    signer: contracts.deployer,
+    contract: contracts.NFTContract.address,
+  };
 
-//   const types = {
-//     BuyNFTStruct: [
-//       { name: "id", type: "string" },
-//       { name: "price", type: "uint256" },
-//       { name: "tokenAddress", type: "address" },
-//       { name: "nonce", type: "string" },
-//     ],
-//   };
-//   console.log('111111111111111: ', id, price, tokenAddress, refAddress, uri)
+  const types = {
+    BuyNFTStruct: [
+      { name: "id", type: "string" },
+      { name: "price", type: "uint256" },
+      { name: "tokenAddress", type: "address" },
+      { name: "nonce", type: "string" },
+    ],
+  };
+  console.log('111111111111111: ', id, price, tokenAddress, refAddress, uri)
 
-//   // Generate nonce as transaction id
-//   const nonce = uuidv4();
-//   const voucher = {
-//     id: id,
-//     price: BigNumber.from(price),
-//     tokenAddress: tokenAddress,
-//     refAddress: refAddress.length !== 0 ? refAddress : "0x0000000000000000000000000000000000000000",
-//     nonce: nonce,
-//     uri: uri,
-//   };
-//   return {
-//     ...(await genSignature(types, voucher, auth)),
-//     price: price.toString(),
-//   };
-// }
+  // Generate nonce as transaction id
+  const nonce = uuidv4();
+  const voucher = {
+    id: id,
+    price: BigNumber.from(price),
+    tokenAddress: tokenAddress,
+    refAddress: refAddress.length !== 0 ? refAddress : "0x0000000000000000000000000000000000000000",
+    nonce: nonce,
+    uri: uri,
+  };
+  return {
+    ...(await genSignature(types, voucher, auth)),
+    price: price.toString(),
+  };
+}
 
 export default function DslProvider({ children }) {
   const [loginModal, setLoginModal] = useState(false);
@@ -268,7 +268,7 @@ export default function DslProvider({ children }) {
           const MintNFTContract = getMintContractTestnet();
           console.log(MintNFTContract);
           const provider = new ethers.providers.Web3Provider(ethereum);
-
+          console.log("enter7");
 
           // const parsedAmount = ethers.utils.parseEther(mintPrice);
           const admin = "0x626D20125da6a371aA48023bF9dad94BD66588F7";
@@ -311,10 +311,13 @@ export default function DslProvider({ children }) {
 
         } else {
           console.log("No ethereum object");
+          console.log("enter8");
         }
       }
     } catch (error) {
       console.log(error);
+      console.log("enter9");
+
       throw new Error("No ethereum object");
     }
   };
@@ -979,6 +982,7 @@ export default function DslProvider({ children }) {
       payByTestnetUSDSC,
       payByTestnetDSL,
       payByTestnetS39,
+      signBuyFunction,
       payByTestnetQuest,
     }}>
       {children}
