@@ -189,7 +189,15 @@ function CheckoutArea({ expiryTimestamp }) {
       .then((res) => {
         if (res.status === 200) {
           setOtpVerify(res.data.message);
+          setEmailVerify(true);
+          swal({
+            text: res.data.message,
+            icon: "success",
+            button: "OK!",
+            className: "modal_class_success",
+          });
         }
+        setOpenEmail(false)
       })
       .catch((err) => {
         console.log(err.response.data.message);
@@ -209,7 +217,14 @@ function CheckoutArea({ expiryTimestamp }) {
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
+          setmobileNoVerify(true);
           setOtpVerify(res.data.message);
+          swal({
+            text: res.data.message,
+            icon: "success",
+            button: "OK!",
+            className: "modal_class_success",
+          });
         }
       })
       .catch((err) => {
@@ -284,7 +299,6 @@ function CheckoutArea({ expiryTimestamp }) {
     setDisableAfterActivation(true);
     if (email1.length > 0 && email1.includes("@" && ".")) {
       // setLoading(true);
-      setEmailVerify(true);
       await axios
         .post("https://backend.dslcommerce.com/api/email/emailsend", {
           email: email1,
@@ -292,6 +306,7 @@ function CheckoutArea({ expiryTimestamp }) {
         .then((res) => {
           if (res.status === 200) {
             // alert(res.data.message);
+
             // setSendMail(res.data.email)
             restarting(180);
             swal({
@@ -524,185 +539,208 @@ function CheckoutArea({ expiryTimestamp }) {
     //     });
     // }
     // setIsClickedMint(true)
-    setRequestLoading(true);
-    console.log(USDSCtokenAddressTestnet)
+    if (!name && !country && !address && !city && !postCode && !orderNotes && !email1 && !mobile) {
+      swal({
+        title: "Attention",
+        text: "Please fill up billing details",
+        icon: "warning",
+        button: "OK",
+        dangerMode: true,
+        className: "modal_class_success",
+      });
+    }
+    else if (!emailVerify || !mobileNoVerify) {
+      swal({
+        title: "Attention",
+        text: "Please verify your email and mobile number",
+        icon: "warning",
+        button: "OK",
+        dangerMode: true,
+        className: "modal_class_success",
+      });
+    }
+    else {
+      setRequestLoading(true);
+      console.log(USDSCtokenAddressTestnet)
 
-    console.log("222222", priceByToken, tokenAddress, affiliateWalletAddress)
+      console.log("222222", priceByToken, tokenAddress, affiliateWalletAddress)
 
-    const generateId = Math.floor(Math.random() * 1000000000000);
-    const data = new FormData();
-    data.append('id', generateId.toString());
-    data.append('price', priceByToken);
-    data.append('tokenAddress', tokenAddress);
-    data.append('nonce', uuidv4());
-    data.append('refAddress', affiliateWalletAddress);
-    data.append('walletAddress', user.walletAddress);
+      const generateId = Math.floor(Math.random() * 1000000000000);
+      const data = new FormData();
+      data.append('id', generateId.toString());
+      data.append('price', priceByToken);
+      data.append('tokenAddress', tokenAddress);
+      data.append('nonce', uuidv4());
+      data.append('refAddress', affiliateWalletAddress);
+      data.append('walletAddress', user.walletAddress);
 
-    // ************************ Data *************************//
-    const walletAddress = user?.walletAddress;
-    const phone = mobile
-    const email = email1
-    const orderItems = carts;
-    const status = 'pending'
-    const date = newDate
-    const refAddress = affiliateWalletAddress
-    const payMethod = 'crypto'
-    // ************************ Data *************************//
+      // ************************ Data *************************//
+      const walletAddress = user?.walletAddress;
+      const phone = mobile
+      const email = email1
+      const orderItems = carts;
+      const status = 'pending'
+      const date = newDate
+      const refAddress = affiliateWalletAddress
+      const payMethod = 'crypto'
+      // ************************ Data *************************//
 
-    await axios.post('https://backend.dslcommerce.com/api/v1/mint/uri-json-nft', data, {
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("tokendslcommerce")}`,
-      },
-    })
-      .then(async (res) => {
-        let Obj = {};
-        console.log("111111123: ", data)
-        console.log(res.data.uri);
-        if (res.status === 200) {
-          const data1 = await signBuyFunction(generateId.toString(),
-            ethers.utils.parseEther(priceByToken),
-            tokenAddress,
-            affiliateWalletAddress,
-            res.data.uri)
-          console.log('11111112322222222222222222222299', data1)
-
-
-          if (token === "bnb") {
-            Obj = await payByTestnetBNB(data1);
-          }
-          else if (token === "usdsc") {
-            Obj = await payByTestnetUSDSC(data1);
-          }
-          else if (token === "dsl") {
-            Obj = await payByTestnetDSL(data1);
-          }
-          else if (token === "s39") {
-            Obj = await payByTestnetS39(data1);
-          }
-          else if (token === "finquest") {
-            Obj = await payByTestnetQuest(data1);
-          }
+      await axios.post('https://backend.dslcommerce.com/api/v1/mint/uri-json-nft', data, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("tokendslcommerce")}`,
+        },
+      })
+        .then(async (res) => {
+          let Obj = {};
+          console.log("111111123: ", data)
+          console.log(res.data.uri);
+          if (res.status === 200) {
+            const data1 = await signBuyFunction(generateId.toString(),
+              ethers.utils.parseEther(priceByToken),
+              tokenAddress,
+              affiliateWalletAddress,
+              res.data.uri)
+            console.log('11111112322222222222222222222299', data1)
 
 
-          // const data2 = {
+            if (token === "bnb") {
+              Obj = await payByTestnetBNB(data1);
+            }
+            else if (token === "usdsc") {
+              Obj = await payByTestnetUSDSC(data1);
+            }
+            else if (token === "dsl") {
+              Obj = await payByTestnetDSL(data1);
+            }
+            else if (token === "s39") {
+              Obj = await payByTestnetS39(data1);
+            }
+            else if (token === "finquest") {
+              Obj = await payByTestnetQuest(data1);
+            }
 
-          // name,
-          // email,
-          // phone,
-          // country,
-          // address,
-          // city,
-          // postCode,
-          // orderNotes,
-          // walletAddress,
-          // orderItems,
-          // token,
-          // payAmount,
-          // tokenAddress,
-          // refAddress,
-          // payMethod,
-          // status,
-          // date,
-          // };
-          const data2 = {
-            id: generateId.toString(),
-            price: priceByToken,
-            walletAddress: walletAddress,
-            tokenAddress: tokenAddress,
-            orderItems: orderItems,
-            refAddress: refAddress
-          }
-          console.log('Emtiaz Emon Data', data2)
-          data.append("mint_hash", Obj.mint_hash);
-          setTokenId(Obj.ID);
-          console.log(data2);
-          await axios.post("https://backend.dslcommerce.com/api/v1/mint/save-nft", data2, {
-            // headers: {
-            //   'authorization': `Bearer ${localStorage.getItem('tokendslcommerce')}`
-            // }
-          })
-            .then(res => {
-              if (res.status === 200) {
-                setRequestLoading(false);
-                const wrapper = document.createElement("div");
-                wrapper.innerHTML = `
+
+            // const data2 = {
+
+            // name,
+            // email,
+            // phone,
+            // country,
+            // address,
+            // city,
+            // postCode,
+            // orderNotes,
+            // walletAddress,
+            // orderItems,
+            // token,
+            // payAmount,
+            // tokenAddress,
+            // refAddress,
+            // payMethod,
+            // status,
+            // date,
+            // };
+            const data2 = {
+              id: generateId.toString(),
+              price: priceByToken,
+              walletAddress: walletAddress,
+              tokenAddress: tokenAddress,
+              orderItems: orderItems,
+              refAddress: refAddress
+            }
+            console.log('Emtiaz Emon Data', data2)
+            data.append("mint_hash", Obj.mint_hash);
+            setTokenId(Obj.ID);
+            console.log(data2);
+            await axios.post("https://backend.dslcommerce.com/api/v1/mint/save-nft", data2, {
+              // headers: {
+              //   'authorization': `Bearer ${localStorage.getItem('tokendslcommerce')}`
+              // }
+            })
+              .then(res => {
+                if (res.status === 200) {
+                  setRequestLoading(false);
+                  const wrapper = document.createElement("div");
+                  wrapper.innerHTML = `
               <a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a>
               <br/>
               <p>Save the following information for your reference</p>
               <p className="address">Contract Address: <br/> ${mintAddressTestnet}</p>
               <p>Token ID: ${Obj.ID}</p>
                `
+                  swal({
+                    title: "Payment are completed",
+                    content: wrapper,
+                    icon: "success",
+                    buttons: true,
+                    className: "modal_class_success",
+                  })
+                    .then((willDelete) => {
+                      if (willDelete) {
+                        navigate(`/mintednft/${Obj.ID}/${mintAddressTestnet}`)
+                        swal({
+                          title: "Success",
+                          text: "Please Check your mail for payment",
+                          icon: "success",
+                          button: "OK!",
+                          className: "modal_class_success",
+                        });
+                      } else {
+                        console.log("good job")
+                        swal({
+                          title: "Success",
+                          text: "Please Check your mail for payment",
+                          icon: "success",
+                          button: "OK!",
+                          className: "modal_class_success",
+                        });
+                      }
+                    });
+                  postDataAfterPayment(name, email, phone, country, address, city, postCode, orderNotes, walletAddress, orderItems, token, payAmount, tokenAddress, refAddress, payMethod, status, date);
+                  handleSubmit(Obj.mint_hash, priceByToken);
+                }
+              })
+              .catch(err => {
+                console.log(err);
+                setRequestLoading(false);
+                const wrapper = document.createElement("div");
+                wrapper.innerHTML = `<a href=${Obj.mint_hash} target="_any" className="link_hash text-primary">${Obj.mint_hash}</a> <br/> <p className="success text-light">Your payment has been successful but error in while saving data.</p>`
                 swal({
-                  title: "Payment are completed",
+                  title: "Warning",
                   content: wrapper,
-                  icon: "success",
-                  buttons: true,
+                  icon: "warning",
+                  button: "OK",
                   className: "modal_class_success",
-                })
-                  .then((willDelete) => {
-                    if (willDelete) {
-                      navigate(`/mintednft/${Obj.ID}/${mintAddressTestnet}`)
-                      swal({
-                        title: "Success",
-                        text: "Please Check your mail for payment",
-                        icon: "success",
-                        button: "OK!",
-                        className: "modal_class_success",
-                      });
-                    } else {
-                      console.log("good job")
-                      swal({
-                        title: "Success",
-                        text: "Please Check your mail for payment",
-                        icon: "success",
-                        button: "OK!",
-                        className: "modal_class_success",
-                      });
-                    }
-                  });
-                postDataAfterPayment(name, email, phone, country, address, city, postCode, orderNotes, walletAddress, orderItems, token, payAmount, tokenAddress, refAddress, payMethod, status, date);
-                handleSubmit(Obj.mint_hash, priceByToken);
-              }
-            })
-            .catch(err => {
-              console.log(err);
-              setRequestLoading(false);
-              const wrapper = document.createElement("div");
-              wrapper.innerHTML = `<a href=${Obj.mint_hash} target="_any" className="link_hash text-primary">${Obj.mint_hash}</a> <br/> <p className="success text-light">Your payment has been successful but error in while saving data.</p>`
-              swal({
-                title: "Warning",
-                content: wrapper,
-                icon: "warning",
-                button: "OK",
-                className: "modal_class_success",
-              });
-            })
-          // console.log(res.data.Img)
+                });
+              })
+            // console.log(res.data.Img)
 
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        setRequestLoading(false);
-        if (err.code === 4001) {
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          setRequestLoading(false);
+          if (err.code === 4001) {
+            return swal({
+              title: "Failed",
+              text: "Payment Failed!",
+              icon: "warning",
+              button: "OK",
+              dangerMode: true,
+              className: "modal_class_success",
+            });
+          }
           return swal({
-            title: "Failed",
-            text: "Payment Failed!",
+            title: "Attention",
+            text: "Something went wrong. Please try again later.",
             icon: "warning",
             button: "OK",
             dangerMode: true,
             className: "modal_class_success",
           });
-        }
-        return swal({
-          title: "Attention",
-          text: "Something went wrong. Please try again later.",
-          icon: "warning",
-          button: "OK",
-          dangerMode: true,
-          className: "modal_class_success",
-        });
-      })
+        })
+    }
+
   }
 
 
@@ -1018,10 +1056,10 @@ function CheckoutArea({ expiryTimestamp }) {
             <div className="col-lg-4 col-md-12">
               <div className="order-details">
                 <div className="payment-box">
-                  <h3 className="title">Payment Method</h3>
-
-                  <div className="payment-method">
-                    {/* <p>
+                  <h3 className="title">Pay by Crypto</h3>
+                  {/* 
+                  <div className="payment-method"> */}
+                  {/* <p>
                       <input
                         type="radio"
                         id="cash-on-delivery"
@@ -1030,7 +1068,7 @@ function CheckoutArea({ expiryTimestamp }) {
                       />
                       <label htmlFor="cash-on-delivery">Cash on Delivery</label>
                     </p> */}
-                    <p>
+                  {/* <p>
                       <input
                         type="radio"
                         id="pay-by-crypto"
@@ -1042,8 +1080,8 @@ function CheckoutArea({ expiryTimestamp }) {
                         }}
                       />
                       <label htmlFor="pay-by-crypto">Pay by Crypto</label>
-                    </p>
-                    <p>
+                    </p> */}
+                  {/* <p>
                       <input
                         type="radio"
                         id="pay-by-paynow"
@@ -1055,148 +1093,145 @@ function CheckoutArea({ expiryTimestamp }) {
                         }}
                       />
                       <label htmlFor="pay-by-paynow">Pay by PayNow</label>
-                    </p>
-                  </div>
+                    </p> */}
+                  {/* </div> */}
                   {/* Crypto payment method */}
-                  {
-                    cryptoPayment &&
-                    <>
-                      <div className='mt-3 border p-2'>
-                        <span className=" pt-1 text-primary mb-2 fontArial fontExtand">Choose how you want to pay:</span>
 
-                        <div className="widthDetailsInput mt-1">
-                          <Select
-                            value={selectedOption}
-                            onChange={handleChoosePayment}
-                            options={selectOptions}
-                            styles={customStyles}
-                            formatOptionLabel={(option) => (
-                              <div
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  gap: "5px",
-                                }}
-                              >
-                                <img
-                                  src={option.image}
-                                  style={{
-                                    width: "20px",
-                                    height: "20px",
-                                    borderRadius: "100px",
-                                  }}
-                                  alt=""
-                                />
-                                <span>{option.label}</span>
-                              </div>
-                            )}
-                          />
-                        </div>
+                  <div className='mt-3 border p-2'>
+                    <span className=" pt-1 text-primary mb-2 fontArial fontExtand">Choose how you want to pay:</span>
 
-                        <Typography className="pt-2 pb-3" variant="subtitle2" gutterBottom component="div">
-                          ( <span className="spanDiscount ">30% discount if paid with DSL tokens</span>)
-                        </Typography>
-                        {/* {token === "dsl" && <p style={{ margin: '0' }}>You saved {savedUsdAmount} USD</p>} */}
-                        {/* Saved bucks */}
-                        {gotRefCode && <div style={{ textAlign: 'start' }}>
-                          {token === "bnb" && <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
-                            <span className="spanDiscount ">You saved {savedBNB4Digit} BNB</span>
-                          </Typography>}
-                          {token === "usdsc" && <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
-                            <span className="spanDiscount ">You saved {savedUSDSC4Digit} USDSC</span>
-                          </Typography>}
-                          {token === "dsl" && <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
-                            <span className="spanDiscount ">You saved {savedDSL4Digit} DSL</span>
-                          </Typography>}
-                          {token === "s39" && <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
-                            <span className="spanDiscount ">You saved {savedS394Digit} S39</span>
-                          </Typography>}
-                          {token === "finquest" && <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
-                            <span className="spanDiscount ">You saved {savedFINQ4Digit} FINQUEST</span>
-                          </Typography>}
-                        </div>}
-
-                        <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
-                          <span className="spanDiscount ">Enjoy 10% if you have affiliate code.</span>
-                        </Typography>
-
-                        <div>
-                          <p>Affiliate Code : </p>
-                          <div className="d-flex" style={{ width: '100%' }}>
-                            <input
-                              type="text"
-                              onChange={handleAffiliateCode}
-                              // value={user?.affiliateCode ? user?.affiliateCode : affiliateCode}
-                              // disabled={user.affiliateCode ? true : false}
-                              className="form-control "
+                    <div className="widthDetailsInput mt-1">
+                      <Select
+                        isSearchable={false}
+                        value={selectedOption}
+                        onChange={handleChoosePayment}
+                        options={selectOptions}
+                        styles={customStyles}
+                        formatOptionLabel={(option) => (
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "5px",
+                            }}
+                          >
+                            <img
+                              src={option.image}
+                              style={{
+                                width: "20px",
+                                height: "20px",
+                                borderRadius: "100px",
+                              }}
+                              alt=""
                             />
-                            {!gotRefCode ? (
-                              <>
-                                <button disabled className='bg-danger text-white border-0'><ImCross /></button>
-                              </>
-                            ) : (
-                              <>
-                                <button disabled className='bg-success text-white border-0'><GiCheckMark /></button>
-                              </>
-                            )}
+                            <span>{option.label}</span>
                           </div>
-                        </div>
+                        )}
+                      />
+                    </div>
 
+                    <Typography className="pt-2 pb-3" variant="subtitle2" gutterBottom component="div">
+                      ( <span className="spanDiscount ">30% discount if paid with DSL tokens</span>)
+                    </Typography>
+                    {/* {token === "dsl" && <p style={{ margin: '0' }}>You saved {savedUsdAmount} USD</p>} */}
+                    {/* Saved bucks */}
+                    {gotRefCode && <div style={{ textAlign: 'start' }}>
+                      {token === "bnb" && <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
+                        <span className="spanDiscount ">You saved {savedBNB4Digit} BNB</span>
+                      </Typography>}
+                      {token === "usdsc" && <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
+                        <span className="spanDiscount ">You saved {savedUSDSC4Digit} USDSC</span>
+                      </Typography>}
+                      {token === "dsl" && <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
+                        <span className="spanDiscount ">You saved {savedDSL4Digit} DSL</span>
+                      </Typography>}
+                      {token === "s39" && <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
+                        <span className="spanDiscount ">You saved {savedS394Digit} S39</span>
+                      </Typography>}
+                      {token === "finquest" && <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
+                        <span className="spanDiscount ">You saved {savedFINQ4Digit} FINQUEST</span>
+                      </Typography>}
+                    </div>}
 
+                    <Typography className="pt-1 pb-1  text-gradient" variant="subtitle2" gutterBottom component="div">
+                      <span className="spanDiscount ">Enjoy 10% if you have affiliate code.</span>
+                    </Typography>
 
+                    <div>
+                      <p>Affiliate Code : </p>
+                      <div className="d-flex" style={{ width: '100%' }}>
+                        <input
+                          type="text"
+                          onChange={handleAffiliateCode}
+                          // value={user?.affiliateCode ? user?.affiliateCode : affiliateCode}
+                          // disabled={user.affiliateCode ? true : false}
+                          className="form-control "
+                        />
+                        {!gotRefCode ? (
+                          <>
+                            <button disabled className='bg-danger text-white border-0'><ImCross /></button>
+                          </>
+                        ) : (
+                          <>
+                            <button disabled className='bg-success text-white border-0'><GiCheckMark /></button>
+                          </>
+                        )}
                       </div>
+                    </div>
 
-                      <div style={{ color: '#ffffff', marginTop: '2rem', textAlign: 'start' }}>
-                        {token === "bnb" && <p style={{ margin: '0' }}>You need to pay {bnbTwoDec} BNB</p>}
-                        {token === "usdsc" && <p style={{ margin: '0' }}>You need to pay {usdsc} USDSC</p>}
-                        {token === "dsl" && <p style={{ margin: '0' }}>You need to pay {dslTwoDec} DSL</p>}
-                        {token === "s39" && <p style={{ margin: '0' }}>You need to pay {s39TwoDec} S39</p>}
-                        {token === "finquest" && <p style={{ margin: '0' }}>You need to pay {finquestTwoDec} FINQUEST</p>}
 
-                      </div>
-                      <div className="dslDiscountForPayment">
-                        {token === "dsl" && <p style={{ margin: '0', color: "green" }} className='fw-bold'>YOU GET DISCOUNT OF : USD {disUsdTwoDec}</p>}
-                      </div>
-                      <div className="d-flex" style={{ alignItems: 'flex-end', justifyContent: 'start' }}>
-                        {
-                          (!user.walletAddress || user.walletAddress === "undefined") ?
+
+                  </div>
+
+                  <div style={{ color: 'black', marginTop: '1rem', textAlign: 'start' }}>
+                    {token === "bnb" && <p style={{ margin: '0' }}>You need to pay {bnbTwoDec} BNB</p>}
+                    {token === "usdsc" && <p style={{ margin: '0' }}>You need to pay {usdsc} USDSC</p>}
+                    {token === "dsl" && <p style={{ margin: '0' }}>You need to pay {dslTwoDec} DSL</p>}
+                    {token === "s39" && <p style={{ margin: '0' }}>You need to pay {s39TwoDec} S39</p>}
+                    {token === "finquest" && <p style={{ margin: '0' }}>You need to pay {finquestTwoDec} FINQUEST</p>}
+
+                  </div>
+                  <div className="dslDiscountForPayment">
+                    {token === "dsl" && <p style={{ margin: '0', color: "green" }} className='fw-bold'>YOU GET DISCOUNT OF : USD {disUsdTwoDec}</p>}
+                  </div>
+                  <div className="d-flex" style={{ alignItems: 'flex-end', justifyContent: 'start' }}>
+                    {
+                      (!user.walletAddress || user.walletAddress === "undefined") ?
+                        <button type="submit"
+                          className="default-btn"
+                          style={{ cursor: "pointer" }} onClick={openWalletModal}><i className="fas fa-wallet me-1"></i> <span>Connect Wallet</span></button>
+
+                        :
+
+                        <Typography>
+                          {token === "bnb" &&
                             <button type="submit"
                               className="default-btn"
-                              style={{ cursor: "pointer" }} onClick={openWalletModal}><i className="fas fa-wallet me-1"></i> <span>Connect Wallet</span></button>
-
-                            :
-
-                            <Typography>
-                              {token === "bnb" &&
-                                <button type="submit"
-                                  className="default-btn"
-                                  style={{ cursor: "pointer" }} onClick={() => paymentCrypto(bnbTwoDec, "0x0000000000000000000000000000000000000000", affiliateWalletAddress)} href="#!">Place Order FOR ${bnbTwoDec} BNB</button>}
-                              {token === "usdsc" &&
-                                <button type="submit"
-                                  className="default-btn"
-                                  style={{ cursor: "pointer" }} onClick={() => paymentCrypto(usdsc, USDSCtokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${usdsc} USDSC</button>}
-                              {token === "dsl" &&
-                                <button type="submit"
-                                  className="default-btn"
-                                  style={{ cursor: "pointer" }} onClick={() => paymentCrypto(dslTwoDec, DSLtokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${dslTwoDec} DSl</button>}
-                              {token === "s39" &&
-                                <button type="submit"
-                                  className="default-btn"
-                                  style={{ cursor: "pointer" }} onClick={() => paymentCrypto(s39TwoDec, S39tokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${s39TwoDec} S39</button>}
-                              {token === "finquest" &&
-                                <button type="submit"
-                                  className="default-btn"
-                                  style={{ cursor: "pointer" }} onClick={() => paymentCrypto(finquestTwoDec, QuesttokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${finquestTwoDec} FINQUEST</button>}
-                            </Typography>
-                        }
-                      </div>
-                    </>
-                  }
+                              style={{ cursor: "pointer" }} onClick={() => paymentCrypto(bnbTwoDec, "0x0000000000000000000000000000000000000000", affiliateWalletAddress)} href="#!">Place Order FOR ${bnbTwoDec} BNB</button>}
+                          {token === "usdsc" &&
+                            <button type="submit"
+                              className="default-btn"
+                              style={{ cursor: "pointer" }} onClick={() => paymentCrypto(usdsc, USDSCtokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${usdsc} USDSC</button>}
+                          {token === "dsl" &&
+                            <button type="submit"
+                              className="default-btn"
+                              style={{ cursor: "pointer" }} onClick={() => paymentCrypto(dslTwoDec, DSLtokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${dslTwoDec} DSl</button>}
+                          {token === "s39" &&
+                            <button type="submit"
+                              className="default-btn"
+                              style={{ cursor: "pointer" }} onClick={() => paymentCrypto(s39TwoDec, S39tokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${s39TwoDec} S39</button>}
+                          {token === "finquest" &&
+                            <button type="submit"
+                              className="default-btn"
+                              style={{ cursor: "pointer" }} onClick={() => paymentCrypto(finquestTwoDec, QuesttokenAddressTestnet, affiliateWalletAddress)} href="#!">Place Order FOR ${finquestTwoDec} FINQUEST</button>}
+                        </Typography>
+                    }
+                  </div>
                   {/* PayNow payment method */}
-                  {
+                  {/* {
                     payNowPayment &&
                     <PayNowMethod totalPrice={totalPrice} />
-                  }
+                  } */}
                   {/* <button
                     type="submit"
                     className="default-btn"

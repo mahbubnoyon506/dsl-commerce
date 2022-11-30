@@ -218,7 +218,7 @@ function BestSellers({
             }/page/1`}
           className="default-btn"
         >
-          See ALL Products
+          See All Products
           <span></span>
         </Link>
       </div>

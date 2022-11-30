@@ -20,7 +20,7 @@ const style = {
   p: 4
 };
 
-export default function EmailVerifyModal({ open, userRefetch, setOpenEmail, updateProfile, otpVerify, setError, handleVerifyEmail, minutes, seconds }) {
+export default function EmailVerifyModal({ open, userRefetch, handleVerifyOTP, setOpenEmail, updateProfile, otpVerify, setError, handleVerifyEmail, minutes, seconds }) {
 
   const [otpCode, setOtpCode] = useState()
   const [isOtpError, setOtpError] = useState(false)
@@ -38,52 +38,10 @@ export default function EmailVerifyModal({ open, userRefetch, setOpenEmail, upda
   const hendelSubmit = (e) => {
     setCount(count - 1)
     e.preventDefault();
-    console.log('otpVerify',otpVerify);
-    console.log('otpCode', otpCode);
-    // if (otpVerify !== otpCode) {
-    //   return swal({
-    //     title: "Warning",
-    //     text: "Before updating please verify your email!",
-    //     icon: "warning",
-    //     button: "OK",
-    //     dangerMode: true,
-    //     className: "modal_class_success",
-    //   });
-    // }
-    // else if (otpVerify == otpCode) {
-    //   swal({
-    //     text: "Email Verified and updated your profile.",
-    //     icon: "success",
-    //     button: "OK!",
-    //     className: "modal_class_success",
-    //   });
-    //   updateProfile();
-    //   handleClose();
-    //   setOtpError(false)
-    //   setError(false)
-    //   handleClose(false)
-    //   return;
-    // }
-    // if (count > 0) {
-    //   let content2 = document.createElement("p");
-    //   content2.innerHTML = 'You have entered wrong OTP. Please try again. You have another <br/><span style="color: #0d6efd;">0' + count + '</span> more tries .'
-    //   swal({
-    //     content: content2,
-    //     icon: "warning",
-    //     button: "OK!",
-    //     className: "modal_class_success",
-    //   });
-    // } else {
-    //   setDisabled(true)
-    //   swal({
-    //     text: "You have entered wrong OTP, And you have no more tries left. You can request another OTP again",
-    //     icon: "warning",
-    //     button: "OK!",
-    //     className: "modal_class_success",
-    //   });
-    // }
-    // setError('Email OTP Code not matched')
-    // setOtpError(true)
+    // console.log('otpVerify',otpVerify);
+    // console.log('otpCode', otpCode);
+    handleVerifyOTP(otpCode)
+
 
   }
 

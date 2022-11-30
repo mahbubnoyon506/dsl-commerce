@@ -1,4 +1,4 @@
-import React, {  useContext } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 import { WishlistContext } from "../../contexts/wishlist-context";
@@ -22,7 +22,7 @@ function NewArrivals({
 
         <div className="row justify-content-center">
           {products &&
-            products.slice(0, 4).map((product) => {
+            products.slice(0, 4).reverse().map((product) => {
               return (
                 <div className="col-lg-3 col-sm-6" key={product?._id}>
                   <div className="single-arrivals-products ">

@@ -112,7 +112,7 @@ function Navbar() {
                     <div className="">
                       <select
                         className="py-3 px-5 text-white "
-                        style={{ cursor: "pointer", background: "#15407F" , width:"286px" }}
+                        style={{ cursor: "pointer", background: "#15407F", width: "286px" }}
                         name="category"
                         required
                         onChange={(e) => {
@@ -143,7 +143,7 @@ function Navbar() {
 
             <div className="collapse navbar-collapse mean-menu navmenuitem">
               <ul className="navbar-nav responsive-menu">
-                <li className="nav-item pl-2">
+                <li className="nav-item px-1">
                   <NavLink
                     to={"/"}
                     // isActive={() => homeRoutes.includes(pathname)}

@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; 
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import parse from "html-react-parser";
 import WriteReview from "./WriteReview";
@@ -64,7 +64,7 @@ function ProductsDetailsArea() {
       .catch((err) => console.log(err));
   }, [productId, refetch]);
 
-  console.log('single product' , product)
+  console.log('single product', product)
 
   const addToCart = (product) => {
     let currentItem = {
@@ -118,12 +118,12 @@ function ProductsDetailsArea() {
                       alt={product.productName}
                     />
                   </div>
-                  <div>
+                  {/* <div>
                     <img
                       src={product?.product_images}
                       alt={product.productName}
                     />
-                  </div>
+                  </div> */}
                 </Carousel>
               </div>
             </div>
@@ -145,8 +145,10 @@ function ProductsDetailsArea() {
                 <div className="price">
                   <span className="old-price">${product?.price}</span>
                   {/* <span className="new-price">${product?.price}</span> */}
-                  <span className="new-price">${product?.price - ((product?.price * product?.offeringProduct)/100)}</span>
-                  <span className="new-price pl-3"> <small> Discount {product?.offeringProduct} %</small></span>
+                  <span className="new-price">${product?.price - ((product?.price * product?.offeringProduct) / 100)}0</span>
+                  <span className="new-price pl-3">
+                    {/* <small> Discount {product?.offeringProduct} %</small> */}
+                  </span>
                 </div>
 
                 <ul className="products-info">
@@ -215,7 +217,7 @@ function ProductsDetailsArea() {
                       type="submit"
                       className="default-btn"
                       onClick={() => {
-                        product.price=product?.price - ((product?.price * product?.offeringProduct)/100)
+                        product.price = product?.price - ((product?.price * product?.offeringProduct) / 100)
                         addToCart(product)
                       }}
                     >

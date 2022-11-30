@@ -170,7 +170,7 @@ function FeaturedArea() {
         <div className="collection-btn text-center mt-5">
           <Link to="/shop" className="default-btn">
             {/* <i className="flaticon-shopping-cart"></i> */}
-            See ALL Products
+            See All Products
             <span></span>
           </Link>
         </div>
