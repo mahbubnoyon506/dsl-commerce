@@ -9,6 +9,8 @@ import {
   DSLtokenAddressTestnet,
   mintABITestnet,
   mintAddressTestnet,
+  mintABITestnet2,
+  mintAddressTestnet2,
   USDSCtokenABITestnet,
   USDSCtokenAddressTestnet,
   S39tokenAddressTestnet,
@@ -29,6 +31,18 @@ const getMintContractTestnet = () => {
   const MintNFTContract = new ethers.Contract(
     mintAddressTestnet,
     mintABITestnet,
+    signer
+  );
+
+  return MintNFTContract;
+};
+
+const getMintContractTestnet2 = () => {
+  const provider = new ethers.providers.Web3Provider(ethereum);
+  const signer = provider.getSigner();
+  const MintNFTContract = new ethers.Contract(
+    mintAddressTestnet2,
+    mintABITestnet2,
     signer
   );
 
@@ -256,6 +270,8 @@ export default function DslProvider({ children }) {
     setUser({});
     localStorage.removeItem("token");
   };
+
+  
 
   const payByTestnetBNB = async (data) => {
     try {

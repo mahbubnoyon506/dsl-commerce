@@ -22,7 +22,7 @@ import EmailVerifyModal from './EmailVerifyModal';
 
 
 const Profile = ({ expiryTimestamp }) => {
-  const { user, logOut, metamaskBalance, metamaskBalanceLoading, userRefetch, setUserRefetch, getBalanceTestnet } = useContext(DSLCommerceContext);
+  const { user, logOut, metamaskBalance, metamaskBalanceLoading, userRefetch, setUserRefetch, getBalanceTestnet, mint } = useContext(DSLCommerceContext);
   const [email1, setEmail] = useState('');
   const [emailVerify, setEmailVerify] = useState(false);
   const [disableAfterActivation, setDisableAfterActivation] = useState(false);
@@ -189,6 +189,7 @@ const Profile = ({ expiryTimestamp }) => {
 
   }
 
+
   
 
   return (
@@ -209,7 +210,7 @@ const Profile = ({ expiryTimestamp }) => {
                   <div className='d-flex'>
                     <input type="text" id='walletAddress' name="walletAddress" value={user?.walletAddress} className='form-control bg-transparent  rounded-0 rounded-start' disabled />
                     <button type="button" onClick={() => copyToClipboard(user?.walletAddress)} className="border bg-success rounded-0 rounded-end">
-                      <FontAwesomeIcon icon={faCopy} />
+                      <FontAwesomeIcon icon={faCopy} className='text-white' />
                     </button>
                   </div>
                 </div>
@@ -262,11 +263,20 @@ const Profile = ({ expiryTimestamp }) => {
               </div>
               <div className='col-md-6 px-4'>
                 <div className="mb-2">
+                  <label htmlFor='quantity-input'>Claim Membership NFT</label>
+                  <div className='d-flex'>
+                    <input type="text" id='quantity-input' name="memberShipNft" className='form-control bg-transparent  rounded-0 rounded-start' value={1} disabled />
+                    <button type="button"  className="btn btn-success  text-light rounded-0 rounded-end text-uppercase" onClick={mint}>
+                      Claim Now
+                    </button>
+                  </div>
+                </div>
+                <div className="mb-2">
                   <label htmlFor='referralID'>Referral ID</label>
                   <div className='d-flex'>
                     <input type="text" id='referralID' name="referralID" value={user?.myReferralCode} className='form-control bg-transparent  rounded-0 rounded-start' disabled />
                     <button type="button" onClick={() => copyToClipboard(user?.myReferralCode)} className="border bg-success rounded-0 rounded-end">
-                      <FontAwesomeIcon icon={faCopy} />
+                      <FontAwesomeIcon icon={faCopy} className='text-white' />
                     </button>
                   </div>
                 </div>
@@ -276,7 +286,7 @@ const Profile = ({ expiryTimestamp }) => {
                   <div className="d-flex">
                     <input type="text" id='referralID' name="referralID" value={window.location.origin + "/" + user?.myReferralCode} className='form-control bg-transparent  rounded-0 rounded-start' disabled />
                     <button type="button" onClick={() => copyToClipboard(window.location.origin + "/" + user?.myReferralCode)} className="border bg-success rounded-0 rounded-end">
-                      <FontAwesomeIcon icon={faCopy} className='' />
+                      <FontAwesomeIcon icon={faCopy} className='text-white' />
                     </button>
 
                   </div>
@@ -346,7 +356,7 @@ const Profile = ({ expiryTimestamp }) => {
         otpVerify={otpVerify}
         setError={setError}
       />
-      
+
     </>
 
   );

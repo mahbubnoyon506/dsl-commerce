@@ -1,13 +1,18 @@
 import mint from "./MintNFT.json";
+import mint2 from "./MintNFT2.json";
 import token from "./BEP20.json";
 import dsltestnet from "./DSLTestnet.json";
-import dslmainnet from "./DSLMainnet.json";
-import usdsc from "./USDSC.json";
+// import dslmainnet from "./DSLMainnet.json";
+// import usdsc from "./USDSC.json";
 import S39 from "./S39.json";
 import Quest from "./Quest.json";
 
 export const mintAddressTestnet = "0x128481da51fAc2b63B47DA9b4373E243bbc0009e";
 export const mintABITestnet = mint.abi;
+
+export const mintAddressTestnet2 = "0x306dB735E92849DA511D6278b34F81ffB44069e0";
+export const mintABITestnet2 = mint2.abi;
+
 
 export const RPC = "https://data-seed-prebsc-1-s1.binance.org:8545";
 
