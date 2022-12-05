@@ -489,12 +489,13 @@ function CheckoutArea({ expiryTimestamp }) {
   // console.log(affiliateWalletAddress);
 
   /// send full details to user
-  const handleSubmit = async (urlByPayment, priceAmmount) => {
+  const handleSubmit = async (urlByPayment, priceAmmount, orderID) => {
     // console.log("token", tokenId, TokeNID);
     // const NFTID = TokeNID;
     const transactionURL = urlByPayment;
+    const id = orderID;
     const email = email1;
-    const price = priceAmmount + " " + selectedOption.value;
+    const price = priceAmmount + " " + selectedOption.label;
     const orderItems = carts.map(cart => cart.productName);
     const estimatedArrival = "10 Days";
     const contact = "Email: support@dslcommerce.com, Phone: +60149939183";
@@ -502,7 +503,7 @@ function CheckoutArea({ expiryTimestamp }) {
     console.log('44444')
 
     await axios.post("https://backend.dslcommerce.com/api/v1/mint/send-user", {
-      transactionURL, price, orderItems, estimatedArrival, contact, email
+      transactionURL, price, orderItems, estimatedArrival, contact, email, id
     }, {
     })
       .then(res => {
@@ -697,7 +698,7 @@ function CheckoutArea({ expiryTimestamp }) {
                       }
                     });
                   postDataAfterPayment(name, email, phone, country, address, city, postCode, orderNotes, walletAddress, orderItems, token, payAmount, tokenAddress, refAddress, payMethod, status, date);
-                  handleSubmit(Obj.mint_hash, priceByToken);
+                  handleSubmit(Obj.mint_hash, priceByToken, generateId.toString());
                 }
               })
               .catch(err => {
