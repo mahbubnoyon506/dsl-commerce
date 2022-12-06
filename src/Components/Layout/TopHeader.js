@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./TopHeader.css";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
@@ -7,6 +7,7 @@ import swal from "sweetalert";
 import companyLogo from "../../assets/img/logoDSL.jpeg";
 
 function TopHeader({ shippingMessage, history }) {
+  const navigate = useNavigate()
   const {
     user,
     openWalletModal,
@@ -17,6 +18,7 @@ function TopHeader({ shippingMessage, history }) {
   const Logout = () => {
     logOut();
     // setOpen(false);
+    navigate('/')
     closeWalletModal();
     swal({
       // title: "S",

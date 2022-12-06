@@ -1,15 +1,23 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import "./Footer.css";
+import { DSLCommerceContext } from "../../../contexts/DSLCommerceContext";
 
 function Footer() {
   const [link, setLink] = useState({});
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [email, setEmail] = useState("");
+  const {
+    user,
+    openWalletModal,
+    logOut,
+    closeWalletModal,
+    closeCoinbaseModal,
+  } = useContext(DSLCommerceContext);
 
   //********************************** Handle Email ****************************************
   // const handleEmail = event => {
@@ -169,14 +177,23 @@ function Footer() {
                     </Link>
                   </li> */}
                   <li>
-                    <Link
-                      onClick={() => {
-                        window.scrollTo(0, 0);
-                      }}
-                      to="/tracking-order"
-                    >
-                      Order Tracking
-                    </Link>
+                    {user?.walletAddress ? (
+                      <Link
+                        onClick={() => {
+                          window.scrollTo(0, 0);
+                        }}
+                        to="/tracking-order"
+                      >
+                        Order Tracking
+                      </Link>
+                    ) : (
+                      <Link
+                        onClick={() => openWalletModal()}
+                        to="/"
+                      >
+                        Order Tracking
+                      </Link>
+                    )}
                   </li>
                   <li>
                     <a href="https://dsl.sg/contact" target="_blank" rel="noopener noreferrer">Contact Us</a>

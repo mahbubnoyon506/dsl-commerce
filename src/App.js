@@ -108,7 +108,7 @@ function App() {
 
           {/* <Route path="/my-account" element={<MyAccount />} /> */}
           <Route path="/profile" element={<Profile expiryTimestamp={time}/>} />
-          <Route path="/tracking-order" element={<TrackingOrder />} />
+          <Route path="/tracking-order" element={<TrackingOrder expiryTimestamp={time}/>} />
 
           {/* SHOP START */}
 

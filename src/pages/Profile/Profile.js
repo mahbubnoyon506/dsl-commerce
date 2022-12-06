@@ -19,6 +19,7 @@ import { useTimer } from 'react-timer-hook';
 import { DSLCommerceContext } from '../../contexts/DSLCommerceContext';
 import Preloader from '../../Components/Common/Preloader';
 import EmailVerifyModal from './EmailVerifyModal';
+import ProfileEmailVerify from './ProfileEmailVerify';
 
 
 const Profile = ({ expiryTimestamp }) => {
@@ -33,6 +34,7 @@ const Profile = ({ expiryTimestamp }) => {
   const [qRFromDatabaseGet, setQRFromDatabaseGet] = useState('');
   const [isError, setError] = useState(false);
   const [refetch, setRefetch] = useState(false);
+  const [otpCode, setOtpCode] = useState()
   const navigate = useNavigate();
   // let history = useHistory();
   const copyToClipboard = (text) => {
@@ -106,7 +108,7 @@ const Profile = ({ expiryTimestamp }) => {
     if (email1.length > 0 && email1.includes("@" && ".")) {
       // setLoading(true);
       setEmailVerify(true);
-      await axios.post('https://backend.dslcommerce.com/api/email/emailsend', {
+      await axios.post('https://backend.dslcommerce.com/api/users/email', {
         email: email1
       }).then(res => {
         if (res.status === 200) {
@@ -119,7 +121,7 @@ const Profile = ({ expiryTimestamp }) => {
             button: "OK!",
             className: "modal_class_success",
           });
-          console.log('emtiaz', res.data);
+          // console.log('emtiaz', res.data);
           setOtpVerify(res.data.otp);
 
           setTimeout(() => {
@@ -157,14 +159,15 @@ const Profile = ({ expiryTimestamp }) => {
 
 
     const verifiedEmail = email1;
-    console.log(verifiedEmail);
+    // console.log(verifiedEmail);
 
-    const email = JSON.stringify({ email: verifiedEmail });
+    const otp = { "otp": otpCode };
+    // console.log(otp)
 
-    await axios.put(`https://backend.dslcommerce.com/api/users/update/${user?._id}`, email, {
+    await axios.post(`https://backend.dslcommerce.com/api/users/otp/${verifiedEmail}`, otp, {
       headers: {
-        "content-type": "application/json",
-      },
+        'authorization': `Bearer ${localStorage.getItem('tokendslcommerce')}`
+      }
     })
       .then(res => {
         // swal({
@@ -190,7 +193,7 @@ const Profile = ({ expiryTimestamp }) => {
   }
 
 
-  
+
 
   return (
     <>
@@ -266,7 +269,7 @@ const Profile = ({ expiryTimestamp }) => {
                   <label htmlFor='quantity-input'>Claim Membership NFT</label>
                   <div className='d-flex'>
                     <input type="text" id='quantity-input' name="memberShipNft" className='form-control bg-transparent  rounded-0 rounded-start' value={1} disabled />
-                    <button type="button"  className="btn btn-success  text-light rounded-0 rounded-end text-uppercase" onClick={mint}>
+                    <button type="button" className="btn btn-success  text-light rounded-0 rounded-end text-uppercase" onClick={mint}>
                       Claim Now
                     </button>
                   </div>
@@ -345,7 +348,7 @@ const Profile = ({ expiryTimestamp }) => {
         </div >
       </div >
 
-      <EmailVerifyModal
+      <ProfileEmailVerify
         userRefetch={userRefetch}
         updateProfile={updateProfile}
         handleVerifyEmail={handleVerifyEmail}
@@ -355,6 +358,8 @@ const Profile = ({ expiryTimestamp }) => {
         setOpenEmail={setOpenEmail}
         otpVerify={otpVerify}
         setError={setError}
+        otpCode={otpCode}
+        setOtpCode={setOtpCode}
       />
 
     </>

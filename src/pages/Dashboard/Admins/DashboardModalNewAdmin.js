@@ -53,7 +53,7 @@ const DashboardModalNewAdmin = (props) => {
         else {
             await axios.post("https://backend.dslcommerce.com/api/admin/", formDataAddAdmin, {
                 headers: {
-                    'authorization': `Bearer ${localStorage.getItem('admin')}`
+                    'authorization': `Bearer ${localStorage.getItem('adminDslCommerce')}`
                 }
             })
                 .then(res => {

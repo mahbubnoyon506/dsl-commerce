@@ -65,7 +65,7 @@ const DashboardAdminEditProfile = () => {
         if (password === cPassword) {
             await axios.put(`https://backend.dslcommerce.com/api/admin/update/${id}`, formDataSingleAdmin, {
                 headers: {
-                    'authorization': `Bearer ${localStorage.getItem('admin')}`
+                    'authorization': `Bearer ${localStorage.getItem('adminDslCommerce')}`
                 }
             })
                 .then(res => {
