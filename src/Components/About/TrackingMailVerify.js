@@ -98,31 +98,80 @@ export default function TrackingMailVerify({ open, userRefetch, setOpenEmail,set
         <div>
             <Modal
                 open={open}
+                P
                 onClose={otpVerify == otpCode && handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
+                className="text-center"
             >
                 <Box sx={style} id="">
-                    <div className='closeD'>
-                        <Button className='iconClose' onClick={otpVerify == otpCode ? handleClose : verifyAlert}><CloseIcon className='iconClose' style={{ color: "red" }} /></Button>
+                    <div className="closeD text-right p-1">
+                        <Button
+                            className="iconClose"
+                            onClick={otpVerify == otpCode ? handleClose : verifyAlert}
+                        >
+                            <CloseIcon
+                                className="iconClose"
+                                style={{ color: "white", textAlign: "center" }}
+                            />
+                        </Button>
                     </div>
-                    <Typography id="modal-modal-title text-light" className='text-light' variant="h6" component="h2">
-                        Verify Email
+                    <Typography
+                        id="modal-modal-title text-light"
+                        className="text-light pt-1"
+                        variant="h6"
+                        component="h2"
+                        align="left"
+                    >
+                        Verify Email test
                     </Typography>
-                    <Typography id="modal-modal-description text-light" sx={{ mt: 2 }}>
+                    <Typography id="modal-modal-description text-light" sx={{ mt: 2 }} style={{textAlign:"left"}}>
                         Check your email for OTP
                     </Typography>
-                    <form className="input-group mt-2 mb-2" >
-                        <input type="number" className="form-control" placeholder="OTP code" aria-label="OTP code !!" aria-describedby="button-addon2" onChange={e => setOtpCode(e.target.value)} /> <br />
-                        <button disabled={disabled ? true : false} className="btn btn-outline-secondary bg-danger text-light" onClick={hendelSubmit} type="submit" id="button-addon2">Verify</button>
+                    <form className="d-flex input-group mt-2 mb-2">
+                        <input
+                            type="number"
+                            className="form-control"
+                            placeholder="OTP code"
+                            aria-label="OTP code !!"
+                            aria-describedby="button-addon2"
+                            onChange={(e) => setOtpCode(e.target.value)}
+                        />
+                        <button
+                            disabled={disabled ? true : false}
+                            className="btn btn-outline-secondary bg-danger text-light"
+                            onClick={hendelSubmit}
+                            type="submit"
+                            id="button-addon2"
+                        >
+                            Verify
+                        </button>
                     </form>
 
-                    {isOtpError ? <p style={{ color: 'red' }}>You have entered wrong OTP</p> : ''}
-                    <div className='d-flex' style={{ justifyContent: 'center' }}>
-                        <button disabled={minutes == 0 && seconds == 0 ? false : true} type='submit' onClick={handleVerifyEmail} className='submit banner-button2 font14 text-decoration-none pb-2' style={minutes == 0 && seconds == 0 ? { backgroundColor: '#007bff' } : { backgroundColor: '#7b7b94' }} id="font14">Resend OTP</button>
+                    {isOtpError ? (
+                        <p style={{ color: "red" }}>You have entered wrong OTP</p>
+                    ) : (
+                        ""
+                    )}
+                    <div className="d-flex" style={{ justifyContent: "center" }}>
+                        <button
+                            disabled={minutes == 0 && seconds == 0 ? false : true}
+                            type="submit"
+                            onClick={handleVerifyEmail}
+                            className="submit banner-button2 font14 text-decoration-none p-2"
+                            style={
+                                minutes == 0 && seconds == 0
+                                    ? { backgroundColor: "#007bff", color: "#fff" }
+                                    : { backgroundColor: "#7b7b94", color: "#fff" }
+                            }
+                            id="font14"
+                        >
+                            Resend OTP
+                        </button>
                     </div>
-                    <div className='text-center text-white mt-3'>
-                        <span>{minutes < 10 ? `0${minutes}` : minutes}</span>:<span>{seconds < 10 ? `0${seconds}` : seconds}</span>
+                    <div className="text-center text-white mt-3">
+                        <span>{minutes}</span>:
+                        <span>{seconds < 10 ? `0${seconds}` : seconds}</span>
                     </div>
                 </Box>
             </Modal>
