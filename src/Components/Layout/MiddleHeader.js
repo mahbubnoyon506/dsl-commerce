@@ -26,6 +26,7 @@ function MiddleHeader() {
     const cat = e.target.category.value;
     const q = e.target.q.value;
     navigate(`/shop/cat/${cat ? cat : "all"}/search/${q}/1`);
+    e.target.reset()
   };
 
   return (
