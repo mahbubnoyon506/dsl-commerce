@@ -67,6 +67,7 @@ function CheckoutArea({ expiryTimestamp }) {
     payByTestnetS39,
     payByTestnetQuest } = useContext(DSLCommerceContext);
   const { carts } = useContext(CartContext);
+  console.log(carts);
 
   const [name, setName] = useState("");
   const [country, setCountry] = useState("");
@@ -105,7 +106,7 @@ function CheckoutArea({ expiryTimestamp }) {
     image: "/bnb.png",
   });
 
- 
+
 
   const customStyles = {
     menu: (provided, state) => ({
@@ -502,7 +503,7 @@ function CheckoutArea({ expiryTimestamp }) {
     const estimatedArrival = "10 Days";
     const contact = "Email: support@dslcommerce.com, Phone: +60149939183";
 
-    console.log('44444')
+    // console.log('44444')
 
     await axios.post("https://backend.dslcommerce.com/api/v1/mint/send-user", {
       transactionURL, price, orderItems, estimatedArrival, contact, email, id
@@ -510,7 +511,7 @@ function CheckoutArea({ expiryTimestamp }) {
     })
       .then(res => {
         if (res.status === 200) {
-          console.log(res.data.message)
+          // console.log(res.data.message)
 
         }
       })
@@ -622,33 +623,30 @@ function CheckoutArea({ expiryTimestamp }) {
               Obj = await payByTestnetQuest(data1);
             }
 
+            const oId = generateId.toString()
+            const price = priceByToken + " " + selectedOption.label;
 
+            console.log("After Order Order ID Emtiaz ", oId, price);
             const data3 = {
               name: name,
               email: email,
               country: country,
-              phone: phone,
+              phone: mobile,
               address: address,
               walletAddress: user?.walletAddress,
               town: city,
-              postcode: postCode,
-              ordernote: orderNotes,
-              orderitems: orderItems,
+              postCode: postCode,
+              orderNote: orderNotes,
+              orderItems: carts,
+              orderId: oId,
               date: newDate,
-              amount: payAmount,
-              paymentmethod: 'crypto',
+              amount: price,
+              paymentMethod: 'crypto',
             }
 
-            console.log(data3)
-            
-            await axios.post('https://backend.dslcommerce.com/api/order', data3, {
-              headers: {
-                authorization: `Bearer ${localStorage.getItem("tokendslcommerce")}`,
-              },
-            })
-            .then( res => console.log(res))
-
-
+            console.log('Data 3 bro', data3)
+            axios.post('https://backend.dslcommerce.com/api/order', data3)
+              .then(res => console.log(res))
 
             // const data2 = {
             // name,

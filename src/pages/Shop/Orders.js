@@ -7,8 +7,37 @@ import cart4 from "../../assets/img/collection/collection-1.png";
 import cart5 from "../../assets/img/collection/collection-2.png";
 import { Link } from "react-router-dom";
 import { TbListDetails } from "react-icons/tb";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useContext } from "react";
+import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 
 const Orders = () => {
+
+  const [myOrders , setMyOrders] = useState([])
+  const {user} = useContext(DSLCommerceContext)
+  // console.log(user?.walletAddress);
+  const [allProduct , setAllProduct] = useState([])
+
+  useEffect(() => {
+    fetch(`https://backend.dslcommerce.com/api/order/data/${user?.walletAddress}`)
+    .then(res => res.json())
+    .then(data => setMyOrders( data))
+  },[user?.walletAddress])
+
+
+  // console.log(myOrders)
+  useEffect(() => {
+    fetch(`https://backend.dslcommerce.com/api/product/`)
+      .then((res) => res.json())
+      .then((result) => {
+        setAllProduct(result);
+      });
+  }, []);
+
+  console.log(allProduct);
+  console.log(myOrders);
+
   return (
     <div>
       <PageTitle title="My Orders" />
@@ -17,8 +46,9 @@ const Orders = () => {
       <div className="container">
         <div className="wishlist-table table-responsive">
 
-
+        {myOrders?.orderitems?.map((item) => console.log(item))}
           <table className="table table-bordered">
+            
             <tbody>
               <tr>
                 <td className="product-remove">
@@ -28,9 +58,13 @@ const Orders = () => {
                 </td>
 
                 <td className="product-thumbnail">
-                  <a href="#">
+                  {/* <a href="#">
                     <img src={cart1} alt="item" />
-                  </a>
+                  </a> */}
+                  {/* {
+                    allProduct.find((p) => p._id === item?._id)
+                  } */}
+
                 </td>
 
                 <td className="product-name">
