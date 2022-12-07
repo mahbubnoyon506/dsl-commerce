@@ -14,28 +14,16 @@ import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 
 const Orders = () => {
 
-  const [myOrders , setMyOrders] = useState([])
-  const {user} = useContext(DSLCommerceContext)
+  const [myOrders, setMyOrders] = useState([])
+  const { user } = useContext(DSLCommerceContext)
   // console.log(user?.walletAddress);
-  const [allProduct , setAllProduct] = useState([])
 
   useEffect(() => {
     fetch(`https://backend.dslcommerce.com/api/order/data/${user?.walletAddress}`)
-    .then(res => res.json())
-    .then(data => setMyOrders( data))
-  },[user?.walletAddress])
+      .then(res => res.json())
+      .then(data => setMyOrders(data.result))
+  }, [user?.walletAddress])
 
-
-  // console.log(myOrders)
-  useEffect(() => {
-    fetch(`https://backend.dslcommerce.com/api/product/`)
-      .then((res) => res.json())
-      .then((result) => {
-        setAllProduct(result);
-      });
-  }, []);
-
-  console.log(allProduct);
   console.log(myOrders);
 
   return (
@@ -46,50 +34,57 @@ const Orders = () => {
       <div className="container">
         <div className="wishlist-table table-responsive">
 
-        {myOrders?.orderitems?.map((item) => console.log(item))}
-          <table className="table table-bordered">
-            
-            <tbody>
-              <tr>
-                <td className="product-remove">
-                  <a href="#" className="remove">
-                    <i className="bx bx-x"></i>
-                  </a>
-                </td>
+          {myOrders.length ? (
+            <>
+              {myOrders?.map((order, index) => (
+                <table className="table table-bordered" key={index}>
 
-                <td className="product-thumbnail">
-                  {/* <a href="#">
-                    <img src={cart1} alt="item" />
-                  </a> */}
-                  {/* {
-                    allProduct.find((p) => p._id === item?._id)
-                  } */}
+                  <tbody>
+                    <tr>
+                      <td className="">Date</td>
+                      <td className="">Order Id</td>
+                      <td className="">Amount</td>
+                      <td className="">Payment Method</td>
+                      <td className="">Status</td>
+                      <td className="product-btn">
+                        <span className="default-btn">
+                          <TbListDetails className="me-2" />
+                          Details
+                        </span>
+                      </td>
+                    </tr>
 
-                </td>
+                  </tbody>
 
-                <td className="product-name">
-                  <Link to="/products-details/60447200e3108c0a9086757c">Bluetooth Headphone</Link>
-                </td>
+                  <tbody>
+                    <tr>
+                      <td className="">{order?.date.slice(0, 10)}</td>
+                      <td className="">{order?.orderId}</td>
+                      <td className="">{order?.amount}</td>
+                      <td className="">{order?.paymentMethod}</td>
+                      {order?.pendingStatus == false ? (
+                        <td className="">Pending</td>
+                      ) : (
+                        <td className="">Delivered</td>
+                      )}
+                      <td className="product-btn">
+                        <span className="default-btn">
+                          <TbListDetails className="me-2" />
+                          Details
+                        </span>
+                      </td>
+                    </tr>
 
-                <td className="product-price">
-                  <span className="unit-amount">$1.00</span>
-                </td>
+                  </tbody>
+                </table>
+              ))}
+            </>
+          ) : (
+            <div>
+              <h2 className="text-center py-5 font-bold"> No Order Found</h2>
+            </div>
+          )}
 
-                {/* <td className="product-stock">
-                  <span className="stock">In Stock</span>
-                </td> */}
-
-                <td className="product-btn">
-                  <a href="#" className="default-btn">
-                    <TbListDetails className="me-2" />
-                    Details
-                  </a>
-                </td>
-              </tr>
-
-              
-            </tbody>
-          </table>
         </div>
       </div>
 
