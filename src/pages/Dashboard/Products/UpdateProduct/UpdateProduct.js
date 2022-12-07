@@ -67,7 +67,7 @@ const UpdateProduct = () => {
         if (res.status === 200) {
           // alert(res.data.message);
           swal({
-            title: "Success",
+            // title: "Success",
             text: `${res.data.message}`,
             icon: "success",
             button: "OK!",
