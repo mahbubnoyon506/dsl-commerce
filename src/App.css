@@ -5,6 +5,20 @@
   align-items: center;
   justify-content: end;
 }
+.btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%) !important;
+}
+.iconClose{
+  background-color: #1a1a25;
+  border: none;
+  color: white;
+}
+
+.iconClose:hover{
+  background-color: #1a1a25;
+  border: none;
+  color: white;
+}
 
 .alertWalletDiv {
   margin-top: -2.5rem;
