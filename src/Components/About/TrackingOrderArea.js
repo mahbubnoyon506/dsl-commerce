@@ -45,10 +45,8 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
-        // axios.get(`https://backend.dslcommerce.com/api/order/${orderId}`)
-        axios.get(`https://backend.dslcommerce.com/api/order/638f7c62e814a47683d1c8cf`)
+        axios.get(`https://backend.dslcommerce.com/api/order/data/${user?.walletAddress}`)
             .then(res => console.log(res.data))
-
             .catch(err => {
                 console.log(err)
             });

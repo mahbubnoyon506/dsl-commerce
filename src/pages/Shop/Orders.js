@@ -33,7 +33,6 @@ const Orders = () => {
 
       <div className="container">
         <div className="wishlist-table table-responsive">
-
           {myOrders.length ? (
             <>
               {myOrders?.map((order, index) => (
@@ -41,17 +40,19 @@ const Orders = () => {
 
                   <tbody>
                     <tr>
-                      <td className="">Date</td>
-                      <td className="">Order Id</td>
-                      <td className="">Amount</td>
-                      <td className="">Payment Method</td>
-                      <td className="">Status</td>
-                      <td className="product-btn">
+                      <th className="border-0 text-center">Date</th>
+                      <th className="border-0 text-center">Order Id</th>
+                      <th className="border-0 text-center">Amount</th>
+                      <th className="border-0 text-center">Payment Method</th>
+                      <th className="border-0 text-center">Status</th>
+                      <th className="border-0 text-center">Details</th>
+
+                      {/* <td className="product-btn">
                         <span className="default-btn">
                           <TbListDetails className="me-2" />
                           Details
                         </span>
-                      </td>
+                      </td> */}
                     </tr>
 
                   </tbody>
@@ -61,7 +62,7 @@ const Orders = () => {
                       <td className="">{order?.date.slice(0, 10)}</td>
                       <td className="">{order?.orderId}</td>
                       <td className="">{order?.amount}</td>
-                      <td className="">{order?.paymentMethod}</td>
+                      <td className="text-center">{order?.paymentMethod}</td>
                       {order?.pendingStatus == false ? (
                         <td className="">Pending</td>
                       ) : (
@@ -77,8 +78,10 @@ const Orders = () => {
 
                   </tbody>
                 </table>
+
               ))}
             </>
+
           ) : (
             <div>
               <h2 className="text-center py-5 font-bold"> No Order Found</h2>
