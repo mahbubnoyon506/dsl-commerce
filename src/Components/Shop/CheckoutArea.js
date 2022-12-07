@@ -640,7 +640,12 @@ function CheckoutArea({ expiryTimestamp }) {
             }
 
             console.log(data3)
-            await axios.post('https://backend.dslcommerce.com/api/order', data3)
+            
+            await axios.post('https://backend.dslcommerce.com/api/order', data3, {
+              headers: {
+                authorization: `Bearer ${localStorage.getItem("tokendslcommerce")}`,
+              },
+            })
             .then( res => console.log(res))
 
 
