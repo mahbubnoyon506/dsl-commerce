@@ -105,6 +105,8 @@ function CheckoutArea({ expiryTimestamp }) {
     image: "/bnb.png",
   });
 
+ 
+
   const customStyles = {
     menu: (provided, state) => ({
       ...provided,
@@ -621,8 +623,29 @@ function CheckoutArea({ expiryTimestamp }) {
             }
 
 
-            // const data2 = {
+            const data3 = {
+              name: name,
+              email: email,
+              country: country,
+              phone: phone,
+              address: address,
+              walletAddress: user?.walletAddress,
+              town: city,
+              postcode: postCode,
+              ordernote: orderNotes,
+              orderitems: orderItems,
+              date: newDate,
+              amount: payAmount,
+              paymentmethod: 'crypto',
+            }
 
+            console.log(data3)
+            await axios.post('https://backend.dslcommerce.com/api/order', data3)
+            .then( res => console.log(res))
+
+
+
+            // const data2 = {
             // name,
             // email,
             // phone,
