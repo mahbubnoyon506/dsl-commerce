@@ -271,7 +271,7 @@ export default function DslProvider({ children }) {
     localStorage.removeItem("token");
   };
 
-  
+
 
   const payByTestnetBNB = async (data) => {
     try {
@@ -723,7 +723,7 @@ export default function DslProvider({ children }) {
                 const wrapper = document.createElement("div");
                 wrapper.innerHTML = `<p class='text-break text-white fs-6'>You have succesfully logged in with <br/>Binance Chain.</p>`;
                 return swal({
-                  title: "Success",
+                  // title: "Success",
                   // text: "You have succesfully logged in with Binance Chain.",
                   content: wrapper,
                   icon: "success",
@@ -798,7 +798,7 @@ export default function DslProvider({ children }) {
             const wrapper = document.createElement("div");
             wrapper.innerHTML = `<p class='text-break text-white fs-6'>You have succesfully logged in with <br/>Coin Base.</p>`;
             return swal({
-              title: "Success",
+              // title: "Success",
               // text: "You have succesfully logged in with Binance Chain.",
               content: wrapper,
               icon: "success",
@@ -873,7 +873,7 @@ export default function DslProvider({ children }) {
                 const wrapper = document.createElement("div");
                 wrapper.innerHTML = `<p class='text-break text-white fs-6'>You have succesfully logged in with <br/>Binance Chain.</p>`;
                 return swal({
-                  title: "Success",
+                  // title: "Success",
                   // text: "You have succesfully logged in with Binance Chain.",
                   content: wrapper,
                   icon: "success",

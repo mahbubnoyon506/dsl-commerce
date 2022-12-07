@@ -238,3 +238,8 @@
 .swal-text {
   color: #fff;
 }
+
+.slick-dots {
+  display: block !important;
+  position: static !important;
+}

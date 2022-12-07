@@ -74,7 +74,7 @@ const Profile = ({ expiryTimestamp }) => {
     logOut();
     navigate("/")
     swal({
-      title: "Success",
+      // title: "Success",
       text: "You have successfully logged out",
       icon: "success",
       button: "OK",
