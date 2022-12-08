@@ -12,15 +12,16 @@ import './KYC.css'
 const KYC = () => {
   const [key, setKey] = useState('profile');
   return (
-    <main className='kycMainArea' style={{ background: "#6f6f6f" , height:"100vh" , color:"white" }}>
+    <main className='kycMainArea' style={{ background: "#272D47", height: "100vh", color: "white" }}>
       <div className='container ' >
         <Tabs
           id="controlled-tab-example"
           activeKey={key}
           onSelect={(k) => setKey(k)}
           className="mb-3"
+          style={{background: '#262626'}}
         >
-          <Tab eventKey="profile" title="PROFILE">
+          <Tab eventKey="profile" title="PROFILE" >
             <KycProfile />
           </Tab>
           <Tab eventKey="email" title="EMAIL">
