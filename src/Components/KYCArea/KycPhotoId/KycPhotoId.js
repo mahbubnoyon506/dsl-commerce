@@ -19,7 +19,7 @@ const KycPhotoId = () => {
           <Form.Control type="text" placeholder="01687874697" />
           <Form.Label className='text-uppercase mt-4'>Photo id front image <BsStarFill size={8} style={{ color: '#FF0000', marginTop: '-10px' }} /></Form.Label>
           <Form.Control type="file" placeholder="01687874697" />
-          <Button className='mt-4' as="input" type="submit" value="Submit" />
+          <Button className='my-4' as="input" type="submit" value="Submit" />
         </Form.Group>
       </Form>
     </div>
