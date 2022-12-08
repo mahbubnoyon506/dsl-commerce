@@ -70,6 +70,7 @@ import Merchant from "./pages/Merchant/Merchant";
 import KYC from "./pages/KYC/KYC";
 import Verified from "./pages/Dashboard/verified/Verified";
 import NonVerifide from "./pages/Dashboard/verified/NonVerifide";
+import Pending from "./pages/Dashboard/Pending/Pending";
 
 export const ProductContext = createContext();
 function App() {
@@ -179,6 +180,11 @@ function App() {
             path="/admin/adminprofile/:id"
             element={<DashboardAdminEditProfile />}
           />
+          {/* *************************   KYC pages    ****************************** */}
+          <Route path="verified" element={<Verified />} />
+          <Route path="non-verified" element={<NonVerifide />} />
+          <Route path="pending" element={<Pending />} />
+
 
           {/*************************** Customers  ***************************/}
           <Route path="customers" element={<Customers />} />
@@ -192,29 +198,8 @@ function App() {
             element={<SingleOrderDetail />}
           />
 
-          {/* *************************   KYC pages    ****************************** */}
-          <Route path="verified" element={<Verified />} />
-          <Route path="non-verified" element={<NonVerifide />} />
-
-
-          {/*************************** Product  ***************************/}
-          <Route path="products" element={<AllProduct />} />
-          <Route path="products/:productPerPage" element={<AllProduct />} />
-
-          <Route path="create-product" element={<CreateProduct />} />
-          <Route path="/admin/editProduct/:id" element={<UpdateProduct />} />
-
-          {/*************************** Category  ***************************/}
-          <Route path="all-category" element={<AllCategory />} />
-          <Route path="all-category/:categoryPerPage" element={<AllCategory />} />
-          <Route path="add-category" element={<AddCategory />} />
-
-          <Route path="all-subscribers" element={<Subscribers />} />
-          <Route path="all-subscribers/:emailPerPage" element={<Subscribers />} />
-
 
           <Route path="data" element={<Data />} />
-          <Route path="faq-dashboard" element={<FaqDashboard />} />
           <Route path="help-desk-dashboard" element={<HelpDeskDashborad />} />
           <Route
             path="customer-services-dashboard"
