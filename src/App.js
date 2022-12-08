@@ -72,6 +72,7 @@ import Verified from "./pages/Dashboard/verified/Verified";
 import NonVerified from "./pages/Dashboard/verified/NonVerified";
 import Pending from "./pages/Dashboard/Pending/Pending";
 import AddedProducts from "./pages/Dashboard/AddedProducts/AddedProduct";
+import UserDetails from "./pages/Dashboard/UserDetails/UserDetails";
 
 export const ProductContext = createContext();
 function App() {
@@ -202,6 +203,7 @@ function App() {
           <Route path="non-verified" element={<NonVerified />} />
           <Route path="pending" element={<Pending />} />
           <Route path="added-products" element={<AddedProducts />} />
+          <Route path="userDetails" element={<UserDetails />} />
 
 
           {/*************************** Product  ***************************/}

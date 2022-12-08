@@ -131,7 +131,7 @@ function Dashboard(props) {
           <span className="navIconAdmin">
             <MdOutlineUnsubscribe style={{ fontSize: "20px" }} />
           </span>
-          <FormControl style={{ marginTop: kycMenu === '' ? "-12px" : "" }} variant="standard" sx={{
+          <FormControl className="svgIconColor" style={{ marginTop: kycMenu === '' ? "-12px" : "" }} variant="standard" sx={{
             minWidth: 160 ,color: '#BABBC0', 
           }}>
             <InputLabel style={{color:'#BABBC0'}} sx={{ color: '#BABBC0' }} id="demo-simple-select-standard-label">KYC </InputLabel>

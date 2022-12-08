@@ -8,6 +8,7 @@ import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 import PortraitIcon from '@mui/icons-material/Portrait';
 import { AiFillDelete, AiFillEye } from 'react-icons/ai';
 import { BiUserPlus } from 'react-icons/bi';
+import { Link } from 'react-router-dom';
 
 
 
@@ -88,9 +89,11 @@ const Pending = () => {
                                     <td className='text-start adminHidden'>{d.email}</td>
                                     <td className='text-start adminHidden'>
 
+                                    <Link to='/admin/userDetails'>
                                     <span className='bg-primary p-2 me-3 rounded'>
                                         < AiFillEye className='fs-5 text-white rounded' />
                                     </span>
+                                    </Link>
 
                                     <span className='bg-success p-2 me-3 rounded'>
                                         < BiUserPlus className='fs-5 text-white rounded' />
