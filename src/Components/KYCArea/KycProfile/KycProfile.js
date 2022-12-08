@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { allCountryNationality } from "../CountryName/cData";
+import { allCountryNationality, time_zone } from "../CountryName/cData";
 import "./KycProfile.css";
 
 const KycProfile = () => {
@@ -11,6 +11,8 @@ const KycProfile = () => {
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [gender, setGender] = useState("");
   const [nationality, setNationality] = useState("");
+  const [country, setCountry] = useState("");
+  console.log(nationality, time_zone);
   const [timeZone, setTimeZone] = useState("");
   const [aboutMe, setAboutMe] = useState("");
 
@@ -102,9 +104,14 @@ const KycProfile = () => {
           required
         >
           <option> Nationality </option>
-          {allCountryNationality?.map((country, index) => (
-            <option key={index} style={{ padding: "5px" }} value={country}>
-              {country}
+          {time_zone?.map((country, index) => (
+            <option
+              // onClick={()=> }
+              key={index}
+              style={{ padding: "5px" }}
+              value={country?.country}
+            >
+              {country?.country}
             </option>
           ))}
         </Form.Select>
