@@ -6,6 +6,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 import PortraitIcon from '@mui/icons-material/Portrait';
+import { AiFillDelete, AiFillEye } from 'react-icons/ai';
+import { BiUserPlus } from 'react-icons/bi';
 
 
 
@@ -40,7 +42,7 @@ const Pending = () => {
             <div className='text-white d-flex justify-content-between align-items-center py-2'>
                 <form action="">
                     <label for="number">Display</label>
-                    <select style={{backgroundColor:'#272D47'}} className='mx-2 p-1 text-white border-0' name="number" id="number">
+                    <select style={{ backgroundColor: '#272D47' }} className='mx-2 p-1 text-white border-0' name="number" id="number">
                         <option value="100">100</option>
                         <option value="200">200</option>
                         <option value="300">300</option>
@@ -48,12 +50,12 @@ const Pending = () => {
                         <option value="500">500</option>
                     </select>
                     <label for="cars">records per page</label>
-                    
+
                 </form>
 
                 <div>
-                <label className='pe-1' for="number">Search: </label>
-                <input  style={{backgroundColor:'#272D47'}} className="border-0 p-1 text-white" name="search" />
+                    <label className='pe-1' for="number">Search: </label>
+                    <input style={{ backgroundColor: '#272D47' }} className="border-0 p-1 text-white" name="search" />
                 </div>
             </div>
 
@@ -75,16 +77,30 @@ const Pending = () => {
                             data?.map((d, index) => (
                                 <tr style={{ borderBottom: "1px solid white" }} className=' ' >
                                     <td style={{ padding: '15px 0px 15px 35px' }} className=''> <input type="checkbox" /> {index + 1}</td>
-                                    <td className='text-start'> 
-                                    <span>$</span>
-                                    <span><PersonIcon/></span>
-                                    <span><EmailIcon/></span>
-                                    <span><PhoneAndroidIcon/></span>
-                                    <span><PortraitIcon/></span>
+                                    <td className='text-start'>
+                                        <span>$</span>
+                                        <span><PersonIcon /></span>
+                                        <span><EmailIcon /></span>
+                                        <span><PhoneAndroidIcon /></span>
+                                        <span><PortraitIcon /></span>
                                     </td>
                                     <td className='text-start' style={{ textTransform: 'uppercase' }} >{d.name}</td>
                                     <td className='text-start adminHidden'>{d.email}</td>
-                                    <td className='text-start adminHidden'>{d.kycPending === true ? 'PENDING' : ''}</td>
+                                    <td className='text-start adminHidden'>
+
+                                    <span className='bg-primary p-2 me-3 rounded'>
+                                        < AiFillEye className='fs-5 text-white rounded' />
+                                    </span>
+
+                                    <span className='bg-success p-2 me-3 rounded'>
+                                        < BiUserPlus className='fs-5 text-white rounded' />
+                                    </span>
+
+                                    <span className='bg-danger p-2 rounded'>
+                                        < AiFillDelete className='fs-5  text-white rounded' />
+                                    </span>
+
+                                    </td>
                                 </tr>
                             ))
                         }

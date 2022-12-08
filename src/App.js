@@ -70,6 +70,7 @@ import Merchant from "./pages/Merchant/Merchant";
 import KYC from "./pages/KYC/KYC";
 import Verified from "./pages/Dashboard/verified/Verified";
 import Pending from "./pages/Dashboard/Pending/Pending";
+import AddedProducts from "./pages/Dashboard/AddedProducts/AddedProduct";
 
 export const ProductContext = createContext();
 function App() {
@@ -195,6 +196,7 @@ function App() {
           {/* *************************   KYC pages    ****************************** */}
           <Route path="verified" element={<Verified />} />
           <Route path="pending" element={<Pending />} />
+          <Route path="added-products" element={<AddedProducts />} />
 
 
           {/*************************** Product  ***************************/}

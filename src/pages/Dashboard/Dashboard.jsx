@@ -11,10 +11,10 @@ import Typography from "@mui/material/Typography";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import logo from "./logo1.png";
-import { Divider, makeStyles } from "@mui/material";
+import { Divider } from "@mui/material";
 import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
 import { AdminContext } from "../../contexts/AdminContext";
-import { FaUsers, FaProductHunt, FaDatabase } from "react-icons/fa";
+import { FaUsers, FaProductHunt } from "react-icons/fa";
 import { MdDashboard, MdCategory, MdOutlineUnsubscribe } from "react-icons/md";
 import { RiAdminFill } from "react-icons/ri";
 import { GiShoppingBag } from "react-icons/gi";
@@ -24,6 +24,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { useRef } from "react";
 
 
 
@@ -36,6 +37,7 @@ const menuLinkStyles = ({ isActive }) => {
 const drawerWidth = 280;
 
 function Dashboard(props) {
+  
   const { admin, logout } = React.useContext(AdminContext);
   const navigate = useNavigate();
   const [kycMenu, setKycMenu] = useState('');
@@ -51,7 +53,7 @@ function Dashboard(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hide, setHide] = useState(false);
-
+  
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -69,10 +71,10 @@ function Dashboard(props) {
 
   const handleChange = (event) => {
     setKycMenu(event.target.value);
-    console.log("event")
+    
   };
 
-
+  
   const drawer = (
     <div className="sideBar">
       <Toolbar />
@@ -149,6 +151,8 @@ function Dashboard(props) {
           </FormControl>
         </NavLink>
         <br />
+
+
         <NavLink
           className="dashboardMenu"
           style={menuLinkStyles}
