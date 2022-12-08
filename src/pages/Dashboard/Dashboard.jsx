@@ -22,10 +22,8 @@ import { BsMinecartLoaded } from "react-icons/bs";
 import { useEffect } from "react";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 
 
 
@@ -71,6 +69,7 @@ function Dashboard(props) {
 
   const handleChange = (event) => {
     setKycMenu(event.target.value);
+    console.log("event")
   };
 
 
@@ -125,7 +124,7 @@ function Dashboard(props) {
           className="dashboardMenu"
           // style={menuLinkStyles}
           onClick={handleClose}
-          to=""
+          
         >
           <span className="navIconAdmin">
             <MdOutlineUnsubscribe style={{ fontSize: "20px" }} />
