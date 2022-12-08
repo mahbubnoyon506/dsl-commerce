@@ -13,7 +13,7 @@ function UserDetails() {
     return (
         <div style={{minHeight:'450px'}}>
 
-            <div>
+            <div> 
                 <Accordion className='svgColor mb-2' style={{backgroundColor:'#272D47', color:'white'}}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
