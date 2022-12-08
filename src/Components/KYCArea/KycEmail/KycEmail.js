@@ -6,8 +6,8 @@ import { BsInfoCircleFill } from 'react-icons/bs';
 const KycEmail = () => {
   return (
     <div>
-      <Form>
-        <Form.Group className="mb-3 w-50" controlId="formBasicEmail">
+      <Form className='default-width-container mt-3'>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label className='text-uppercase'>Email address <BsInfoCircleFill /> </Form.Label>
           <div className='d-flex'>
             <Form.Control type="email" placeholder="Enter email" />
@@ -16,7 +16,7 @@ const KycEmail = () => {
           <p className="" style={{ color: '#99701E' }}>
             Click here to change your email address.
           </p>
-          <Button className='mt-1' as="input" type="submit" value="Submit" />
+          <Button className='mt-1 text-uppercase' as="input" type="submit" value="Submit" />
         </Form.Group>
       </Form>
 

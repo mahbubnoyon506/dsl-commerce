@@ -16,9 +16,9 @@ const KycAddress = () => {
       <p className='pt-4'>File size should not be more than 5 MB.</p>
 
 
-      <Form onSubmit={handleAddress}>
+      <Form onSubmit={handleAddress} className="default-width-container">
 
-        <Form.Group className="mb-3 w-50 customStyle" controlId="formBasicEmail">
+        <Form.Group className="mb-3  customStyle" controlId="formBasicEmail">
           <Form.Label >Address Line 1 <span>★</span> </Form.Label>
           <Form.Control
             type="text"
@@ -27,7 +27,7 @@ const KycAddress = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3 w-50 customStyle" controlId="formBasicEmail">
+        <Form.Group className="mb-3  customStyle" controlId="formBasicEmail">
           <Form.Label >Address Line 2 </Form.Label>
           <Form.Control
             type="text"
@@ -35,7 +35,7 @@ const KycAddress = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3 w-50 customStyle" controlId="formBasicEmail">
+        <Form.Group className="mb-3  customStyle" controlId="formBasicEmail">
           <Form.Label >City  <span>★</span> </Form.Label>
           <Form.Control
             type="text"
@@ -44,7 +44,7 @@ const KycAddress = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3 w-50 customStyle" controlId="formBasicEmail">
+        <Form.Group className="mb-3  customStyle" controlId="formBasicEmail">
           <Form.Label >State / province  <span>★</span> </Form.Label>
           <Form.Control
             type="text"
@@ -53,7 +53,7 @@ const KycAddress = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3 w-50 customStyle" controlId="formBasicEmail">
+        <Form.Group className="mb-3  customStyle" controlId="formBasicEmail">
           <Form.Label >country  <span>★</span> </Form.Label>
           <Form.Select
             name='country'
@@ -72,7 +72,7 @@ const KycAddress = () => {
           </Form.Select>
         </Form.Group>
 
-        <Form.Group className="mb-3 w-50 customStyle" controlId="formBasicEmail">
+        <Form.Group className="mb-3  customStyle" controlId="formBasicEmail">
           <Form.Label >postal / zip code  <span>★</span>  </Form.Label>
           <Form.Control
             type="text"
@@ -82,7 +82,7 @@ const KycAddress = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3 w-50 customStyle" controlId="formBasicEmail">
+        <Form.Group className="mb-3  customStyle" controlId="formBasicEmail">
           <Form.Label >address proof   <span>★</span> </Form.Label>
           <p className='pt-1'>Please provide the following documents which clearly reflects your Full Name and Address . The document must not be order than 3 months  from the date this verification.</p>
           <ol>
