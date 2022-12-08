@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { allCountryNationality } from "../CountryName/cData";
 
 const KycProfile = () => {
   const [memberShipId, setMemberShipId] = useState("");
@@ -84,7 +85,7 @@ const KycProfile = () => {
           className="mb-3"
           required
         >
-          <option> -- Select -- </option>
+          <option> Gender </option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
         </Form.Select>
@@ -96,9 +97,16 @@ const KycProfile = () => {
           className="mb-3"
           required
         >
-          <option> -- Select -- </option>
-          <option value="Male">Bangladesh</option>
-          <option value="Female">India</option>
+          <option> Nationality </option>
+          {allCountryNationality?.map((country, index) => (
+              <option
+                key={index}
+                style={{ padding: "5px" }}
+                value={country}
+              >
+                {country}
+              </option>
+            ))}
         </Form.Select>
         <Form.Label>TIME ZONE*</Form.Label>
         <Form.Select

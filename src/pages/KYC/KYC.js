@@ -16,7 +16,7 @@ const KYC = () => {
       className="kycMainArea"
       style={{ background: "#6f6f6f", minHeight: "100vh", color: "white" }}
     >
-      <div className="container ">
+      <div className="container p-4" style={{background:'rgb(38, 38, 38)'}}>
         <Tabs
           id="controlled-tab-example"
           activeKey={key}
