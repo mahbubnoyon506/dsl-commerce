@@ -20,16 +20,25 @@ const rows = [
     createData('Frozen yoghurt', "userEmail@gmail.com", '+484538454564',),
     createData('Frozen yoghurt', "userEmail@gmail.com", '+484538454564',),
     createData('Frozen yoghurt', "userEmail@gmail.com", '+484538454564',),
+
 ];
 
-const Verifide = () => {
+const NonVerifide = () => {
     return (
         <div className="py-3">
             <span className='my-3 text-white bolder bg-primary p-2 my-2 rounded' >GENNERATE CSV</span>
 
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 550, maxWidth: "1300px" }} aria-label="simple table">
-
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Dessert (100g serving)</TableCell>
+                            <TableCell align="right">Calories</TableCell>
+                            <TableCell align="right">Fat&nbsp;(g)</TableCell>
+                            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+                            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                        </TableRow>
+                    </TableHead>
                     <TableBody>
                         {rows.map((row, index) => (
                             <TableRow
@@ -49,22 +58,21 @@ const Verifide = () => {
                                 <TableCell align="right">{row.fat}</TableCell>
                                 <TableCell align="right">{row.carbs}</TableCell>
                                 <TableCell align="right">{row.protein}</TableCell>
-
                                 <TableCell align="right" className='d-flex gap-3'>
-
-                                    <span className='bg-danger px-3 py-3 rounded'>
-                                        < AiFillDelete className='fs-3  text-white rounded' />
-                                    </span>
-                                    <span className='px-3 py-3 rounded' style={{ background: '#4ed292' }}>
-                                        < BiUserPlus className='fs-3 text-white rounded' />
-                                    </span>
                                     <span className='bg-primary px-3 py-3 rounded'>
                                         < AiFillEye className='fs-3 text-white rounded' />
                                     </span>
 
+                                    <span className='bg-primary px-3 py-3 rounded'>
+                                        < BiUserPlus className='fs-3 text-white rounded' />
+                                    </span>
+
+                                    <span className='bg-danger px-3 py-3 rounded'>
+                                        < AiFillDelete className='fs-3  text-white rounded' />
+                                    </span>
                                 </TableCell>
                                 {/* <TableCell align="right"><BiUserPlus className='fs-3 bg-primary p-1 text-white rounded' /> </TableCell>
-                                <TableCell align="right"><AiFillDelete className='fs-3 bg-danger p-1 text-white rounded' /> </TableCell> */}
+                            <TableCell align="right"><AiFillDelete className='fs-3 bg-danger p-1 text-white rounded' /> </TableCell> */}
 
                             </TableRow>
                         ))}
@@ -75,4 +83,4 @@ const Verifide = () => {
     );
 };
 
-export default Verifide;
+export default NonVerifide;
