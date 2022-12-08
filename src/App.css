@@ -5,16 +5,18 @@
   align-items: center;
   justify-content: end;
 }
+
 .btn-close {
   filter: invert(1) grayscale(100%) brightness(200%) !important;
 }
-.iconClose{
+
+.iconClose {
   background-color: #1a1a25;
   border: none;
   color: white;
 }
 
-.iconClose:hover{
+.iconClose:hover {
   background-color: #1a1a25;
   border: none;
   color: white;
@@ -256,4 +258,10 @@
 .slick-dots {
   display: block !important;
   position: static !important;
+}
+
+@media only screen and (min-width:700px) {
+  .orderDetailsModal {
+    min-width: 900px !important;
+  }
 }
