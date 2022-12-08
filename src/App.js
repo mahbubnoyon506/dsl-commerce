@@ -73,6 +73,8 @@ import NonVerified from "./pages/Dashboard/verified/NonVerified";
 import Pending from "./pages/Dashboard/Pending/Pending";
 import AddedProducts from "./pages/Dashboard/AddedProducts/AddedProduct";
 import UserDetails from "./pages/Dashboard/UserDetails/UserDetails";
+import KycLogin from "./Components/KYCArea/KycAccount/KycLogin/KycLogin";
+import KycSignUp from "./Components/KYCArea/KycAccount/KycSignUp/KycSignUp";
 
 export const ProductContext = createContext();
 function App() {
@@ -161,6 +163,8 @@ function App() {
 
 
         {/*******************************  KYC Start ***************************** */}
+        <Route path="/kyc/login" element={<KycLogin />} />
+        <Route path="/kyc/sign-up" element={<KycSignUp />} />
         <Route path="/kyc/profile" element={<KYC />} />
         {/****************************** KYC Start End ******************************/}
 
