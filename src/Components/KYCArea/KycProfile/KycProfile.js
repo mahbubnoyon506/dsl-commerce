@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { allCountryNationality } from "../CountryName/cData";
+import "./KycProfile.css";
 
 const KycProfile = () => {
   const [memberShipId, setMemberShipId] = useState("");
@@ -30,7 +31,10 @@ const KycProfile = () => {
 
   return (
     <div className="merchant-profile-container">
-      <Form className="w-50" onSubmit={(e) => handleFormSubmit(e)}>
+      <Form
+        className="default-width-container"
+        onSubmit={(e) => handleFormSubmit(e)}
+      >
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>MEMBERSHIP ID</Form.Label>
           <Form.Control
@@ -99,14 +103,10 @@ const KycProfile = () => {
         >
           <option> Nationality </option>
           {allCountryNationality?.map((country, index) => (
-              <option
-                key={index}
-                style={{ padding: "5px" }}
-                value={country}
-              >
-                {country}
-              </option>
-            ))}
+            <option key={index} style={{ padding: "5px" }} value={country}>
+              {country}
+            </option>
+          ))}
         </Form.Select>
         <Form.Label>TIME ZONE*</Form.Label>
         <Form.Select

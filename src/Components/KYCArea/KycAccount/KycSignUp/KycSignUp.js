@@ -40,7 +40,7 @@ const KycSignUp = () => {
     >
       <div
         style={{ paddingBlock: "30px", paddingInline: "30px" }}
-        className="w-50 bg-white"
+        className="default-width-container bg-white"
       >
         <Form onSubmit={(e) => handleFormSubmit(e)}>
           <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
