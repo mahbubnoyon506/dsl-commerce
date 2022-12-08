@@ -17,12 +17,16 @@ const KYC = () => {
       style={{ background: "#6f6f6f", minHeight: "100vh", color: "white" }}
     >
       <div className="container ">
+        <div className="pt-3 mb-3">
+          <p className="fs-4 fw-bold text-uppercase text-white">My profile</p>
+          <hr />
+        </div>
         <Tabs
           id="controlled-tab-example"
           activeKey={key}
           onSelect={(k) => setKey(k)}
           className="mb-3"
-          style={{background: '#262626'}}
+          style={{ background: '#262626' }}
         >
           <Tab eventKey="profile" title="PROFILE" >
             <KycProfile />

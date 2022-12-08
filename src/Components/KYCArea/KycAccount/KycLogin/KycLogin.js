@@ -10,7 +10,7 @@ const KycLogin = () => {
     setVisible(!isVisible);
   };
   return (
-    <div className='d-flex justify-content-center align-items-center'>
+    <div className='d-flex justify-content-center align-items-center' style={{height: '100vh'}}>
       <Card className='shadow bg-white rounded' style={{ width: '25rem', border: 'none', }}>
         <Card.Body>
           <Form>
