@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Editor } from "react-draft-wysiwyg";
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import { EditorState, convertToRaw} from 'draft-js';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from 'draftjs-to-html';
 import axios from 'axios';
