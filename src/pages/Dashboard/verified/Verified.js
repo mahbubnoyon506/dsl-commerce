@@ -23,7 +23,7 @@ const rows = [
 
 ];
 
-const Verifide = () => {
+const Verified = () => {
     return (
         <div className="py-3">
             <span className='my-3 text-white bolder bg-primary p-2 my-2 rounded' >GENNERATE CSV</span>
@@ -75,4 +75,4 @@ const Verifide = () => {
     );
 };
 
-export default Verifide;
+export default Verified;

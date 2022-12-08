@@ -69,6 +69,7 @@ import Preloader from "./Components/Common/Preloader";
 import Merchant from "./pages/Merchant/Merchant";
 import KYC from "./pages/KYC/KYC";
 import Verified from "./pages/Dashboard/verified/Verified";
+import Pending from "./pages/Dashboard/Pending/Pending";
 
 export const ProductContext = createContext();
 function App() {
@@ -193,6 +194,7 @@ function App() {
 
           {/* *************************   KYC pages    ****************************** */}
           <Route path="verified" element={<Verified />} />
+          <Route path="pending" element={<Pending />} />
 
 
           {/*************************** Product  ***************************/}
