@@ -12,8 +12,8 @@ function TopHeader({ shippingMessage, history }) {
     user,
     openWalletModal,
     logOut,
-    closeWalletModal,
-    closeCoinbaseModal,
+    closeWalletModal,  
+    closeCoinbaseModal, 
   } = useContext(DSLCommerceContext);
   const Logout = () => {
     logOut();

@@ -68,6 +68,11 @@ import AdministerOrders from "./pages/Dashboard/AdministerOrders/AdministerOrder
 import Preloader from "./Components/Common/Preloader";
 import Merchant from "./pages/Merchant/Merchant";
 import KYC from "./pages/KYC/KYC";
+import Verified from "./pages/Dashboard/verified/Verified";
+import NonVerified from "./pages/Dashboard/verified/NonVerified";
+import Pending from "./pages/Dashboard/Pending/Pending";
+import AddedProducts from "./pages/Dashboard/AddedProducts/AddedProduct";
+import UserDetails from "./pages/Dashboard/UserDetails/UserDetails";
 import KycLogin from "./Components/KYCArea/KycAccount/KycLogin/KycLogin";
 import KycSignUp from "./Components/KYCArea/KycAccount/KycSignUp/KycSignUp";
 
@@ -86,7 +91,7 @@ function App() {
   }, []);
 
   if (isLoading) {
-    return <Preloader/>
+    return <Preloader />
   }
 
 
@@ -110,8 +115,8 @@ function App() {
           <Route path="/help-desk" element={<HelpDesk />} />
 
           {/* <Route path="/my-account" element={<MyAccount />} /> */}
-          <Route path="/profile" element={<Profile expiryTimestamp={time}/>} />
-          <Route path="/tracking-order" element={<TrackingOrder expiryTimestamp={time}/>} />
+          <Route path="/profile" element={<Profile expiryTimestamp={time} />} />
+          <Route path="/tracking-order" element={<TrackingOrder expiryTimestamp={time} />} />
 
           {/* SHOP START */}
 
@@ -153,7 +158,7 @@ function App() {
           element={<ForgetPassword />}
         />
         /admin
-        <Route path="/admin/otp/:token" element={<Otp  expiryTimestamp={time}/>} />
+        <Route path="/admin/otp/:token" element={<Otp expiryTimestamp={time} />} />
 
 
 
@@ -181,6 +186,8 @@ function App() {
             path="/admin/adminprofile/:id"
             element={<DashboardAdminEditProfile />}
           />
+           
+
 
           {/*************************** Customers  ***************************/}
           <Route path="customers" element={<Customers />} />
@@ -193,6 +200,15 @@ function App() {
             path="/admin/orderDetail/:id"
             element={<SingleOrderDetail />}
           />
+
+
+          {/* *************************   KYC pages    ****************************** */}
+          <Route path="verified" element={<Verified />} />
+          <Route path="non-verified" element={<NonVerified />} />
+          <Route path="pending" element={<Pending />} />
+          <Route path="added-products" element={<AddedProducts />} />
+          <Route path="userDetails" element={<UserDetails />} />
+
 
           {/*************************** Product  ***************************/}
           <Route path="products" element={<AllProduct />} />
@@ -210,8 +226,9 @@ function App() {
           <Route path="all-subscribers/:emailPerPage" element={<Subscribers />} />
 
 
+
+
           <Route path="data" element={<Data />} />
-          <Route path="faq-dashboard" element={<FaqDashboard />} />
           <Route path="help-desk-dashboard" element={<HelpDeskDashborad />} />
           <Route
             path="customer-services-dashboard"
@@ -243,6 +260,8 @@ function App() {
         > */}
         {/* </CartContext.Provider> */}
         {/* </AuthContext.Provider> */}
+
+
       </Routes>
 
       <Toaster />
