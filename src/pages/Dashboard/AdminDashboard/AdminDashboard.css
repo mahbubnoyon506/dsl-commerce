@@ -25,7 +25,7 @@
 }
 
 svg {
-  color: white;
+  /* color: black; */
 }
 
 .demoP {
@@ -47,25 +47,29 @@ svg {
   text-align: start;
   width: 100%;
 }
-.orderIcon{
+
+.orderIcon {
   border-radius: 100% !important;
   font-size: 50px !important;
-  padding: 10px; 
+  padding: 10px;
 }
-.setBg1{
+
+.setBg1 {
   border: 1px solid rgb(249, 117, 9);
   background-color: rgb(249, 117, 9);
 }
 
-.setBg2{
+.setBg2 {
   border: 1px solid rgb(65, 33, 243);
   background-color: rgb(78, 37, 243);
 }
-.setBg3{
+
+.setBg3 {
   border: 1px solid rgb(36, 175, 206);
   background-color: rgb(36, 167, 197);
 }
-.setBg4{
+
+.setBg4 {
   border: 1px solid rgb(3, 137, 3);
   background-color: rgb(3, 137, 3);
 }
@@ -76,6 +80,7 @@ svg {
     height: auto;
     background-size: cover;
   }
+
   .coinsIcon {
     padding-top: 0px;
   }

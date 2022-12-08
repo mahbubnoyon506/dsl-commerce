@@ -1,39 +1,53 @@
 import axios from 'axios';
 import React, { useEffect, useState, createContext } from 'react';
-import { ethers } from 'ethers';
-import swal from 'sweetalert';
+import { ethers, Contract, BigNumber } from "ethers";
+import { v4 as uuidv4 } from "uuid";
+import abi from "../utils/nftAbi.json";
+import swal from "sweetalert";
 import {
   DSLtokenABITestnet,
   DSLtokenAddressTestnet,
   mintABITestnet,
   mintAddressTestnet,
+  mintABITestnet2,
+  mintAddressTestnet2,
   USDSCtokenABITestnet,
   USDSCtokenAddressTestnet,
   S39tokenAddressTestnet,
   S39tokenABITestnet,
   QuesttokenAddressTestnet,
   QuesttokenABITestnet,
-  // RPC,
-  // chainId  
-} from '../utils/constant';
+  RPC,
+  chainId
+} from "../utils/constant";
 
 export const DSLCommerceContext = createContext();
 
 const { ethereum } = window;
 
-// const getMintContractTestnet = () => {
-//   const provider = new ethers.providers.Web3Provider(ethereum);
-//   const signer = provider.getSigner();
-//   const MintNFTContract = new ethers.Contract(
-//     mintAddressTestnet,
-//     mintABITestnet,
-//     signer
-//   );
+const getMintContractTestnet = () => {
+  const provider = new ethers.providers.Web3Provider(ethereum);
+  const signer = provider.getSigner();
+  const MintNFTContract = new ethers.Contract(
+    mintAddressTestnet,
+    mintABITestnet,
+    signer
+  );
 
-//   console.log("MintNFTContract",MintNFTContract)
+  return MintNFTContract;
+};
 
-//   return MintNFTContract;
-// };
+const getMintContractTestnet2 = () => {
+  const provider = new ethers.providers.Web3Provider(ethereum);
+  const signer = provider.getSigner();
+  const MintNFTContract = new ethers.Contract(
+    mintAddressTestnet2,
+    mintABITestnet2,
+    signer
+  );
+
+  return MintNFTContract;
+};
 
 const getUSDSCtokenContractTestnet = () => {
   const provider = new ethers.providers.Web3Provider(ethereum);
@@ -80,6 +94,71 @@ const getQuesttokenContractTestnet = () => {
   );
   return tokenContract;
 };
+
+const getAllItemBlockchain = async () => {
+  const provider = new ethers.providers.JsonRpcProvider(RPC);
+  return {
+    provider,
+    // deployer: new ethers.Wallet(private_key, provider),
+    NFTContract: new Contract(mintAddressTestnet, abi, provider)
+  };
+};
+
+const genSignature = async (types, voucher, auth) => {
+  const domain = {
+    name: "NFT-Voucher",
+    version: "1",
+    verifyingContract: auth.contract,
+    chainId: chainId
+  };
+  const BuyNFTVoucher = {
+    id: voucher.id,
+    price: voucher.price,
+    tokenAddress: voucher.tokenAddress,
+    nonce: voucher.nonce
+  };
+
+  // const signature = await auth.signer._signTypedData(domain, types, BuyNFTVoucher);
+
+  return {
+    ...voucher,
+    // signature,
+  };
+};
+
+const signBuyFunction = async (id, price, tokenAddress, refAddress, uri) => {
+
+  const contracts = await getAllItemBlockchain();
+  const auth = {
+    signer: contracts.deployer,
+    contract: contracts.NFTContract.address,
+  };
+
+  const types = {
+    BuyNFTStruct: [
+      { name: "id", type: "string" },
+      { name: "price", type: "uint256" },
+      { name: "tokenAddress", type: "address" },
+      { name: "nonce", type: "string" },
+    ],
+  };
+  console.log('111111111111111: ', id, price, tokenAddress, refAddress, uri)
+
+  // Generate nonce as transaction id
+  const nonce = uuidv4();
+  const voucher = {
+    id: id,
+    price: BigNumber.from(price),
+    tokenAddress: tokenAddress,
+    refAddress: refAddress.length !== 0 ? refAddress : "0x0000000000000000000000000000000000000000",
+    nonce: nonce,
+    uri: uri,
+  };
+  return {
+    ...(await genSignature(types, voucher, auth)),
+    price: price.toString(),
+  };
+}
 
 export default function DslProvider({ children }) {
   const [loginModal, setLoginModal] = useState(false);
@@ -150,8 +229,6 @@ export default function DslProvider({ children }) {
     return setMetamaskBalance(wallet);
   };
 
-  // console.log(metamaskBalance);
-
   window.addEventListener("load", function () {
     if (window.ethereum) {
       // detect Metamask account change
@@ -191,7 +268,387 @@ export default function DslProvider({ children }) {
   const logOut = async () => {
     setCurrentAccount(null);
     setUser({});
-    localStorage.removeItem("tokendslcommerce");
+    localStorage.removeItem("token");
+  };
+
+
+
+  const payByTestnetBNB = async (data) => {
+    try {
+      if (ethereum) {
+        const chainid = await window.ethereum.request({
+          method: "eth_chainId",
+        });
+        console.log("This is Chain ID: ", chainid);
+        if (chainid === "0x38" || chainid === "0x61") {
+          const MintNFTContract = getMintContractTestnet();
+          console.log(MintNFTContract);
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          console.log("enter7");
+
+          // const parsedAmount = ethers.utils.parseEther(mintPrice);
+          const admin = "0x626D20125da6a371aA48023bF9dad94BD66588F7";
+          const object = {
+            id: data.id,
+            price: data.price,
+            tokenAddress: data.tokenAddress,
+            walletAddress: data.walletAddress,
+            refAddress: data.refAddress,
+            nonce: data.nonce,
+            uri: data.uri,
+            signature: data.signature
+          }
+          console.log("valueeee", object)
+
+          const Val = await MintNFTContract.buyNFT(object, { value: BigNumber.from(object.price) })
+          await Val.wait()
+          let txn_test = await provider.getTransaction(Val.hash);
+          while (txn_test.blockNumber === null) {
+            console.log("Minting...");
+            txn_test = await provider.getTransaction(Val.hash);
+          }
+          console.log("txn_test.blockNumber: " + txn_test.blockNumber);
+          let mint_hash = "https://testnet.bscscan.com/tx/" + Val.hash;
+          console.log("Mint link: " + mint_hash);
+          const ID = await MintNFTContract.totalSupply();
+          console.log("Token ID: ", ID.toString());
+          console.log("this is Token ID: 10000" + ID.toString());
+          console.log("this is Contract Address: : " + mintAddressTestnet);
+
+          let details = { mint: mint_hash, Id: ID };
+          console.log(details);
+
+          return {
+            mint_hash: mint_hash,
+            ID: "10000" + ID.toString(),
+            mintPrice: data.price,
+            address: "0x0000000000000000000000000000000000000000",
+          };
+
+        } else {
+          console.log("No ethereum object");
+          console.log("enter8");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      console.log("enter9");
+
+      throw new Error("No ethereum object");
+    }
+  };
+
+  const payByTestnetUSDSC = async (data) => {
+    try {
+      if (ethereum) {
+        const MintNFTContract = getMintContractTestnet();
+        const USDSCTokenContract = getUSDSCtokenContractTestnet();
+        console.log(USDSCTokenContract);
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        console.log("USDC", MintNFTContract.address,
+          BigNumber.from(ethers.constants.MaxUint256))
+        const payment = await USDSCTokenContract.approve(
+          MintNFTContract.address,
+          BigNumber.from(ethers.constants.MaxUint256)
+        );
+        let payment_test = await provider.getTransaction(payment.hash);
+        while (payment_test.blockNumber === null) {
+          console.log("Approve In Progress...");
+          payment_test = await provider.getTransaction(payment.hash);
+        }
+        console.log(payment_test.blockNumber);
+        let payment_hash = "https://testnet.bscscan.com/tx/" + payment.hash;
+        console.log("Payment link: " + payment_hash);
+        const object = {
+          id: data.id,
+          price: data.price,
+          tokenAddress: data.tokenAddress,
+          walletAddress: data.walletaddress,
+          refAddress: data.refAddress,
+          nonce: data.nonce,
+          uri: data.uri,
+          signature: data.signature
+        }
+        console.log("valueeee", object)
+
+        const Val = await MintNFTContract.buyNFT(object)
+        await Val.wait()
+        let txn_test = await provider.getTransaction(Val.hash);
+        if (txn_test) {
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = `<p></p><div class="loaders"></div> <p class="wait"><b>Transaction Pending...<b></p> `;
+          swal({
+            content: wrapper,
+            button: false,
+            className: "modal_class_success",
+          });
+          while (txn_test.blockNumber === null) {
+            console.log("Minting...");
+            txn_test = await provider.getTransaction(Val.hash);
+          }
+          console.log("txn_test.blockNumber: " + txn_test.blockNumber);
+        }
+        const ID = await MintNFTContract.totalSupply();
+        console.log(ID.toString());
+        let mint_hash = "https://testnet.bscscan.com/tx/" + Val.hash;
+        console.log("Mint link: " + mint_hash);
+
+        return {
+          mint_hash: mint_hash,
+          ID: "10000" + ID.toString(),
+          mintPrice: data.price,
+          address: USDSCtokenAddressTestnet,
+        };
+
+      }
+    } catch (error) {
+      console.log(error);
+      console.log("No ethereum object");
+      //setRequestLoading(false);
+      if (error.code === -32603) {
+        swal({
+          title: "Attention",
+          text: "Insufficient funds for minting!",
+          icon: "warning",
+          button: "OK",
+          // dangerMode: true,
+          className: "modal_class_success",
+        });
+      } else {
+        swal({
+          title: "Attention",
+          text: "Minting Failed",
+          icon: "warning",
+          button: "OK",
+          // dangerMode: true,
+          className: "modal_class_success",
+        });
+      }
+      throw new Error("No ethereum object");
+    }
+  };
+
+  const payByTestnetDSL = async (data) => {
+    try {
+      if (ethereum) {
+        const chainid = await window.ethereum.request({
+          method: "eth_chainId",
+        });
+        console.log("This is Chain ID: ", chainid);
+        if (chainid === "0x38" || chainid === "0x61") {
+          const MintNFTContract = getMintContractTestnet();
+          console.log(MintNFTContract);
+          const DSLTokenContract = getDSLtokenContractTestnet();
+          console.log(DSLTokenContract);
+          const provider = new ethers.providers.Web3Provider(ethereum);
+
+          console.log("USDC", MintNFTContract.address,
+            BigNumber.from(ethers.constants.MaxUint256))
+          const payment = await DSLTokenContract.approve(
+            MintNFTContract.address,
+            BigNumber.from(ethers.constants.MaxUint256)
+          );
+          let payment_test = await provider.getTransaction(payment.hash);
+          while (payment_test.blockNumber === null) {
+            console.log("Approve In Progress...");
+            payment_test = await provider.getTransaction(payment.hash);
+          }
+          console.log(payment_test.blockNumber);
+          let payment_hash = "https://testnet.bscscan.com/tx/" + payment.hash;
+          console.log("Payment link: " + payment_hash);
+          const object = {
+            id: data.id,
+            price: data.price,
+            tokenAddress: data.tokenAddress,
+            walletAddress: data.walletaddress,
+            refAddress: data.refAddress,
+            nonce: data.nonce,
+            uri: data.uri,
+            signature: data.signature
+          }
+          console.log("valueeee", object)
+
+          const Val = await MintNFTContract.buyNFT(object)
+          await Val.wait()
+          let txn_test = await provider.getTransaction(Val.hash);
+          while (txn_test.blockNumber === null) {
+            console.log("Minting...");
+            txn_test = await provider.getTransaction(Val.hash);
+          }
+          console.log("txn_test.blockNumber: " + txn_test.blockNumber);
+          const ID = await MintNFTContract.totalSupply();
+          console.log(ID.toString());
+          let mint_hash = "https://testnet.bscscan.com/tx/" + Val.hash;
+          console.log("Mint link: " + mint_hash);
+          console.log("this is Token ID: 10000" + ID.toString());
+          console.log("this is Contract Address: : " + mintAddressTestnet);
+
+          return {
+            mint_hash: mint_hash,
+            ID: "10000" + ID.toString(),
+            mintPrice: data.price,
+            address: DSLtokenAddressTestnet,
+          };
+        } else {
+          console.log("No ethereum object");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error("No ethereum object");
+    }
+  };
+
+  const payByTestnetS39 = async (data) => {
+    try {
+      if (ethereum) {
+        const chainid = await window.ethereum.request({
+          method: "eth_chainId",
+        });
+        console.log("This is Chain ID: ", chainid);
+        if (chainid === "0x38" || chainid === "0x61") {
+          const MintNFTContract = getMintContractTestnet();
+          console.log(MintNFTContract);
+          const S39TokenContract = getS39tokenContractTestnet();
+          console.log(S39TokenContract);
+          const provider = new ethers.providers.Web3Provider(ethereum);
+
+          console.log("USDC", MintNFTContract.address,
+            BigNumber.from(ethers.constants.MaxUint256))
+          const payment = await S39TokenContract.approve(
+            MintNFTContract.address,
+            BigNumber.from(ethers.constants.MaxUint256)
+          );
+          let payment_test = await provider.getTransaction(payment.hash);
+          while (payment_test.blockNumber === null) {
+            console.log("Approve In Progress...");
+            payment_test = await provider.getTransaction(payment.hash);
+          }
+          console.log(payment_test.blockNumber);
+          let payment_hash = "https://testnet.bscscan.com/tx/" + payment.hash;
+          console.log("Payment link: " + payment_hash);
+
+          const object = {
+            id: data.id,
+            price: data.price,
+            tokenAddress: data.tokenAddress,
+            walletAddress: data.walletaddress,
+            refAddress: data.refAddress,
+            nonce: data.nonce,
+            uri: data.uri,
+            signature: data.signature
+          }
+          console.log("valueeee", object)
+
+          const Val = await MintNFTContract.buyNFT(object)
+          await Val.wait()
+          let txn_test = await provider.getTransaction(Val.hash);
+          while (txn_test.blockNumber === null) {
+            console.log("Minting...");
+            txn_test = await provider.getTransaction(Val.hash);
+          }
+          console.log("txn_test.blockNumber: " + txn_test.blockNumber);
+          const ID = await MintNFTContract.totalSupply();
+          console.log("Token ID: ", ID.toString());
+          let mint_hash = "https://testnet.bscscan.com/tx/" + Val.hash;
+          console.log("Mint link: " + mint_hash);
+          console.log("this is Token ID: 10000" + ID.toString());
+          console.log("this is Contract Address: : " + mintAddressTestnet);
+
+          return {
+            mint_hash: mint_hash,
+            ID: "10000" + ID.toString(),
+            mintPrice: data.price,
+            address: S39tokenAddressTestnet,
+          };
+        } else {
+          console.log("No ethereum object");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error("No ethereum object");
+    }
+  };
+
+  const payByTestnetQuest = async (data) => {
+    try {
+      if (ethereum) {
+        const MintNFTContract = getMintContractTestnet();
+        const USDSCTokenContract = getQuesttokenContractTestnet();
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        console.log("USDC", MintNFTContract.address,
+          BigNumber.from(ethers.constants.MaxUint256))
+        const payment = await USDSCTokenContract.approve(
+          MintNFTContract.address,
+          BigNumber.from(ethers.constants.MaxUint256)
+        );
+        let payment_test = await provider.getTransaction(payment.hash);
+        while (payment_test.blockNumber === null) {
+          console.log("Approve In Progress...");
+          payment_test = await provider.getTransaction(payment.hash);
+        }
+        console.log(payment_test.blockNumber);
+        let payment_hash = "https://testnet.bscscan.com/tx/" + payment.hash;
+        console.log("Payment link: " + payment_hash);
+        const object = {
+          id: data.id,
+          price: data.price,
+          tokenAddress: data.tokenAddress,
+          walletAddress: data.walletaddress,
+          refAddress: data.refAddress,
+          nonce: data.nonce,
+          uri: data.uri,
+          signature: data.signature
+        }
+        console.log("valueeee", object)
+
+        const Val = await MintNFTContract.buyNFT(object)
+        await Val.wait();
+        let txn_test = await provider.getTransaction(Val.hash);
+        if (txn_test) {
+          while (txn_test.blockNumber === null) {
+            console.log("Minting...");
+            txn_test = await provider.getTransaction(Val.hash);
+          }
+          console.log("txn_test.blockNumber: " + txn_test.blockNumber);
+        }
+        const ID = await MintNFTContract.totalSupply();
+        console.log(ID.toString());
+        let mint_hash = "https://testnet.bscscan.com/tx/" + Val.hash;
+        console.log("Mint link: " + mint_hash);
+        return {
+          mint_hash: mint_hash,
+          ID: "10000" + ID.toString(),
+          mintPrice: data.price,
+          address: QuesttokenAddressTestnet,
+        };
+      }
+    } catch (error) {
+      console.log(error);
+      console.log("No ethereum object");
+      //setRequestLoading(false);
+      if (error.code === -32603) {
+        swal({
+          title: "Attention",
+          text: "Insufficient funds for minting!",
+          icon: "warning",
+          button: "OK",
+          // dangerMode: true,
+          className: "modal_class_success",
+        });
+      } else {
+        swal({
+          title: "Attention",
+          text: "Minting Failed",
+          icon: "warning",
+          button: "OK",
+          // dangerMode: true,
+          className: "modal_class_success",
+        });
+      }
+      throw new Error("No ethereum object");
+    }
   };
 
   const checkIfWalletIsConnect = async () => {
@@ -266,7 +723,7 @@ export default function DslProvider({ children }) {
                 const wrapper = document.createElement("div");
                 wrapper.innerHTML = `<p class='text-break text-white fs-6'>You have succesfully logged in with <br/>Binance Chain.</p>`;
                 return swal({
-                  title: "Success",
+                  // title: "Success",
                   // text: "You have succesfully logged in with Binance Chain.",
                   content: wrapper,
                   icon: "success",
@@ -293,11 +750,6 @@ export default function DslProvider({ children }) {
     }
   };
 
-
-  // const test = async () => {
-  //   const contract = getMintContractTestnet();
-  //   console.log(contract);
-  // };
 
   const connectToCoinbase = async () => {
     getBalanceTestnet();
@@ -346,7 +798,7 @@ export default function DslProvider({ children }) {
             const wrapper = document.createElement("div");
             wrapper.innerHTML = `<p class='text-break text-white fs-6'>You have succesfully logged in with <br/>Coin Base.</p>`;
             return swal({
-              title: "Success",
+              // title: "Success",
               // text: "You have succesfully logged in with Binance Chain.",
               content: wrapper,
               icon: "success",
@@ -421,7 +873,7 @@ export default function DslProvider({ children }) {
                 const wrapper = document.createElement("div");
                 wrapper.innerHTML = `<p class='text-break text-white fs-6'>You have succesfully logged in with <br/>Binance Chain.</p>`;
                 return swal({
-                  title: "Success",
+                  // title: "Success",
                   // text: "You have succesfully logged in with Binance Chain.",
                   content: wrapper,
                   icon: "success",
@@ -457,12 +909,6 @@ export default function DslProvider({ children }) {
   const setID = async () => {
     try {
       if (ethereum) {
-        // const MintNFTContract = getEthereumContract();
-        // const ID = await MintNFTContract.totalSupply();
-        // setId(ID.toString());
-        // console.log("This is ID in setID: " + ID);
-        // console.log("This is Id in setID: " + Id);
-      } else {
         console.log("No ethereum object");
       }
     } catch (error) {
@@ -500,7 +946,7 @@ export default function DslProvider({ children }) {
   useEffect(() => {
     if (requestLoading) {
       const wrapper = document.createElement("div");
-      wrapper.innerHTML = `<p></p><div className="loader"></div> <p className="success"><b>Please wait...<b></p> `;
+      wrapper.innerHTML = `<p></p><div class="loaders"></div> <p class="wait"><b>Please wait, don't exit screen...<b></p> `;
       swal({
         content: wrapper,
         button: false,
@@ -522,15 +968,14 @@ export default function DslProvider({ children }) {
       setUser,
       logOut,
       loading,
-      // contractAddress,
       Id,
+      // signBuyFunction,
       setID,
       setUserRefetch,
       chain,
       pageLoading,
       payAmount,
       setPayAmount,
-      // getBalance,
       metamaskBalance,
       coinbaseModal,
       metamaskBalanceLoading,
@@ -549,7 +994,12 @@ export default function DslProvider({ children }) {
       USDSCtokenAddressTestnet,
       S39tokenAddressTestnet,
       QuesttokenAddressTestnet,
-      getBalanceTestnet,
+      payByTestnetBNB,
+      payByTestnetUSDSC,
+      payByTestnetDSL,
+      payByTestnetS39,
+      signBuyFunction,
+      payByTestnetQuest,
     }}>
       {children}
     </DSLCommerceContext.Provider>

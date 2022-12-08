@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Editor } from "react-draft-wysiwyg";
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import { EditorState, convertToRaw} from 'draft-js';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from 'draftjs-to-html';
 import axios from 'axios';
@@ -88,7 +88,7 @@ const CreateProduct = () => {
       .then(res => {
         if (res.status === 200) {
           swal({
-            title: "Success",
+            // title: "Success",
             text: `${res.data.message}`,
             icon: "success",
             button: "OK!",
@@ -206,7 +206,10 @@ const CreateProduct = () => {
                   style={{ cursor: 'pointer' }}
                   name="type"
                 >
-                  <option>Product Type </option>
+                  {getCategory.map(category => (
+                    <option value={category?._id}>{category?.name}</option>
+                  ))}
+                  {/* <option>Product Type </option>
                   <option value="cameras">Cameras</option>
                   <option value="electronics">Electronics</option>
                   <option value="audio">Audio</option>
@@ -217,7 +220,7 @@ const CreateProduct = () => {
                   <option value="tablet">Tablet</option>
                   <option value="watches">Watches</option>
                   <option value="mobile">Mobile</option>
-                  <option value="headphone">Headphone</option>
+                  <option value="headphone">Headphone</option> */}
                 </select>
               </div>
             </div>

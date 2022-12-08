@@ -1,30 +1,46 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { Image } from "cloudinary-react";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import parse from "html-react-parser";
 import WriteReview from "./WriteReview";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 import { CartContext } from "../../contexts/cart-context";
-import { RemoveCircleOutlineTwoTone } from "@mui/icons-material";
 import Ratings from "../Common/Ratings";
+
+
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  TwitterShareButton,
+  TwitterIcon,
+  LinkedinShareButton,
+  LinkedinIcon,
+  PinterestShareButton,
+  PinterestIcon,
+  WhatsappIcon,
+  WhatsappShareButton,
+} from "react-share";
+
+
+
 
 function ProductsDetailsArea() {
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const { productId } = useParams();
-  const { addItemToCart, carts } = useContext(CartContext);
+  const { addItemToCart } = useContext(CartContext);
   const [descriptionData, setDescriptionData] = useState("");
   const [available, setAvailable] = useState("");
   const [refetch, setRefetch] = useState(false);
-  const { user, setUserRefetch, openWalletModal } =
+  // const [price,setPrice] = useState()
+  const { user, openWalletModal } =
     useContext(DSLCommerceContext);
   const [userReviews, setUserReviews] = useState([]);
   const navigate = useNavigate();
-  // console.log(userReviews);
+  console.log(userReviews);
 
   const writeReview = (product) => {
     setIsOpen(true);
@@ -48,7 +64,7 @@ function ProductsDetailsArea() {
       .catch((err) => console.log(err));
   }, [productId, refetch]);
 
-  // console.log('single product' , product)
+  console.log('single product', product)
 
   const addToCart = (product) => {
     let currentItem = {
@@ -102,6 +118,12 @@ function ProductsDetailsArea() {
                       alt={product.productName}
                     />
                   </div>
+                  {/* <div>
+                    <img
+                      src={product?.product_images}
+                      alt={product.productName}
+                    />
+                  </div> */}
                 </Carousel>
               </div>
             </div>
@@ -121,15 +143,19 @@ function ProductsDetailsArea() {
                 </div>
 
                 <div className="price">
-                  <span className="old-price">$150.00</span>
-                  <span className="new-price">${product?.price}</span>
+                  <span className="old-price">${product?.price}</span>
+                  {/* <span className="new-price">${product?.price}</span> */}
+                  <span className="new-price">${product?.price - ((product?.price * product?.offeringProduct) / 100)}0</span>
+                  <span className="new-price pl-3">
+                    {/* <small> Discount {product?.offeringProduct} %</small> */}
+                  </span>
                 </div>
 
                 <ul className="products-info">
                   <li>
-                    <span>Availability:</span>{" "}
+                    <span>Availability Now:</span>{" "}
                     {product.availableProduct > 0
-                      ? `In stock (${product.availableProduct})`
+                      ? `${product.availableProduct}`
                       : "Stock finished"}
                   </li>
                 </ul>
@@ -141,7 +167,7 @@ function ProductsDetailsArea() {
                 </div>
 
                 <div className="product-quantities text-center">
-                  <span>Quantities:</span>
+                  <span>Select how many you want:</span>
 
                   <div className="input-counter">
                     <span
@@ -190,7 +216,10 @@ function ProductsDetailsArea() {
                     <button
                       type="submit"
                       className="default-btn"
-                      onClick={() => addToCart(product)}
+                      onClick={() => {
+                        product.price = product?.price - ((product?.price * product?.offeringProduct) / 100)
+                        addToCart(product)
+                      }}
                     >
                       <i className="flaticon-shopping-cart"></i>
                       Add to cart
@@ -208,7 +237,7 @@ function ProductsDetailsArea() {
                 </div>
 
                 <div className="products-share">
-                  <ul className="social">
+                  {/* <ul className="social">
                     <li>
                       <span>Share:</span>
                     </li>
@@ -232,8 +261,31 @@ function ProductsDetailsArea() {
                         <i className="bx bxl-instagram"></i>
                       </a>
                     </li>
-                  </ul>
+                  </ul> */}
+                  <div className='d-flex justify-content-center gap-2 mb-3'>
+                    <FacebookShareButton url={window.location.origin + `/shop/products-details/${productId}`} title={`${product.productName}`}>
+                      <FacebookIcon size={40} round={true} />
+                    </FacebookShareButton>
+
+                    <TwitterShareButton url={window.location.origin + `/shop/products-details/${productId}`} title={`${product.productName}`}>
+                      <TwitterIcon size={40} round={true} />
+                    </TwitterShareButton>
+
+                    {/* <LinkedinShareButton url={window.location.origin + `/shop/products-details/${productId}`} title={`${product.productName}`}>
+                      <LinkedinIcon size={40} round={true} />
+                    </LinkedinShareButton> */}
+
+                    <WhatsappShareButton url={window.location.origin + `/shop/products-details/${productId}`} title={`${product.productName}`}>
+                      <WhatsappIcon size={40} round={true} />
+                    </WhatsappShareButton>
+
+                    <PinterestShareButton url={window.location.origin + `/shop/products-details/${productId}`} title={`${product.productName}`}>
+                      <PinterestIcon size={40} round={true} />
+                    </PinterestShareButton>
+
+                  </div>
                 </div>
+
               </div>
             </div>
           </div>
@@ -338,9 +390,9 @@ function ProductsDetailsArea() {
                 </div>
 
                 <div className="review-comments">
-                  {userReviews?.map((review) => {
+                  {userReviews?.map((review, index) => {
                     return (
-                      <div className="py-3">
+                      <div className="py-3" key={index}>
                         <div>
                           {review && (
                             <Ratings ratings={review?.rating}></Ratings>

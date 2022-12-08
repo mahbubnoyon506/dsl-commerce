@@ -51,9 +51,9 @@ const DashboardModalNewAdmin = (props) => {
         }
 
         else {
-            await axios.post("https://mainnetbackend.indianfilmtitles.com/api/v1/admin/", formDataAddAdmin, {
+            await axios.post("https://backend.dslcommerce.com/api/admin/", formDataAddAdmin, {
                 headers: {
-                    'authorization': `Bearer ${localStorage.getItem('admin')}`
+                    'authorization': `Bearer ${localStorage.getItem('adminDslCommerce')}`
                 }
             })
                 .then(res => {
@@ -65,7 +65,7 @@ const DashboardModalNewAdmin = (props) => {
                         event.target.reset();
                         // alert(res.data.message);
                         swal({
-                            title: "Success",
+                            // title: "Success",
                             text: res.data.message,
                             icon: "success",
                             button: "OK!",

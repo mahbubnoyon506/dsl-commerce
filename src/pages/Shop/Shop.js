@@ -1,6 +1,5 @@
-import { useState, useEffect, useContext } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useState,  useContext } from "react";
+import {  useSelector } from "react-redux";
 import PageTitle from "../../Components/Common/PageTitle";
 import Partner from "../../Components/Common/Partner";
 import ShopArea from "../../Components/Shop/ShopArea";
@@ -11,12 +10,10 @@ import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 function Shop({ page = 1, query = undefined, keyword = undefined }) {
   const [product, setProduct] = useState({});
 
-  const dispatch = useDispatch();
   const { products } = useSelector((state) => state.productReducer);
   const [isOpen, setIsOpen] = useState(false);
   const { addItemToCart } = useContext(CartContext);
   const { user } = useContext(DSLCommerceContext);
-  const navigate = useNavigate();
 
   const showQuickView = (product) => {
     setIsOpen(true);
@@ -41,7 +38,6 @@ function Shop({ page = 1, query = undefined, keyword = undefined }) {
     // console.log(currentItem);
 
     addItemToCart(currentItem);
-    // navigate("/cart");
   };
 
   return (
@@ -55,7 +51,7 @@ function Shop({ page = 1, query = undefined, keyword = undefined }) {
         page={page}
         query={query}
       />
-      <Partner paddingclassName="ptb-50" />
+      {/* <Partner paddingclassName="ptb-50" /> */}
       <QuickView isOpen={isOpen} closeModal={closeModal} product={product} />
     </div>
   );

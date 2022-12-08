@@ -67,7 +67,7 @@ const UpdateProduct = () => {
         if (res.status === 200) {
           // alert(res.data.message);
           swal({
-            title: "Success",
+            // title: "Success",
             text: `${res.data.message}`,
             icon: "success",
             button: "OK!",
@@ -166,7 +166,7 @@ const UpdateProduct = () => {
                     name="type"
                   >
                     <option value={productDetail?.type} > {productDetail?.type} </option>
-                    <option value="cameras">Cameras</option>
+                    {/* <option value="cameras">Cameras</option>
                     <option value="electronics">Electronics</option>
                     <option value="audio">Audio</option>
                     <option value="computers">Computers</option>
@@ -174,7 +174,7 @@ const UpdateProduct = () => {
                     <option value="laptop">Laptop</option>
                     <option value="watches">Watches</option>
                     <option value="mobile">Mobile</option>
-                    <option value="headphone">Headphone</option>
+                    <option value="headphone">Headphone</option> */}
                   </select>
                 </div>
               </div>

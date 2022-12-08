@@ -1,47 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Typography, Modal, Box } from "@mui/material";
 import Table from "react-bootstrap/Table";
 import Search from "../../../Components/Widgets/Search";
-import { Link, useNavigate } from "react-router-dom";
-// import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Pagination from "../../../Components/Pagination/Pagination";
+import { AllCustomers } from "./customerData";
 
 const FilterableTable = require("react-filterable-table");
 
-const Customers = ({ page, pages, keyword }) => {
-  const [tableary, setTableary] = useState([
-    {
-      USER_ID: "7C96",
-      WALLET_ADDRESS: "34jdhajhWIIWEFI86klj",
-      EMAIL: "abc@gmail.com",
-      PHONE: "01555543333",
-    },
-    {
-      USER_ID: "7c56",
-      WALLET_ADDRESS: "H1EIAN@di343kniKHUIlai947",
-      EMAIL: "abc.xyz@gmail.com",
-      PHONE: "01235545423",
-    },
-    {
-      USER_ID: "FCCB",
-      WALLET_ADDRESS: "45YTEklhaUYEmoni097kumar",
-      EMAIL: "abc@gmail.com",
-      PHONE: "01555543333",
-    },
-    {
-      USER_ID: "7C96",
-      WALLET_ADDRESS: "34jdhajhWIIWEFI86klj",
-      EMAIL: "abc@gmail.com",
-      PHONE: "01555543333",
-    },
-  ]);
+const Customers = () => {
+  const [allCustomers, setAllCustomers] = useState(AllCustomers);
+
   const navigate = useNavigate();
 
   const search = (e, searchText) => {
     e.preventDefault();
-    const newary = [...tableary];
+    const newary = [...allCustomers];
     console.log(searchText);
     console.log("search");
-    setTableary(
+    setAllCustomers(
       newary.filter(
         (item) =>
           item.EMAIL.includes(searchText) ||
@@ -51,6 +28,42 @@ const Customers = ({ page, pages, keyword }) => {
       )
     );
   };
+
+  //****************************** Pagination Start ******************************/
+  const { customerPerPage } = useParams();
+  const [getPage, setPage] = useState(1);
+  const [show, setShow] = useState(5);
+  const [lastPage, setLastPage] = useState(0);
+  const [sliceOrders, setSliceOrders] = useState([]);
+  // console.log(sliceProducts)
+
+  useEffect(() => {
+    const lastPage = Math.ceil(allCustomers?.length / show);
+    setLastPage(lastPage);
+  }, [allCustomers, show]);
+
+  useEffect(() => {
+    if (customerPerPage) {
+      const page = parseInt(customerPerPage);
+      const getSlicingCategory = allCustomers.slice(
+        (page - 1) * show,
+        page * show
+      );
+      console.log("getSlicingCategory");
+      console.log(getSlicingCategory);
+      setSliceOrders([...getSlicingCategory]);
+      setPage(parseInt(page));
+    } else {
+      const getSlicingProduct = allCustomers.slice(0, show);
+      setSliceOrders([...getSlicingProduct]);
+    }
+  }, [allCustomers, show, customerPerPage]);
+
+  const pageHandle = (jump) => {
+    navigate(`/admin/customers/${jump}`);
+    setPage(parseInt(jump));
+  };
+  //****************************** Pagination End ******************************/
 
   return (
     <>
@@ -63,32 +76,33 @@ const Customers = ({ page, pages, keyword }) => {
 
       <div className="productCard py-2">
         <div className="tableNormal ">
-          <Table className="text-white productDataTable ">
+          <Table responsive="sm" className="text-white productDataTable ">
             <thead>
               <tr>
-                <th className="text-left d-md-block d-none">USER ID</th>
+                {/* <th className="text-left d-md-block d-none">USER ID</th> */}
+                <th className="text-left productHidden">USER ID</th>
                 <th className="text-left productHidden">WALLET ADDRESS</th>
-                <th className="text-left ">EMAIL</th>
                 <th className="text-left productHidden">PHONE</th>
+                <th className="text-left ">EMAIL</th>
                 <th className="text-left">ACTIONS</th>
               </tr>
             </thead>
             <tbody>
-              {tableary?.map((tabledata) => (
-                <tr className="tableRow" key={tabledata?.USER_ID}>
-                  <td className="text-left text-capitalize">
-                    {tabledata.USER_ID}
+              {/* {sliceOrders?.map((sliceOrder) => (
+                <tr className="tableRow" key={sliceOrder?.USER_ID}>
+                  <td className="text-left text-capitalize productHidden">
+                    {sliceOrder.USER_ID}
                   </td>
                   <td className="text-left productHidden">
-                    {tabledata.WALLET_ADDRESS}
-                  </td>
-                  <td className="text-left text-capitalize ">
-                    {tabledata.EMAIL}
+                    {sliceOrder.WALLET_ADDRESS}
                   </td>
                   <td className="text-left text-capitalize productHidden">
-                    {tabledata.PHONE}
+                    {sliceOrder.PHONE}
                   </td>
-                  <td className="action">
+                  <td className="text-left text-capitalize ">
+                    {sliceOrder.EMAIL}
+                  </td>
+                  <td className="action col-sm-12 d-flex">
                     <div className="actionDiv text-left">
                       <button
                         className="viewBtn"
@@ -102,13 +116,27 @@ const Customers = ({ page, pages, keyword }) => {
                     </div>
                   </td>
                 </tr>
-              ))}
+              ))} */}
             </tbody>
           </Table>
         </div>
       </div>
+      {/*********************************** Pagination  Start***********************************/}
+      <div className="">
+        {sliceOrders?.length ? (
+          <Pagination
+            lastPage={lastPage}
+            page={getPage}
+            pageHandle={pageHandle}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
 
-      <div className="row">
+      {/*********************************** Pagination  End *************************************/}
+
+      {/* <div className="row">
         <div className="col-lg-6 col-md-6">
           <p>Showing 4 of 4</p>
         </div>
@@ -120,23 +148,12 @@ const Customers = ({ page, pages, keyword }) => {
             <a href="#" className="page-numbers current">
               1
             </a>
-            {/* <span className="page-numbers">
-              <a href="#" className="page-numbers">
-                2
-              </a>
-            </span>
-            <a href="#" className="page-numbers">
-              3
-            </a>
-            <a href="#" className="page-numbers">
-              4
-            </a> */}
             <a href="#" className="next page-numbers">
               <i className="flaticon-right-arrow"></i>
             </a>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* <div className="pagination-area">
         <Link to={`/page/${page - 1}`} className="prev page-numbers">

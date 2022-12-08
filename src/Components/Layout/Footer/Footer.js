@@ -1,41 +1,76 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import "./Footer.css";
+import { DSLCommerceContext } from "../../../contexts/DSLCommerceContext";
 
 function Footer() {
   const [link, setLink] = useState({});
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [email, setEmail] = useState("");
+  const {
+    user,
+    openWalletModal,
+    logOut,
+    closeWalletModal,
+    closeCoinbaseModal,
+  } = useContext(DSLCommerceContext);
 
-  const handleSignUp = async (e) => {
+  //********************************** Handle Email ****************************************
+  // const handleEmail = event => {
+  //   const emailValue = event.target.value
+  //   if (/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-z]{2,7}$/.test(emailValue)) {
+  //     setEmailError(null);
+  //   } else {
+  //     setEmailError("Please Provide a valid Email");
+  //   }
+  // }
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const email = e.target.email.value;
-
-    axios
-      .post("https://backend.dslcommerce.com/api/mail/newsletter", { email })
-      .then((res) => {
-        if (res.status === 200) {
-          setSuccess(true);
-          swal({
-            title: "Good job!",
-            text: res.data,
-            icon: "success",
-            button: "Aww yiss!",
-          });
-        }
-      })
-      .catch((err) => {
-        setError(true);
-        swal({
-          title: "Sorry!",
-          text: err.response.data,
-          icon: "warning",
-          button: "Aww yiss!",
-        });
+    // const email = e.target.email.value;
+    // console.log(email)
+    if (!email || email.length === 0) {
+      swal({
+        title: "Attention",
+        text: "Please enter your email",
+        icon: "warning",
+        button: "OK!",
+        className: "modal_class_success",
       });
+    }
+    else {
+      await axios
+        .post(`https://backend.dslcommerce.com/api/subscribe/`, {
+          email: email,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            swal({
+              text: "Successfully subscribed !",
+              icon: "success",
+              button: "OK!",
+              className: "modal_class_success",
+            });
+            e.target.reset()
+          }
+        })
+        .catch((err) => {
+          swal({
+            title: "Attention",
+            text: `Something went wrong`,
+            icon: "warning",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+        });
+    }
+
+
   };
 
   useEffect(() => {
@@ -57,24 +92,11 @@ function Footer() {
                 <ul className="footer-contact-info">
                   <li>
                     <span>Address:</span>
-                    <a href="#" target="_blank">
+                    <>
                       22 Sin Ming Lane #06-76 Midview City Singapore 573969
-                    </a>
+                    </>
                   </li>
-                  {/* //more address adding */}
-                  {/* <li>
-                    <p className="text-danger font-weight-bold">Our South East Asia Representative:-</p>
-                    <h6 className="font-weight-bold">
-                      DS Legends (Malaysia) Sdn Bhd
-                    </h6>
-                   <p className="address-text font-weight-normal">Co No: 202201012165 (1457862-K)</p>
-                   <p className="address-text font-weight-normal">Suite 506 Level 5</p>
-                   <p className="address-text font-weight-normal">Wisma Cosway</p>
-                   <p className="address-text font-weight-normal">Jalan Raja Chulan</p>
-                   <p className="address-text font-weight-normal">50200 Kuala Lumpur</p>
-                   
 
-                  </li> */}
 
                   <li>
                     <span>Email:</span>
@@ -89,38 +111,7 @@ function Footer() {
                   </li>
                 </ul>
 
-                {/* <ul className="footer-social">
-                  <li>
-                    <a href={link.facebook} target="_any">
-                      <i className="bx bxl-facebook border-round text-white bg-dark"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href={link.instagram} target="_any">
-                      <i className="bx bxl-instagram border-round text-white bg-dark"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href={link.pinterest} target="_any">
-                      <i className="bx bxl-pinterest-alt border-round text-white bg-dark"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href={link.twitter} target="_any">
-                      <i className="bx bxl-twitter border-round text-white bg-dark"></i>
-                    </a>
-                  </li>
-                  <li className="mt-2">
-                    <a href={link.linkedin} target="_any">
-                      <i className="bx bxl-linkedin border-round text-white bg-dark"></i>
-                    </a>
-                  </li>
-                  <li className="mt-2">
-                    <a href={link.medium} target="_any">
-                      <i className="bx bxl-medium border-round text-white bg-dark"></i>
-                    </a>
-                  </li>
-                </ul> */}
+
               </div>
             </div>
 
@@ -165,7 +156,7 @@ function Footer() {
                       onClick={() => {
                         window.scrollTo(0, 0);
                       }}
-                      to="/about"
+                      to="/aboutus"
                     >
                       About Us
                     </Link>
@@ -185,14 +176,23 @@ function Footer() {
                     </Link>
                   </li> */}
                   <li>
-                    <Link
-                      onClick={() => {
-                        window.scrollTo(0, 0);
-                      }}
-                      to="/tracking-order"
-                    >
-                      Order Tracking
-                    </Link>
+                    {user?.walletAddress ? (
+                      <Link
+                        onClick={() => {
+                          window.scrollTo(0, 0);
+                        }}
+                        to="/tracking-order"
+                      >
+                        Order Tracking
+                      </Link>
+                    ) : (
+                      <Link
+                        onClick={() => openWalletModal()}
+                        to="/"
+                      >
+                        Order Tracking
+                      </Link>
+                    )}
                   </li>
                   <li>
                     <a href="https://dsl.sg/contact" target="_blank" rel="noopener noreferrer">Contact Us</a>
@@ -225,19 +225,24 @@ function Footer() {
                   <form
                     className="newsletter-form"
                     data-toggle="validator"
-                    onSubmit={handleSignUp}
+                    onSubmit={handleSubmit}
                   >
                     <input
                       type="email"
                       id="email"
                       className="input-newsletter border-dark rounded"
+                      style={{ textTransform: 'lowercase' }}
                       placeholder="Email address"
                       name="email"
+                      // onChange={handleEmail}
+                      onChange={e => setEmail(e.target.value)}
+                      // onBlur={handleEmail}
                       required
                       autoComplete="off"
                     />
+                    {/* <p className=' text-danger pl-1 pt-2'> {emailError}</p> */}
 
-                    <button type="submit" className="text-uppercase btn-Sub">
+                    <button type="submit" className=" text-uppercase btn-Sub">
                       Subscribe
                     </button>
                     <div

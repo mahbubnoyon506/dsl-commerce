@@ -6,6 +6,22 @@
   justify-content: end;
 }
 
+.btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%) !important;
+}
+
+.iconClose {
+  background-color: #1a1a25;
+  border: none;
+  color: white;
+}
+
+.iconClose:hover {
+  background-color: #1a1a25;
+  border: none;
+  color: white;
+}
+
 .alertWalletDiv {
   margin-top: -2.5rem;
 }
@@ -128,4 +144,124 @@
   padding-top: 5px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.wait {
+  color: #ff343f;
+  margin-top: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+.loaders {
+  border: 16px solid #f3f3f3;
+  /* Light grey */
+  border-top: 16px solid #db3450;
+  /* Blue */
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 2s linear infinite;
+  margin: auto;
+}
+
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.modal_class {
+  background-color: #0c2347;
+}
+
+.swal-modal {
+  background-color: #0c2347;
+}
+
+/* .modal_class_success .swal-icon::before {
+  background-color: transparent;
+}
+
+.modal_class_success .swal-icon::after {
+  background-color: transparent;
+} */
+
+.swal-icon--success__hide-corners {
+  background-color: transparent;
+}
+
+.success {
+  color: #FF343F;
+  margin-top: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+.extraCare {
+  margin-top: 15px;
+}
+
+.swal-text {
+  text-align: center;
+  color: #FF343F;
+  font-weight: normal;
+}
+
+/* swal */
+.modal_class_success {
+  background-color: #2D313A;
+}
+
+.swal-text {
+  color: #fff;
+  text-align: center !important;
+}
+
+/* .modal_class_success .swal-icon::before {
+  background-color: transparent;
+}
+
+.modal_class_success .swal-icon::after {
+  background-color: transparent;
+} */
+
+.swal-icon--success__hide-corners {
+  background-color: transparent;
+}
+
+.address {
+  font-weight: normal;
+  width: 80%;
+  color: #8FB9D4;
+}
+
+.swal-content {
+  padding: 0 20px;
+  margin-top: 9px;
+  font-size: 13px;
+  overflow-wrap: break-word !important;
+  color: white;
+}
+
+.swal-title {
+  color: #FF343F;
+}
+
+.swal-text {
+  color: #fff;
+}
+
+.slick-dots {
+  display: block !important;
+  position: static !important;
+}
+
+@media only screen and (min-width:700px) {
+  .orderDetailsModal {
+    min-width: 900px !important;
+  }
 }

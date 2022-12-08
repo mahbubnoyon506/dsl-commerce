@@ -15,9 +15,11 @@ import { Divider } from "@mui/material";
 import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
 import { AdminContext } from "../../contexts/AdminContext";
 import { FaUsers, FaProductHunt, FaDatabase } from "react-icons/fa";
-import { MdDashboard, MdCategory } from "react-icons/md";
+import { MdDashboard, MdCategory, MdOutlineUnsubscribe } from "react-icons/md";
 import { RiAdminFill } from "react-icons/ri";
 import { GiShoppingBag } from "react-icons/gi";
+import { BsMinecartLoaded } from "react-icons/bs";
+import { useEffect } from "react";
 
 const menuLinkStyles = ({ isActive }) => {
   return {
@@ -27,14 +29,16 @@ const menuLinkStyles = ({ isActive }) => {
 const drawerWidth = 280;
 
 function Dashboard(props) {
-  // const { admin, logout } = React.useContext(AdminContext);
+  const { admin, logout } = React.useContext(AdminContext);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (admin?.role !== "admin") {
-  //     navigate("/");
-  //   }
-  // }, [admin, navigate])
+  useEffect(() => {
+    if (admin?.role !== "admin") {
+      navigate("/");
+    }
+  }, [admin, navigate])
+
+
 
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -48,7 +52,7 @@ function Dashboard(props) {
   };
 
   const handleLogout = () => {
-    // logout();
+    logout();
     navigate("/");
   };
 
@@ -109,7 +113,21 @@ function Dashboard(props) {
           <span className="navIconAdmin">
             <GiShoppingBag style={{ fontSize: "20px" }} />
           </span>
-          Orders
+          User Orders
+        </NavLink>
+        <br />
+
+        <NavLink
+          className="dashboardMenu"
+          style={menuLinkStyles}
+          onClick={handleClose}
+          to="administer-orders"
+        >
+          {" "}
+          <span className="navIconAdmin">
+            <BsMinecartLoaded style={{ fontSize: "20px" }} />
+          </span>
+          Administer Orders
         </NavLink>
         <br />
 
@@ -138,65 +156,20 @@ function Dashboard(props) {
           CATEGORIES
         </NavLink>
         <br />
-
-        {/* Data and dropdrop down with FAQS, HELP DESK, CUSTOMER SERVICES */}
-
-        {/* <NavLink
+        <NavLink
           className="dashboardMenu"
           style={menuLinkStyles}
-          onClick={() => setHide(!hide)}    
-          to="data"
+          onClick={handleClose}
+          to="all-subscribers"
         >
           <span className="navIconAdmin">
-            <FaDatabase style={{ fontSize: "20px" }} />
+            <MdOutlineUnsubscribe style={{ fontSize: "20px" }} />
           </span>
-          Data
+          ALL SUBSCRIBERS
         </NavLink>
         <br />
 
 
-        {hide && (
-          <div className="ms-4">
-            <NavLink
-              className="dashboardMenu"
-              style={menuLinkStyles}
-              onClick={handleClose}
-              to="faq-dashboard"
-            >
-              <span className="navIconAdmin">
-                <FaDatabase style={{ fontSize: "20px" }} />
-              </span>
-              FAQs
-            </NavLink>
-            <br />
-
-            <NavLink
-              className="dashboardMenu"
-              style={menuLinkStyles}
-              onClick={handleClose}
-              to="help-desk-dashboard"
-            >
-              <span className="navIconAdmin">
-                <FaDatabase style={{ fontSize: "20px" }} />
-              </span>
-              HELP DESK
-            </NavLink>
-            <br />
-
-            <NavLink
-              className="dashboardMenu"
-              style={menuLinkStyles}
-              onClick={handleClose}
-              to="customer-services-dashboard"
-            >
-              <span className="navIconAdmin">
-                <FaDatabase style={{ fontSize: "20px" }} />
-              </span>
-              CUSTOMER SERVICES
-            </NavLink>
-            <br />
-          </div>
-        )} */}
 
         <Button
           variant="danger"
@@ -251,12 +224,7 @@ function Dashboard(props) {
             </div> */}
           </Typography>
         </Toolbar>
-        {/* <div className="adminProfile" onClick={menuToggle}>
-          <p className='text-start'>{currentAdmin?.name}</p>
-          <hr />
-          <Link to="admin/profile" className='mb-3 d-flex' ><i className="fas fa-user me-2"></i>Profile</Link>
-          <p className='text-start logoutBtn' onClick={handleLogout}><i className="fas fa-sign-out-alt"></i> Log Out</p>
-        </div> */}
+
       </AppBar>
 
       <Box

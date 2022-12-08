@@ -7,7 +7,6 @@
     display: none;
   }
 
-
   .single-offer-products-box .offer-products-content,
   .single-arrivals-products .arrivals-products-content,
   .single-special-products .special-products-content {
@@ -334,10 +333,10 @@
     font-size: 18px;
   }
   .main-slider-item-box {
-    padding-top: 30px;
-    padding-bottom: 60px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-top: 60px;
+    padding-bottom: 150px;
+    padding-left: 10px;
+    padding-right: 10px;
     position: relative;
     z-index: 1;
   }
@@ -346,7 +345,7 @@
     content: "";
     height: 100%;
     width: 100%;
-    background-color: #000;
+    /* background-color: #000; */
     left: 0;
     right: 0;
     top: 0;
@@ -524,8 +523,11 @@
   .cart-buttons .shopping-coupon-code {
     margin-bottom: 30px;
   }
-  .text-right {
+  /* .text-right {
     text-align: center !important;
+  } */
+  .text-right {
+    text-align: right !important;
   }
   .cart-totals {
     padding: 15px;
@@ -717,7 +719,7 @@
 
   .owl-carousel .owl-item {
     padding: 11px;
-}
+  }
 
   .main-slider-content {
     text-align: center;
@@ -1527,9 +1529,9 @@
 
   .responsive-logo {
     position: absolute;
-    top: -23px;
-    font-size: 30px;
-    font-weight: 800;
+    top: -15px;
+    font-size: 18px;
+    font-weight: bold;
     display: block;
   }
 
