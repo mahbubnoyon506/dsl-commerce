@@ -1,5 +1,5 @@
-.kycMainArea{
-  height: 100vh;
+.kycMainArea {
+  min-height: 100vh;
   color: white;
 }
 .nav {
