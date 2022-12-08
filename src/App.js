@@ -67,6 +67,7 @@ import AdminRoutes from "./Components/AdminRoute/AdminRoutes";
 import AdministerOrders from "./pages/Dashboard/AdministerOrders/AdministerOrders";
 import Preloader from "./Components/Common/Preloader";
 import Merchant from "./pages/Merchant/Merchant";
+import KYC from "./pages/KYC/KYC";
 
 export const ProductContext = createContext();
 function App() {
@@ -151,6 +152,14 @@ function App() {
         />
         /admin
         <Route path="/admin/otp/:token" element={<Otp  expiryTimestamp={time}/>} />
+
+
+
+        {/*******************************  KYC Start ***************************** */}
+        <Route path="/kyc/profile" element={<KYC />} />
+        {/****************************** KYC Start End ******************************/}
+
+
 
         {/*************************** Dashboard Start************************** */}
         <Route
