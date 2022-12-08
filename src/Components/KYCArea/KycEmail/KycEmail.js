@@ -8,11 +8,15 @@ const KycEmail = () => {
     <div>
       <Form>
         <Form.Group className="mb-3 w-50" controlId="formBasicEmail">
-          <Form.Label>Email address <BsInfoCircleFill/> </Form.Label>
-          <Form.Control type="email" placeholder="Enter email" />
-          <Form.Text className="text-muted" style={{color: '#99701E'}}>
-           Click here to change your email address.
-          </Form.Text>
+          <Form.Label className='text-uppercase'>Email address <BsInfoCircleFill /> </Form.Label>
+          <div className='d-flex'>
+            <Form.Control type="email" placeholder="Enter email" />
+            <Button style={{ marginLeft: '-65px' }} variant="secondary">Verify</Button>
+          </div>
+          <p className="" style={{ color: '#99701E' }}>
+            Click here to change your email address.
+          </p>
+          <Button className='mt-1' as="input" type="submit" value="Submit" />
         </Form.Group>
       </Form>
 
