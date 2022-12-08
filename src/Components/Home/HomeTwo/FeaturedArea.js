@@ -79,6 +79,7 @@ function FeaturedArea() {
                 </div> */}
               </div>
             </div>
+
             <div className="p-3">
               <div className="single-featured">
                 <img src={featured2} alt="featured_img" />

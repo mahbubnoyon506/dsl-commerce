@@ -4,19 +4,19 @@ import { Modal, Container } from "react-bootstrap";
 import swal from 'sweetalert';
 import { DSLCommerceContext } from '../../contexts/DSLCommerceContext';
 
-const WriteReview = ({ isOpen, closeModal, product, productId ,refetch,setRefetch}) => {
+const WriteReview = ({ isOpen, closeModal, product, productId, refetch, setRefetch }) => {
   const { user } = useContext(DSLCommerceContext);
-// const [userName,setUserName]=useState([]);
-// useEffect(() => {
-//   // setLoading(true);
-//   axios
-//     .get("https://backend.dslcommerce.com/api/users/0xb83Cb5C3D8b31e2Db1F9496A5E8B547A98058b0d")
-//     .then((res) => {
-//       setUserName(res.data?.result?.name);
-//     })
-//     // .finally(() => setLoading(false));
-// }, []);
-// console.log(userName)
+  // const [userName,setUserName]=useState([]);
+  // useEffect(() => {
+  //   // setLoading(true);
+  //   axios
+  //     .get("https://backend.dslcommerce.com/api/users/0xb83Cb5C3D8b31e2Db1F9496A5E8B547A98058b0d")
+  //     .then((res) => {
+  //       setUserName(res.data?.result?.name);
+  //     })
+  //     // .finally(() => setLoading(false));
+  // }, []);
+  // console.log(userName)
 
   var newDate = new Date();
   let dd = String(newDate.getDate()).padStart(2, '0');
@@ -26,10 +26,10 @@ const WriteReview = ({ isOpen, closeModal, product, productId ,refetch,setRefetc
   // console.log(product)
 
   if (min < 10) {
-    newDate = dd + '/' + mm + '/' + yyyy ;
+    newDate = dd + '/' + mm + '/' + yyyy;
 
   } else {
-    newDate = dd + '/' + mm + '/' + yyyy ;
+    newDate = dd + '/' + mm + '/' + yyyy;
   }
 
   const onSubmitForm = async (e) => {
@@ -48,7 +48,7 @@ const WriteReview = ({ isOpen, closeModal, product, productId ,refetch,setRefetc
       .then(res => {
         if (res.status === 200) {
           swal({
-            title: "Success",
+            // title: "Success",
             text: `Review Added Successfully !`,
             icon: "success",
             button: "OK!",
@@ -92,7 +92,7 @@ const WriteReview = ({ isOpen, closeModal, product, productId ,refetch,setRefetc
                       disabled
                     />
                   </div> */}
-                   <div className="form-group">
+                  <div className="form-group">
                     <input
                       type="text"
                       name="userName"

@@ -23,13 +23,13 @@ export default function WishlistProvider({ children }) {
       .then((res) => {
         if (res.status === 200) {
           swal({
-            title: "Success",
+            // title: "Success",
             text: "Successfully added to wishlist",
             icon: "success",
             button: "OK!",
             className: "modal_class_success",
           });
-          setWishlistProducts([...wishlistProducts,product])
+          setWishlistProducts([...wishlistProducts, product])
           setRefetch(true);
         }
       })
@@ -68,7 +68,7 @@ export default function WishlistProvider({ children }) {
         setLoading(false);
       });
     setRefetch(false);
-  }, [user?.walletAddress,refetch]);
+  }, [user?.walletAddress, refetch]);
 
   // console.log(wishlistProducts);
 

@@ -51,7 +51,6 @@ function Footer() {
         .then((res) => {
           if (res.status === 200) {
             swal({
-              title: "Success",
               text: "Successfully subscribed !",
               icon: "success",
               button: "OK!",

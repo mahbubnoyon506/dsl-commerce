@@ -419,7 +419,7 @@ const CryptoMethod = ({ totalPrice }) => {
                     if (willDelete) {
                       navigate(`/mintednft/${Obj.ID}/${mintAddressTestnet}`)
                       swal({
-                        title: "Success",
+                        // title: "Success",
                         text: "Please Check your mail for Minted NFT details",
                         icon: "success",
                         button: "OK!",
@@ -428,7 +428,7 @@ const CryptoMethod = ({ totalPrice }) => {
                     } else {
                       console.log("good job")
                       swal({
-                        title: "Success",
+                        // title: "Success",
                         text: "Please Check your mail for Minted NFT details",
                         icon: "success",
                         button: "OK!",

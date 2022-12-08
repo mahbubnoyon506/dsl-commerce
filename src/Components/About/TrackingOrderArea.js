@@ -1,10 +1,19 @@
 import axios from 'axios';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import trackOrder from "../../assets/img/logoDSL.jpeg";
 import { DSLCommerceContext } from '../../contexts/DSLCommerceContext';
 import { useTimer } from 'react-timer-hook';
 import swal from 'sweetalert';
 import TrackingMailVerify from './TrackingMailVerify';
+
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
+
 
 const TrackingOrderArea = ({ expiryTimestamp }) => {
 
@@ -33,6 +42,22 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
         restart(time)
 
     }
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        axios.get(`https://backend.dslcommerce.com/api/order/data/${user?.walletAddress}`)
+            .then(res => console.log(res.data))
+            .catch(err => {
+                console.log(err)
+            });
+
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
 
     const handleVerifyEmail = async (e) => {
         // check if email is valid
@@ -89,7 +114,9 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+
         if (!emailVerify) {
+            // if (emailVerify) {
             swal({
                 title: "Attention",
                 text: "Please verify your email ",
@@ -99,15 +126,19 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
                 className: "modal_class_success",
             });
         }
-        else{
+        else {
             const data = {
-                orderId : orderId ,
-                email : email1,
-                walletAddress : user?.walletAddress ,
+                orderId: orderId,
+                email: email1,
+                walletAddress: user?.walletAddress,
             }
-            console.log(data)
+
+            handleClickOpen()
+
         }
     }
+
+
 
     return (
         <section className="track-order-area ptb-50">
@@ -129,7 +160,7 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
                                     <label className="float-start">Order ID</label>
-                                    <input type="text" name='orderId' onChange={(e) => setOrderId(e.target.value)} className="form-control" required/>
+                                    <input type="text" name='orderId' onChange={(e) => setOrderId(e.target.value)} className="form-control" required />
                                 </div>
 
                                 <div className="form-group">
@@ -139,7 +170,7 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
                                         <input style={user?.email ? { textTransform: 'lowercase' } : { textTransform: 'lowercase', borderTopRightRadius: 'inherit', borderBottomRightRadius: 'inherit' }}
                                             type="email"
                                             name="email"
-                                            className='form-control '
+                                            className='form-control'
                                             placeholder="Email Address"
                                             onChange={e => { setEmail(e.target.value); setEmailVerify(false) }}
                                             value={user?.email ? user?.email : email1}
@@ -170,6 +201,45 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
                     </div>
                 </div>
             </div>
+
+            <div>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"Your Order"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+
+                            <div className='row w-100'>
+                                <div className='col-6'>
+                                    <img src={trackOrder} alt="" />
+                                </div>
+                                <div className='col-6'>
+                                    <p>Status: Panding</p>
+                                    <p>Order Date: 12/07/2022</p>
+                                    <p> Name: UserName</p>
+                                    <p> Order Id: {orderId}</p>
+                                    <p>Email:{email1} </p>
+                                    {/* <p className='max-w-75'>wallet Address: <br />{user?.walletAddress} </p> */}
+
+                                </div>
+                            </div>
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>Close</Button>
+                        {/* <Button onClick={handleClose} autoFocus>
+                            Ok
+                        </Button> */}
+                    </DialogActions>
+                </Dialog>
+            </div>
+
             <TrackingMailVerify
                 userRefetch={userRefetch}
                 handleVerifyEmail={handleVerifyEmail}
