@@ -63,7 +63,7 @@ const Orders = () => {
                       <th className="border-0 text-start">Amount</th>
                       <th className="border-0 text-start">Payment Method</th>
                       <th className="border-0 text-start">Status</th>
-                      <th className="border-0 text-start">Details</th>
+                      <th className="border-0 text-end">Details</th>
 
                       {/* <td className="product-btn">
                         <span className="default-btn">
@@ -86,7 +86,7 @@ const Orders = () => {
                       ) : (
                         <td className="">Delivered</td>
                       )}
-                      <td className="product-btn pointer">
+                      <td className="product-btn " style={{ cursor: 'pointer' }}>
                         <span onClick={handleClickOpen} className="default-btn">
                           <TbListDetails className="me-2" />
                           Details
