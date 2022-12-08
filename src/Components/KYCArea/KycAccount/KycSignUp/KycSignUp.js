@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const KycSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -134,6 +135,8 @@ const KycSignUp = () => {
             SING UP
           </Button>
         </Form>
+        <hr />
+        <p>Don't have an account? <Link to='/kyc/login'>Login</Link></p>
       </div>
     </div>
   );

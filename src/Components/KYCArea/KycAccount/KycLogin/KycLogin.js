@@ -42,7 +42,7 @@ const KycLogin = () => {
             </Form.Group>
           </Form>
           <hr />
-          <p>Don't have an account? <Link to='/kyc/sign-up'>SignUp</Link></p>
+          <p>Don't have an account? <Link to='/kyc/sign-up'>Signup</Link></p>
         </Card.Body>
       </Card>
     </div>
