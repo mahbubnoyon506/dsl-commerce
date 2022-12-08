@@ -69,6 +69,7 @@ import Preloader from "./Components/Common/Preloader";
 import Merchant from "./pages/Merchant/Merchant";
 import KYC from "./pages/KYC/KYC";
 import Verified from "./pages/Dashboard/verified/Verified";
+import NonVerifide from "./pages/Dashboard/verified/NonVerifide";
 
 export const ProductContext = createContext();
 function App() {
@@ -193,6 +194,7 @@ function App() {
 
           {/* *************************   KYC pages    ****************************** */}
           <Route path="verified" element={<Verified />} />
+          <Route path="non-verified" element={<NonVerifide />} />
 
 
           {/*************************** Product  ***************************/}
@@ -244,7 +246,7 @@ function App() {
         > */}
         {/* </CartContext.Provider> */}
         {/* </AuthContext.Provider> */}
-        
+
 
       </Routes>
 
