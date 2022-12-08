@@ -12,7 +12,16 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
+
 const Orders = () => {
+  const [open, setOpen] = useState(false);
 
   const [myOrders, setMyOrders] = useState([])
   const { user } = useContext(DSLCommerceContext)
@@ -25,6 +34,15 @@ const Orders = () => {
   }, [user?.walletAddress])
 
   console.log(myOrders);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
 
   return (
     <div>
@@ -40,12 +58,12 @@ const Orders = () => {
 
                   <tbody>
                     <tr>
-                      <th className="border-0 text-center">Date</th>
-                      <th className="border-0 text-center">Order Id</th>
-                      <th className="border-0 text-center">Amount</th>
-                      <th className="border-0 text-center">Payment Method</th>
-                      <th className="border-0 text-center">Status</th>
-                      <th className="border-0 text-center">Details</th>
+                      <th className="border-0 text-start">Date</th>
+                      <th className="border-0 text-start">Order Id</th>
+                      <th className="border-0 text-start">Amount</th>
+                      <th className="border-0 text-start">Payment Method</th>
+                      <th className="border-0 text-start">Status</th>
+                      <th className="border-0 text-start">Details</th>
 
                       {/* <td className="product-btn">
                         <span className="default-btn">
@@ -68,8 +86,8 @@ const Orders = () => {
                       ) : (
                         <td className="">Delivered</td>
                       )}
-                      <td className="product-btn">
-                        <span className="default-btn">
+                      <td className="product-btn pointer">
+                        <span onClick={handleClickOpen} className="default-btn">
                           <TbListDetails className="me-2" />
                           Details
                         </span>
@@ -77,6 +95,50 @@ const Orders = () => {
                     </tr>
 
                   </tbody>
+                  <div>
+                    <Dialog
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="alert-dialog-title"
+                      aria-describedby="alert-dialog-description"
+                      className="orderDetailsModal mx-auto"
+                      style={{ width: "500px" }}
+                    >
+                      <DialogTitle id="alert-dialog-title">
+                        {"Order Details"}
+                      </DialogTitle>
+                      <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+
+                          <div className='row w-100'>
+                            <div className=' col-12 col-lg-6'>
+                              <img src={order.orderItems[0].product_images} alt="" />
+                            </div>
+                            <div className='col-12 col-lg-6'>
+                              <p>Status:   {order?.pendingStatus == false ? (
+                                <span className="">Pending</span>
+                              ) : (
+                                <span className="">Delivered</span>
+                              )}</p>
+                              <p> Name: {order?.name}</p>
+                              <p>Email:{order?.email} </p>
+                              <p> Order Id:{order?.orderId} </p>
+                              <p>Date: {order?.date.slice(0, 10)}</p>
+                              <p>Post Code: {order?.postCode}</p>
+                              <p>Address: {order.address}</p>
+                              <p>Phone: {order.phone}</p>
+
+                            </div>
+                          </div>
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={handleClose}>Close</Button>
+
+                      </DialogActions>
+                    </Dialog>
+                  </div>
+
                 </table>
 
               ))}
@@ -89,7 +151,12 @@ const Orders = () => {
           )}
 
         </div>
+
       </div>
+
+
+
+
 
     </div>
   );
