@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { allCountryNationality, time_zone } from "../CountryName/cData";
@@ -11,10 +11,20 @@ const KycProfile = () => {
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [gender, setGender] = useState("");
   const [nationality, setNationality] = useState("");
-  const [country, setCountry] = useState("");
-  console.log(nationality, time_zone);
-  const [timeZone, setTimeZone] = useState("");
+  const [timeZone, setTimeZone] = useState([]);
   const [aboutMe, setAboutMe] = useState("");
+
+  useEffect(() => {
+    if (nationality) {
+      const selectedCountry = time_zone.find(
+        (country) => country.country === nationality
+      );
+      console.log(selectedCountry);
+      setTimeZone(selectedCountry.zones);
+    } else {
+      setTimeZone([]);
+    }
+  }, [nationality]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -106,10 +116,9 @@ const KycProfile = () => {
           <option> Nationality </option>
           {time_zone?.map((country, index) => (
             <option
-              // onClick={()=> }
               key={index}
               style={{ padding: "5px" }}
-              value={country?.country}
+              value={country.country}
             >
               {country?.country}
             </option>
@@ -123,9 +132,10 @@ const KycProfile = () => {
           className="mb-3"
           required
         >
-          <option> -- Select -- </option>
-          <option value="Male">Bangladesh</option>
-          <option value="Female">India</option>
+          <option> -- Select time zone -- </option>
+          {timeZone?.map((eachZone) => (
+            <option value={eachZone}>{eachZone}</option>
+          ))}
         </Form.Select>
         <Form.Group className="mb-6" controlId="exampleForm.ControlTextarea1">
           <Form.Label>ABOUT ME</Form.Label>
