@@ -68,6 +68,7 @@ import AdministerOrders from "./pages/Dashboard/AdministerOrders/AdministerOrder
 import Preloader from "./Components/Common/Preloader";
 import Merchant from "./pages/Merchant/Merchant";
 import KYC from "./pages/KYC/KYC";
+import Verifide from "./pages/Dashboard/Verifide/Verifide";
 
 export const ProductContext = createContext();
 function App() {
@@ -84,7 +85,7 @@ function App() {
   }, []);
 
   if (isLoading) {
-    return <Preloader/>
+    return <Preloader />
   }
 
 
@@ -108,8 +109,8 @@ function App() {
           <Route path="/help-desk" element={<HelpDesk />} />
 
           {/* <Route path="/my-account" element={<MyAccount />} /> */}
-          <Route path="/profile" element={<Profile expiryTimestamp={time}/>} />
-          <Route path="/tracking-order" element={<TrackingOrder expiryTimestamp={time}/>} />
+          <Route path="/profile" element={<Profile expiryTimestamp={time} />} />
+          <Route path="/tracking-order" element={<TrackingOrder expiryTimestamp={time} />} />
 
           {/* SHOP START */}
 
@@ -151,7 +152,7 @@ function App() {
           element={<ForgetPassword />}
         />
         /admin
-        <Route path="/admin/otp/:token" element={<Otp  expiryTimestamp={time}/>} />
+        <Route path="/admin/otp/:token" element={<Otp expiryTimestamp={time} />} />
 
 
 
@@ -239,6 +240,8 @@ function App() {
         > */}
         {/* </CartContext.Provider> */}
         {/* </AuthContext.Provider> */}
+        <Route path="/verifide" element={<Verifide />} />
+
       </Routes>
 
       <Toaster />
