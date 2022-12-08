@@ -1,0 +1,7 @@
+.customStyle > label {
+  text-transform: uppercase;
+}
+
+.customStyle > label > span {
+  color:rgb(255 90 90)
+}
