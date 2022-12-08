@@ -645,8 +645,18 @@ function CheckoutArea({ expiryTimestamp }) {
             }
 
             console.log('Data 3 bro', data3)
+            // after confirm payment, items added to order list
             axios.post('https://backend.dslcommerce.com/api/order', data3)
               .then(res => console.log(res))
+              
+            // after confirm payment cart item deletion
+            axios.delete(`https://backend.dslcommerce.com/api/cart/${user?.walletAddress}`, {
+              headers: {
+                authorization: `Bearer ${localStorage.getItem("tokendslcommerce")}`,
+              },
+            })
+              .then(res => console.log('cart item deleted', res))
+
 
             // const data2 = {
             // name,

@@ -91,7 +91,7 @@ const Merchant = () => {
       .then(res => {
         if (res.status === 200) {
           swal({
-            title: "Success",
+            // title: "Success",
             text: `${res.data.message}`,
             icon: "success",
             button: "OK!",

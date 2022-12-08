@@ -82,7 +82,7 @@ const Subscribers = () => {
       );
       if (response.status === 200) {
         swal({
-          title: "Success",
+          // title: "Success",
           text: response.data.message,
           icon: "success",
           button: "OK!",

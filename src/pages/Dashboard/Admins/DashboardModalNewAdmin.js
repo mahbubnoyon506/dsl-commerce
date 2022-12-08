@@ -65,7 +65,7 @@ const DashboardModalNewAdmin = (props) => {
                         event.target.reset();
                         // alert(res.data.message);
                         swal({
-                            title: "Success",
+                            // title: "Success",
                             text: res.data.message,
                             icon: "success",
                             button: "OK!",
