@@ -27,6 +27,8 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
     const [openEmail, setOpenEmail] = useState(false);
     const [isError, setError] = useState(false);
     const [orderId, setOrderId] = useState("")
+    const [tracking, setTracking] = useState([])
+
 
     // Re-send OTP functionality
     const {
@@ -46,7 +48,7 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
 
     const handleClickOpen = () => {
         axios.get(`https://backend.dslcommerce.com/api/order/data/${user?.walletAddress}`)
-            .then(res => console.log(res.data))
+            .then(res => setTracking(res.data.result))
             .catch(err => {
                 console.log(err)
             });
@@ -57,7 +59,7 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
     const handleClose = () => {
         setOpen(false);
     };
-
+    console.log(tracking)
 
     const handleVerifyEmail = async (e) => {
         // check if email is valid
@@ -116,7 +118,6 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
         e.preventDefault()
 
         if (!emailVerify) {
-            // if (emailVerify) {
             swal({
                 title: "Attention",
                 text: "Please verify your email ",
@@ -214,21 +215,33 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
+                            {
+                                tracking.map((data) => {
+                                    return (
+                                        <>
+                                            <div className='row w-100'>
+                                                <div className='col-6'>
+                                                    <img src={data.orderItems[0].product_images} alt="" />
+                                                </div>
+                                                <div className='col-6'>
+                                                    <p>Name: {data?.name}</p>
+                                                    <p>Product name: {data?.orderItems[0].productName}</p>
+                                                    <p>Status:   {data?.pendingStatus == false ? (
+                                                        <span className="">Pending</span>
+                                                    ) : (
+                                                        <span className="">Delivered</span>
+                                                    )}</p>
+                                                    <p>Order Date: {data?.date.slice(0, 10)}</p>
+                                                    <p> Order Id: {data.orderId}</p>
+                                                    <p>Email:{data.email} </p>
 
-                            <div className='row w-100'>
-                                <div className='col-6'>
-                                    <img src={trackOrder} alt="" />
-                                </div>
-                                <div className='col-6'>
-                                    <p>Status: Panding</p>
-                                    <p>Order Date: 12/07/2022</p>
-                                    <p> Name: UserName</p>
-                                    <p> Order Id: {orderId}</p>
-                                    <p>Email:{email1} </p>
-                                    {/* <p className='max-w-75'>wallet Address: <br />{user?.walletAddress} </p> */}
+                                                </div>
+                                            </div>
+                                        </>
+                                    )
+                                })
+                            }
 
-                                </div>
-                            </div>
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -239,6 +252,7 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
                     </DialogActions>
                 </Dialog>
             </div>
+
 
             <TrackingMailVerify
                 userRefetch={userRefetch}
