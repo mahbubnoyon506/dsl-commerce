@@ -1,31 +1,45 @@
 import React from "react";
+import { useContext } from "react";
 import { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
+import { toast } from "react-hot-toast";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
+import { DSLCommerceContext } from "../../../../contexts/DSLCommerceContext";
+import { KycContext } from "../../../../contexts/KycContext";
 
 const KycSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const {handleRegister} = useContext(KycContext)
 
-  const handleFormSubmit = (e) => {
+  const { user } = useContext(DSLCommerceContext);
+  const [userName, setUserName] = useState('')
+
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const referralId = e.target.referralId.value;
     const fullName = e.target.fullName.value;
-    const userName = e.target.userName.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
-    const confirmPassword = e.target.confirmPassword.value;
+    const confirmPassword = e.target.confirmPassword?.value;
 
-    console.log(
-      referralId,
-      fullName,
-      userName,
-      email,
-      password,
-      confirmPassword
-    );
+    if (password !== confirmPassword) {
+      toast.error('Password Not Match')
+      return
+    }
+
+    const data = {
+      name: fullName,
+      walletAddress: user?.walletAddress,
+      email: email,
+      username: userName,
+      password: password
+    };
+    // console.log(data)
+    handleRegister(data)
+
   };
 
   return (
@@ -49,14 +63,7 @@ const KycSignUp = () => {
       >
         <Card.Body>
           <Form onSubmit={(e) => handleFormSubmit(e)}>
-            <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
-              <Form.Label className="fw-bold">Referral ID</Form.Label>
-              <Form.Control
-                name="referralId"
-                type="text"
-                placeholder="Referral ID"
-              />
-            </Form.Group>
+
             <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
               <Form.Label className="fw-bold">
                 Enter your Full Name as per your PhotoId
@@ -64,14 +71,17 @@ const KycSignUp = () => {
               <Form.Control
                 name="fullName"
                 type="text"
-                placeholder="Enter your Full Name as per your PhotoId"
+                placeholder="Enter your Full Name "
                 required
               />
             </Form.Group>
+
             <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
               <Form.Label className="fw-bold">Enter your User Name</Form.Label>
               <Form.Control
                 name="userName"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value.toLocaleLowerCase())}
                 type="text"
                 placeholder="Enter your User Name"
                 required
@@ -115,13 +125,13 @@ const KycSignUp = () => {
               <Form.Label className="fw-bold">Confirm your Password</Form.Label>
               <div className="d-flex align-items-center">
                 <Form.Control
-                  name="password"
+                  name="confirmPassword"
                   placeholder="Enter your Password"
                   required
                   type={!showConfirmPassword ? "password" : "text"}
                 />
                 <div
-                  onClick={() => setShowConfirmPassword(!showPassword)}
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   style={{
                     marginLeft: "-40px",
                     background: "transparent",

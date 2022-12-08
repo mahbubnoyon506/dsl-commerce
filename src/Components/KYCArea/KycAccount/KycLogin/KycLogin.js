@@ -1,44 +1,75 @@
 import React, { useState } from 'react'
+import { useContext } from 'react'
 import { Button, Card, Form } from 'react-bootstrap'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
+import { KycContext } from '../../../../contexts/KycContext'
 
 const KycLogin = () => {
   const [isVisible, setVisible] = useState(false);
+  const {handleUserLogin} = useContext(KycContext)
 
   const handleShow = () => {
     setVisible(!isVisible);
   };
+
+  const handleLogin = e => {
+    e.preventDefault()
+    const email = e.target.email.value
+    const password = e.target.password.value
+    const data = {
+      email: email,
+      password: password
+    }
+    // console.log(data)
+    handleUserLogin(data)
+  }
+
+
   return (
-    <div className='d-flex justify-content-center align-items-center' style={{height: '100vh'}}>
+    <div className='d-flex justify-content-center align-items-center' style={{ height: '100vh' }}>
       <Card className='shadow bg-white rounded' style={{ width: '25rem', border: 'none', }}>
         <Card.Body>
-          <Form>
+          <Form onSubmit={handleLogin}>
+
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <div className='mb-3'>
                 <Form.Label className='text-uppercase fw-bold'>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  required
+                  name='email'
+
+                />
               </div>
+
               <div className='mb-3'>
                 <div className='d-flex justify-content-between'>
                   <Form.Label className='text-uppercase fw-bold'>Password</Form.Label>
                   <Link to='#'>Forgot Password?</Link>
                 </div>
                 <div className='d-flex align-items-center'>
-                  <Form.Control type={!isVisible ? "password" : "text"} />
-                  <div onClick={handleShow} style={{ marginLeft: '-40px', background: 'transparent', cursor:'pointer' }} >
+                  <Form.Control 
+                  name='password'
+                  type={!isVisible ? "password" : "text"} 
+                  />
+                  <div onClick={handleShow} style={{ marginLeft: '-40px', background: 'transparent', cursor: 'pointer' }} >
                     {isVisible ? <AiFillEye size={30} className='text-dark' /> : <AiFillEyeInvisible size={30} className='text-dark' />}
                   </div>
                 </div>
               </div>
+
               <div className='mb-3'>
                 <Form.Check
                   type='checkbox'
                   id='checkbox'
                   label='Remember me on this computer'
+                  required
                 />
               </div>
-              <Button className='mt-1 w-100 bg-success' as="input" type="submit" value="LOG IN" />
+
+              <Button className='mt-1 w-100 bg-primary' as="input" type="submit" value="LOG IN" />
             </Form.Group>
           </Form>
           <hr />

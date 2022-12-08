@@ -41,7 +41,7 @@ function TopHeader({ shippingMessage, history }) {
             <div className="top-header-content shippingMessage">
               {user?.walletAddress ? (
                 <Link
-                  to="/merchant-add-product"
+                  to="/kyc/login"
                   className="text-white"
                   style={{ textDecoration: "underline" }}
                 >
