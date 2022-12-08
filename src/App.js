@@ -68,6 +68,8 @@ import AdministerOrders from "./pages/Dashboard/AdministerOrders/AdministerOrder
 import Preloader from "./Components/Common/Preloader";
 import Merchant from "./pages/Merchant/Merchant";
 import KYC from "./pages/KYC/KYC";
+import KycLogin from "./Components/KYCArea/KycAccount/KycLogin/KycLogin";
+import KycSignUp from "./Components/KYCArea/KycAccount/KycSignUp/KycSignUp";
 
 export const ProductContext = createContext();
 function App() {
@@ -156,6 +158,8 @@ function App() {
 
 
         {/*******************************  KYC Start ***************************** */}
+        <Route path="/kyc/login" element={<KycLogin />} />
+        <Route path="/kyc/sign-up" element={<KycSignUp />} />
         <Route path="/kyc/profile" element={<KYC />} />
         {/****************************** KYC Start End ******************************/}
 
