@@ -1,7 +1,12 @@
 import React from "react";
+import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const KycSignUp = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
@@ -77,21 +82,53 @@ const KycSignUp = () => {
           </Form.Group>
           <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
             <Form.Label className="fw-bold">Enter your Password</Form.Label>
-            <Form.Control
-              type="password"
-              name="password"
-              placeholder="Enter your Password"
-              required
-            />
+            <div className="d-flex align-items-center">
+              <Form.Control
+                name="password"
+                placeholder="Enter your Password"
+                required
+                type={!showPassword ? "password" : "text"}
+              />
+              <div
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  marginLeft: "-40px",
+                  background: "transparent",
+                  cursor: "pointer",
+                }}
+              >
+                {showPassword ? (
+                  <AiFillEye size={30} className="text-dark" />
+                ) : (
+                  <AiFillEyeInvisible size={30} className="text-dark" />
+                )}
+              </div>
+            </div>
           </Form.Group>
           <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
             <Form.Label className="fw-bold">Confirm your Password</Form.Label>
-            <Form.Control
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm your Password"
-              required
-            />
+            <div className="d-flex align-items-center">
+              <Form.Control
+                name="password"
+                placeholder="Enter your Password"
+                required
+                type={!showConfirmPassword ? "password" : "text"}
+              />
+              <div
+                onClick={() => setShowConfirmPassword(!showPassword)}
+                style={{
+                  marginLeft: "-40px",
+                  background: "transparent",
+                  cursor: "pointer",
+                }}
+              >
+                {showConfirmPassword ? (
+                  <AiFillEye size={30} className="text-dark" />
+                ) : (
+                  <AiFillEyeInvisible size={30} className="text-dark" />
+                )}
+              </div>
+            </div>
           </Form.Group>
           <Button className="my-3 w-100" variant="primary" type="submit">
             SING UP
