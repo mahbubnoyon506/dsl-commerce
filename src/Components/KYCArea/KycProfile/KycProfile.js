@@ -71,6 +71,7 @@ const KycProfile = () => {
             onChange={(e) => setDateOfBirth(e.target.value)}
             type="text"
             placeholder=""
+            maxLength={10}
             required
           />
           <Form.Label>Use DD/MM/YYYY formate for date of birth</Form.Label>
