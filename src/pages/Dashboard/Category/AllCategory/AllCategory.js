@@ -100,7 +100,7 @@ const AllCategory = () => {
       .then((res) => {
         if (res.status === 201) {
           swal({
-            title: "Success",
+            // title: "Success",
             text: res.data.message,
             icon: "success",
             button: "OK!",
@@ -145,7 +145,7 @@ const AllCategory = () => {
       });
       if (response.status === 200) {
         swal({
-          title: "Success",
+          // title: "Success",
           text: response.data.message,
           icon: "success",
           button: "OK!",
@@ -185,7 +185,7 @@ const AllCategory = () => {
       );
       if (response.status === 200) {
         swal({
-          title: "Success",
+          // title: "Success",
           text: response.data.message,
           icon: "success",
           button: "OK!",
@@ -204,7 +204,7 @@ const AllCategory = () => {
   const handleClose = () => setOpen(false);
   return (
     <>
-      
+
       <div className="d-flex flex-column flex-lg-row mb-3 justify-content-lg-between align-items-center">
         <h5 className="text-white text-start text-uppercase pt-1">CATEGORIES</h5>
         <Button

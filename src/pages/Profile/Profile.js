@@ -74,7 +74,7 @@ const Profile = ({ expiryTimestamp }) => {
     logOut();
     navigate("/")
     swal({
-      title: "Success",
+      // title: "Success",
       text: "You have successfully logged out",
       icon: "success",
       button: "OK",
@@ -121,7 +121,7 @@ const Profile = ({ expiryTimestamp }) => {
             button: "OK!",
             className: "modal_class_success",
           });
-          // console.log('emtiaz', res.data);
+          console.log('emtiaz', res.data);
           setOtpVerify(res.data.otp);
 
           setTimeout(() => {

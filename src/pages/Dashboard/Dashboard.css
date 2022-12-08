@@ -3,6 +3,9 @@
   height: 100%;
   text-align: center;
 }
+.svgIconColor svg{
+  color: white !important;
+}
 
 .dashLogo {
   margin-top: -4.5rem;

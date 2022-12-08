@@ -14,12 +14,20 @@ import logo from "./logo1.png";
 import { Divider } from "@mui/material";
 import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
 import { AdminContext } from "../../contexts/AdminContext";
-import { FaUsers, FaProductHunt, FaDatabase } from "react-icons/fa";
+import { FaUsers, FaProductHunt } from "react-icons/fa";
 import { MdDashboard, MdCategory, MdOutlineUnsubscribe } from "react-icons/md";
 import { RiAdminFill } from "react-icons/ri";
 import { GiShoppingBag } from "react-icons/gi";
 import { BsMinecartLoaded } from "react-icons/bs";
 import { useEffect } from "react";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { useRef } from "react";
+
+
+
 
 const menuLinkStyles = ({ isActive }) => {
   return {
@@ -29,8 +37,10 @@ const menuLinkStyles = ({ isActive }) => {
 const drawerWidth = 280;
 
 function Dashboard(props) {
+  
   const { admin, logout } = React.useContext(AdminContext);
   const navigate = useNavigate();
+  const [kycMenu, setKycMenu] = useState('');
 
   useEffect(() => {
     if (admin?.role !== "admin") {
@@ -43,7 +53,7 @@ function Dashboard(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hide, setHide] = useState(false);
-
+  
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -56,6 +66,15 @@ function Dashboard(props) {
     navigate("/");
   };
 
+
+
+
+  const handleChange = (event) => {
+    setKycMenu(event.target.value);
+    
+  };
+
+  
   const drawer = (
     <div className="sideBar">
       <Toolbar />
@@ -102,6 +121,37 @@ function Dashboard(props) {
           Customers
         </NavLink>
         <br />
+
+        <NavLink
+          className="dashboardMenu"
+          // style={menuLinkStyles}
+          onClick={handleClose}
+          
+        >
+          <span className="navIconAdmin">
+            <MdOutlineUnsubscribe style={{ fontSize: "20px" }} />
+          </span>
+          <FormControl className="svgIconColor" style={{ marginTop: kycMenu === '' ? "-12px" : "" }} variant="standard" sx={{
+            minWidth: 160 ,color: '#BABBC0', 
+          }}>
+            <InputLabel style={{color:'#BABBC0'}} sx={{ color: '#BABBC0' }} id="demo-simple-select-standard-label">KYC </InputLabel>
+            <Select disableUnderline sx={{ color: '#BABBC0', maxHeight: kycMenu === '' ? "" : "20px", borderColor: 'white', }}
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={kycMenu}
+              onChange={handleChange}
+              label="KYC "
+            >
+              <Link to='verified'><MenuItem sx={{ color: 'black' }} value={10}>Verified </MenuItem></Link>
+              <Link to='non-verified'><MenuItem sx={{ color: 'black' }} value={20}>Non Verified</MenuItem></Link>
+              <Link to='pending'><MenuItem sx={{ color: 'black' }} value={30}>Pending</MenuItem></Link>
+              <Link to='added-products'><MenuItem sx={{ color: 'black' }} value={40}>Added products</MenuItem></Link>
+
+            </Select>
+          </FormControl>
+        </NavLink>
+        <br />
+
 
         <NavLink
           className="dashboardMenu"
