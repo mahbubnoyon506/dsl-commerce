@@ -7,7 +7,7 @@ import swal from "sweetalert";
 import companyLogo from "../../assets/img/logoDSL.jpeg";
 
 function TopHeader({ shippingMessage, history }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     user,
     openWalletModal,
@@ -18,7 +18,7 @@ function TopHeader({ shippingMessage, history }) {
   const Logout = () => {
     logOut();
     // setOpen(false);
-    navigate('/')
+    navigate("/");
     closeWalletModal();
     swal({
       // title: "S",
@@ -34,15 +34,27 @@ function TopHeader({ shippingMessage, history }) {
         <div className="row gy-4 ">
           <div className="col-md-4 pt-lg-0 float-start d-none d-md-block">
             <Link to="/">
-              <img src={companyLogo} alt="dsl logo" style={{ width: '12%' }} />
+              <img src={companyLogo} alt="dsl logo" style={{ width: "12%" }} />
             </Link>
           </div>
           <div className="col-md-4 text-center">
             <div className="top-header-content shippingMessage">
               {user?.walletAddress ? (
-                <Link to='/merchant-add-product' className="text-white" style={{ textDecoration: 'underline' }}>Become Our Merchant</Link>
+                <Link
+                  to="/merchant-add-product"
+                  className="text-white"
+                  style={{ textDecoration: "underline" }}
+                >
+                  Become Our Merchant
+                </Link>
               ) : (
-                <span onClick={() => openWalletModal()} className="text-white" style={{ textDecoration: 'underline',cursor:'pointer' }}>Become Our Merchant</span>
+                <span
+                  onClick={() => openWalletModal()}
+                  className="text-white"
+                  style={{ textDecoration: "underline", cursor: "pointer" }}
+                >
+                  Become Our Merchant
+                </span>
               )}
             </div>
           </div>
@@ -62,13 +74,15 @@ function TopHeader({ shippingMessage, history }) {
                     // className="btn btn-primary text-white px-4 py-2 "
                     className="ColorBg border border-0 btn btn-primary "
                     // style={{ border: 'none', borderRadius: '100px' }}
-                    style={{ fontSize: '12px' }}
+                    style={{ fontSize: "12px" }}
                   >
                     {/* <AccountBalanceWalletIcon className="walletIcon" /> */}
-                    <img src={companyLogo} alt="dsl logo" style={{ width: '25px', marginRight: '5px' }} />
-                    <span className="pl-1">
-                      Logout
-                    </span>
+                    <img
+                      src={companyLogo}
+                      alt="dsl logo"
+                      style={{ width: "25px", marginRight: "5px" }}
+                    />
+                    <span className="pl-1">Logout</span>
                   </button>
                 </span>
               </div>
@@ -86,13 +100,15 @@ function TopHeader({ shippingMessage, history }) {
                       // className="btn btn-primary text-white px-4 py-2 "
                       className="ColorBg border border-0 btn btn-primary "
                       // style={{ border: 'none', borderRadius: '100px' }}
-                      style={{ fontSize: '12px' }}
+                      style={{ fontSize: "12px" }}
                     >
                       {/* <AccountBalanceWalletIcon className="walletIcon" /> */}
-                      <img src={companyLogo} alt="dsl logo" style={{ width: '25px', marginRight: '5px' }} />
-                      <span className="pl-1">
-                        Login With Wallet
-                      </span>
+                      <img
+                        src={companyLogo}
+                        alt="dsl logo"
+                        style={{ width: "25px", marginRight: "5px" }}
+                      />
+                      <span className="pl-1">Login With Wallet</span>
                     </button>
                   </div>
                 </div>
