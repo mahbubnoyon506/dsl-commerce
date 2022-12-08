@@ -8,12 +8,12 @@ import companyLogo from "../../assets/img/logoDSL.jpeg";
 
 function TopHeader({ shippingMessage, history }) {
   const navigate = useNavigate()
-  const {
+  const { 
     user,
     openWalletModal,
     logOut,
-    closeWalletModal,
-    closeCoinbaseModal,
+    closeWalletModal,  
+    closeCoinbaseModal, 
   } = useContext(DSLCommerceContext);
   const Logout = () => {
     logOut();

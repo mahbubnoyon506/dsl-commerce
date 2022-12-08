@@ -68,7 +68,7 @@ import AdministerOrders from "./pages/Dashboard/AdministerOrders/AdministerOrder
 import Preloader from "./Components/Common/Preloader";
 import Merchant from "./pages/Merchant/Merchant";
 import KYC from "./pages/KYC/KYC";
-import Verifide from "./pages/Dashboard/Verifide/Verifide";
+import Verified from "./pages/Dashboard/verified/Verified";
 
 export const ProductContext = createContext();
 function App() {
@@ -191,6 +191,10 @@ function App() {
             element={<SingleOrderDetail />}
           />
 
+          {/* *************************   KYC pages    ****************************** */}
+          <Route path="verified" element={<Verified />} />
+
+
           {/*************************** Product  ***************************/}
           <Route path="products" element={<AllProduct />} />
           <Route path="products/:productPerPage" element={<AllProduct />} />
@@ -240,7 +244,7 @@ function App() {
         > */}
         {/* </CartContext.Provider> */}
         {/* </AuthContext.Provider> */}
-        <Route path="/verifide" element={<Verifide />} />
+        
 
       </Routes>
 
