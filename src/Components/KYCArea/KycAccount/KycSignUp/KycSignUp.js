@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Card, Form } from "react-bootstrap";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
@@ -31,7 +31,6 @@ const KycSignUp = () => {
   return (
     <div
       style={{
-        backgroundColor: "rgb(111, 111, 111)",
         minHeight: "100vh",
         display: "flex",
         alignItems: "center",
@@ -39,106 +38,116 @@ const KycSignUp = () => {
       }}
       className="merchant-sign-up-container"
     >
-      <div
+      {/* <div
         style={{ paddingBlock: "30px", paddingInline: "30px" }}
         className="default-width-container bg-white"
+      > */}
+
+      <Card
+        className="shadow bg-white rounded"
+        style={{ width: "25rem", border: "none", marginBlock: "40px" }}
       >
-        <Form onSubmit={(e) => handleFormSubmit(e)}>
-          <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
-            <Form.Label className="fw-bold">Referral ID</Form.Label>
-            <Form.Control
-              name="referralId"
-              type="text"
-              placeholder="Referral ID"
-            />
-          </Form.Group>
-          <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
-            <Form.Label className="fw-bold">
-              Enter your Full Name as per your PhotoId
-            </Form.Label>
-            <Form.Control
-              name="fullName"
-              type="text"
-              placeholder="Enter your Full Name as per your PhotoId"
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
-            <Form.Label className="fw-bold">Enter your User Name</Form.Label>
-            <Form.Control
-              name="userName"
-              type="text"
-              placeholder="Enter your User Name"
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
-            <Form.Label className="fw-bold">Enter your email</Form.Label>
-            <Form.Control
-              name="email"
-              type="email"
-              placeholder="Enter your email"
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
-            <Form.Label className="fw-bold">Enter your Password</Form.Label>
-            <div className="d-flex align-items-center">
+        <Card.Body>
+          <Form onSubmit={(e) => handleFormSubmit(e)}>
+            <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
+              <Form.Label className="fw-bold">Referral ID</Form.Label>
               <Form.Control
-                name="password"
-                placeholder="Enter your Password"
-                required
-                type={!showPassword ? "password" : "text"}
+                name="referralId"
+                type="text"
+                placeholder="Referral ID"
               />
-              <div
-                onClick={() => setShowPassword(!showPassword)}
-                style={{
-                  marginLeft: "-40px",
-                  background: "transparent",
-                  cursor: "pointer",
-                }}
-              >
-                {showPassword ? (
-                  <AiFillEye size={30} className="text-dark" />
-                ) : (
-                  <AiFillEyeInvisible size={30} className="text-dark" />
-                )}
-              </div>
-            </div>
-          </Form.Group>
-          <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
-            <Form.Label className="fw-bold">Confirm your Password</Form.Label>
-            <div className="d-flex align-items-center">
+            </Form.Group>
+            <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
+              <Form.Label className="fw-bold">
+                Enter your Full Name as per your PhotoId
+              </Form.Label>
               <Form.Control
-                name="password"
-                placeholder="Enter your Password"
+                name="fullName"
+                type="text"
+                placeholder="Enter your Full Name as per your PhotoId"
                 required
-                type={!showConfirmPassword ? "password" : "text"}
               />
-              <div
-                onClick={() => setShowConfirmPassword(!showPassword)}
-                style={{
-                  marginLeft: "-40px",
-                  background: "transparent",
-                  cursor: "pointer",
-                }}
-              >
-                {showConfirmPassword ? (
-                  <AiFillEye size={30} className="text-dark" />
-                ) : (
-                  <AiFillEyeInvisible size={30} className="text-dark" />
-                )}
+            </Form.Group>
+            <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
+              <Form.Label className="fw-bold">Enter your User Name</Form.Label>
+              <Form.Control
+                name="userName"
+                type="text"
+                placeholder="Enter your User Name"
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
+              <Form.Label className="fw-bold">Enter your email</Form.Label>
+              <Form.Control
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
+              <Form.Label className="fw-bold">Enter your Password</Form.Label>
+              <div className="d-flex align-items-center">
+                <Form.Control
+                  name="password"
+                  placeholder="Enter your Password"
+                  required
+                  type={!showPassword ? "password" : "text"}
+                />
+                <div
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    marginLeft: "-40px",
+                    background: "transparent",
+                    cursor: "pointer",
+                  }}
+                >
+                  {showPassword ? (
+                    <AiFillEye size={30} className="text-dark" />
+                  ) : (
+                    <AiFillEyeInvisible size={30} className="text-dark" />
+                  )}
+                </div>
               </div>
-            </div>
-          </Form.Group>
-          <Button className="my-3 w-100" variant="primary" type="submit">
-            SING UP
-          </Button>
-        </Form>
-        <hr />
-        <p>Don't have an account? <Link to='/kyc/login'>Login</Link></p>
-      </div>
+            </Form.Group>
+            <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
+              <Form.Label className="fw-bold">Confirm your Password</Form.Label>
+              <div className="d-flex align-items-center">
+                <Form.Control
+                  name="password"
+                  placeholder="Enter your Password"
+                  required
+                  type={!showConfirmPassword ? "password" : "text"}
+                />
+                <div
+                  onClick={() => setShowConfirmPassword(!showPassword)}
+                  style={{
+                    marginLeft: "-40px",
+                    background: "transparent",
+                    cursor: "pointer",
+                  }}
+                >
+                  {showConfirmPassword ? (
+                    <AiFillEye size={30} className="text-dark" />
+                  ) : (
+                    <AiFillEyeInvisible size={30} className="text-dark" />
+                  )}
+                </div>
+              </div>
+            </Form.Group>
+            <Button className="my-3 w-100" variant="primary" type="submit">
+              SING UP
+            </Button>
+          </Form>
+          <hr />
+          <p>
+            Don't have an account? <Link to="/kyc/login">Login</Link>
+          </p>
+        </Card.Body>
+      </Card>
     </div>
+    // </div>
   );
 };
 
