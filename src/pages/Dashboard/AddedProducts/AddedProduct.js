@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import swal from "sweetalert";
 import Pagination from "../../../Components/Pagination/Pagination";
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+
+
 
 const AddedProducts = () => {
   const { productPerPage } = useParams();
@@ -159,6 +162,11 @@ const AddedProducts = () => {
                         className="deleteBtn"
                       >
                         <i className="fas fa-trash"></i>
+                      </button>
+                      <button
+                        className="deleteBtn bg-primary text-white"
+                      >
+                        <LibraryAddIcon/>
                       </button>
                     </div>
                   </td>

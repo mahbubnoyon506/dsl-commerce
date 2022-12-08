@@ -260,6 +260,11 @@
   position: static !important;
 }
 
+.nonverifide {
+  color: #fff !important;
+}
+
+
 @media only screen and (min-width:700px) {
   .orderDetailsModal {
     min-width: 900px !important;

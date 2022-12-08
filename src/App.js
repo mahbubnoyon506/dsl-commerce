@@ -69,6 +69,7 @@ import Preloader from "./Components/Common/Preloader";
 import Merchant from "./pages/Merchant/Merchant";
 import KYC from "./pages/KYC/KYC";
 import Verified from "./pages/Dashboard/verified/Verified";
+import NonVerified from "./pages/Dashboard/verified/NonVerified";
 import Pending from "./pages/Dashboard/Pending/Pending";
 import AddedProducts from "./pages/Dashboard/AddedProducts/AddedProduct";
 
@@ -180,6 +181,8 @@ function App() {
             path="/admin/adminprofile/:id"
             element={<DashboardAdminEditProfile />}
           />
+           
+
 
           {/*************************** Customers  ***************************/}
           <Route path="customers" element={<Customers />} />
@@ -193,8 +196,10 @@ function App() {
             element={<SingleOrderDetail />}
           />
 
+
           {/* *************************   KYC pages    ****************************** */}
           <Route path="verified" element={<Verified />} />
+          <Route path="non-verified" element={<NonVerified />} />
           <Route path="pending" element={<Pending />} />
           <Route path="added-products" element={<AddedProducts />} />
 
@@ -215,8 +220,9 @@ function App() {
           <Route path="all-subscribers/:emailPerPage" element={<Subscribers />} />
 
 
+
+
           <Route path="data" element={<Data />} />
-          <Route path="faq-dashboard" element={<FaqDashboard />} />
           <Route path="help-desk-dashboard" element={<HelpDeskDashborad />} />
           <Route
             path="customer-services-dashboard"
@@ -248,7 +254,7 @@ function App() {
         > */}
         {/* </CartContext.Provider> */}
         {/* </AuthContext.Provider> */}
-        
+
 
       </Routes>
 
