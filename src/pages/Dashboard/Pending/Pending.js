@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
@@ -32,6 +32,18 @@ const data = [
 
 
 const Pending = () => {
+
+    const [pendingData, setPendingData] = useState([]);
+
+    useEffect(() => {
+        fetch('https://backend.dslcommerce.com/api/user-panel/all')
+            .then(res => res.json())
+            .then(data => setPendingData(data?.result))
+    }, [])
+
+
+
+
     return (
         <div className="">
             <p className='text-center fs-2 text-white my-0 py-0'>Pending</p>
@@ -56,12 +68,14 @@ const Pending = () => {
 
                 <div>
                     <label className='pe-1' for="number">Search: </label>
-                    <input style={{ backgroundColor: '#272D47' }} className="border-0 p-1 text-white" name="search" />
+                    <input style={{ backgroundColor: '#272D47' }}
+                     className="border-0 p-1 text-white" name="search" />
                 </div>
             </div>
 
             <TableContainer component={Paper}>
-                <Table className='text-white' sx={{ minWidth: 550, maxWidth: "1300px", bgcolor: "#272D47" }} aria-label="simple table">
+                <Table className='text-white' sx={{ minWidth: 550, maxWidth: "1300px", bgcolor: "#272D47" }} 
+                aria-label="simple table">
 
                     <thead>
                         <tr style={{ borderBottom: "2px solid white" }}>
@@ -75,9 +89,10 @@ const Pending = () => {
                     </thead>
                     <tbody>
                         {
-                            data?.map((d, index) => (
+                            pendingData?.map((d, index) => (
                                 <tr style={{ borderBottom: "1px solid white" }} className=' ' >
-                                    <td style={{ padding: '15px 0px 15px 35px' }} className=''> <input type="checkbox" /> {index + 1}</td>
+                                    <td style={{ padding: '15px 0px 15px 35px' }} className=''> 
+                                    <input type="checkbox" /> {index + 1}</td>
                                     <td className='text-start'>
                                         <span>$</span>
                                         <span><PersonIcon /></span>
@@ -89,19 +104,19 @@ const Pending = () => {
                                     <td className='text-start adminHidden'>{d.email}</td>
                                     <td className='text-start adminHidden'>
 
-                                    <Link to='/admin/userDetails'>
-                                    <span className='bg-primary p-2 me-3 rounded'>
-                                        < AiFillEye className='fs-5 text-white rounded' />
-                                    </span>
-                                    </Link>
+                                        <Link to={`/admin/userDetails/${d._id}`}>
+                                            <span className='bg-primary p-2 me-3 rounded'>
+                                                < AiFillEye className='fs-5 text-white rounded' />
+                                            </span>
+                                        </Link>
 
-                                    <span className='bg-success p-2 me-3 rounded'>
-                                        < BiUserPlus className='fs-5 text-white rounded' />
-                                    </span>
+                                        <span className='bg-success p-2 me-3 rounded'>
+                                            < BiUserPlus className='fs-5 text-white rounded' />
+                                        </span>
 
-                                    <span className='bg-danger p-2 rounded'>
-                                        < AiFillDelete className='fs-5  text-white rounded' />
-                                    </span>
+                                        <span className='bg-danger p-2 rounded'>
+                                            < AiFillDelete className='fs-5  text-white rounded' />
+                                        </span>
 
                                     </td>
                                 </tr>

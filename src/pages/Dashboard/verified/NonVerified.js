@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -13,6 +13,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 import PortraitIcon from '@mui/icons-material/Portrait';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 
 const data = [
@@ -30,9 +33,18 @@ const data = [
 ]
 
 const NonVerified = () => {
+    const [NonVerifiedUser, setNonVerifiedUser] = useState([]);
+
+    useEffect(() => {
+        fetch('https://backend.dslcommerce.com/api/user-panel/all')
+            .then(res => res.json())
+            .then(data => setNonVerifiedUser(data?.result))
+    }, [])
+
+
     return (
         <div className="nonverifide" style={{ backgroundColor: '#1a1c33', color: "#ffff" }}>
-             <p className='text-center text-white fs-2 m-0 p-0'>Non Verified</p>
+            <p className='text-center text-white fs-2 m-0 p-0'>Non Verified</p>
             <div className='d-flex gap-3'>
 
                 <span className='my-3 text-white bolder bg-primary p-2 my-2 rounded' >GENNERATE CSV</span>
@@ -55,15 +67,18 @@ const NonVerified = () => {
 
                 <div>
                     <label className='pe-1' for="number">Search: </label>
-                    <input style={{ backgroundColor: '#272D47' }} className="border-0 p-1 text-white" name="search" />
+                    <input style={{ backgroundColor: '#272D47' }}
+                        className="border-0 p-1 text-white" name="search" />
                 </div>
             </div>
             <TableContainer className='mt-3' component={Paper}>
-                <Table className=' text-white' sx={{ minWidth: 700, maxWidth: "1300px", bgcolor: "#272D47" }} aria-label="simple table">
+                <Table className=' text-white'
+                    sx={{ minWidth: 700, maxWidth: "1300px", bgcolor: "#272D47" }} aria-label="simple table">
 
                     <thead>
                         <tr style={{ borderBottom: "2px solid white" }}>
-                            <th style={{ padding: '15px 0px 15px 35px' }} className='text-start'> <input type="checkbox" /> S.N.</th>
+                            <th style={{ padding: '15px 0px 15px 35px' }} className='text-start'>
+                                <input type="checkbox" /> S.N.</th>
                             <th className='text-start'>Document</th>
                             <th className='text-start'>Full Name</th>
                             <th className='text-start adminHidden'>Email</th>
@@ -74,9 +89,10 @@ const NonVerified = () => {
                     </thead>
                     <tbody>
                         {
-                            data?.map((d, index) => (
+                            NonVerifiedUser?.map((d, index) => (
                                 <tr style={{ borderBottom: "1px solid white" }} className=' ' >
-                                    <td style={{ padding: '15px 0px 15px 35px' }} className=''> <input type="checkbox" /> {index + 1}</td>
+                                    <td style={{ padding: '15px 0px 15px 35px' }} className=''>
+                                        <input type="checkbox" /> {index + 1}</td>
                                     <td className='text-start'>
                                         <span>$</span>
                                         <span><PersonIcon /></span>
@@ -84,21 +100,25 @@ const NonVerified = () => {
                                         <span><PhoneAndroidIcon /></span>
                                         <span><PortraitIcon /></span>
                                     </td>
-                                    <td className='text-start' style={{ textTransform: 'uppercase' }} >{d.name}</td>
-                                    <td className='text-start adminHidden'>{d.email}</td>
-                                    <td className='text-start adminHidden'>{d.kycPending === true ? 'PENDING' : ''}</td>
+                                    <td className='text-start' style={{ textTransform: 'uppercase' }} >
+                                        {d?.name}</td>
+                                    <td className='text-start adminHidden'>{d?.email}</td>
+                                    <td className='text-start adminHidden'> PENDING </td>
                                     <td className='text-start adminHidden'>
-                                        <div className='d-flex gap-3'>
-                                            <span className='bg-primary px-2 py-2 rounded'>
-                                                < AiFillEye className='fs-4 text-white rounded' />
+
+                                        <Link to={`/admin/userDetails/${d._id}`}>
+                                            <span className='bg-primary p-2 me-3 rounded'>
+                                                < AiFillEye className='fs-5 text-white rounded' />
                                             </span>
-                                            <span className=' px-2 py-2 rounded' style={{ backgroundColor: "#4bd395" }}>
-                                                < BiUserPlus className='fs-4 text-white rounded' />
-                                            </span>
-                                            <span className='bg-danger px-2 py-2 rounded'>
-                                                < AiFillDelete className='fs-4  text-white rounded' />
-                                            </span>
-                                        </div>
+                                        </Link>
+
+                                        <span className='bg-success p-2 me-3 rounded'>
+                                            < BiUserPlus className='fs-5 text-white rounded' />
+                                        </span>
+
+                                        <span className='bg-danger p-2 rounded'>
+                                            < AiFillDelete className='fs-5  text-white rounded' />
+                                        </span>
 
                                     </td>
                                 </tr>

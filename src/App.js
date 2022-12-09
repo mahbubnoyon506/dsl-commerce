@@ -207,7 +207,7 @@ function App() {
           <Route path="non-verified" element={<NonVerified />} />
           <Route path="pending" element={<Pending />} />
           <Route path="added-products" element={<AddedProducts />} />
-          <Route path="userDetails" element={<UserDetails />} />
+          <Route path="userDetails/:id" element={<UserDetails />} />
 
 
           {/*************************** Product  ***************************/}
