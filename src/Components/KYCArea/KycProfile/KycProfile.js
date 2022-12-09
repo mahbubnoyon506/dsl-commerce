@@ -1,11 +1,16 @@
 import React, { useEffect } from "react";
+import { useContext } from "react";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { allCountryNationality, time_zone } from "../CountryName/cData";
+import { toast } from "react-hot-toast";
+import { KycContext } from "../../../contexts/KycContext";
+import { time_zone } from "../CountryName/cData";
 import "./KycProfile.css";
 
 const KycProfile = () => {
-  const [memberShipId, setMemberShipId] = useState("");
+
+  const { kycUser, handleUpdateUser } = useContext(KycContext)
+
   const [userName, setUserName] = useState("");
   const [fullName, setFullName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
@@ -13,6 +18,17 @@ const KycProfile = () => {
   const [nationality, setNationality] = useState("");
   const [timeZone, setTimeZone] = useState([]);
   const [aboutMe, setAboutMe] = useState("");
+  console.log(kycUser)
+
+  useEffect(() => {
+    setUserName(kycUser?.username)
+    setFullName(kycUser?.name)
+    setDateOfBirth(kycUser?.dateOfBirth)
+    setGender(kycUser?.name)
+    setNationality(kycUser?.nationality)
+    setTimeZone(kycUser?.timeZone)
+    setAboutMe(kycUser?.description)
+  }, [kycUser])
 
   useEffect(() => {
     if (nationality) {
@@ -29,24 +45,29 @@ const KycProfile = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    console.log(
-      memberShipId,
-      userName,
-      fullName,
-      dateOfBirth,
-      gender,
-      nationality,
-      timeZone,
-      aboutMe
-    );
+
+    if (gender === "") {
+      toast.error('Gender is required ! ')
+      return
+    }
+    if (nationality === "") {
+      toast.error('Nationality is required ! ')
+      return
+    }
 
     const data = {
+      walletAddress: kycUser?.walletAddress,
+      username: userName,
+      name: fullName,
       birthday: dateOfBirth,
       gender: gender,
       nationality: nationality,
-      timezone: timeZone,
+      timezone: timeZone[0],
       description: aboutMe,
     }
+
+    // console.log(data)
+    handleUpdateUser(data)
 
 
 
@@ -62,8 +83,7 @@ const KycProfile = () => {
           <Form.Label>MEMBERSHIP ID</Form.Label>
           <Form.Control
             name="memberShipId"
-            value={memberShipId}
-            onChange={(e) => setMemberShipId(e.target.value)}
+            value={kycUser?.memberId}
             type="text"
             disabled
           />
