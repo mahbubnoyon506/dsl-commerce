@@ -1281,6 +1281,7 @@ function CheckoutArea({ expiryTimestamp }) {
             </div>
           </div>
         </form>
+        
         <EmailVerifyModal
           handleVerifyEmail={handleVerifyEmail}
           handleVerifyOTP={handleVerifyOTP}
