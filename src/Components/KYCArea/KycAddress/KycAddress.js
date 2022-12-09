@@ -9,7 +9,7 @@ import './KycAddress.css'
 
 const KycAddress = () => {
 
-  const { kycUser, handleUpdateUser } = useContext(KycContext)
+  const { kycUser, handleAddress } = useContext(KycContext)
 
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
@@ -20,29 +20,30 @@ const KycAddress = () => {
   const [file, setFile] = useState("");
   // console.log(kycUser?._id)
 
-  // useEffect(() => {
-  //   setAddress1(kycUser?.address1)
-  //   setAddress2(kycUser?.address2)
-  //   setCity(kycUser?.city)
-  //   setState(kycUser?.state)
-  //   setCountry(kycUser?.country)
-  //   setZipCode(kycUser?.zipCode)
-  // }, [kycUser])
+  useEffect(() => {
+    setAddress1(kycUser?.address1)
+    setAddress2(kycUser?.address2)
+    setCity(kycUser?.city)
+    setState(kycUser?.state)
+    setCountry(kycUser?.country)
+    setZipCode(kycUser?.zipCode)
+  }, [kycUser])
 
-  const handleAddress = async(e) => {
+  const handleFormSubmit = (e) => {
     e.preventDefault()
 
     const data = {
       address1: address1,
       address2: address2,
-      // city: city,
-      // state: state,
-      // country: country,
-      // file:file
+      city: city,
+      state: state,
+      country: country,
+      file: file
     };
 
-    console.log(data);
-    
+    // console.log(data);
+    handleAddress(data)
+
 
   }
   return (
@@ -52,7 +53,7 @@ const KycAddress = () => {
       <p className='pt-4'>File size should not be more than 5 MB.</p>
 
 
-      <Form onSubmit={handleAddress} className="default-width-container">
+      <Form onSubmit={(e) => handleFormSubmit(e)} className="default-width-container">
 
         <Form.Group className="mb-3  customStyle" controlId="formBasicEmail">
           <Form.Label >Address Line 1 <span>★</span> </Form.Label>
