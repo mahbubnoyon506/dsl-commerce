@@ -4,7 +4,7 @@ import swal from 'sweetalert';
 
 const RecentOrderTable = ({ order, refetchOrder }) => {
 
-    const { _id, date, name, phone, paymentMethod, amount, pendingStatus } = order;
+    const { _id, date, name, phone, paymentMethod, amount, pendingStatus, orderItems } = order;
 
     const handleStatus = () => {
         axios.put(`https://backend.dslcommerce.com/api/order/pending/${_id}`, {
@@ -43,7 +43,10 @@ const RecentOrderTable = ({ order, refetchOrder }) => {
                     {date}
                 </td>
                 <td className="text-center text-capitalize">
-                    {order.orderItems[0].productName}
+                    {/* {order.orderItems[0].productName} */}
+                    {
+                        orderItems.map((item) => <p>{item.productName}</p> )
+                    }
                 </td>
                 <td className="text-center ">{name}</td>
                 <td className="text-center ">{phone}</td>

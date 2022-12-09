@@ -30,7 +30,7 @@ const RecentOrders = () => {
         if (res.status === 200) {
           setAllOrder(res.data)
         } else {
-          <p>There's an error found.</p>
+          return <p>There's an error found.</p>
         }
       })
   }
