@@ -80,6 +80,7 @@ export default function KycProvider({ children }) {
 
   // ************************************User Update ************************************
   const handleUpdateUser = async (data) => {
+    console.log(data, "data to update");
     await axios
       .put(
         `https://backend.dslcommerce.com/api/user-panel/user/update/${user?.walletAddress}`,
