@@ -71,13 +71,13 @@ const KycSignUp = () => {
               <Form.Control
                 name="fullName"
                 type="text"
-                placeholder="Enter your Full Name "
+                placeholder="Enter Full Name "
                 required
               />
             </Form.Group>
 
             <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
-              <Form.Label className="fw-bold">Enter your User Name</Form.Label>
+              <Form.Label className="fw-bold">Enter User Name</Form.Label>
               <Form.Control
                 name="userName"
                 value={userName}
@@ -97,7 +97,7 @@ const KycSignUp = () => {
               />
             </Form.Group>
             <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
-              <Form.Label className="fw-bold">Enter your Password</Form.Label>
+              <Form.Label className="fw-bold">Enter Password</Form.Label>
               <div className="d-flex align-items-center">
                 <Form.Control
                   name="password"
@@ -126,7 +126,7 @@ const KycSignUp = () => {
               <div className="d-flex align-items-center">
                 <Form.Control
                   name="confirmPassword"
-                  placeholder="Enter your Password"
+                  placeholder="Confirm Password"
                   required
                   type={!showConfirmPassword ? "password" : "text"}
                 />

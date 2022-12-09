@@ -65,7 +65,6 @@ const KycLogin = () => {
                   type='checkbox'
                   id='checkbox'
                   label='Remember me on this computer'
-                  required
                 />
               </div>
 
