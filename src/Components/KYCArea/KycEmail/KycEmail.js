@@ -146,7 +146,10 @@ const KycEmail = ({expiryTimestamp}) => {
           <p className="" style={{ color: '#99701E' }}>
             Click here to change your email address.
           </p>
-          <Button className='mt-1 text-uppercase' as="input" type="submit" value="Submit" />
+          {
+            !emailVerify ?  <Button className='mt-1 text-uppercase' as="input" type="submit" value="Submit" disabled/> :
+            <Button className='mt-1 text-uppercase' as="input" type="submit" value="Submit" />
+          }
         </Form.Group>
       </Form>
       <EmailVerifyModal

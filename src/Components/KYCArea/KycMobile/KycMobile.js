@@ -128,10 +128,12 @@ const KycMobile = ({ expiryTimestamp }) => {
               international
               defaultCountry="SG"
               countryCallingCodeEditable={true}
-              className='form-control border-0'
+              className='form-control'
+
               type="text"
               onChange={setMobile}
               value={mobile}
+              style={{border: 'none'}}
               // disabled={user.mobileNo ? true : false}
               required
               inputProps={{
@@ -157,8 +159,10 @@ const KycMobile = ({ expiryTimestamp }) => {
               style={{ marginLeft: '-68px' }}
               variant="secondary">Verify</Button>
           </div>
-
-          <Button className='mt-4 text-uppercase' variant="primary"> Submit</Button>{' '}
+          {
+            !mobileNoVerify ? <Button className='mt-4 text-uppercase' variant="primary" disabled> Submit</Button> :
+              <Button className='mt-4 text-uppercase' variant="primary"> Submit</Button>
+          }
         </Form.Group>
       </Form>
       <MobileVerifyModal
