@@ -39,6 +39,17 @@ const KycProfile = () => {
       timeZone,
       aboutMe
     );
+
+    const data = {
+      birthday: dateOfBirth,
+      gender: gender,
+      nationality: nationality,
+      timezone: timeZone,
+      description: aboutMe,
+    }
+
+
+
   };
 
   return (
@@ -54,8 +65,7 @@ const KycProfile = () => {
             value={memberShipId}
             onChange={(e) => setMemberShipId(e.target.value)}
             type="text"
-            placeholder=""
-            required
+            disabled
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -86,7 +96,7 @@ const KycProfile = () => {
             name="dateOfBirth"
             value={dateOfBirth}
             onChange={(e) => setDateOfBirth(e.target.value)}
-            type="text"
+            type="date"
             placeholder=""
             maxLength={10}
             required
