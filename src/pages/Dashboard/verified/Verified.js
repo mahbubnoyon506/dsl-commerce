@@ -32,7 +32,7 @@ const data = [
 const Verified = () => {
     return (
         <div className="">
-            <p className='text-center text-white fs-2 m-0 p-0'>Verified</p>
+            <p className='text-center text-white mb-2 fs-2 m-0 p-0'>Verified</p>
             <span className='my-3 mb-5 text-white bolder bg-primary p-2 my-2 rounded' >GENNERATE CSV</span>
 
             <TableContainer component={Paper} className="mt-4">
@@ -42,7 +42,7 @@ const Verified = () => {
                         <tr style={{ borderBottom: "2px solid white" }}>
                             <th style={{ padding: '15px 0px 15px 35px' }} className='text-start'>S.N.</th>
                             <th className='text-start'>Name</th>
-                            <th className='text-start adminHidden'>Email</th>
+                            <th className='text-start '>Email</th>
                             <th className='text-start'>PHONE</th>
                             <th className='text-start'>ACTION</th>
                         </tr>
@@ -52,18 +52,11 @@ const Verified = () => {
                             data?.map((d, index) => (
                                 <tr style={{ borderBottom: "1px solid white" }} className=' ' >
                                     <td style={{ padding: '15px 0px 15px 35px' }} className=''> <input type="checkbox" /> {index + 1}</td>
-                                    {/* <td className='text-start'>
-                                        <span>$</span>
-                                        <span><PersonIcon /></span>
-                                        <span><EmailIcon /></span>
-                                        <span><PhoneAndroidIcon /></span>
-                                        <span><PortraitIcon /></span>
-                                    </td> */}
                                     <td className='text-start' style={{ textTransform: 'uppercase' }} >{d.name}</td>
-                                    <td className='text-start adminHidden'>{d.email}</td>
-                                    <td className='text-start adminHidden'>{d.phone}</td>
+                                    <td className='text-start '>{d.email}</td>
+                                    <td className='text-start '>{d.phone}</td>
                                     {/* <td className='text-start adminHidden'>{d.kycPending === true ? 'PENDING' : ''}</td> */}
-                                    <td className='text-start adminHidden'>
+                                    <td className='text-start '>
                                         <div className='d-flex gap-3'>
                                             <span className='bg-primary px-2 py-2 rounded'>
                                                 < AiFillEye className='fs-4 text-white rounded' />

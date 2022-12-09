@@ -34,14 +34,14 @@ const data = [
 const Pending = () => {
     return (
         <div className="">
-            <p className='text-center fs-2 text-white my-0 py-0'>Pending</p>
+            <p className='text-center fs-2 text-white my-0 mb-2 py-0'>Pending</p>
             <div className='mb-3'>
                 <span className='  text-white bolder bg-primary p-2  rounded me-2' >GENNERATE CSV</span>
-                <span className=' text-white bolder bg-danger p-2  rounded' >DELETE</span>
+                <span className=' text-white bolder bg-danger p-2  px-2 rounded' >DELETE</span>
             </div>
 
-            <div className='text-white d-flex justify-content-between align-items-center py-2'>
-                <form action="">
+            <div className='text-white row d-flex gap-2 justify-content-between align-items-center py-2'>
+                <form action="" className='col-12 col-md-6'>
                     <label for="number">Display</label>
                     <select style={{ backgroundColor: '#272D47' }} className='mx-2 p-1 text-white border-0' name="number" id="number">
                         <option value="100">100</option>
@@ -51,24 +51,23 @@ const Pending = () => {
                         <option value="500">500</option>
                     </select>
                     <label for="cars">records per page</label>
-
                 </form>
 
-                <div>
+                <div className='col-12 col-md-6'>
                     <label className='pe-1' for="number">Search: </label>
-                    <input style={{ backgroundColor: '#272D47' }} className="border-0 p-1 text-white" name="search" />
+                    <input style={{ backgroundColor: '#272D47' }} className="border-0 p-1 rounded w-75 w-md-50 text-white" name="search" />
                 </div>
             </div>
 
             <TableContainer component={Paper}>
-                <Table className='text-white' sx={{ minWidth: 550, maxWidth: "1300px", bgcolor: "#272D47" }} aria-label="simple table">
+                <Table className='text-white' sx={{ minWidth: 750, maxWidth: "1300px", bgcolor: "#272D47" }} aria-label="simple table">
 
                     <thead>
                         <tr style={{ borderBottom: "2px solid white" }}>
                             <th style={{ padding: '15px 0px 15px 35px' }} className='text-start'>S.N.</th>
                             <th className='text-start'>Document</th>
                             <th className='text-start'>Full Name</th>
-                            <th className='text-start adminHidden'>Email</th>
+                            <th className='text-start '>Email</th>
 
                             <th className='text-start'>KYC Pending</th>
                         </tr>
@@ -86,22 +85,22 @@ const Pending = () => {
                                         <span><PortraitIcon /></span>
                                     </td>
                                     <td className='text-start' style={{ textTransform: 'uppercase' }} >{d.name}</td>
-                                    <td className='text-start adminHidden'>{d.email}</td>
-                                    <td className='text-start adminHidden'>
+                                    <td className='text-start '>{d.email}</td>
+                                    <td className='text-start '>
 
-                                    <Link to='/admin/userDetails'>
-                                    <span className='bg-primary p-2 me-3 rounded'>
-                                        < AiFillEye className='fs-5 text-white rounded' />
-                                    </span>
-                                    </Link>
+                                        <Link to='/admin/userDetails'>
+                                            <span className='bg-primary p-2 me-3 rounded'>
+                                                < AiFillEye className='fs-5 text-white rounded' />
+                                            </span>
+                                        </Link>
 
-                                    <span className='bg-success p-2 me-3 rounded'>
-                                        < BiUserPlus className='fs-5 text-white rounded' />
-                                    </span>
+                                        <span className='bg-success p-2 me-3 rounded'>
+                                            < BiUserPlus className='fs-5 text-white rounded' />
+                                        </span>
 
-                                    <span className='bg-danger p-2 rounded'>
-                                        < AiFillDelete className='fs-5  text-white rounded' />
-                                    </span>
+                                        <span className='bg-danger p-2 rounded'>
+                                            < AiFillDelete className='fs-5  text-white rounded' />
+                                        </span>
 
                                     </td>
                                 </tr>

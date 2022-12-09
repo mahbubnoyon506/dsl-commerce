@@ -5,6 +5,16 @@ import axios from "axios";
 import swal from "sweetalert";
 import Pagination from "../../../Components/Pagination/Pagination";
 
+
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
+
+
 const Subscribers = () => {
   const { emailPerPage } = useParams();
 
@@ -20,6 +30,20 @@ const Subscribers = () => {
   const [sliceEmails, setSliceEmails] = useState([]);
   // console.log(sliceProducts)
 
+
+  const [openModal, setOpenModal] = useState(false);
+  const [email, setEmail] = useState('');
+
+
+  const handleClickOpen = (email) => {
+    setEmail(email)
+    console.log(email);
+    setOpenModal(true);
+  };
+
+  const handleClose = () => {
+    setOpenModal(false);
+  };
   useEffect(() => {
     const lastPage = Math.ceil(allEmail?.length / show);
     setLastPage(lastPage);
@@ -128,7 +152,7 @@ const Subscribers = () => {
                   </td>
 
                   <td className="text-left text-capitalize ">
-                    <button className="btn btn-sm text-white btn-primary">Send Email</button>
+                    <button onClick={() => handleClickOpen(email.email)} className="btn btn-sm text-white btn-primary">Send Email</button>
                   </td>
                   <td className="action">
                     <div className="actionDiv text-left">
@@ -142,6 +166,40 @@ const Subscribers = () => {
                   </td>
                 </tr>
               ))}
+
+              <div>
+                <Dialog
+                  open={openModal}
+                  onClose={handleClose}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+
+                >
+                  <DialogTitle id="alert-dialog-title" style={{ background: "#1a1c33", color: '#fff' }}>
+                    {"Send Message"}
+                  </DialogTitle>
+                  <DialogContent style={{ background: "#1a1c33", color: '#fff' }}>
+                    <DialogContentText id="alert-dialog-description">
+
+                      <div className=' text-white'>
+                        <label htmlFor="">To: </label>
+                        <input type="email" value={email} className="p-1 ms-2 rounded mt-2 border-1 bolder w-75" style={{ background: "#1a1c33", color: '#fff', border: '2px solid #fff' }} />
+
+                        <div className="mt-2">
+                          <label htmlFor="">Message: </label>
+                          <textarea className="" name="" id="" cols="30" rows="6" placeholder="Write Message"></textarea>
+                        </div>
+                        <button className="btn btn-sm px-3 text-white btn-primary">Send</button>
+
+                      </div>
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions style={{ background: "#1a1c33", color: '#fff' }}>
+                    <Button className="text-danger" onClick={handleClose}>Close</Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+
             </tbody>
           </Table>
         </div>
