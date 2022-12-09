@@ -1,13 +1,49 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react'
 import { Button, Form } from "react-bootstrap";
+import { toast } from 'react-hot-toast';
+import swal from 'sweetalert';
+import { KycContext } from '../../../contexts/KycContext';
 import { countryName } from '../CountryName/cData';
 import './KycAddress.css'
 
 const KycAddress = () => {
 
-  const handleAddress = (e) => {
+  const { kycUser, handleUpdateUser } = useContext(KycContext)
+
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [file, setFile] = useState("");
+  // console.log(kycUser?._id)
+
+  // useEffect(() => {
+  //   setAddress1(kycUser?.address1)
+  //   setAddress2(kycUser?.address2)
+  //   setCity(kycUser?.city)
+  //   setState(kycUser?.state)
+  //   setCountry(kycUser?.country)
+  //   setZipCode(kycUser?.zipCode)
+  // }, [kycUser])
+
+  const handleAddress = async(e) => {
     e.preventDefault()
-    console.log('click')
+
+    const data = {
+      address1: address1,
+      address2: address2,
+      // city: city,
+      // state: state,
+      // country: country,
+      // file:file
+    };
+
+    console.log(data);
+    
+
   }
   return (
     <div>
@@ -22,7 +58,9 @@ const KycAddress = () => {
           <Form.Label >Address Line 1 <span>★</span> </Form.Label>
           <Form.Control
             type="text"
-            name='addressLine1'
+            value={address1}
+            onChange={(e) => setAddress1(e.target.value)}
+            name='address1'
             required
           />
         </Form.Group>
@@ -31,7 +69,9 @@ const KycAddress = () => {
           <Form.Label >Address Line 2 </Form.Label>
           <Form.Control
             type="text"
-            name='addressLine2'
+            value={address2}
+            onChange={(e) => setAddress2(e.target.value)}
+            name='address2'
           />
         </Form.Group>
 
@@ -40,6 +80,8 @@ const KycAddress = () => {
           <Form.Control
             type="text"
             name='city'
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
             required
           />
         </Form.Group>
@@ -48,6 +90,8 @@ const KycAddress = () => {
           <Form.Label >State / province  <span>★</span> </Form.Label>
           <Form.Control
             type="text"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
             name='state'
             required
           />
@@ -57,6 +101,8 @@ const KycAddress = () => {
           <Form.Label >country  <span>★</span> </Form.Label>
           <Form.Select
             name='country'
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
             required
           >
             <option value="" > Country </option>
@@ -76,6 +122,8 @@ const KycAddress = () => {
           <Form.Label >postal / zip code  <span>★</span>  </Form.Label>
           <Form.Control
             type="text"
+            value={zipCode}
+            onChange={(e) => setZipCode(e.target.value)}
             name='zipCode'
             required
 
@@ -93,6 +141,8 @@ const KycAddress = () => {
           </ol>
           <Form.Control
             type="file"
+            value={file}
+            onChange={(e) => setFile(e.target.value)}
             name='addressProof'
             required
           />
