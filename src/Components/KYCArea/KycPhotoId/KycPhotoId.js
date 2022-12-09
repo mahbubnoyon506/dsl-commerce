@@ -6,6 +6,31 @@ import { BsStarFill } from "react-icons/bs";
 
 const KycPhotoId = () => {
   const [photoIdType, setPhotoIdType] = useState("photoId");
+  const [photoIdNumber, setPhotoIdNumber] = useState("");
+  const [passportNumber, setPassportNumber] = useState("");
+  const [drivingLicenseNumber, setDrivingLicenseNumber] = useState("");
+  const [countryOfIssue, setCountryOfIssue] = useState("");
+  const [photoIdFrontImg, setPhotoIdFrontImage] = useState("");
+  const [photoIdBackImg, setPhotoIdBackImage] = useState("");
+  const [drivingLicenseFrontImg, setDrivingLicenseFrontImage] = useState("");
+  const [drivingLicenseBackImg, setDrivingLicenseBackImage] = useState("");
+  const [passportImg, setPassportImg] = useState("");
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log({
+      photoIdType,
+      photoIdNumber,
+      passportNumber,
+      drivingLicenseNumber,
+      countryOfIssue,
+      photoIdFrontImg,
+      photoIdBackImg,
+      drivingLicenseFrontImg,
+      drivingLicenseBackImg,
+      passportImg,
+    });
+  };
 
   useEffect(() => {}, []);
 
@@ -30,17 +55,62 @@ const KycPhotoId = () => {
         or driving licence.
       </p>
       <p className="fs-5 fw-bold">Do not upload your selfies here.</p>
-      <Form className="default-width-container">
-        <Form.Group className="mb-3 " controlId="formBasicEmail">
-          <Form.Label className="text-uppercase">
-            Photo ID Number{" "}
-            <BsStarFill
-              size={8}
-              style={{ color: "#FF0000", marginTop: "-10px" }}
-            />
-          </Form.Label>
-
-          <Form.Control type="text" placeholder="01687874697" />
+      <Form onSubmit={(e) => onSubmit(e)} className="default-width-container">
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          {photoIdType === "photoId" && (
+            <>
+              <Form.Label className="text-uppercase">
+                Photo ID Number{" "}
+                <BsStarFill
+                  size={8}
+                  style={{ color: "#FF0000", marginTop: "-10px" }}
+                />
+              </Form.Label>
+              <Form.Control
+                name="photoIdNumber"
+                type="text"
+                placeholder="01687874697"
+                required
+                onChange={(e) => setPhotoIdNumber(e.target.value)}
+              />
+            </>
+          )}
+          {photoIdType === "passport" && (
+            <>
+              <Form.Label className="text-uppercase">
+                Passport Number{" "}
+                <BsStarFill
+                  size={8}
+                  style={{ color: "#FF0000", marginTop: "-10px" }}
+                />
+              </Form.Label>
+              <Form.Control
+                name="passportNumber"
+                type="text"
+                placeholder="01687874697"
+                required
+                onChange={(e) => setPassportNumber(e.target.value)}
+              />
+            </>
+          )}
+          {photoIdType === "drivingLicense" && (
+            <>
+              <Form.Label className="text-uppercase">
+                Driving license Number{" "}
+                <BsStarFill
+                  size={8}
+                  style={{ color: "#FF0000", marginTop: "-10px" }}
+                />
+              </Form.Label>
+              <Form.Control
+                name="drivingLicenseNumber"
+                type="text"
+                placeholder="01687874697"
+                required
+                onChange={(e) => setDrivingLicenseNumber(e.target.value)}
+              />
+            </>
+          )}
 
           <Form.Label className="text-uppercase mt-4">
             Type of photo id{" "}
@@ -66,8 +136,13 @@ const KycPhotoId = () => {
               style={{ color: "#FF0000", marginTop: "-10px" }}
             />
           </Form.Label>
-
-          <Form.Control type="text" placeholder="01687874697" />
+          <Form.Control
+            name="countryOfIssue"
+            required
+            type="text"
+            placeholder="01687874697"
+            onChange={(e) => setCountryOfIssue(e.target.value)}
+          />
 
           {/* If the photo id type is photo id */}
           {photoIdType === "photoId" && (
@@ -84,6 +159,8 @@ const KycPhotoId = () => {
                 accept=".jpg, .jpeg, .png"
                 type="file"
                 placeholder=""
+                required
+                onChange={(e) => setPhotoIdFrontImage(e?.target?.files[0])}
               />
               <Form.Label className="text-uppercase mt-4">
                 Photo id back image{" "}
@@ -97,6 +174,8 @@ const KycPhotoId = () => {
                 accept=".jpg, .jpeg, .png"
                 type="file"
                 placeholder=""
+                required
+                onChange={(e) => setPhotoIdBackImage(e?.target?.files[0])}
               />
             </>
           )}
@@ -116,6 +195,10 @@ const KycPhotoId = () => {
                 type="file"
                 placeholder=""
                 accept=".jpg, .jpeg, .png"
+                required
+                onChange={(e) =>
+                  setDrivingLicenseFrontImage(e?.target?.files[0])
+                }
               />
               <Form.Label className="text-uppercase mt-4">
                 Driving license back image{" "}
@@ -129,6 +212,10 @@ const KycPhotoId = () => {
                 type="file"
                 placeholder=""
                 accept=".jpg, .jpeg, .png"
+                required
+                onChange={(e) =>
+                  setDrivingLicenseBackImage(e?.target?.files[0])
+                }
               />
             </>
           )}
@@ -148,6 +235,8 @@ const KycPhotoId = () => {
                 type="file"
                 accept=".jpg, .jpeg, .png"
                 placeholder=""
+                required
+                onChange={(e) => setPassportImg(e?.target?.files[0])}
               />
             </>
           )}
