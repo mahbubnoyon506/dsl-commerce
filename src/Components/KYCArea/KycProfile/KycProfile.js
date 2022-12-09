@@ -8,8 +8,7 @@ import { time_zone } from "../CountryName/cData";
 import "./KycProfile.css";
 
 const KycProfile = () => {
-
-  const { kycUser, handleUpdateUser } = useContext(KycContext)
+  const { kycUser, handleUpdateUser } = useContext(KycContext);
 
   const [userName, setUserName] = useState("");
   const [fullName, setFullName] = useState("");
@@ -17,18 +16,18 @@ const KycProfile = () => {
   const [gender, setGender] = useState("");
   const [nationality, setNationality] = useState("");
   const [timeZone, setTimeZone] = useState([]);
+  const [timeZ, setTimeZ] = useState("");
   const [aboutMe, setAboutMe] = useState("");
-  console.log(kycUser)
 
   useEffect(() => {
-    setUserName(kycUser?.username)
-    setFullName(kycUser?.name)
-    setDateOfBirth(kycUser?.dateOfBirth)
-    setGender(kycUser?.name)
-    setNationality(kycUser?.nationality)
-    setTimeZone(kycUser?.timeZone)
-    setAboutMe(kycUser?.description)
-  }, [kycUser])
+    setUserName(kycUser?.username);
+    setFullName(kycUser?.name);
+    setDateOfBirth(kycUser?.birthday);
+    setGender(kycUser?.gender);
+    setNationality(kycUser?.nationality);
+    setTimeZ(kycUser?.timezone);
+    setAboutMe(kycUser?.description);
+  }, [kycUser]);
 
   useEffect(() => {
     if (nationality) {
@@ -45,14 +44,13 @@ const KycProfile = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-
-    if (gender === "") {
-      toast.error('Gender is required ! ')
-      return
+    if (gender === "choose" || gender === "Gender") {
+      toast.error("Gender is required ! ");
+      return;
     }
-    if (nationality === "") {
-      toast.error('Nationality is required ! ')
-      return
+    if (nationality === "choose") {
+      toast.error("Nationality is required ! ");
+      return;
     }
 
     const data = {
@@ -62,15 +60,11 @@ const KycProfile = () => {
       birthday: dateOfBirth,
       gender: gender,
       nationality: nationality,
-      timezone: timeZone[0],
+      timezone: timeZ,
       description: aboutMe,
-    }
+    };
 
-    // console.log(data)
-    handleUpdateUser(data)
-
-
-
+    handleUpdateUser(data);
   };
 
   return (
@@ -131,7 +125,7 @@ const KycProfile = () => {
           className="mb-3"
           required
         >
-          <option> Gender </option>
+          <option value="choose"> Gender </option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
         </Form.Select>
@@ -143,7 +137,7 @@ const KycProfile = () => {
           className="mb-3"
           required
         >
-          <option> Nationality </option>
+          <option value="choose"> Nationality </option>
           {time_zone?.map((country, index) => (
             <option
               key={index}
@@ -157,12 +151,12 @@ const KycProfile = () => {
         <Form.Label>TIME ZONE*</Form.Label>
         <Form.Select
           name="timeZone"
-          value={timeZone}
-          onChange={(e) => setTimeZone(e.target.value)}
+          value={timeZ}
+          onChange={(e) => setTimeZ(e.target.value)}
           className="mb-3"
           required
         >
-          <option> -- Select time zone -- </option>
+          <option value="choose"> -- Select time zone -- </option>
           {timeZone?.map((eachZone) => (
             <option value={eachZone}>{eachZone}</option>
           ))}
