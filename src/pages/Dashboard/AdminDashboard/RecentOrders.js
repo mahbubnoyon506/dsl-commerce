@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { Table } from "react-bootstrap";
 import swal from "sweetalert";
+import RecentOrderTable from "./RecentOrderTable";
 // import { allOrders } from "../CustomerOrders/orderData";
 
 const RecentOrders = () => {
@@ -10,7 +11,7 @@ const RecentOrders = () => {
   // const [allOrder, setAllOrder] = useState(allOrders);
   const [recentNum, setRecentNum] = useState(10);
 
-  console.log(allOrder)
+  // console.log(allOrder)
 
   // const allOrder = [
   //   {_id:1 , orderTime: '3-10-2022', productName:'Hp Core' , phone : '1233333' , paymentMethod  : 'paypal' , orderAmount : 333},
@@ -23,54 +24,20 @@ const RecentOrders = () => {
   //   {_id:8 , orderTime: '7-1-2022', productName:'Monitor' , phone : '8978' , paymentMethod  : 'paypal' , orderAmount : 3211}
   // ]
 
-
-  useEffect(() => {
-    (async () => {
-      await axios.get('https://backend.dslcommerce.com/api/order')
-        .then(res => {
-          if (res.status === 200) {
-            setAllOrder(res.data)
-          } else {
-            <p>There's an error found.</p>
-          }
-        })
-    }
-    )()
-  }, []);
-
-  const _id = '';
-
-  const handleStatus = () =>{
-    const status = {deliveredStatus : true};
-    axios.put(`https://backend.dslcommerce.com/api/order/6390b297967d6ebd17c7d4a8`, status, {
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("tokendslcommerce")}`,
-      }
-    }).then(res => {
-      if(res.acknowledged === true ){
-        swal({
-          // title: "Attention",
-          text: "Item status changed to completed order.",
-          icon: "success",
-          button: "OK",
-          dangerMode: true,
-          className: "modal_class_success",
-        });
-      }else{
-        swal({
-          // title: "Attention",
-          text: "Operation failed.",
-          icon: "error",
-          button: "OK",
-          dangerMode: true,
-          className: "modal_class_success",
-        });
-      }
-    })
+  const refetchOrder = async () => {
+    await axios.get('https://backend.dslcommerce.com/api/order')
+      .then(res => {
+        if (res.status === 200) {
+          setAllOrder(res.data)
+        } else {
+          <p>There's an error found.</p>
+        }
+      })
   }
 
-
-
+  useEffect(() => {
+    refetchOrder()
+  }, []);
 
 
   return (
@@ -92,33 +59,7 @@ const RecentOrders = () => {
             </thead>
             <tbody>
               {allOrder?.slice(0, recentNum).map((order) => (
-                <tr className="tableRow" key={order?._id}>
-                  <td className="text-center text-transparent">
-                    {order.date}
-                  </td>
-                  <td className="text-center text-capitalize">
-                    {order.orderItems[0].productName}
-                  </td>
-                  <td className="text-center ">{order?.name}</td>
-                  <td className="text-center ">{order?.phone}</td>
-                  <td className="text-center text-capitalize ">
-                    {order?.paymentMethod}
-                  </td>
-                  <td className="text-center text-capitalize ">
-                    {order?.amount}
-                  </td>
-                  <td className="text-center">
-                    <button onClick={handleStatus}
-                      className="btn btn-sm bg-danger text-white"
-                      style={{ borderRadius: "20px" }}
-                    >
-                      {
-                        order?.deliveredStatus === false ? 'Pending' : 'Completed'
-                      }
-                      {/* {order?.status} */}
-                    </button>
-                  </td>
-                </tr>
+                <RecentOrderTable key={order._id} order={order} refetchOrder={refetchOrder}></RecentOrderTable>
               ))}
             </tbody>
           </Table>
