@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useContext } from "react";
 import { createContext } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
+import { DSLCommerceContext } from "./DSLCommerceContext";
 
 export const KycContext = createContext();
 
@@ -12,6 +14,7 @@ export default function KycProvider({ children }) {
   const navigate = useNavigate()
   const [kycUser, setKycUser] = useState({});
   const [refetch, setRefetch] = useState(false);
+  const { user } = useContext(DSLCommerceContext);
 
   //get current user data..........
   useEffect(() => {
@@ -21,12 +24,13 @@ export default function KycProvider({ children }) {
       }
     })
       .then(res => {
-        setKycUser(res.data)
+        console.log(res.data)
+        setKycUser(res.data.result)
       })
-  }, [refetch]);
+  }, [refetch, user]);
 
 
-  //user register.........
+  //************************************ User Register ***********************************
   const handleRegister = async (data) => {
     await axios.post(`https://backend.dslcommerce.com/api/user-panel/signup`, data)
       .then(res => {
@@ -50,7 +54,7 @@ export default function KycProvider({ children }) {
   };
 
 
-  /// user login...........
+  //************************************ User login ************************************
   const handleUserLogin = async (data) => {
     await axios.post(`https://backend.dslcommerce.com/api/user-panel/signin`, data)
       .then(res => {
@@ -74,7 +78,7 @@ export default function KycProvider({ children }) {
   };
 
 
-  /// user update...........
+  // ************************************User Update ************************************
   const handleUpdateUser = async (data) => {
     await axios.put(`https://backend.dslcommerce.com/api/user-panel/user/update/${data?.walletAddress}`, data)
       .then(res => {
