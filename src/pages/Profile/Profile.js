@@ -373,7 +373,7 @@ const Profile = ({ expiryTimestamp }) => {
                   <div className='d-flex'>
                     {/* <input type="text" id='quantity-input' name="memberShipNft" className='form-control bg-transparent  rounded-0 rounded-start' value={1} disabled /> */}
                     <button type="button" className="btn btn-success  text-light rounded-0 rounded-end text-uppercase" onClick={paymentCrypto}>
-                      Claim Now
+                      Claim Free Now
                     </button>
                   </div>
                 </div>

@@ -105,6 +105,8 @@ const CreateProduct = () => {
     const offeringProduct = e.target.offeringProduct.value;
     const availableProduct = e.target.availableProduct.value;
 
+    console.log(category)
+
 
     // const productData = { productName,img , category,brand,price,color,type,offeringProduct,availableProduct, createdAt, description}
     // console.log(productData)
@@ -122,28 +124,48 @@ const CreateProduct = () => {
     formData.append('createdAt', createdAt)
     formData.append('description', description)
 
-    // console.log(formData)
-    await axios.post('https://backend.dslcommerce.com/api/product/', formData)
+
+
+
+
+    const data = {
+      productName: productName,
+      images: selectedImage,
+      brand: brand,
+      color: color,
+      category: category,
+      type: type,
+      price: price,
+      offeringProduct: offeringProduct,
+      availableProduct: availableProduct,
+      createdAt: createdAt,
+      description: description,
+
+    }
+    console.log(data)
+    await axios.post('https://backend.dslcommerce.com/api/product/', data)
       .then(res => {
         if (res.status === 200) {
+          console.log("submited", res)
           swal({
-            // title: "Success",
-            text: `${res.data.message}`,
+            title: "Success",
+            // text: `${res.data.message}`,
             icon: "success",
             button: "OK!",
-            className: "modal_class_success swal-text swal-footer",
+            // className: "modal_class_success swal-text swal-footer",
           });
           e.target.reset();
           navigate("/admin/products");
         }
       })
       .catch(error => {
+        console.dir(error)
         swal({
           title: "Attention",
           text: `Something went wrong.Try again`,
           icon: "warning",
           button: "OK!",
-          className: "modal_class_success swal-text swal-footer",
+          // className: "modal_class_success swal-text swal-footer",
         });
       });
   }
@@ -247,7 +269,7 @@ const CreateProduct = () => {
                   required
                 >
                   {getCategory.map(category => (
-                    <option value={category?._id}>{category?.name}</option>
+                    <option value={category?.name}>{category?.name}</option>
                   ))}
                 </select>
 
@@ -289,7 +311,7 @@ const CreateProduct = () => {
                   name="type"
                 >
                   {getCategory.map(category => (
-                    <option value={category?._id}>{category?.name}</option>
+                    <option value={category?.name}>{category?.name}</option>
                   ))}
                   {/* <option>Product Type </option>
                   <option value="cameras">Cameras</option>

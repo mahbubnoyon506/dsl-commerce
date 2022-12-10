@@ -145,7 +145,7 @@ function Dashboard(props) {
             <span className="navIconAdmin">
               <MdOutlineUnsubscribe style={{ fontSize: "20px" }} />
             </span>
-            KYC
+            MERCHANTS
           </NavLink>
 
           <Menu

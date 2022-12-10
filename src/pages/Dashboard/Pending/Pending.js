@@ -41,7 +41,7 @@ const Pending = () => {
                 <span className=' text-white bolder bg-danger p-2  px-2 rounded' >DELETE</span>
             </div>
 
-            <div className='text-white row d-flex gap-2 mb-2 justify-content-between align-items-center py-2'>
+            <div className='text-white row d-flex g-2 mb-2 justify-content-between align-items-center py-2'>
                 <form action="" className='col-12 col-md-6'>
                     <label for="number">Display</label>
                     <select style={{ backgroundColor: '#272D47' }} className='mx-2 p-1 text-white border-0' name="number" id="number">
@@ -54,9 +54,9 @@ const Pending = () => {
                     <label for="cars">records per page</label>
                 </form>
 
-                <div className='col-12 col-md-6'>
+                <div className='col-12 col-md-6 text-lg-end'>
                     <label className='pe-1' for="number">Search: </label>
-                    <input style={{ backgroundColor: '#272D47' }} className="border-0 p-1 rounded w-75 w-md-50 text-white" name="search" />
+                    <input style={{ backgroundColor: '#272D47' }} className="border-0 p-1 rounded w-75 w-md-50  text-white" name="search" />
                 </div>
             </div>
 
