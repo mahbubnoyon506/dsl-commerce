@@ -105,6 +105,32 @@ export default function KycProvider({ children }) {
       });
   };
 
+  //************************************ User Address ***********************************
+  const handleAddress = async (data) => {
+    await axios
+      .post(`https://backend.dslcommerce.com/api/address`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          setRefetch(!refetch);
+          toast.success("Successfully updated your address .");
+        }
+      })
+      .catch((err) => {
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      });
+  };
+
+
   //user logout
   const logout = () => {
     setKycUser("");
@@ -119,6 +145,7 @@ export default function KycProvider({ children }) {
         setKycUser,
         kycUser,
         handleUpdateUser,
+        handleAddress,
         logout,
       }}
     >
