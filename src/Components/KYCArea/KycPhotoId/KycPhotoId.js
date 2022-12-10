@@ -1,8 +1,11 @@
+import axios from "axios";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { toast } from "react-hot-toast";
 import { BsStarFill } from "react-icons/bs";
+import swal from "sweetalert";
 
 const KycPhotoId = () => {
   const [photoIdType, setPhotoIdType] = useState("photoId");
@@ -16,9 +19,69 @@ const KycPhotoId = () => {
   const [drivingLicenseBackImg, setDrivingLicenseBackImage] = useState("");
   const [passportImg, setPassportImg] = useState("");
 
-  const onSubmit = (e) => {
+  // const onSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log({
+  //     photoIdType,
+  //     photoIdNumber,
+  //     passportNumber,
+  //     drivingLicenseNumber,
+  //     countryOfIssue,
+  //     photoIdFrontImg,
+  //     photoIdBackImg,
+  //     drivingLicenseFrontImg,
+  //     drivingLicenseBackImg,
+  //     passportImg,
+  //   });
+  // };
+
+  const handlePhotoIdFrontImage = async (e) => {
+    console.log("inside image")
+    const image = e?.target?.files[0];
+
+    const formdata = new FormData();
+    formdata.append("file", image);
+
+
+    await axios
+      .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log(res)
+        }
+      })
+      .catch((err) => {
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      });
+  }
+  const handlePhotoIdBackImage = () => {
+
+  }
+  const handleDrivingFrontImage = () => {
+
+  }
+  const handleDrivingBackImage = () => {
+
+  }
+  const handlePassportImage = () => {
+
+  }
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    console.log({
+
+    const dataObj =
+    {
       photoIdType,
       photoIdNumber,
       passportNumber,
@@ -29,10 +92,37 @@ const KycPhotoId = () => {
       drivingLicenseFrontImg,
       drivingLicenseBackImg,
       passportImg,
-    });
+    }
+
+
+
+    await axios
+      .post(`https://backend.dslcommerce.com/api/photo-id`, dataObj, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          // setRefetch(!refetch);
+          toast.success("Successfully updated your address .");
+        }
+      })
+      .catch((err) => {
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      });
   };
 
-  useEffect(() => {}, []);
+
+
+
+  // useEffect(() => {}, []);
 
   return (
     <div className="">
@@ -69,7 +159,7 @@ const KycPhotoId = () => {
               <Form.Control
                 name="photoIdNumber"
                 type="text"
-                placeholder="01687874697"
+                placeholder="Photo ID Number"
                 required
                 onChange={(e) => setPhotoIdNumber(e.target.value)}
               />
@@ -87,7 +177,7 @@ const KycPhotoId = () => {
               <Form.Control
                 name="passportNumber"
                 type="text"
-                placeholder="01687874697"
+                placeholder="Passport Number"
                 required
                 onChange={(e) => setPassportNumber(e.target.value)}
               />
@@ -105,7 +195,7 @@ const KycPhotoId = () => {
               <Form.Control
                 name="drivingLicenseNumber"
                 type="text"
-                placeholder="01687874697"
+                placeholder="Driving license Number"
                 required
                 onChange={(e) => setDrivingLicenseNumber(e.target.value)}
               />
@@ -140,7 +230,7 @@ const KycPhotoId = () => {
             name="countryOfIssue"
             required
             type="text"
-            placeholder="01687874697"
+            placeholder="Country of issue"
             onChange={(e) => setCountryOfIssue(e.target.value)}
           />
 
@@ -160,7 +250,7 @@ const KycPhotoId = () => {
                 type="file"
                 placeholder=""
                 required
-                onChange={(e) => setPhotoIdFrontImage(e?.target?.files[0])}
+                onChange={(e) => handlePhotoIdFrontImage(e)}
               />
               <Form.Label className="text-uppercase mt-4">
                 Photo id back image{" "}

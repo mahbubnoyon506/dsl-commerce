@@ -4,14 +4,14 @@ import { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import { toast } from "react-hot-toast";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { DSLCommerceContext } from "../../../../contexts/DSLCommerceContext";
 import { KycContext } from "../../../../contexts/KycContext";
 
 const KycSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const {handleRegister} = useContext(KycContext)
+  const { handleRegister } = useContext(KycContext)
 
   const { user } = useContext(DSLCommerceContext);
   const [userName, setUserName] = useState('')
@@ -147,7 +147,7 @@ const KycSignUp = () => {
               </div>
             </Form.Group>
             <Button className="my-3 w-100" variant="primary" type="submit">
-              SING UP
+              SIGN UP
             </Button>
           </Form>
           <hr />

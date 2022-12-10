@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -12,6 +12,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 import PortraitIcon from '@mui/icons-material/Portrait';
+import { Link } from 'react-router-dom';
 
 
 
@@ -30,9 +31,22 @@ const data = [
 ]
 
 const Verified = () => {
+    const [verifiedUser, setVerifiedUser] = useState([]);
+
+    useEffect(() => {
+        fetch('https://backend.dslcommerce.com/api/user-panel/all')
+            .then(res => res.json())
+            .then(data => setVerifiedUser(data?.result))
+    }, [])
+
+
+
+
+
+
     return (
         <div className="">
-            <p className='text-center text-white mb-2 fs-2 m-0 p-0'>Verified</p>
+            <p className='text-center text-white fs-2 m-0 p-0'>Verified</p>
             <span className='my-3 mb-5 text-white bolder bg-primary p-2 my-2 rounded' >GENNERATE CSV</span>
 
             <TableContainer component={Paper} className="mt-4">
@@ -42,32 +56,43 @@ const Verified = () => {
                         <tr style={{ borderBottom: "2px solid white" }}>
                             <th style={{ padding: '15px 0px 15px 35px' }} className='text-start'>S.N.</th>
                             <th className='text-start'>Name</th>
-                            <th className='text-start '>Email</th>
+                            <th className='text-start adminHidden'>Email</th>
                             <th className='text-start'>PHONE</th>
                             <th className='text-start'>ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            data?.map((d, index) => (
+                            verifiedUser?.map((d, index) => (
                                 <tr style={{ borderBottom: "1px solid white" }} className=' ' >
-                                    <td style={{ padding: '15px 0px 15px 35px' }} className=''> <input type="checkbox" /> {index + 1}</td>
+                                    <td style={{ padding: '15px 0px 15px 35px' }} className=''>
+                                        <input type="checkbox" /> {index + 1}</td>
+                                    {/* <td className='text-start'>
+                                        <span>$</span>
+                                        <span><PersonIcon /></span>
+                                        <span><EmailIcon /></span>
+                                        <span><PhoneAndroidIcon /></span>
+                                        <span><PortraitIcon /></span>
+                                    </td> */}
                                     <td className='text-start' style={{ textTransform: 'uppercase' }} >{d.name}</td>
-                                    <td className='text-start '>{d.email}</td>
-                                    <td className='text-start '>{d.phone}</td>
+                                    <td className='text-start adminHidden'>{d.email}</td>
+                                    <td className='text-start adminHidden'>01776254965</td>
                                     {/* <td className='text-start adminHidden'>{d.kycPending === true ? 'PENDING' : ''}</td> */}
-                                    <td className='text-start '>
-                                        <div className='d-flex gap-3'>
-                                            <span className='bg-primary px-2 py-2 rounded'>
-                                                < AiFillEye className='fs-4 text-white rounded' />
+                                    <td className='text-start adminHidden'>
+
+                                        <Link to={`/admin/userDetails/${d._id}`}>
+                                            <span className='bg-primary p-2 me-3 rounded'>
+                                                < AiFillEye className='fs-5 text-white rounded' />
                                             </span>
-                                            <span className=' px-2 py-2 rounded' style={{ backgroundColor: "#4bd395" }}>
-                                                < BiUserPlus className='fs-4 text-white rounded' />
-                                            </span>
-                                            <span className='bg-danger px-2 py-2 rounded'>
-                                                < AiFillDelete className='fs-4  text-white rounded' />
-                                            </span>
-                                        </div>
+                                        </Link>
+
+                                        <span className='bg-success p-2 me-3 rounded'>
+                                            < BiUserPlus className='fs-5 text-white rounded' />
+                                        </span>
+
+                                        <span className='bg-danger p-2 rounded'>
+                                            < AiFillDelete className='fs-5  text-white rounded' />
+                                        </span>
 
                                     </td>
                                 </tr>

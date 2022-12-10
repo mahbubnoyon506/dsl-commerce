@@ -20,10 +20,12 @@ import { DSLCommerceContext } from '../../contexts/DSLCommerceContext';
 import Preloader from '../../Components/Common/Preloader';
 import EmailVerifyModal from './EmailVerifyModal';
 import ProfileEmailVerify from './ProfileEmailVerify';
+import { v4 as uuidv4 } from "uuid";
+import { BigNumber, ethers } from "ethers";
 
 
 const Profile = ({ expiryTimestamp }) => {
-  const { user, logOut, metamaskBalance, metamaskBalanceLoading, userRefetch, setUserRefetch, getBalanceTestnet, mint } = useContext(DSLCommerceContext);
+  const { user, signBuyFunction, mintAddressTestnet, payByTestnetBNB, setRequestLoading, logOut, metamaskBalance, metamaskBalanceLoading, userRefetch, setUserRefetch, getBalanceTestnet, mint } = useContext(DSLCommerceContext);
   const [email1, setEmail] = useState('');
   const [emailVerify, setEmailVerify] = useState(false);
   const [disableAfterActivation, setDisableAfterActivation] = useState(false);
@@ -36,6 +38,9 @@ const Profile = ({ expiryTimestamp }) => {
   const [refetch, setRefetch] = useState(false);
   const [otpCode, setOtpCode] = useState()
   const navigate = useNavigate();
+
+
+
   // let history = useHistory();
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
@@ -193,6 +198,104 @@ const Profile = ({ expiryTimestamp }) => {
   }
 
 
+    const paymentCrypto = async () => {
+      console.log("clicked........")
+        setRequestLoading(true);
+        const generateId = Math.floor(Math.random() * 1000000000000);
+        const data = new FormData();
+        data.append('id', generateId.toString());
+        data.append('price', "0");
+        data.append('tokenAddress', "0x0000000000000000000000000000000000000000");
+        data.append('nonce', uuidv4());
+        data.append('refAddress', "0x0000000000000000000000000000000000000000");
+        data.append('walletAddress', user?.walletAddress);
+        data.append('image', 'https://i.ibb.co/gV0CHbj/nftdemo.jpg');
+
+        await axios.post('https://backend.dslcommerce.com/api/v1/mint/uri-json-nft', data, {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("tokendslcommerce")}`,
+          },
+        })
+          .then(async (res) => {
+            let Obj = {};
+            if (res.status === 200) {
+              const data1 = await signBuyFunction(generateId.toString(),
+                ethers.utils.parseEther("0"),
+                "0x0000000000000000000000000000000000000000",
+                "0x0000000000000000000000000000000000000000",
+                res.data.uri)
+
+                Obj = await payByTestnetBNB(data1);
+            
+              const data2 = {
+                id: generateId.toString(),
+                price: "0",
+                walletAddress: user?.walletAddress,
+                tokenAddress: "0x0000000000000000000000000000000000000000",
+              }
+
+              await axios.post("https://backend.dslcommerce.com/api/v1/mint/save-nft", data2, {
+              })
+                .then(res => {
+                  if (res.status === 200) {
+                    setRequestLoading(false);
+                    const wrapper = document.createElement("div");
+                    wrapper.innerHTML = `
+                <a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a>
+                <br/>
+                <p>Use the following information to import the NFT to your wallet</p>
+                <p className="address">Contract Address: <br/> ${mintAddressTestnet}</p>
+                <p>Token ID: ${Obj.ID}</p>
+                `
+                    swal({
+                      title: "Successfully claimed",
+                      content: wrapper,
+                      icon: "success",
+                      button: true,
+                      className: "modal_class_success",
+                    })
+                  }
+                })
+                .catch(err => {
+                  console.log(err);
+                  setRequestLoading(false);
+                  const wrapper = document.createElement("div");
+                  wrapper.innerHTML = `<a href=${Obj.mint_hash} target="_any" className="link_hash text-primary">${Obj.mint_hash}</a> <br/> <p className="success text-light">Your minted has been successful but error in while saving data.</p>`
+                  swal({
+                    title: "Warning",
+                    content: wrapper,
+                    icon: "warning",
+                    button: "OK",
+                    className: "modal_class_success",
+                  });
+                })
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            setRequestLoading(false);
+            if (err.code === 4001) {
+              return swal({
+                title: "Failed",
+                text: "Minting Failed!",
+                icon: "warning",
+                button: "OK",
+                dangerMode: true,
+                className: "modal_class_success",
+              });
+            }
+            return swal({
+              title: "Attention",
+              text: "Something went wrong. Please try again later.",
+              icon: "warning",
+              button: "OK",
+              dangerMode: true,
+              className: "modal_class_success",
+            });
+          })
+    }
+
+
 
 
   return (
@@ -268,8 +371,8 @@ const Profile = ({ expiryTimestamp }) => {
                 <div className="mb-2">
                   <label htmlFor='quantity-input'>Claim Membership NFT</label>
                   <div className='d-flex'>
-                    <input type="text" id='quantity-input' name="memberShipNft" className='form-control bg-transparent  rounded-0 rounded-start' value={1} disabled />
-                    <button type="button" className="btn btn-success  text-light rounded-0 rounded-end text-uppercase" onClick={mint}>
+                    {/* <input type="text" id='quantity-input' name="memberShipNft" className='form-control bg-transparent  rounded-0 rounded-start' value={1} disabled /> */}
+                    <button type="button" className="btn btn-success  text-light rounded-0 rounded-end text-uppercase" onClick={paymentCrypto}>
                       Claim Now
                     </button>
                   </div>
