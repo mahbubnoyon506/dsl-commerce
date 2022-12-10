@@ -12,10 +12,11 @@ import "./KYC.css";
 import { DoneOutline } from "@mui/icons-material";
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
+import ErrorIcon from '@mui/icons-material/Error';
 import { KycContext } from "../../contexts/KycContext";
 const KYC = () => {
   const [key, setKey] = useState("profile");
-  const { kycUser, handleUpdateUser } = useContext(KycContext);
+  const { kycUser, handleUpdateUser, setEmailVerified, emailVerified, mobileNoVerify, setmobileNoVerify } = useContext(KycContext);
 
 
 
@@ -42,19 +43,31 @@ const KYC = () => {
             <Tab>
               {/* <button className="tab-btn">EMAIL</button> */}
               EMAIL
-              {kycUser?.emailVerified == true ?
-                <DoneIcon />
-                :
+              {(kycUser?.emailVerified == false) &&
                 <CloseIcon />
+              }
+
+              {/* {(emailVerified == true && kycUser?.emailVerified == false) &&
+                < ErrorIcon />
+              } */}
+
+              {kycUser?.emailVerified == true &&
+                <DoneIcon />
               }
             </Tab>
             <Tab>
               {/* <button className="tab-btn">MOBILE</button> */}
               MOBILE
-              {kycUser?.mobileVerified == true ?
-                <DoneIcon />
-                :
+              {(kycUser?.mobileVerified == false) &&
                 <CloseIcon />
+              }
+
+              {/* {(mobileNoVerify == true && kycUser?.mobileVerified == false) &&
+                < ErrorIcon />
+              } */}
+
+              {kycUser?.mobileVerified == true &&
+                <DoneIcon />
               }
             </Tab>
             <Tab>

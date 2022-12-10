@@ -115,12 +115,12 @@ const AddedProducts = () => {
     <div className="productBody">
       <div className=" mb-3 ">
         <h5 className="text-white text-start text-uppercase">ADDED PRODUCTS</h5>
-        
+
       </div>
 
       <div className="productCard py-2">
         <div className="tableNormal ">
-          <Table className="text-white productDataTable ">
+          <Table className="text-white productDataTable " style={{ minWidth: '330px' }}>
             <thead>
               <tr>
                 <th className="text-left">Image</th>
@@ -166,7 +166,7 @@ const AddedProducts = () => {
                       <button
                         className="deleteBtn bg-primary text-white"
                       >
-                        <LibraryAddIcon/>
+                        <LibraryAddIcon />
                       </button>
                     </div>
                   </td>

@@ -41,22 +41,20 @@ const Verified = () => {
 
 
 
-
-
-
     return (
         <div className="">
-            <p className='text-center text-white fs-2 m-0 p-0'>Verified</p>
+            {/* <p className='text-start text-white fs-2 mb-3 p-0'>VERIFIED</p> */}
+            <h5 className="text-white mb-3 text-start text-uppercase">VERIFIED</h5>
             <span className='my-3 mb-5 text-white bolder bg-primary p-2 my-2 rounded' >GENNERATE CSV</span>
 
             <TableContainer component={Paper} className="mt-4">
-                <Table className='text-white' sx={{ minWidth: 700, maxWidth: "1300px", bgcolor: "#272D47" }} aria-label="simple table">
+                <Table className='text-white' sx={{ minWidth: 800, maxWidth: "1300px", bgcolor: "#272D47" }} aria-label="simple table">
 
                     <thead>
                         <tr style={{ borderBottom: "2px solid white" }}>
                             <th style={{ padding: '15px 0px 15px 35px' }} className='text-start'>S.N.</th>
                             <th className='text-start'>Name</th>
-                            <th className='text-start adminHidden'>Email</th>
+                            <th className='text-start '>Email</th>
                             <th className='text-start'>PHONE</th>
                             <th className='text-start'>ACTION</th>
                         </tr>
@@ -75,10 +73,10 @@ const Verified = () => {
                                         <span><PortraitIcon /></span>
                                     </td> */}
                                     <td className='text-start' style={{ textTransform: 'uppercase' }} >{d.name}</td>
-                                    <td className='text-start adminHidden'>{d.email}</td>
-                                    <td className='text-start adminHidden'>01776254965</td>
+                                    <td className='text-start '>{d.email}</td>
+                                    <td className='text-start '>01776254965</td>
                                     {/* <td className='text-start adminHidden'>{d.kycPending === true ? 'PENDING' : ''}</td> */}
-                                    <td className='text-start adminHidden'>
+                                    <td className='text-start '>
 
                                         <Link to={`/admin/userDetails/${d._id}`}>
                                             <span className='bg-primary p-2 me-3 rounded'>

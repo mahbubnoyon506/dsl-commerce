@@ -19,7 +19,7 @@ const KycEmail = ({ expiryTimestamp }) => {
   const [otpVerify, setOtpVerify] = useState();
   const [openEmail, setOpenEmail] = useState(false);
   const [isError, setError] = useState(false);
-  const { kycUser, handleUpdateUser, emailVerified, setEmailVerified } = useContext(KycContext);
+  const { kycUser, handleUpdateUser, emailVerified, setEmailVerified, setRefetch, refetch } = useContext(KycContext);
 
   useEffect(() => {
     if (kycUser) {
@@ -104,6 +104,7 @@ const KycEmail = ({ expiryTimestamp }) => {
         if (res.status === 200) {
           setOtpVerify(res.data.message);
           setEmailVerified(true);
+          setRefetch(!refetch);
           swal({
             text: res.data.message,
             icon: "success",
@@ -128,6 +129,7 @@ const KycEmail = ({ expiryTimestamp }) => {
       const data = {
         emailVerified: true,
       };
+      setRefetch(!refetch);
       console.log(data, "heres the data to update");
       handleUpdateUser(data);
     }

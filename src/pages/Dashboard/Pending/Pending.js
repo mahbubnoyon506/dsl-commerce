@@ -34,13 +34,14 @@ const data = [
 const Pending = () => {
     return (
         <div className="">
-            <p className='text-center fs-2 text-white my-0 mb-2 py-0'>Pending</p>
+            <h5 className="text-white mb-3 text-start text-uppercase">Pending</h5>
+            {/* <p className='text-start fs-2 text-white my-0 mb-3 py-0'>Pending</p> */}
             <div className='mb-3'>
                 <span className='  text-white bolder bg-primary p-2  rounded me-2' >GENNERATE CSV</span>
                 <span className=' text-white bolder bg-danger p-2  px-2 rounded' >DELETE</span>
             </div>
 
-            <div className='text-white row d-flex gap-2 justify-content-between align-items-center py-2'>
+            <div className='text-white row d-flex gap-2 mb-2 justify-content-between align-items-center py-2'>
                 <form action="" className='col-12 col-md-6'>
                     <label for="number">Display</label>
                     <select style={{ backgroundColor: '#272D47' }} className='mx-2 p-1 text-white border-0' name="number" id="number">
@@ -68,8 +69,8 @@ const Pending = () => {
                             <th className='text-start'>Document</th>
                             <th className='text-start'>Full Name</th>
                             <th className='text-start '>Email</th>
-
                             <th className='text-start'>KYC Pending</th>
+                            <th className='text-start'>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,6 +87,7 @@ const Pending = () => {
                                     </td>
                                     <td className='text-start' style={{ textTransform: 'uppercase' }} >{d.name}</td>
                                     <td className='text-start '>{d.email}</td>
+                                    <td className='text-start '>Panding</td>
                                     <td className='text-start '>
 
                                         <Link to='/admin/userDetails'>

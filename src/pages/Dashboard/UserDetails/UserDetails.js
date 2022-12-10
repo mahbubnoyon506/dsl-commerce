@@ -28,17 +28,19 @@ function UserDetails() {
         <div style={{ minHeight: '450px' }}>
 
             <div>
-                <Accordion defaultExpanded className='svgColor mb-2' style={{ backgroundColor: '#272D47', color: 'white' }}>
+                <Accordion defaultExpanded className='svgColor  mb-2' style={{ backgroundColor: '#272D47', color: 'white' }}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
                         id="panel1a-header"
+                        className='ps-4'
                     >
-                        <Typography>User Profile <CheckIcon id='rightMark' style={{ color: 'green !important', fontSize: '30px' }} /></Typography>
+                        <Typography>User Profile <CheckIcon id='rightMark' style={{ color: 'green !important', fontSize: '30px', }} /></Typography>
                     </AccordionSummary>
+
                     <AccordionDetails>
                         <div className='container row '>
-                            <div className='col-6 px-4'>
+                            <div className='col-12 col-lg-6 px-4'>
                                 <div className="mb-2">
                                     <label htmlFor='membershipId'>Membership Id</label>
                                     <div className='d-flex  input-group'>
@@ -54,7 +56,7 @@ function UserDetails() {
                                         <input type="text" id='fullName' name="fullName"
                                             className='form-control bg-transparent text-white'
                                             placeholder='full name'
-                                            value={userInfo?.name ? userInfo?.name :''} />
+                                            value={userInfo?.name ? userInfo?.name : ''} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -62,8 +64,8 @@ function UserDetails() {
                                     <div className='d-flex  input-group'>
                                         <input type="text" id='userName' name="userName"
                                             className='form-control bg-transparent text-white'
-                                            placeholder='user name' 
-                                            value={userInfo?.username ? userInfo?.username :''}/>
+                                            placeholder='user name'
+                                            value={userInfo?.username ? userInfo?.username : ''} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -110,7 +112,7 @@ function UserDetails() {
 
 
 
-                            <div className='col-6 px-4'>
+                            <div className='col-12 col-lg-6 px-4'>
 
                                 <div className="mb-2">
                                     <label htmlFor='email'>Email <CheckIcon
@@ -119,7 +121,7 @@ function UserDetails() {
                                         <input type="email" id='email' name="email"
                                             className='form-control bg-transparent text-white'
                                             placeholder='email '
-                                            value={userInfo?.email ? userInfo?.email :''} />
+                                            value={userInfo?.email ? userInfo?.email : ''} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -156,19 +158,17 @@ function UserDetails() {
                                     </div>
                                 </div>
 
-
                             </div>
-                            <div className="mb-2">
-                                <button className='btn btn-primary px-3 me-2 ms-3 rounded-0 text-uppercase'>
-                                    Update profile</button>
-                                <button className='btn btn-warning px-3 me-2 rounded-0 text-uppercase'>
-                                    Disable user</button>
-                                <button className='btn btn-success px-3 me-2 rounded-0 text-uppercase'>
-                                    Enable pending kyc</button>
-                                <button className='btn btn-danger px-3 me-2 rounded-0 text-uppercase'>
-                                    Unverify user</button>
-                                <button className='btn btn-danger px-3 me-2 rounded-0 text-uppercase'>
-                                    Delete User</button>
+
+                            <div className="my-2 px-4 ">
+                                <div className='d-flex gap-2 flex-wrap'>
+                                    <button className=' btn btn-primary px-3 me-2 rounded text-uppercase'>Update profile</button>
+                                    <button className=' btn btn-warning px-3 me-2 rounded text-uppercase'>Disable user</button>
+
+                                    <button className=' btn btn-success px-3 me-2 rounded text-uppercase'>Enable pending kyc</button>
+                                    <button className=' btn btn-danger px-3 me-2 rounded text-uppercase'>Unverify user</button>
+                                    <button className=' btn btn-danger px-3 me-2 rounded text-uppercase'>Delete User</button>
+                                </div>
                             </div>
                         </div>
 
@@ -182,13 +182,14 @@ function UserDetails() {
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel2a-content"
                         id="panel2a-header"
+                        className='ps-4'
                     >
                         <Typography>Address Proof <CheckIcon id='rightMark' style={{ color: 'green', fontSize: '30px' }} /></Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <div className='container row '>
 
-                            <div className='col-6 px-4'>
+                            <div className='col-12 col-lg-6 px-4'>
                                 <div className="mb-2">
                                     <label htmlFor='address1'>Address 1</label>
                                     <div className='d-flex  input-group'>
@@ -214,32 +215,22 @@ function UserDetails() {
                                     </div>
                                 </div>
 
-
-
-
                             </div>
 
-
-
-
-
-
-
-                            <div className='col-6 px-4 mt-2'>
+                            <div className='col-12 col-lg-6 max-w-100 px-4 mt-2'>
                                 <label for="address proof image">Address Proof Image</label>
-                                <img src="https://i.pinimg.com/originals/30/1e/8b/301e8b20ed4c67ba8fdc701322fbfa66.png" alt="address proof" />
-                                <input className='mt-3' type="file" accept='image/*' />
+                                <img className='max-w-100' src="https://i.pinimg.com/originals/30/1e/8b/301e8b20ed4c67ba8fdc701322fbfa66.png" alt="address proof" />
+                                <input className='mt-3 ms-1 w-100' type="file" accept='image/*' />
                             </div>
 
 
-
-                            <div className="mb-2">
-                                <button className='btn btn-primary px-3 me-2 ms-3 rounded-0 text-uppercase'> Update address proof</button>
+                            <div className="my-2 ms-3">
+                                <button className='btn btn-primary rounded-0 text-uppercase'> Update address proof</button>
                             </div>
+
                         </div>
                     </AccordionDetails>
                 </Accordion>
-
 
 
                 <Accordion className='svgColor mb-2' style={{ backgroundColor: '#272D47', color: 'white' }}>
@@ -247,13 +238,14 @@ function UserDetails() {
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel2a-content"
                         id="panel2a-header"
+                        className='ps-4'
                     >
                         <Typography>Photo ID <CheckIcon id='rightMark' s style={{ color: 'green', fontSize: '30px' }} /></Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <div className='container row '>
 
-                            <div className='col-6 px-4'>
+                            <div className='col-12 col-lg-6'>
                                 <div className="mb-2">
                                     <label htmlFor='photoIdNumber'>Photo Id Number</label>
                                     <div className='d-flex  input-group'>
@@ -267,23 +259,13 @@ function UserDetails() {
                                         <input type="text" id='photoIdType' name="photoIdType" className='form-control bg-transparent text-white' placeholder='photo Id type' />
                                     </div>
                                 </div>
-
-
-
-
-
                             </div>
 
 
-
-
-
-
-
-                            <div className='col-6 px-4 mt-2'>
+                            <div className='col-12 col-lg-6 px-4 mt-2'>
                                 <label for="address proof image">Front Image</label>
                                 <img src="https://i.pinimg.com/originals/30/1e/8b/301e8b20ed4c67ba8fdc701322fbfa66.png" alt="address proof" />
-                                <input className='mt-3' type="file" accept='image/*' />
+                                <input className='mt-3 w-100' type="file" accept='image/*' />
                             </div>
 
                         </div>

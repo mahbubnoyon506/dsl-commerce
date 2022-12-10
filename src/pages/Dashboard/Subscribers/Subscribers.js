@@ -124,10 +124,10 @@ const Subscribers = () => {
 
   return (
     <div className="productBody">
-      <div className="d-flex flex-column flex-lg-row mb-3 justify-content-lg-between align-items-center">
-        <h5 className="text-white text-start text-uppercase">Subscribers</h5>
+      <h5 className="text-white text-start mb-3 text-uppercase">Subscribers</h5>
+      {/* <div className="d-flex flex-column flex-lg-row mb-3 justify-content-lg-between align-items-center">
 
-      </div>
+      </div> */}
 
       <div className="productCard py-2">
         <div className="tableNormal ">

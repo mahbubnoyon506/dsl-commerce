@@ -80,6 +80,7 @@ function Dashboard(props) {
     setAnchorEl(event.currentTarget);
   };
   const handleClose2 = () => {
+    handleClose()
     setAnchorEl(null);
   };
 
@@ -138,6 +139,7 @@ function Dashboard(props) {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
+
             style={{ color: '#BABBC0', cursor: 'pointer' }} sx={{ color: '#BABBC0' }}
           >
             <span className="navIconAdmin">

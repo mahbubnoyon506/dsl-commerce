@@ -44,15 +44,16 @@ const NonVerified = () => {
 
     return (
         <div className="nonverifide" style={{ backgroundColor: '#1a1c33', color: "#ffff" }}>
-            <p className='text-center text-white fs-2 m-0 p-0'>Non Verified</p>
+            {/* <p className='text-start text-white fs-2 m-0 p-0'>NON VERIFIED</p> */}
+            <h5 className="text-white mb-3 text-start text-uppercase">NON VERIFIED</h5>
             <div className='d-flex gap-3'>
 
                 <span className='my-3 text-white bolder bg-primary p-2 my-2 rounded' >GENNERATE CSV</span>
                 <span className='my-3 text-white bolder bg-danger p-2 my-2 rounded' >DELETE</span>
 
             </div>
-            <div className='text-white d-flex justify-content-between align-items-center  '>
-                <form action="">
+            <div className='text-white row gap-3 d-flex justify-content-between align-items-center  '>
+                <form action="" className='col-12 col-lg-6'>
                     <label for="number">Display</label>
                     <select style={{ backgroundColor: '#272D47' }} className='mx-2 p-1 text-white border-0' name="number" id="number">
                         <option value="100">100</option>
@@ -65,15 +66,15 @@ const NonVerified = () => {
 
                 </form>
 
-                <div>
+                <div className='col-12 col-lg-6'>
                     <label className='pe-1' for="number">Search: </label>
-                    <input style={{ backgroundColor: '#272D47' }}
-                        className="border-0 p-1 text-white" name="search" />
+                    <input style={{ backgroundColor: '#272D47' }} className="border-0 p-1 rounded w-75 w-md-50 text-white" name="search" />
                 </div>
             </div>
+
             <TableContainer className='mt-3' component={Paper}>
                 <Table className=' text-white'
-                    sx={{ minWidth: 700, maxWidth: "1300px", bgcolor: "#272D47" }} aria-label="simple table">
+                    sx={{ minWidth: 950, maxWidth: "1300px", bgcolor: "#272D47" }} aria-label="simple table">
 
                     <thead>
                         <tr style={{ borderBottom: "2px solid white" }}>
@@ -81,7 +82,7 @@ const NonVerified = () => {
                                 <input type="checkbox" /> S.N.</th>
                             <th className='text-start'>Document</th>
                             <th className='text-start'>Full Name</th>
-                            <th className='text-start adminHidden'>Email</th>
+                            <th className='text-start'>Email</th>
 
                             <th className='text-start'>KYC Pending</th>
                             <th className='text-start'>ACTION</th>
@@ -102,9 +103,9 @@ const NonVerified = () => {
                                     </td>
                                     <td className='text-start' style={{ textTransform: 'uppercase' }} >
                                         {d?.name}</td>
-                                    <td className='text-start adminHidden'>{d?.email}</td>
-                                    <td className='text-start adminHidden'> PENDING </td>
-                                    <td className='text-start adminHidden'>
+                                    <td className='text-start'>{d?.email}</td>
+                                    <td className='text-start'> PENDING </td>
+                                    <td className='text-start'>
 
                                         <Link to={`/admin/userDetails/${d._id}`}>
                                             <span className='bg-primary p-2 me-3 rounded'>
