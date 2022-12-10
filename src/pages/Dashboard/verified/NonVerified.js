@@ -32,15 +32,17 @@ const data = [
 const NonVerified = () => {
     return (
         <div className="nonverifide" style={{ backgroundColor: '#1a1c33', color: "#ffff" }}>
-             <p className='text-center text-white fs-2 m-0 p-0'>Non Verified</p>
+            <p className='text-center text-white fs-2 m-0 p-0'>Non Verified</p>
             <div className='d-flex gap-3'>
 
                 <span className='my-3 text-white bolder bg-primary p-2 my-2 rounded' >GENNERATE CSV</span>
                 <span className='my-3 text-white bolder bg-danger p-2 my-2 rounded' >DELETE</span>
 
             </div>
-            <div className='text-white d-flex justify-content-between align-items-center  '>
-                <form action="">
+            <div className='text-white row d-flex justify-content-between align-items-center  '>
+
+                <form action="" className='col-12 col-md-6'>
+
                     <label for="number">Display</label>
                     <select style={{ backgroundColor: '#272D47' }} className='mx-2 p-1 text-white border-0' name="number" id="number">
                         <option value="100">100</option>
@@ -49,15 +51,16 @@ const NonVerified = () => {
                         <option value="400">400</option>
                         <option value="500">500</option>
                     </select>
-                    <label for="cars">records per page</label>
+                    <span for="cars">records per page</span>
 
                 </form>
 
-                <div>
-                    <label className='pe-1' for="number">Search: </label>
-                    <input style={{ backgroundColor: '#272D47' }} className="border-0 p-1 text-white" name="search" />
+                <div className='col-12 col-md-6 d-flex mx-w-100'>
+                    <span className='pe-1' for="number">Search: </span>
+                    <input style={{ backgroundColor: '#272D47' }} className="border-0 p-1 text-white w-75 w-md-50 rounded" name="search" />
                 </div>
             </div>
+
             <TableContainer className='mt-3' component={Paper}>
                 <Table className=' text-white' sx={{ minWidth: 700, maxWidth: "1300px", bgcolor: "#272D47" }} aria-label="simple table">
 

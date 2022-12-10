@@ -59,7 +59,7 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
     const handleClose = () => {
         setOpen(false);
     };
-    console.log(tracking)
+    // console.log(tracking)
 
     const handleVerifyEmail = async (e) => {
         // check if email is valid

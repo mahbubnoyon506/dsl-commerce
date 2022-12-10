@@ -26,6 +26,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useRef } from "react";
 
+import Menu from '@mui/material/Menu';
 
 
 
@@ -37,7 +38,7 @@ const menuLinkStyles = ({ isActive }) => {
 const drawerWidth = 280;
 
 function Dashboard(props) {
-  
+
   const { admin, logout } = React.useContext(AdminContext);
   const navigate = useNavigate();
   const [kycMenu, setKycMenu] = useState('');
@@ -53,7 +54,7 @@ function Dashboard(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hide, setHide] = useState(false);
-  
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -71,10 +72,18 @@ function Dashboard(props) {
 
   const handleChange = (event) => {
     setKycMenu(event.target.value);
-    
+
+  };
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose2 = () => {
+    setAnchorEl(null);
   };
 
-  
+
   const drawer = (
     <div className="sideBar">
       <Toolbar />
@@ -120,37 +129,36 @@ function Dashboard(props) {
           </span>
           Customers
         </NavLink>
-        <br />
 
-        <NavLink
-          className="dashboardMenu"
-          // style={menuLinkStyles}
-          onClick={handleClose}
-          
-        >
-          <span className="navIconAdmin">
-            <MdOutlineUnsubscribe style={{ fontSize: "20px" }} />
-          </span>
-          <FormControl className="svgIconColor" style={{ marginTop: kycMenu === '' ? "-12px" : "" }} variant="standard" sx={{
-            minWidth: 160 ,color: '#BABBC0', 
-          }}>
-            <InputLabel style={{color:'#BABBC0'}} sx={{ color: '#BABBC0' }} id="demo-simple-select-standard-label">KYC </InputLabel>
-            <Select disableUnderline sx={{ color: '#BABBC0', maxHeight: kycMenu === '' ? "" : "20px", borderColor: 'white', }}
-              labelId="demo-simple-select-standard-label"
-              id="demo-simple-select-standard"
-              value={kycMenu}
-              onChange={handleChange}
-              label="KYC "
-            >
-              <Link to='verified'><MenuItem sx={{ color: 'black' }} value={10}>Verified </MenuItem></Link>
-              <Link to='non-verified'><MenuItem sx={{ color: 'black' }} value={20}>Non Verified</MenuItem></Link>
-              <Link to='pending'><MenuItem sx={{ color: 'black' }} value={30}>Pending</MenuItem></Link>
-              <Link to='added-products'><MenuItem sx={{ color: 'black' }} value={40}>Added products</MenuItem></Link>
 
-            </Select>
-          </FormControl>
-        </NavLink>
-        <br />
+        <div>
+          <NavLink
+            id="demo-positioned-button"
+            aria-controls={open ? 'demo-positioned-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={handleClick}
+            style={{ color: '#BABBC0', cursor: 'pointer' }} sx={{ color: '#BABBC0' }}
+          >
+            <span className="navIconAdmin">
+              <MdOutlineUnsubscribe style={{ fontSize: "20px" }} />
+            </span>
+            KYC
+          </NavLink>
+
+          <Menu
+            id="demo-positioned-menu"
+            aria-labelledby="demo-positioned-button"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose2}
+          >
+            <Link onClick={handleClose2} to='verified'><MenuItem sx={{ color: 'black' }} value={10}>Verified </MenuItem></Link>
+            <Link onClick={handleClose2} to='non-verified'><MenuItem sx={{ color: 'black' }} value={20}>Non Verified</MenuItem></Link>
+            <Link onClick={handleClose2} to='pending'><MenuItem sx={{ color: 'black' }} value={30}>Pending</MenuItem></Link>
+            <Link onClick={handleClose2} to='added-products'><MenuItem sx={{ color: 'black' }} value={40}>Added products</MenuItem></Link>
+          </Menu>
+        </div>
 
 
         <NavLink
