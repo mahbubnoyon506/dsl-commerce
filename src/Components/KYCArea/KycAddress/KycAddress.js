@@ -10,7 +10,7 @@ import './KycAddress.css'
 
 const KycAddress = () => {
 
-  const { kycUser, handleAddress, refetch, setRefetch } = useContext(KycContext)
+  const { kycUser, handleAddress, refetch, setRefetch, isVerifiedAddress, setisVerifiedAddress } = useContext(KycContext)
   const { user, openWalletModal } = useContext(DSLCommerceContext);
 
   const [address1, setAddress1] = useState("");
@@ -56,7 +56,7 @@ const KycAddress = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-          console.log(res)
+          setisVerifiedAddress(!isVerifiedAddress);
           // setRefetch(!refetch);
           toast.success("Successfully updated your address .");
         }

@@ -8,7 +8,7 @@ import { time_zone } from "../CountryName/cData";
 import "./KycProfile.css";
 
 const KycProfile = () => {
-  const { kycUser, handleUpdateUser } = useContext(KycContext);
+  const { kycUser, handleUpdateUser, isVerifiedProfile, setisVerifiedProfile } = useContext(KycContext);
 
   const [userName, setUserName] = useState("");
   const [fullName, setFullName] = useState("");

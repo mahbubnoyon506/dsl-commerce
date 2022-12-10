@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { BsStarFill } from "react-icons/bs";
 import swal from "sweetalert";
 import { DSLCommerceContext } from "../../../contexts/DSLCommerceContext";
+import { KycContext } from "../../../contexts/KycContext";
 
 const KycPhotoId = () => {
   const [photoIdType, setPhotoIdType] = useState("photoId");
@@ -20,6 +21,7 @@ const KycPhotoId = () => {
   const [drivingLicenseBackImg, setDrivingLicenseBackImage] = useState("");
   const [passportImg, setPassportImg] = useState("");
   const { user, openWalletModal } = useContext(DSLCommerceContext);
+  const { kycUser, handleUpdateUser, setisVerifiedPhotId, isVerifiedPhotId } = useContext(KycContext);
 
   // const onSubmit = (e) => {
   //   e.preventDefault();
@@ -205,7 +207,7 @@ const KycPhotoId = () => {
       drivingBackImg: drivingLicenseBackImg,
 
     }
-    console.log(dataObj)
+
 
 
 
@@ -217,7 +219,7 @@ const KycPhotoId = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-
+          setisVerifiedPhotId(!isVerifiedPhotId);
           setPassportImg("")
           setDrivingLicenseBackImage("")
           setDrivingLicenseFrontImage("")

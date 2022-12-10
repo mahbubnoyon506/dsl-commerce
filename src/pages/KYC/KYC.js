@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 // import Tab from "react-bootstrap/Tab";
 // import Tabs from "react-bootstrap/Tabs";
 import KycAddress from "../../Components/KYCArea/KycAddress/KycAddress";
@@ -14,10 +14,66 @@ import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import ErrorIcon from '@mui/icons-material/Error';
 import { KycContext } from "../../contexts/KycContext";
+import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
+import axios from "axios";
 const KYC = () => {
   const [key, setKey] = useState("profile");
-  const { kycUser, handleUpdateUser, setEmailVerified, emailVerified, mobileNoVerify, setmobileNoVerify } = useContext(KycContext);
+  const [photoIddata, setphotoIddata] = useState({});
+  const [addressData, setaddressData] = useState({});
+  const [userProfileData, setuserProfileData] = useState({});
+  const { kycUser, handleUpdateUser, emailVerified, mobileNoVerify, isVerifiedAddress, isVerifiedPhotId, isVerifiedProfile } = useContext(KycContext);
+  const { user, openWalletModal } = useContext(DSLCommerceContext);
 
+  console.log(kycUser)
+
+
+  useEffect(() => {
+    const getPhotoIddata = async () => {
+      await axios
+        .get(`https://backend.dslcommerce.com/api/photo-id/data/${user?.walletAddress}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+          },
+        })
+        .then((res) => {
+          setphotoIddata(res.data.result);
+
+        });
+    }
+    getPhotoIddata();
+  }, []);
+
+  useEffect(() => {
+    const getAddressData = async () => {
+      await axios
+        .get(`https://backend.dslcommerce.com/api/photo-id/data/${user?.walletAddress}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+          },
+        })
+        .then((res) => {
+          setaddressData(res.data.result);
+
+        });
+    }
+    getAddressData();
+  }, []);
+
+  useEffect(() => {
+    const getProfile = async () => {
+      await axios
+        .get(`https://backend.dslcommerce.com/api/user-panel/user/${user?.walletAddress}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+          },
+        })
+        .then((res) => {
+          setuserProfileData(res.data.result);
+
+        });
+    }
+    getProfile();
+  }, []);
 
 
   return (
@@ -36,49 +92,73 @@ const KYC = () => {
         <Tabs>
           <TabList classNam="gridFilter text-start mb-50 md-mb-30">
             <Tab>
-              {/* <button className="tab-btn">PROFILE</button> */}
+
               PROFILE
-              <CloseIcon />
+              {(isVerifiedProfile == false && !userProfileData.nationality) &&
+                <CloseIcon className="text-danger ms-1" style={{ fontSize: "18px" }} />
+              }
+
+              {/* {(isVerifiedProfile == true && userProfileData?.isVerified == false) &&
+                < ErrorIcon className="text-warning" />
+              } */}
+
+              {(isVerifiedProfile == true || userProfileData.nationality) &&
+                <DoneIcon className="text-success ms-1" style={{ fontSize: "18px" }} />
+              }
             </Tab>
             <Tab>
-              {/* <button className="tab-btn">EMAIL</button> */}
+
               EMAIL
               {(kycUser?.emailVerified == false) &&
-                <CloseIcon />
+                <CloseIcon className="text-danger ms-1" style={{ fontSize: "18px" }} />
               }
 
-              {/* {(emailVerified == true && kycUser?.emailVerified == false) &&
-                < ErrorIcon />
-              } */}
 
               {kycUser?.emailVerified == true &&
-                <DoneIcon />
+                <DoneIcon className="text-success ms-1" style={{ fontSize: "18px" }} />
               }
             </Tab>
             <Tab>
-              {/* <button className="tab-btn">MOBILE</button> */}
+
               MOBILE
               {(kycUser?.mobileVerified == false) &&
-                <CloseIcon />
+                <CloseIcon className="text-danger ms-1" style={{ fontSize: "18px" }} />
               }
-
-              {/* {(mobileNoVerify == true && kycUser?.mobileVerified == false) &&
-                < ErrorIcon />
-              } */}
 
               {kycUser?.mobileVerified == true &&
-                <DoneIcon />
+                <DoneIcon className="text-success ms-1" style={{ fontSize: "18px" }} />
+              }
+            </Tab>
+            {console.log(isVerifiedPhotId == false, photoIddata?.isVerified == false)}
+            <Tab>
+
+              PHOTO ID
+              {(isVerifiedPhotId == false && photoIddata?.isVerified == false) &&
+                <CloseIcon className="text-danger ms-1" style={{ fontSize: "18px" }} />
+              }
+
+              {(isVerifiedPhotId == true && photoIddata?.isVerified == false) &&
+                < ErrorIcon className="text-warning ms-1" style={{ fontSize: "18px" }} />
+              }
+
+              {photoIddata?.isVerified == true &&
+                <DoneIcon className="text-success ms-1" style={{ fontSize: "18px" }} />
               }
             </Tab>
             <Tab>
-              {/* <button className="tab-btn">PHOTO ID</button> */}
-              PHOTO ID
-              <CloseIcon />
-            </Tab>
-            <Tab>
-              {/* <button className="tab-btn">ADDRESS PROOF</button> */}
+
               ADDRESS PROOF
-              <CloseIcon />
+              {(isVerifiedAddress == false && addressData?.isVerified == false) &&
+                <CloseIcon className="text-danger ms-1" style={{ fontSize: "18px" }} />
+              }
+
+              {(isVerifiedAddress == true && addressData?.isVerified == false) &&
+                <ErrorIcon className="text-warning ms-1" style={{ fontSize: "18px" }} />
+              }
+
+              {addressData?.isVerified == true &&
+                <DoneIcon className="text-success ms-1" style={{ fontSize: "18px" }} />
+              }
             </Tab>
 
           </TabList>

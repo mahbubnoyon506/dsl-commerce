@@ -94,6 +94,8 @@ export default function KycProvider({ children }) {
       .then((res) => {
         console.log(res, "inside the update");
         if (res.status === 200) {
+
+          setisVerifiedProfile(!refetch);
           setRefetch(!refetch);
           toast.success("Successfully updated your profile .");
         }

@@ -120,6 +120,8 @@ const KycEmail = ({ expiryTimestamp }) => {
       });
   };
 
+  console.log(emailVerified)
+
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -168,11 +170,11 @@ const KycEmail = ({ expiryTimestamp }) => {
             )}
             <Button
               onClick={handleVerifyEmail}
-              // disabled={
-              //   emailVerified || email?.length === 0 || disableAfterActivation
-              //     ? true
-              //     : false
-              // }
+              disabled={
+                emailVerified || email?.length === 0 || disableAfterActivation
+                  ? true
+                  : false
+              }
               style={{ marginLeft: "-68px" }}
               variant="secondary"
             >
@@ -185,7 +187,7 @@ const KycEmail = ({ expiryTimestamp }) => {
             as="input"
             type="submit"
             value="Submit"
-            disabled={emailVerified !== true || kycUser?.emailVerified === true}
+            disabled={kycUser?.emailVerified === true ? true : false}
           />
 
           {/* {!emailVerified ? (
