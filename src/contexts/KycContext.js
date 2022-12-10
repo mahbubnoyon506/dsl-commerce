@@ -15,6 +15,7 @@ export default function KycProvider({ children }) {
   const [kycUser, setKycUser] = useState({});
   const [refetch, setRefetch] = useState(false);
   const { user } = useContext(DSLCommerceContext);
+  const [emailVerified, setEmailVerified] = useState(false);
 
   //get current user data..........
   useEffect(() => {
@@ -149,6 +150,8 @@ export default function KycProvider({ children }) {
         refetch,
         setRefetch,
         logout,
+        emailVerified,
+        setEmailVerified
       }}
     >
       {children}

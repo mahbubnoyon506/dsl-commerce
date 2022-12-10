@@ -14,12 +14,12 @@ import EmailVerifyModal from "../../../pages/Profile/EmailVerifyModal";
 
 const KycEmail = ({ expiryTimestamp }) => {
   const [disableAfterActivation, setDisableAfterActivation] = useState(false);
-  const [emailVerified, setEmailVerified] = useState(false);
+  // const [emailVerified, setEmailVerified] = useState(false);
   const [email, setEmail] = useState("");
   const [otpVerify, setOtpVerify] = useState();
   const [openEmail, setOpenEmail] = useState(false);
   const [isError, setError] = useState(false);
-  const { kycUser, handleUpdateUser } = useContext(KycContext);
+  const { kycUser, handleUpdateUser, emailVerified, setEmailVerified } = useContext(KycContext);
 
   useEffect(() => {
     if (kycUser) {
@@ -166,11 +166,11 @@ const KycEmail = ({ expiryTimestamp }) => {
             )}
             <Button
               onClick={handleVerifyEmail}
-              disabled={
-                emailVerified || email?.length === 0 || disableAfterActivation
-                  ? true
-                  : false
-              }
+              // disabled={
+              //   emailVerified || email?.length === 0 || disableAfterActivation
+              //     ? true
+              //     : false
+              // }
               style={{ marginLeft: "-68px" }}
               variant="secondary"
             >

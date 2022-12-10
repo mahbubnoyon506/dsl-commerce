@@ -21,7 +21,7 @@ const KycAddress = () => {
   const [zipCode, setZipCode] = useState("");
   const [file, setFile] = useState("");
 
-  console.log(file, zipCode, country, state, city, address2, address1)
+
 
 
   useEffect(() => {

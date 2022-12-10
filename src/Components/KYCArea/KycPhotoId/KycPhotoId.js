@@ -1,11 +1,12 @@
 import axios from "axios";
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-hot-toast";
 import { BsStarFill } from "react-icons/bs";
 import swal from "sweetalert";
+import { DSLCommerceContext } from "../../../contexts/DSLCommerceContext";
 
 const KycPhotoId = () => {
   const [photoIdType, setPhotoIdType] = useState("photoId");
@@ -18,6 +19,7 @@ const KycPhotoId = () => {
   const [drivingLicenseFrontImg, setDrivingLicenseFrontImage] = useState("");
   const [drivingLicenseBackImg, setDrivingLicenseBackImage] = useState("");
   const [passportImg, setPassportImg] = useState("");
+  const { user, openWalletModal } = useContext(DSLCommerceContext);
 
   // const onSubmit = (e) => {
   //   e.preventDefault();
@@ -35,8 +37,10 @@ const KycPhotoId = () => {
   //   });
   // };
 
+
+
   const handlePhotoIdFrontImage = async (e) => {
-    console.log("inside image")
+
     const image = e?.target?.files[0];
 
     const formdata = new FormData();
@@ -51,7 +55,8 @@ const KycPhotoId = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-          console.log(res)
+
+          setPhotoIdFrontImage(res.data.result)
         }
       })
       .catch((err) => {
@@ -64,17 +69,122 @@ const KycPhotoId = () => {
         });
       });
   }
-  const handlePhotoIdBackImage = () => {
+  const handlePhotoIdBackImage = async (e) => {
+    const image = e?.target?.files[0];
+
+    const formdata = new FormData();
+    formdata.append("file", image);
+
+
+    await axios
+      .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+
+          setPhotoIdBackImage(res.data.result)
+        }
+      })
+      .catch((err) => {
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      });
+  }
+  const handleDrivingFrontImage = async (e) => {
+    const image = e?.target?.files[0];
+
+    const formdata = new FormData();
+    formdata.append("file", image);
+
+
+    await axios
+      .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+
+          setDrivingLicenseFrontImage(res.data.result)
+        }
+      })
+      .catch((err) => {
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      });
 
   }
-  const handleDrivingFrontImage = () => {
+  const handleDrivingBackImage = async (e) => {
+    const image = e?.target?.files[0];
 
+    const formdata = new FormData();
+    formdata.append("file", image);
+
+
+    await axios
+      .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+
+          setDrivingLicenseBackImage(res.data.result)
+        }
+      })
+      .catch((err) => {
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      });
   }
-  const handleDrivingBackImage = () => {
+  const handlePassportImage = async (e) => {
+    const image = e?.target?.files[0];
 
-  }
-  const handlePassportImage = () => {
+    const formdata = new FormData();
+    formdata.append("file", image);
 
+
+    await axios
+      .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+
+          setPassportImg(res.data.result)
+        }
+      })
+      .catch((err) => {
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      });
   }
 
   const onSubmit = async (e) => {
@@ -82,17 +192,20 @@ const KycPhotoId = () => {
 
     const dataObj =
     {
-      photoIdType,
-      photoIdNumber,
-      passportNumber,
-      drivingLicenseNumber,
-      countryOfIssue,
-      photoIdFrontImg,
-      photoIdBackImg,
-      drivingLicenseFrontImg,
-      drivingLicenseBackImg,
-      passportImg,
+      walletAddress: user?.walletAddress,
+      photoId: photoIdNumber,
+      photoIdType: photoIdType,
+      countryOfIssue: countryOfIssue,
+      photoIdFrontImg: photoIdFrontImg,
+      photoIdBackImg: photoIdBackImg,
+      passportNum: passportNumber,
+      passportImg: passportImg,
+      drivingNum: drivingLicenseNumber,
+      drivingFrontImg: drivingLicenseFrontImg,
+      drivingBackImg: drivingLicenseBackImg,
+
     }
+    console.log(dataObj)
 
 
 
@@ -104,8 +217,20 @@ const KycPhotoId = () => {
       })
       .then((res) => {
         if (res.status === 200) {
+
+          setPassportImg("")
+          setDrivingLicenseBackImage("")
+          setDrivingLicenseFrontImage("")
+          setPhotoIdBackImage("")
+          setPhotoIdFrontImage("")
+          setCountryOfIssue("")
+          setDrivingLicenseNumber("")
+          setPassportNumber("")
+          // setPhotoIdType("")
+          setPhotoIdNumber("")
+
           // setRefetch(!refetch);
-          toast.success("Successfully updated your address .");
+          toast.success("Successfully updated your photo id.");
         }
       })
       .catch((err) => {
@@ -265,7 +390,7 @@ const KycPhotoId = () => {
                 type="file"
                 placeholder=""
                 required
-                onChange={(e) => setPhotoIdBackImage(e?.target?.files[0])}
+                onChange={(e) => handlePhotoIdBackImage(e)}
               />
             </>
           )}
@@ -287,7 +412,7 @@ const KycPhotoId = () => {
                 accept=".jpg, .jpeg, .png"
                 required
                 onChange={(e) =>
-                  setDrivingLicenseFrontImage(e?.target?.files[0])
+                  handleDrivingFrontImage(e)
                 }
               />
               <Form.Label className="text-uppercase mt-4">
@@ -304,7 +429,7 @@ const KycPhotoId = () => {
                 accept=".jpg, .jpeg, .png"
                 required
                 onChange={(e) =>
-                  setDrivingLicenseBackImage(e?.target?.files[0])
+                  handleDrivingBackImage(e)
                 }
               />
             </>
@@ -326,7 +451,7 @@ const KycPhotoId = () => {
                 accept=".jpg, .jpeg, .png"
                 placeholder=""
                 required
-                onChange={(e) => setPassportImg(e?.target?.files[0])}
+                onChange={(e) => handlePassportImage(e)}
               />
             </>
           )}
