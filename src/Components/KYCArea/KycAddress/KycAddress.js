@@ -1,3 +1,4 @@
+import { Close } from '@mui/icons-material';
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Form } from "react-bootstrap";
@@ -8,7 +9,7 @@ import { KycContext } from '../../../contexts/KycContext';
 import { countryName } from '../CountryName/cData';
 import './KycAddress.css'
 
-const KycAddress = () => {
+const KycAddress = ({ addressData }) => {
 
   const { kycUser, handleAddress, refetch, setRefetch, isVerifiedAddress, setisVerifiedAddress } = useContext(KycContext)
   const { user, openWalletModal } = useContext(DSLCommerceContext);
@@ -77,6 +78,16 @@ const KycAddress = () => {
 
 
   }
+
+
+
+
+  const handleRemoveImage = () => {
+
+
+    setFile("")
+
+  };
   return (
     <div>
 
@@ -90,7 +101,7 @@ const KycAddress = () => {
           <Form.Label >Address Line 1 <span>★</span> </Form.Label>
           <Form.Control
             type="text"
-            defaultValue={address1}
+            defaultValue={addressData?.address1}
             onChange={(e) => setAddress1(e.target.value)}
             name='address1'
             required
@@ -101,7 +112,7 @@ const KycAddress = () => {
           <Form.Label >Address Line 2 </Form.Label>
           <Form.Control
             type="text"
-            defaultValue={address2}
+            defaultValue={addressData?.address2}
             onChange={(e) => setAddress2(e.target.value)}
             name='address2'
           />
@@ -112,7 +123,7 @@ const KycAddress = () => {
           <Form.Control
             type="text"
             name='city'
-            defaultValue={city}
+            defaultValue={addressData?.city}
             onChange={(e) => setCity(e.target.value)}
             required
           />
@@ -122,7 +133,7 @@ const KycAddress = () => {
           <Form.Label >State / province  <span>★</span> </Form.Label>
           <Form.Control
             type="text"
-            defaultValue={state}
+            defaultValue={addressData?.state}
             onChange={(e) => setState(e.target.value)}
             name='state'
             required
@@ -142,7 +153,7 @@ const KycAddress = () => {
               <option
                 key={index}
                 style={{ padding: "5px" }}
-                defaultValue={country}
+                selected={addressData?.country == country && true}
               >
                 {country}
               </option>
@@ -154,7 +165,7 @@ const KycAddress = () => {
           <Form.Label >postal / zip code  <span>★</span>  </Form.Label>
           <Form.Control
             type="text"
-            defaultValue={zipCode}
+            defaultValue={addressData?.zipCode}
             onChange={(e) => setZipCode(e.target.value)}
             name='zipCode'
             required
@@ -171,6 +182,36 @@ const KycAddress = () => {
             <li>Bank Statement</li>
             <li>Government Letter</li>
           </ol>
+
+          <>
+
+            {file && (
+              <div className="selected-video-container mb-3">
+                {/* {selectedImage?.map((image, index) => ( */}
+                <div
+                  // key={index}
+                  className='each-selected-video-for-priview'>
+                  <div className="each-selected-video-container">
+                    <img
+                      className="each-selected-image"
+                      src={URL.createObjectURL(file)}
+
+                      alt=""
+                    />
+                    <Close
+                      className="selected-image-remove-button"
+                      fontSize="small"
+                      onClick={handleRemoveImage}
+                    />
+                  </div>
+
+                </div>
+                {/* ))} */}
+              </div>
+            )}
+          </>
+
+
           <Form.Control
             type="file"
             defaultValue={file}
@@ -184,7 +225,7 @@ const KycAddress = () => {
           type="submit
         
         ">
-          SAVE
+          SAVEs
         </Button>
 
       </Form>

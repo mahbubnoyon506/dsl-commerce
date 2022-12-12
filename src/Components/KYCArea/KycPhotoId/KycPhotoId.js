@@ -1,3 +1,4 @@
+import { Close } from "@mui/icons-material";
 import axios from "axios";
 import React, { useContext } from "react";
 import { useEffect } from "react";
@@ -9,7 +10,7 @@ import swal from "sweetalert";
 import { DSLCommerceContext } from "../../../contexts/DSLCommerceContext";
 import { KycContext } from "../../../contexts/KycContext";
 
-const KycPhotoId = () => {
+const KycPhotoId = ({ photoIddata }) => {
   const [photoIdType, setPhotoIdType] = useState("photoId");
   const [photoIdNumber, setPhotoIdNumber] = useState("");
   const [passportNumber, setPassportNumber] = useState("");
@@ -20,35 +21,25 @@ const KycPhotoId = () => {
   const [drivingLicenseFrontImg, setDrivingLicenseFrontImage] = useState("");
   const [drivingLicenseBackImg, setDrivingLicenseBackImage] = useState("");
   const [passportImg, setPassportImg] = useState("");
+  const [passportImgLoader, setPassportImgLoader] = useState(false);
+  const [photoIdFrontLoader, setphotoIdFrontLoader] = useState(false);
+  const [photoIdBackLoader, setphotoIdBackLoader] = useState(false);
+  const [drivingBackLoader, setdrivingBackLoader] = useState(false);
+  const [drivingFrontLoader, setdrivingFrontLoader] = useState(false);
+
   const { user, openWalletModal } = useContext(DSLCommerceContext);
-  const { kycUser, handleUpdateUser, setisVerifiedPhotId, isVerifiedPhotId } = useContext(KycContext);
+  const { kycUser, handleUpdateUser, setisVerifiedPhotId, isVerifiedPhotId } =
+    useContext(KycContext);
 
-  // const onSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log({
-  //     photoIdType,
-  //     photoIdNumber,
-  //     passportNumber,
-  //     drivingLicenseNumber,
-  //     countryOfIssue,
-  //     photoIdFrontImg,
-  //     photoIdBackImg,
-  //     drivingLicenseFrontImg,
-  //     drivingLicenseBackImg,
-  //     passportImg,
-  //   });
-  // };
-
-
+  console.log("photoIddata", photoIddata);
 
   const handlePhotoIdFrontImage = async (e) => {
-
     const image = e?.target?.files[0];
 
     const formdata = new FormData();
     formdata.append("file", image);
 
-
+    setphotoIdFrontLoader(true);
     await axios
       .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
         headers: {
@@ -57,8 +48,8 @@ const KycPhotoId = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-
-          setPhotoIdFrontImage(res.data.result)
+          setphotoIdFrontLoader(false);
+          setPhotoIdFrontImage(res.data.result);
         }
       })
       .catch((err) => {
@@ -70,14 +61,14 @@ const KycPhotoId = () => {
           className: "modal_class_success",
         });
       });
-  }
+  };
   const handlePhotoIdBackImage = async (e) => {
     const image = e?.target?.files[0];
 
     const formdata = new FormData();
     formdata.append("file", image);
 
-
+    setphotoIdBackLoader(true);
     await axios
       .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
         headers: {
@@ -86,8 +77,8 @@ const KycPhotoId = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-
-          setPhotoIdBackImage(res.data.result)
+          setphotoIdBackLoader(false);
+          setPhotoIdBackImage(res.data.result);
         }
       })
       .catch((err) => {
@@ -99,14 +90,14 @@ const KycPhotoId = () => {
           className: "modal_class_success",
         });
       });
-  }
+  };
   const handleDrivingFrontImage = async (e) => {
     const image = e?.target?.files[0];
 
     const formdata = new FormData();
     formdata.append("file", image);
 
-
+    setdrivingFrontLoader(true);
     await axios
       .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
         headers: {
@@ -115,8 +106,8 @@ const KycPhotoId = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-
-          setDrivingLicenseFrontImage(res.data.result)
+          setdrivingFrontLoader(false);
+          setDrivingLicenseFrontImage(res.data.result);
         }
       })
       .catch((err) => {
@@ -128,15 +119,14 @@ const KycPhotoId = () => {
           className: "modal_class_success",
         });
       });
-
-  }
+  };
   const handleDrivingBackImage = async (e) => {
     const image = e?.target?.files[0];
 
     const formdata = new FormData();
     formdata.append("file", image);
 
-
+    setdrivingBackLoader(true);
     await axios
       .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
         headers: {
@@ -145,8 +135,8 @@ const KycPhotoId = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-
-          setDrivingLicenseBackImage(res.data.result)
+          setdrivingBackLoader(false);
+          setDrivingLicenseBackImage(res.data.result);
         }
       })
       .catch((err) => {
@@ -158,14 +148,15 @@ const KycPhotoId = () => {
           className: "modal_class_success",
         });
       });
-  }
+  };
+
   const handlePassportImage = async (e) => {
     const image = e?.target?.files[0];
 
     const formdata = new FormData();
     formdata.append("file", image);
 
-
+    setPassportImgLoader(true);
     await axios
       .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
         headers: {
@@ -174,8 +165,8 @@ const KycPhotoId = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-
-          setPassportImg(res.data.result)
+          setPassportImgLoader(false);
+          setPassportImg(res.data.result);
         }
       })
       .catch((err) => {
@@ -187,13 +178,12 @@ const KycPhotoId = () => {
           className: "modal_class_success",
         });
       });
-  }
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const dataObj =
-    {
+    const dataObj = {
       walletAddress: user?.walletAddress,
       photoId: photoIdNumber,
       photoIdType: photoIdType,
@@ -205,11 +195,7 @@ const KycPhotoId = () => {
       drivingNum: drivingLicenseNumber,
       drivingFrontImg: drivingLicenseFrontImg,
       drivingBackImg: drivingLicenseBackImg,
-
-    }
-
-
-
+    };
 
     await axios
       .post(`https://backend.dslcommerce.com/api/photo-id`, dataObj, {
@@ -220,16 +206,16 @@ const KycPhotoId = () => {
       .then((res) => {
         if (res.status === 200) {
           setisVerifiedPhotId(!isVerifiedPhotId);
-          setPassportImg("")
-          setDrivingLicenseBackImage("")
-          setDrivingLicenseFrontImage("")
-          setPhotoIdBackImage("")
-          setPhotoIdFrontImage("")
-          setCountryOfIssue("")
-          setDrivingLicenseNumber("")
-          setPassportNumber("")
+          setPassportImg("");
+          setDrivingLicenseBackImage("");
+          setDrivingLicenseFrontImage("");
+          setPhotoIdBackImage("");
+          setPhotoIdFrontImage("");
+          setCountryOfIssue("");
+          setDrivingLicenseNumber("");
+          setPassportNumber("");
           // setPhotoIdType("")
-          setPhotoIdNumber("")
+          setPhotoIdNumber("");
 
           // setRefetch(!refetch);
           toast.success("Successfully updated your photo id.");
@@ -246,8 +232,19 @@ const KycPhotoId = () => {
       });
   };
 
-
-
+  const handleRemoveImage = (img) => {
+    if (img == "photoIdFrontImage") {
+      setPhotoIdFrontImage("");
+    } else if (img == "photoIdBackImage") {
+      setPhotoIdBackImage("");
+    } else if (img == "drivingLicenseFrontImg") {
+      setDrivingLicenseFrontImage("");
+    } else if (img == "drivingLicenseBackImg") {
+      setDrivingLicenseBackImage("");
+    } else if (img == "passportImg") {
+      setPassportImg("");
+    }
+  };
 
   // useEffect(() => {}, []);
 
@@ -284,6 +281,7 @@ const KycPhotoId = () => {
                 />
               </Form.Label>
               <Form.Control
+                defaultValue={photoIddata?.photoId}
                 name="photoIdNumber"
                 type="text"
                 placeholder="Photo ID Number"
@@ -302,6 +300,7 @@ const KycPhotoId = () => {
                 />
               </Form.Label>
               <Form.Control
+                defaultValue={photoIddata?.passportNum}
                 name="passportNumber"
                 type="text"
                 placeholder="Passport Number"
@@ -320,6 +319,7 @@ const KycPhotoId = () => {
                 />
               </Form.Label>
               <Form.Control
+                defaultValue={photoIddata?.drivingNum}
                 name="drivingLicenseNumber"
                 type="text"
                 placeholder="Driving license Number"
@@ -341,9 +341,24 @@ const KycPhotoId = () => {
             onChange={(e) => setPhotoIdType(e.target.value)}
             aria-label="Default select example"
           >
-            <option value="photoId">Photo ID</option>
-            <option value="passport">Passport</option>
-            <option value="drivingLicense">Driving license</option>
+            <option
+              value="photoId"
+              selected={photoIddata?.photoIdType == "photoId" && true}
+            >
+              Photo ID
+            </option>
+            <option
+              value="passport"
+              selected={photoIddata?.photoIdType == "passport" && true}
+            >
+              Passport
+            </option>
+            <option
+              value="drivingLicense"
+              selected={photoIddata?.photoIdType == "drivingLicense" && true}
+            >
+              Driving license
+            </option>
           </Form.Select>
 
           <Form.Label className="text-uppercase mt-4">
@@ -354,6 +369,7 @@ const KycPhotoId = () => {
             />
           </Form.Label>
           <Form.Control
+            defaultValue={photoIddata?.countryOfIssue}
             name="countryOfIssue"
             required
             type="text"
@@ -364,8 +380,37 @@ const KycPhotoId = () => {
           {/* If the photo id type is photo id */}
           {photoIdType === "photoId" && (
             <>
+              <>
+                {photoIdFrontImg && (
+                  <div className="selected-video-container mt-4">
+                    {/* {selectedImage?.map((image, index) => ( */}
+                    <div
+                      // key={index}
+                      className="each-selected-video-for-priview"
+                    >
+                      <div className="each-selected-video-container">
+                        <img
+                          className="each-selected-image"
+                          // src={URL.createObjectURL(image)}
+                          src={photoIdFrontImg}
+                          alt=""
+                        />
+                        <Close
+                          className="selected-image-remove-button"
+                          fontSize="small"
+                          onClick={() => handleRemoveImage("photoIdFrontImage")}
+                        />
+                      </div>
+                    </div>
+                    {/* ))} */}
+                  </div>
+                )}
+              </>
+
               <Form.Label className="text-uppercase mt-4">
-                Photo id front image{" "}
+                {photoIdFrontLoader
+                  ? "Uploading image..."
+                  : "Photo id front image"}{" "}
                 <BsStarFill
                   size={8}
                   style={{ color: "#FF0000", marginTop: "-10px" }}
@@ -379,8 +424,38 @@ const KycPhotoId = () => {
                 required
                 onChange={(e) => handlePhotoIdFrontImage(e)}
               />
+
+              <>
+                {photoIdBackImg && (
+                  <div className="selected-video-container mt-4">
+                    {/* {selectedImage?.map((image, index) => ( */}
+                    <div
+                      // key={index}
+                      className="each-selected-video-for-priview"
+                    >
+                      <div className="each-selected-video-container">
+                        <img
+                          className="each-selected-image"
+                          // src={URL.createObjectURL(image)}
+                          src={photoIdBackImg}
+                          alt=""
+                        />
+                        <Close
+                          className="selected-image-remove-button"
+                          fontSize="small"
+                          onClick={() => handleRemoveImage("photoIdBackImage")}
+                        />
+                      </div>
+                    </div>
+                    {/* ))} */}
+                  </div>
+                )}
+              </>
+
               <Form.Label className="text-uppercase mt-4">
-                Photo id back image{" "}
+                {photoIdBackLoader
+                  ? "Uploading image..."
+                  : "Photo id back image"}{" "}
                 <BsStarFill
                   size={8}
                   style={{ color: "#FF0000", marginTop: "-10px" }}
@@ -400,8 +475,39 @@ const KycPhotoId = () => {
           {/* If the photo id type is driving license */}
           {photoIdType === "drivingLicense" && (
             <>
+              <>
+                {drivingLicenseFrontImg && (
+                  <div className="selected-video-container mt-4">
+                    {/* {selectedImage?.map((image, index) => ( */}
+                    <div
+                      // key={index}
+                      className="each-selected-video-for-priview"
+                    >
+                      <div className="each-selected-video-container">
+                        <img
+                          className="each-selected-image"
+                          // src={URL.createObjectURL(image)}
+                          src={drivingLicenseFrontImg}
+                          alt=""
+                        />
+                        <Close
+                          className="selected-image-remove-button"
+                          fontSize="small"
+                          onClick={() =>
+                            handleRemoveImage("drivingLicenseFrontImg")
+                          }
+                        />
+                      </div>
+                    </div>
+                    {/* ))} */}
+                  </div>
+                )}
+              </>
+
               <Form.Label className="text-uppercase mt-4">
-                Driving license front image{" "}
+                {drivingFrontLoader
+                  ? "Uploading image..."
+                  : "Driving license front image"}{" "}
                 <BsStarFill
                   size={8}
                   style={{ color: "#FF0000", marginTop: "-10px" }}
@@ -413,12 +519,42 @@ const KycPhotoId = () => {
                 placeholder=""
                 accept=".jpg, .jpeg, .png"
                 required
-                onChange={(e) =>
-                  handleDrivingFrontImage(e)
-                }
+                onChange={(e) => handleDrivingFrontImage(e)}
               />
+
+              <>
+                {drivingLicenseBackImg && (
+                  <div className="selected-video-container mt-4">
+                    {/* {selectedImage?.map((image, index) => ( */}
+                    <div
+                      // key={index}
+                      className="each-selected-video-for-priview"
+                    >
+                      <div className="each-selected-video-container">
+                        <img
+                          className="each-selected-image"
+                          // src={URL.createObjectURL(image)}
+                          src={drivingLicenseBackImg}
+                          alt=""
+                        />
+                        <Close
+                          className="selected-image-remove-button"
+                          fontSize="small"
+                          onClick={() =>
+                            handleRemoveImage("drivingLicenseBackImg")
+                          }
+                        />
+                      </div>
+                    </div>
+                    {/* ))} */}
+                  </div>
+                )}
+              </>
+
               <Form.Label className="text-uppercase mt-4">
-                Driving license back image{" "}
+                {drivingBackLoader
+                  ? "Uploading image..."
+                  : "Driving license back image"}{" "}
                 <BsStarFill
                   size={8}
                   style={{ color: "#FF0000", marginTop: "-10px" }}
@@ -430,9 +566,7 @@ const KycPhotoId = () => {
                 placeholder=""
                 accept=".jpg, .jpeg, .png"
                 required
-                onChange={(e) =>
-                  handleDrivingBackImage(e)
-                }
+                onChange={(e) => handleDrivingBackImage(e)}
               />
             </>
           )}
@@ -440,8 +574,35 @@ const KycPhotoId = () => {
           {/* If the photo id type is passport */}
           {photoIdType === "passport" && (
             <>
+              <>
+                {passportImg && (
+                  <div className="selected-video-container mt-4">
+                    {/* {selectedImage?.map((image, index) => ( */}
+                    <div
+                      // key={index}
+                      className="each-selected-video-for-priview"
+                    >
+                      <div className="each-selected-video-container">
+                        <img
+                          className="each-selected-image"
+                          // src={URL.createObjectURL(image)}
+                          src={passportImg}
+                          alt=""
+                        />
+                        <Close
+                          className="selected-image-remove-button"
+                          fontSize="small"
+                          onClick={() => handleRemoveImage("passportImg")}
+                        />
+                      </div>
+                    </div>
+                    {/* ))} */}
+                  </div>
+                )}
+              </>
+
               <Form.Label className="text-uppercase mt-4">
-                Passport image{" "}
+                {passportImgLoader ? "Uploading image..." : " Passport image"}{" "}
                 <BsStarFill
                   size={8}
                   style={{ color: "#FF0000", marginTop: "-10px" }}

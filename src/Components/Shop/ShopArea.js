@@ -216,6 +216,9 @@ function ShopArea({
     sortHandle(sortP)
     setPage(parseInt(jump));
   };
+  // console.log(sliceProducts);
+  // 6397267ad851e0e93a8affde
+  // 6397267ad851e0e93a8affde
 
   return (
     <section className="shop-area bg-ffffff pt-50 pb-50">
@@ -258,7 +261,7 @@ function ShopArea({
                             }}
                           >
                             <img
-                              src={product?.product_images}
+                              src={product?.images[0]}
                               style={{ width: "300px", height: "270px" }}
                               alt=""
                             />

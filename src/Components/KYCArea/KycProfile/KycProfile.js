@@ -1,14 +1,16 @@
+import axios from "axios";
 import React, { useEffect } from "react";
 import { useContext } from "react";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-hot-toast";
+import swal from "sweetalert";
 import { KycContext } from "../../../contexts/KycContext";
 import { time_zone } from "../CountryName/cData";
 import "./KycProfile.css";
 
 const KycProfile = () => {
-  const { kycUser, handleUpdateUser, isVerifiedProfile, setisVerifiedProfile } = useContext(KycContext);
+  const { kycUser, handleUpdateUser, isVerifiedProfile, setisVerifiedProfile, refetch, setRefetch } = useContext(KycContext);
 
   const [userName, setUserName] = useState("");
   const [fullName, setFullName] = useState("");
@@ -41,7 +43,7 @@ const KycProfile = () => {
     }
   }, [nationality]);
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     if (gender === "choose" || gender === "Gender") {
@@ -65,7 +67,35 @@ const KycProfile = () => {
       ip: "118.179.99.1",
     };
 
-    handleUpdateUser(dataUser);
+
+    await axios
+      .put(
+        `https://backend.dslcommerce.com/api/user-panel/user/update/${kycUser?.walletAddress}`,
+        dataUser
+      )
+      .then((res) => {
+        console.log(res, "inside the update");
+        if (res.status === 200) {
+
+          setisVerifiedProfile(!refetch);
+          setRefetch(!refetch);
+          toast.success("Successfully updated your profile .");
+        }
+      })
+      .catch((err) => {
+        console.log(err, "inside the update erro");
+        console.dirxml(err);
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      });
+
+
+    // handleUpdateUser(dataUser);
   };
 
   return (
