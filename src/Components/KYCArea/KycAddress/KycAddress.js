@@ -186,7 +186,7 @@ const KycAddress = () => {
           <>
 
             {file && (
-              <div className="selected-video-container">
+              <div className="selected-video-container mb-3">
                 {/* {selectedImage?.map((image, index) => ( */}
                 <div
                   // key={index}
@@ -225,7 +225,7 @@ const KycAddress = () => {
           type="submit
         
         ">
-          SAVE
+          SAVEs
         </Button>
 
       </Form>
