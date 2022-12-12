@@ -23,7 +23,7 @@ const KycAddress = ({ addressData }) => {
   const [file, setFile] = useState("");
 
 
-  console.log("addressData", addressData)
+
 
   useEffect(() => {
     setAddress1(kycUser?.address1)
@@ -101,7 +101,7 @@ const KycAddress = ({ addressData }) => {
           <Form.Label >Address Line 1 <span>★</span> </Form.Label>
           <Form.Control
             type="text"
-            defaultValue={address1}
+            defaultValue={addressData?.address1}
             onChange={(e) => setAddress1(e.target.value)}
             name='address1'
             required
@@ -112,7 +112,7 @@ const KycAddress = ({ addressData }) => {
           <Form.Label >Address Line 2 </Form.Label>
           <Form.Control
             type="text"
-            defaultValue={address2}
+            defaultValue={addressData?.address2}
             onChange={(e) => setAddress2(e.target.value)}
             name='address2'
           />
@@ -123,7 +123,7 @@ const KycAddress = ({ addressData }) => {
           <Form.Control
             type="text"
             name='city'
-            defaultValue={city}
+            defaultValue={addressData?.city}
             onChange={(e) => setCity(e.target.value)}
             required
           />
@@ -133,7 +133,7 @@ const KycAddress = ({ addressData }) => {
           <Form.Label >State / province  <span>★</span> </Form.Label>
           <Form.Control
             type="text"
-            defaultValue={state}
+            defaultValue={addressData?.state}
             onChange={(e) => setState(e.target.value)}
             name='state'
             required
@@ -153,7 +153,7 @@ const KycAddress = ({ addressData }) => {
               <option
                 key={index}
                 style={{ padding: "5px" }}
-                defaultValue={country}
+                selected={addressData?.country == country && true}
               >
                 {country}
               </option>
@@ -165,7 +165,7 @@ const KycAddress = ({ addressData }) => {
           <Form.Label >postal / zip code  <span>★</span>  </Form.Label>
           <Form.Control
             type="text"
-            defaultValue={zipCode}
+            defaultValue={addressData?.zipCode}
             onChange={(e) => setZipCode(e.target.value)}
             name='zipCode'
             required
