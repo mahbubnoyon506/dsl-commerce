@@ -181,7 +181,11 @@ const KycEmail = ({ expiryTimestamp }) => {
                   ? true
                   : false
               }
-              style={{ marginLeft: "-68px" }}
+              style={{
+                marginLeft: "-68px",
+                borderBottomLeftRadius: "0px",
+                borderTopLeftRadius: "0px",
+              }}
               variant="secondary"
             >
               {!emailVerified ? "Verify" : "Verified"}
