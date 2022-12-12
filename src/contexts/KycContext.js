@@ -30,7 +30,7 @@ export default function KycProvider({ children }) {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setKycUser(res.data.result);
       });
   }, [refetch, user]);
@@ -43,7 +43,7 @@ export default function KycProvider({ children }) {
         if (res.status === 200) {
           setRefetch(!refetch);
           localStorage.setItem("kycUserToken", res.data.token);
-          console.log(res.data.token);
+          // console.log(res.data.token);
           toast.success("Register Success .");
           navigate("/kyc/profile");
         }
@@ -67,7 +67,7 @@ export default function KycProvider({ children }) {
         if (res.status === 200) {
           setRefetch(!refetch);
           localStorage.setItem("kycUserToken", res.data.token);
-          console.log(res.data.token);
+          // console.log(res.data.token);
           toast.success("Welcome to your profile .");
           navigate("/kyc/profile");
         }
@@ -85,14 +85,14 @@ export default function KycProvider({ children }) {
 
   // ************************************User Update ************************************
   const handleUpdateUser = async (dataUser) => {
-    console.log(dataUser, "data to update");
+    // console.log(dataUser, "data to update");
     await axios
       .put(
         `https://backend.dslcommerce.com/api/user-panel/user/update/${kycUser?.walletAddress}`,
         dataUser
       )
       .then((res) => {
-        console.log(res, "inside the update");
+        // console.log(res, "inside the update");
         if (res.status === 200) {
 
           setisVerifiedProfile(!refetch);
@@ -101,7 +101,7 @@ export default function KycProvider({ children }) {
         }
       })
       .catch((err) => {
-        console.log(err, "inside the update erro");
+        // console.log(err, "inside the update erro");
         swal({
           title: "Attention",
           text: `${err.response.data.message}`,

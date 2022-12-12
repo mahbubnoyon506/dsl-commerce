@@ -34,7 +34,7 @@ function NewArrivals({
                         to={`/shop/products-details/${product?._id}`}
                       >
                         <img
-                          src={product?.product_images}
+                          src={product?.images[0]}
                           style={{ width: "300px", height: "250px" }}
                           alt="new product"
                         />

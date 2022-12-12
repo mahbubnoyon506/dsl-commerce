@@ -16,6 +16,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { KycContext } from "../../contexts/KycContext";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 import axios from "axios";
+import KycAddProduct from "../../Components/KYCArea/KycAddProduct/KycAddProduct";
 const KYC = () => {
   const [key, setKey] = useState("profile");
   const [photoIddata, setphotoIddata] = useState({});
@@ -24,7 +25,7 @@ const KYC = () => {
   const { kycUser, handleUpdateUser, emailVerified, mobileNoVerify, isVerifiedAddress, isVerifiedPhotId, isVerifiedProfile } = useContext(KycContext);
   const { user, openWalletModal } = useContext(DSLCommerceContext);
 
-  console.log(kycUser)
+  // console.log(kycUser)
 
 
   useEffect(() => {
@@ -94,7 +95,7 @@ const KYC = () => {
             <Tab>
 
               PROFILE
-              {(isVerifiedProfile == false && !userProfileData.nationality) &&
+              {(isVerifiedProfile == false && !userProfileData?.nationality) &&
                 <CloseIcon className="text-danger ms-1" style={{ fontSize: "18px" }} />
               }
 
@@ -102,7 +103,7 @@ const KYC = () => {
                 < ErrorIcon className="text-warning" />
               } */}
 
-              {(isVerifiedProfile == true || userProfileData.nationality) &&
+              {(isVerifiedProfile == true || userProfileData?.nationality) &&
                 <DoneIcon className="text-success ms-1" style={{ fontSize: "18px" }} />
               }
             </Tab>
@@ -129,7 +130,8 @@ const KYC = () => {
                 <DoneIcon className="text-success ms-1" style={{ fontSize: "18px" }} />
               }
             </Tab>
-            {console.log(isVerifiedPhotId == false, photoIddata?.isVerified == false)}
+            {/* {console.log(isVerifiedPhotId == false, photoIddata?.isVerified == false)} */}
+            
             <Tab>
 
               PHOTO ID
@@ -145,6 +147,7 @@ const KYC = () => {
                 <DoneIcon className="text-success ms-1" style={{ fontSize: "18px" }} />
               }
             </Tab>
+
             <Tab>
 
               ADDRESS PROOF
@@ -161,23 +164,48 @@ const KYC = () => {
               }
             </Tab>
 
+            <Tab>
+
+              ADD PRODUCTS
+              {/* {(isVerifiedAddress == false && addressData?.isVerified == false) &&
+                <CloseIcon className="text-danger ms-1" style={{ fontSize: "18px" }} />
+              }
+
+              {(isVerifiedAddress == true && addressData?.isVerified == false) &&
+                <ErrorIcon className="text-warning ms-1" style={{ fontSize: "18px" }} />
+              }
+
+              {addressData?.isVerified == true &&
+                <DoneIcon className="text-success ms-1" style={{ fontSize: "18px" }} />
+              } */}
+            </Tab>
+
           </TabList>
 
           <TabPanel>
             <KycProfile />
           </TabPanel>
+
           <TabPanel>
             <KycEmail />
           </TabPanel>
+
           <TabPanel>
             <KycMobile />
           </TabPanel>
+
           <TabPanel>
             <KycPhotoId />
           </TabPanel>
+
           <TabPanel>
             <KycAddress />
           </TabPanel>
+
+          <TabPanel>
+            <KycAddProduct />
+          </TabPanel>
+
         </Tabs>
 
         {/* <Tabs
