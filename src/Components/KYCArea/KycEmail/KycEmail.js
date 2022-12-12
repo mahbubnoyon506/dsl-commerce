@@ -19,7 +19,14 @@ const KycEmail = ({ expiryTimestamp }) => {
   const [otpVerify, setOtpVerify] = useState();
   const [openEmail, setOpenEmail] = useState(false);
   const [isError, setError] = useState(false);
-  const { kycUser, handleUpdateUser, emailVerified, setEmailVerified, setRefetch, refetch } = useContext(KycContext);
+  const {
+    kycUser,
+    handleUpdateUser,
+    emailVerified,
+    setEmailVerified,
+    setRefetch,
+    refetch,
+  } = useContext(KycContext);
 
   useEffect(() => {
     if (kycUser) {
@@ -120,7 +127,7 @@ const KycEmail = ({ expiryTimestamp }) => {
       });
   };
 
-  console.log(emailVerified)
+  console.log(emailVerified);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -149,13 +156,12 @@ const KycEmail = ({ expiryTimestamp }) => {
           </Form.Label>
           <div className="d-flex">
             <Form.Control
-              style={{ textTransform: "lowercase" }}
               type="email"
               id="email"
               name="email"
               placeholder="Email Address"
               onChange={(e) => {
-                setEmail(e.target.value);
+                setEmail(e.target.value.toLocaleLowerCase());
                 setEmailVerified(false);
               }}
               value={email}

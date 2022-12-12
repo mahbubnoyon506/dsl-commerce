@@ -11,7 +11,7 @@ import swal from "sweetalert";
 
 function LoginArea({ customClass = "" }) {
   const [visiblePassword, setVisiblePassword] = useState(false);
-  const email = useRef();
+  const [email, setEmail] = useState("");
   const password = useRef();
   const [alertMsg, setAlertMsg] = useState(null);
   const context = useContext(AuthContext);
@@ -21,24 +21,20 @@ function LoginArea({ customClass = "" }) {
 
   useEffect(() => {
     if (isAuthenticating) {
-        navigate(`/admin/otp/${token}`, { replace: true });
+      navigate(`/admin/otp/${token}`, { replace: true });
     }
     if (admin?._id) {
-        navigate('/admin', { replace: true });
+      navigate("/admin", { replace: true });
     }
-}, [admin, navigate, isAuthenticating,token])
-
+  }, [admin, navigate, isAuthenticating, token]);
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    const email = e.target.email.value;
     const password = e.target.password.value;
     // console.log(email);
     // console.log(password);
     login(email, password);
-    
-
   };
 
   return (
@@ -67,9 +63,9 @@ function LoginArea({ customClass = "" }) {
             className=""
             placeholder="Enter Email"
             type="email"
-            style={{ textTransform: 'lowercase' }}
             name="email"
-            ref={email}
+            value={email}
+            onChange={(e) => setEmail(e.target.value.toLocaleLowerCase())}
             required
           />
         </InputGroup>
