@@ -20,6 +20,7 @@ const DashboardModalNewAdmin = (props) => {
   } = props;
   const [value, setValue] = useState();
   const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
   // if (isLoadingAdmin) {
   //     return <Loader></Loader>
   // }
@@ -27,14 +28,13 @@ const DashboardModalNewAdmin = (props) => {
     event.preventDefault();
     const image = event.target.image.files[0];
     const name = event.target.name.value;
-    const username = event.target.username.value;
     const phone = value;
     const password = event.target.password.value;
     const confirmPassword = event.target.confirmPassword.value;
 
     const formDataAddAdmin = new FormData();
     formDataAddAdmin.append("name", name);
-    formDataAddAdmin.append("username", username);
+    formDataAddAdmin.append("username", userName);
     formDataAddAdmin.append("email", email);
     formDataAddAdmin.append("phone", phone);
     formDataAddAdmin.append("image", image);
@@ -131,8 +131,11 @@ const DashboardModalNewAdmin = (props) => {
                     placeholder="Enter username"
                     type="text"
                     name="username"
-                    style={{ textTransform: "lowercase" }}
                     required
+                    value={userName}
+                    onChange={(e) =>
+                      setUserName(e.target.value.toLocaleLowerCase())
+                    }
                   />
                   <p className="mb-1">Email</p>
                   <input
