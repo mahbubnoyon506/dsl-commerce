@@ -186,7 +186,7 @@ function App() {
             path="/admin/adminprofile/:id"
             element={<DashboardAdminEditProfile />}
           />
-           
+
 
 
           {/*************************** Customers  ***************************/}
@@ -207,7 +207,7 @@ function App() {
           <Route path="non-verified" element={<NonVerified />} />
           <Route path="pending" element={<Pending />} />
           <Route path="added-products" element={<AddedProducts />} />
-          <Route path="userDetails/:id" element={<UserDetails />} />
+          <Route path="userDetails/:walletAddress" element={<UserDetails />} />
 
 
           {/*************************** Product  ***************************/}

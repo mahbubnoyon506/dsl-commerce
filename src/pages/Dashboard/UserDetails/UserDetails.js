@@ -7,22 +7,42 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CheckIcon from '@mui/icons-material/Check';
 import './UserDetails.css'
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 
 
 function UserDetails() {
-    const { id } = useParams()
-    const [userInfo, setUserInfo] = useState()
+    const { walletAddress } = useParams()
+    const [userInfo, setUserInfo] = useState();
+    const [userAddress, setUserAddress] = useState();
+    const [photoId, setPhotoId] = useState()
+
+
+    console.log(walletAddress);
 
     useEffect(() => {
-        fetch(`https://backend.dslcommerce.com/api/user-panel/${id}`)
+        fetch(`https://backend.dslcommerce.com/api/user-panel/user/${walletAddress}`)
             .then(res => res.json())
             .then(data => setUserInfo(data.result))
-    }, [id]);
+    }, [walletAddress]);
 
 
+    useEffect(() => {
+        fetch(`https://backend.dslcommerce.com/api/address/data/${walletAddress}`)
+            .then(res => res.json())
+            .then(data => setUserAddress(data.result))
+    }, [walletAddress]);
 
 
+    console.log(userAddress)
+
+    useEffect(() => {
+        fetch(`https://backend.dslcommerce.com/api/photo-id/data/${walletAddress}`)
+            .then(res => res.json())
+            .then(data => setPhotoId(data.result))
+    }, [walletAddress]);
+
+    console.log(userInfo)
 
     return (
         <div style={{ minHeight: '450px' }}>
@@ -93,7 +113,7 @@ function UserDetails() {
                                     <div className='d-flex  input-group'>
                                         <input type="text" id='lastLoginIp' name="lastLoginIp"
                                             className='form-control bg-transparent text-white'
-                                            placeholder='last login ip' />
+                                            value={userInfo?.ip ? userInfo?.ip : ''} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -104,10 +124,6 @@ function UserDetails() {
                                             placeholder='remark' />
                                     </div>
                                 </div>
-
-
-
-
                             </div>
 
 
@@ -134,7 +150,7 @@ function UserDetails() {
                                     <div className='d-flex  input-group'>
                                         <input type="number" id='mobile' name="mobile"
                                             className='form-control bg-transparent text-white'
-                                            placeholder='mobile' />
+                                            value={userInfo?.mobile ? userInfo?.mobile : ''} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -142,7 +158,8 @@ function UserDetails() {
                                     <div className='d-flex  input-group'>
                                         <input type="text" id='dob' name="dob"
                                             className='form-control bg-transparent text-white'
-                                            placeholder='date of birth' />
+                                            value={userInfo?.birthday ? userInfo?.birthday : ''}
+                                        />
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -150,7 +167,8 @@ function UserDetails() {
                                     <div className='d-flex  input-group'>
                                         <input type="text" id='nationality' name="nationality"
                                             className='form-control bg-transparent text-white'
-                                            placeholder='nationality' />
+                                            value={userInfo?.nationality ? userInfo?.nationality : ''}
+                                        />
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -203,27 +221,26 @@ function UserDetails() {
                                 <div className="mb-2">
                                     <label htmlFor='address1'>Address 1</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='address1' name="address1" className='form-control bg-transparent text-white' placeholder='address 1' />
-
+                                        <input type="text" id='address1' name="address1" className='form-control bg-transparent text-white' value={userAddress?.address1} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
                                     <label htmlFor='address2'>Address 2</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='postaladdress2Code' name="address2" className='form-control bg-transparent text-white' placeholder='address 2' />
+                                        <input type="text" id='postaladdress2Code' name="address2" className='form-control bg-transparent text-white' value={userAddress?.address2} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
                                     <label htmlFor='postalCode'>Postal Code</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='postalCode' name="postalCode" className='form-control bg-transparent text-white' placeholder='postal code' />
+                                        <input type="text" id='postalCode' name="postalCode" className='form-control bg-transparent text-white' value={userAddress?.zipCode} />
                                     </div>
                                 </div>
 
                                 <div className="mb-2">
                                     <label htmlFor='country'>Country</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='country' name="country" className='form-control bg-transparent text-white' placeholder='country' />
+                                        <input type="text" id='country' name="country" className='form-control bg-transparent text-white' value={userAddress?.country} />
                                     </div>
                                 </div>
 
@@ -231,7 +248,7 @@ function UserDetails() {
 
                             <div className='col-12 col-lg-6 max-w-100 px-4 mt-2'>
                                 <label for="address proof image">Address Proof Image</label>
-                                <img className='max-w-100' src="https://i.pinimg.com/originals/30/1e/8b/301e8b20ed4c67ba8fdc701322fbfa66.png" alt="address proof" />
+                                <img className='max-w-100' src={photoId?.photoIdFrontImg} alt="address proof" />
                                 <input className='mt-3 ms-1 w-100' type="file" accept='image/*' />
                             </div>
 
@@ -261,14 +278,14 @@ function UserDetails() {
                                 <div className="mb-2">
                                     <label htmlFor='photoIdNumber'>Photo Id Number</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='photoIdNumber' name="photoIdNumber" className='form-control bg-transparent text-white' placeholder='photo Id number' />
+                                        <input type="text" id='photoIdNumber' name="photoIdNumber" className='form-control bg-transparent text-white' value={photoId?.photoId} placeholder='photo Id number' />
                                     </div>
                                 </div>
 
                                 <div className="mb-2">
                                     <label htmlFor='photoIdType'>Photo Id Type</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='photoIdType' name="photoIdType" className='form-control bg-transparent text-white' placeholder='photo Id type' />
+                                        <input type="text" id='photoIdType' value={photoId?.photoIdType} name="photoIdType" className='form-control bg-transparent text-white' placeholder='photo Id type' />
                                     </div>
                                 </div>
                             </div>
@@ -276,7 +293,7 @@ function UserDetails() {
 
                             <div className='col-12 col-lg-6 px-4 mt-2'>
                                 <label for="address proof image">Front Image</label>
-                                <img src="https://i.pinimg.com/originals/30/1e/8b/301e8b20ed4c67ba8fdc701322fbfa66.png" alt="address proof" />
+                                <img src={photoId?.photoIdFrontImg} alt="address proof" />
                                 <input className='mt-3 w-100' type="file" accept='image/*' />
                             </div>
 
