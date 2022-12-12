@@ -59,7 +59,7 @@ const KYC = () => {
     const getAddressData = async () => {
       await axios
         .get(
-          `https://backend.dslcommerce.com/api/photo-id/data/${kycUser?.walletAddress}`,
+          `https://backend.dslcommerce.com/api/address/data/${kycUser?.walletAddress}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
