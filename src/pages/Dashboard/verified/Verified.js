@@ -40,7 +40,7 @@ const Verified = () => {
             .then(data => setVerifiedUser(data?.result))
     }, [])
 
-
+    console.log(verifiedUser)
 
     return (
         <div className="">
@@ -80,7 +80,8 @@ const Verified = () => {
                                     {/* <td className='text-start adminHidden'>{d.kycPending === true ? 'PENDING' : ''}</td> */}
                                     <td className='text-start '>
 
-                                        <Link to={`/admin/userDetails/${d._id}`}>
+                                        <Link to={`/admin/userDetails/${d.walletAddress
+                                            }`}>
                                             <span className='bg-primary p-2 me-3 rounded'>
                                                 < AiFillEye className='fs-5 text-white rounded' />
                                             </span>
@@ -98,11 +99,7 @@ const Verified = () => {
                                 </tr>
                             ))
                         }
-
-
                     </tbody>
-
-
                 </Table>
             </TableContainer>
         </div>

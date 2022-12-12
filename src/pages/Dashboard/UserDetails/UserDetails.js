@@ -11,16 +11,17 @@ import { useParams } from 'react-router-dom';
 
 
 function UserDetails() {
-    const { id } = useParams()
+    const { walletAddress
+    } = useParams()
     const [userInfo, setUserInfo] = useState()
 
     useEffect(() => {
-        fetch(`https://backend.dslcommerce.com/api/user-panel/${id}`)
+        fetch(`https://backend.dslcommerce.com/api/user-panel/user/${walletAddress}`)
             .then(res => res.json())
             .then(data => setUserInfo(data.result))
-    }, [id]);
+    }, [walletAddress]);
 
-
+    console.log(walletAddress, userInfo)
 
 
 
@@ -104,10 +105,6 @@ function UserDetails() {
                                             placeholder='remark' />
                                     </div>
                                 </div>
-
-
-
-
                             </div>
 
 
