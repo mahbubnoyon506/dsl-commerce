@@ -56,7 +56,7 @@ function ProductsDetailsArea() {
     axios
       .get(`https://backend.dslcommerce.com/api/product/${productId}`)
       .then((res) => {
-        console.log('eeeeeeeeeeefd' , res.data.newData);
+        console.log('eeeeeeeeeeefd', res.data.newData);
         setProduct(res.data.newData);
         setUserReviews(res.data.newData.reviews.reverse());
         setDescriptionData(res.data.newData.description);
@@ -89,33 +89,16 @@ function ProductsDetailsArea() {
           <div className="row align-items-center">
             <div className="col-lg-6 col-md-6">
               <div className="main-products-image">
-                {/* <Carousel>
-                  <div>
-                    <img
-                      src={product?.images[0]}
-                      alt={product.productName}
-                    />
-                  </div>
-                  <div>
-                    <img
-                      src={product?.images[1]}
-                      alt={product.productName}
-                    />
-                  </div>
-                  <div>
-                    <img
-                      src={product?.images[2]}
-                      alt={product.productName}
-                    />
-                  </div>
-                  <div>
-                    <img
-                      src={product?.images[3]}
-                      alt={product.productName}
-                    />
-                  </div>
-                </Carousel> */}
-                {/* {console.log('ssssssss' , product?.images)} */}
+                <Carousel>
+                  {product?.images?.slice(0, 4)?.map((img) => (
+                    <div>
+                      <img
+                        src={img}
+                        alt={product.productName}
+                      />
+                    </div>
+                  ))}
+                </Carousel>
               </div>
             </div>
 
