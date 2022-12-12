@@ -11,9 +11,9 @@ import { useParams } from 'react-router-dom';
 
 
 function UserDetails() {
-    const { walletAddress
-    } = useParams()
-    const [userInfo, setUserInfo] = useState()
+    const { walletAddress} = useParams()
+    const [userInfo, setUserInfo] = useState();
+    const [userAddress, setUserAddress] = useState();
 
     useEffect(() => {
         fetch(`https://backend.dslcommerce.com/api/user-panel/user/${walletAddress}`)
@@ -21,11 +21,19 @@ function UserDetails() {
             .then(data => setUserInfo(data.result))
     }, [walletAddress]);
 
-    console.log(walletAddress, userInfo)
+    
+    useEffect(() => {
+        fetch(`https://backend.dslcommerce.com/api/address/data/${walletAddress}`)
+            .then(res => res.json())
+            .then(data => setUserAddress(data.result))
+    }, [walletAddress]);
+
+
+    console.log(userAddress)
 
 
 
-    return (
+    return ( 
         <div style={{ minHeight: '450px' }}>
 
             <div>
@@ -131,7 +139,7 @@ function UserDetails() {
                                     <div className='d-flex  input-group'>
                                         <input type="number" id='mobile' name="mobile"
                                             className='form-control bg-transparent text-white'
-                                            placeholder='mobile' />
+                                            value={userInfo?.mobile} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -139,6 +147,7 @@ function UserDetails() {
                                     <div className='d-flex  input-group'>
                                         <input type="text" id='dob' name="dob"
                                             className='form-control bg-transparent text-white'
+                                            value={userInfo?.birthday}
                                             placeholder='date of birth' />
                                     </div>
                                 </div>
@@ -147,7 +156,8 @@ function UserDetails() {
                                     <div className='d-flex  input-group'>
                                         <input type="text" id='nationality' name="nationality"
                                             className='form-control bg-transparent text-white'
-                                            placeholder='nationality' />
+                                            value={userInfo?.nationality}
+                                             />
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -200,27 +210,26 @@ function UserDetails() {
                                 <div className="mb-2">
                                     <label htmlFor='address1'>Address 1</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='address1' name="address1" className='form-control bg-transparent text-white' placeholder='address 1' />
-
+                                        <input type="text" id='address1' name="address1" className='form-control bg-transparent text-white' value={userAddress?.address1} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
                                     <label htmlFor='address2'>Address 2</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='postaladdress2Code' name="address2" className='form-control bg-transparent text-white' placeholder='address 2' />
+                                        <input type="text" id='postaladdress2Code' name="address2" className='form-control bg-transparent text-white' value={userAddress?.address2} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
                                     <label htmlFor='postalCode'>Postal Code</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='postalCode' name="postalCode" className='form-control bg-transparent text-white' placeholder='postal code' />
+                                        <input type="text" id='postalCode' name="postalCode" className='form-control bg-transparent text-white' value={userAddress?.zipCode} />
                                     </div>
                                 </div>
 
                                 <div className="mb-2">
                                     <label htmlFor='country'>Country</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='country' name="country" className='form-control bg-transparent text-white' placeholder='country' />
+                                        <input type="text" id='country' name="country" className='form-control bg-transparent text-white' value={userAddress?.country} />
                                     </div>
                                 </div>
 
@@ -258,14 +267,14 @@ function UserDetails() {
                                 <div className="mb-2">
                                     <label htmlFor='photoIdNumber'>Photo Id Number</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='photoIdNumber' name="photoIdNumber" className='form-control bg-transparent text-white' placeholder='photo Id number' />
+                                        <input type="text" id='photoIdNumber' name="photoIdNumber" className='form-control bg-transparent text-white'  />
                                     </div>
                                 </div>
 
                                 <div className="mb-2">
                                     <label htmlFor='photoIdType'>Photo Id Type</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='photoIdType' name="photoIdType" className='form-control bg-transparent text-white' placeholder='photo Id type' />
+                                        <input type="text" id='photoIdType' name="photoIdType" className='form-control bg-transparent text-white'  />
                                     </div>
                                 </div>
                             </div>

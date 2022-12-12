@@ -40,8 +40,6 @@ const Verified = () => {
             .then(data => setVerifiedUser(data?.result))
     }, [])
 
-    console.log(verifiedUser)
-
     return (
         <div className="">
             {/* <p className='text-start text-white fs-2 mb-3 p-0'>VERIFIED</p> */}
