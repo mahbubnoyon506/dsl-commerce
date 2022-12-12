@@ -16,6 +16,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 import { KycContext } from "../../contexts/KycContext";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 import axios from "axios";
+import KycAddProduct from "../../Components/KYCArea/KycAddProduct/KycAddProduct";
 const KYC = () => {
   const [key, setKey] = useState("profile");
   const [photoIddata, setphotoIddata] = useState({});
@@ -32,13 +33,14 @@ const KYC = () => {
   } = useContext(KycContext);
   const { user, openWalletModal } = useContext(DSLCommerceContext);
 
-  console.log(kycUser);
+  console.log(userProfileData);
+  // console.log(kycUser)
 
   useEffect(() => {
     const getPhotoIddata = async () => {
       await axios
         .get(
-          `https://backend.dslcommerce.com/api/photo-id/data/${user?.walletAddress}`,
+          `https://backend.dslcommerce.com/api/photo-id/data/${kycUser?.walletAddress}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
@@ -46,6 +48,7 @@ const KYC = () => {
           }
         )
         .then((res) => {
+          console.log(res.data);
           setphotoIddata(res.data.result);
         });
     };
@@ -56,7 +59,7 @@ const KYC = () => {
     const getAddressData = async () => {
       await axios
         .get(
-          `https://backend.dslcommerce.com/api/photo-id/data/${user?.walletAddress}`,
+          `https://backend.dslcommerce.com/api/photo-id/data/${kycUser?.walletAddress}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
@@ -74,7 +77,7 @@ const KYC = () => {
     const getProfile = async () => {
       await axios
         .get(
-          `https://backend.dslcommerce.com/api/user-panel/user/${user?.walletAddress}`,
+          `https://backend.dslcommerce.com/api/user-panel/user/${kycUser?.walletAddress}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
@@ -82,6 +85,7 @@ const KYC = () => {
           }
         )
         .then((res) => {
+          console.log(res.data);
           setuserProfileData(res.data.result);
         });
     };
@@ -155,14 +159,14 @@ const KYC = () => {
                 />
               )}
             </Tab>
-            {console.log(
-              isVerifiedPhotId == false,
-              photoIddata?.isVerified == false
-            )}
+            {console.log(isVerifiedPhotId == false, photoIddata?.isVerified)}
+            {/* {console.log(isVerifiedPhotId == false, photoIddata?.isVerified == false)} */}
+
             <Tab>
               PHOTO ID
               {isVerifiedPhotId == false &&
-                photoIddata?.isVerified == false && (
+                (photoIddata?.isVerified == undefined ||
+                  photoIddata?.isVerified == false) && (
                   <CloseIcon
                     className="text-danger ms-1"
                     style={{ fontSize: "18px" }}
@@ -181,10 +185,17 @@ const KYC = () => {
                 />
               )}
             </Tab>
+            {console.log(
+              isVerifiedAddress == false,
+              addressData?.isVerified,
+              "test"
+            )}
+
             <Tab>
               ADDRESS PROOF
               {isVerifiedAddress == false &&
-                addressData?.isVerified == false && (
+                (addressData?.isVerified == undefined ||
+                  addressData?.isVerified == false) && (
                   <CloseIcon
                     className="text-danger ms-1"
                     style={{ fontSize: "18px" }}
@@ -204,22 +215,45 @@ const KYC = () => {
                 />
               )}
             </Tab>
+
+            <Tab>
+              ADD PRODUCTS
+              {/* {(isVerifiedAddress == false && addressData?.isVerified == false) &&
+                <CloseIcon className="text-danger ms-1" style={{ fontSize: "18px" }} />
+              }
+
+              {(isVerifiedAddress == true && addressData?.isVerified == false) &&
+                <ErrorIcon className="text-warning ms-1" style={{ fontSize: "18px" }} />
+              }
+
+              {addressData?.isVerified == true &&
+                <DoneIcon className="text-success ms-1" style={{ fontSize: "18px" }} />
+              } */}
+            </Tab>
           </TabList>
 
           <TabPanel>
             <KycProfile />
           </TabPanel>
+
           <TabPanel>
             <KycEmail />
           </TabPanel>
+
           <TabPanel>
             <KycMobile />
           </TabPanel>
+
           <TabPanel>
             <KycPhotoId />
           </TabPanel>
+
           <TabPanel>
             <KycAddress />
+          </TabPanel>
+
+          <TabPanel>
+            <KycAddProduct />
           </TabPanel>
         </Tabs>
 
