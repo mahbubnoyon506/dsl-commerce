@@ -12,7 +12,7 @@ import axios from 'axios';
 
 
 function UserDetails() {
-    const { walletAddress} = useParams()
+    const { walletAddress } = useParams()
     const [userInfo, setUserInfo] = useState();
     const [userAddress, setUserAddress] = useState();
     const [photoId, setPhotoId] = useState()
@@ -26,7 +26,7 @@ function UserDetails() {
             .then(data => setUserInfo(data.result))
     }, [walletAddress]);
 
-    
+
     useEffect(() => {
         fetch(`https://backend.dslcommerce.com/api/address/data/${walletAddress}`)
             .then(res => res.json())
@@ -42,9 +42,9 @@ function UserDetails() {
             .then(data => setPhotoId(data.result))
     }, [walletAddress]);
 
-console.log(userInfo)
+    console.log(userInfo)
 
-    return ( 
+    return (
         <div style={{ minHeight: '450px' }}>
 
             <div>
@@ -159,7 +159,7 @@ console.log(userInfo)
                                         <input type="text" id='dob' name="dob"
                                             className='form-control bg-transparent text-white'
                                             value={userInfo?.birthday ? userInfo?.birthday : ''}
-                                             />
+                                        />
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -168,7 +168,7 @@ console.log(userInfo)
                                         <input type="text" id='nationality' name="nationality"
                                             className='form-control bg-transparent text-white'
                                             value={userInfo?.nationality ? userInfo?.nationality : ''}
-                                             />
+                                        />
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -248,7 +248,7 @@ console.log(userInfo)
 
                             <div className='col-12 col-lg-6 max-w-100 px-4 mt-2'>
                                 <label for="address proof image">Address Proof Image</label>
-                                <img className='max-w-100' src="https://i.pinimg.com/originals/30/1e/8b/301e8b20ed4c67ba8fdc701322fbfa66.png" alt="address proof" />
+                                <img className='max-w-100' src={photoId?.photoIdFrontImg} alt="address proof" />
                                 <input className='mt-3 ms-1 w-100' type="file" accept='image/*' />
                             </div>
 
