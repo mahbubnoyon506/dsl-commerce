@@ -15,6 +15,11 @@ export default function KycProvider({ children }) {
   const [kycUser, setKycUser] = useState({});
   const [refetch, setRefetch] = useState(false);
   const { user } = useContext(DSLCommerceContext);
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [mobileNoVerify, setmobileNoVerify] = useState(false);
+  const [isVerifiedProfile, setisVerifiedProfile] = useState(false);
+  const [isVerifiedPhotId, setisVerifiedPhotId] = useState(false);
+  const [isVerifiedAddress, setisVerifiedAddress] = useState(false);
 
   //get current user data..........
   useEffect(() => {
@@ -79,15 +84,18 @@ export default function KycProvider({ children }) {
   };
 
   // ************************************User Update ************************************
-  const handleUpdateUser = async (data) => {
+  const handleUpdateUser = async (dataUser) => {
+    console.log(dataUser, "data to update");
     await axios
       .put(
-        `https://backend.dslcommerce.com/api/user-panel/user/update/${user?.walletAddress}`,
-        data
+        `https://backend.dslcommerce.com/api/user-panel/user/update/${kycUser?.walletAddress}`,
+        dataUser
       )
       .then((res) => {
         console.log(res, "inside the update");
         if (res.status === 200) {
+
+          setisVerifiedProfile(!refetch);
           setRefetch(!refetch);
           toast.success("Successfully updated your profile .");
         }
@@ -104,6 +112,32 @@ export default function KycProvider({ children }) {
       });
   };
 
+  // //************************************ User Address ***********************************
+  // const handleAddress = async (data) => {
+  //   await axios
+  //     .post(`https://backend.dslcommerce.com/api/address`, data, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       if (res.status === 200) {
+  //         setRefetch(!refetch);
+  //         toast.success("Successfully updated your address .");
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       swal({
+  //         title: "Attention",
+  //         text: `${err.response.data.message}`,
+  //         icon: "warning",
+  //         button: "OK!",
+  //         className: "modal_class_success",
+  //       });
+  //     });
+  // };
+
+
   //user logout
   const logout = () => {
     setKycUser("");
@@ -118,7 +152,20 @@ export default function KycProvider({ children }) {
         setKycUser,
         kycUser,
         handleUpdateUser,
+        // handleAddress,
+        refetch,
+        setRefetch,
         logout,
+        emailVerified,
+        setEmailVerified,
+        mobileNoVerify,
+        setmobileNoVerify,
+        isVerifiedAddress,
+        isVerifiedPhotId,
+        isVerifiedProfile,
+        setisVerifiedAddress,
+        setisVerifiedPhotId,
+        setisVerifiedProfile
       }}
     >
       {children}

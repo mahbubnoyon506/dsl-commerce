@@ -205,8 +205,8 @@ const AllCategory = () => {
   return (
     <>
 
+      <h5 className="text-white text-start text-uppercase pt-1">CATEGORIES</h5>
       <div className="d-flex flex-column flex-lg-row mb-3 justify-content-lg-between align-items-center">
-        <h5 className="text-white text-start text-uppercase pt-1">CATEGORIES</h5>
         <Button
           variant="contained"
           xs={{ size: "large" }}

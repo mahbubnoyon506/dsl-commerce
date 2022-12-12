@@ -111,8 +111,8 @@ const AllProduct = () => {
 
   return (
     <div className="productBody">
+      <h5 className="text-white mb-3 text-start text-uppercase">PRODUCTS</h5>
       <div className="d-flex flex-column flex-lg-row mb-3 justify-content-lg-between align-items-center">
-        <h5 className="text-white text-start text-uppercase">PRODUCTS</h5>
         <button className="btn btn-primary text-uppercase ">
           <Link to="/admin/create-product" className="text-white">
             add product
@@ -139,7 +139,7 @@ const AllProduct = () => {
                     {" "}
                     <img
                       className="imgProduct"
-                      src={product?.product_images}
+                      src={product?.images?.[0]}
                       alt="Product Img"
                     />
                   </td>
@@ -151,6 +151,7 @@ const AllProduct = () => {
                     {
                       getCategory?.find((cat) => cat?._id === product?.category)?.name
                     }
+                    {/* {product?.category} */}
                   </td>
                   <td className="action">
                     <div className="actionDiv text-left">

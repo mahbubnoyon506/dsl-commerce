@@ -8,7 +8,7 @@ import { time_zone } from "../CountryName/cData";
 import "./KycProfile.css";
 
 const KycProfile = () => {
-  const { kycUser, handleUpdateUser } = useContext(KycContext);
+  const { kycUser, handleUpdateUser, isVerifiedProfile, setisVerifiedProfile } = useContext(KycContext);
 
   const [userName, setUserName] = useState("");
   const [fullName, setFullName] = useState("");
@@ -53,8 +53,8 @@ const KycProfile = () => {
       return;
     }
 
-    const data = {
-      walletAddress: kycUser?.walletAddress,
+    const dataUser = {
+      // walletAddress: kycUser?.walletAddress,
       username: userName,
       name: fullName,
       birthday: dateOfBirth,
@@ -62,9 +62,10 @@ const KycProfile = () => {
       nationality: nationality,
       timezone: timeZ,
       description: aboutMe,
+      ip: "118.179.99.1",
     };
 
-    handleUpdateUser(data);
+    handleUpdateUser(dataUser);
   };
 
   return (

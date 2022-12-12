@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Editor } from "react-draft-wysiwyg";
-import { EditorState, convertToRaw} from 'draft-js';
+import { EditorState, convertToRaw } from 'draft-js';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from 'draftjs-to-html';
 import axios from 'axios';
 import swal from 'sweetalert';
 import './CreateProduct.css';
 import { useNavigate } from 'react-router-dom';
+import { Close } from '@mui/icons-material';
 
 const CreateProduct = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const CreateProduct = () => {
   const description = draftToHtml(convertToRaw(firstValue.getCurrentContent()));
 
   const [selectedImage, setSelectedImage] = useState()
+  const [imageLoader, setimageLoader] = useState(false)
   const [image, setImage] = useState();
 
   var time = new Date().getTime();
@@ -29,27 +31,53 @@ const CreateProduct = () => {
   }, [])
 
 
-  useEffect(() => {
-    if (!selectedImage) {
-      setImage("https://i.ibb.co/Pwt1fRw/9ee03415-e591-4320-bf25-af881b8c27a6.jpg")
-      return
+  // useEffect(() => {
+  //   if (!selectedImage) {
+  //     setImage("https://i.ibb.co/Pwt1fRw/9ee03415-e591-4320-bf25-af881b8c27a6.jpg")
+  //     return
+  //   }
+
+  //   const objectUrl = URL.createObjectURL(selectedImage)
+  //   setImage(objectUrl)
+
+  //   // free memory when ever this component is unmounted
+  //   return () => URL.revokeObjectURL(objectUrl)
+  // }, [selectedImage])
+
+
+
+
+  const changePhoto = async (e) => {
+
+
+    if (e.target.files[0] !== 0) {
+      const newImages = Object.values(e.target.files);
+      console.log(newImages)
+
+      const formData = new FormData();
+      for (const image of newImages) {
+        formData.append("images", image);
+      }
+
+      setimageLoader(true);
+
+      await axios
+        .post(`https://backend.dslcommerce.com/api/product/upload`, formData)
+        .then((res) => {
+          console.log("image form data", res.data)
+          // setImg(res?.data?.images);
+          setSelectedImage(res?.data?.images);
+          setimageLoader(false);
+
+        })
+        .catch((err) => {
+          console.error(err)
+          setimageLoader(false);
+        }
+        );
+
     }
 
-    const objectUrl = URL.createObjectURL(selectedImage)
-    setImage(objectUrl)
-
-    // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl)
-  }, [selectedImage])
-
-  const changePhoto = e => {
-    if (!e.target.files || e.target.files.length === 0) {
-      setSelectedImage(undefined)
-      return
-    }
-
-    // I've kept this example simple by using the first image instead of multiple
-    setSelectedImage(e.target.files[0])
   }
 
 
@@ -66,13 +94,15 @@ const CreateProduct = () => {
     const offeringProduct = e.target.offeringProduct.value;
     const availableProduct = e.target.availableProduct.value;
 
+    console.log(category)
+
 
     // const productData = { productName,img , category,brand,price,color,type,offeringProduct,availableProduct, createdAt, description}
     // console.log(productData)
 
     const formData = new FormData()
     formData.append('productName', productName)
-    formData.append('img', img)
+    formData.append('images', selectedImage)
     formData.append('category', category)
     formData.append('brand', brand)
     formData.append('color', color)
@@ -83,31 +113,64 @@ const CreateProduct = () => {
     formData.append('createdAt', createdAt)
     formData.append('description', description)
 
-    // console.log(formData)
-    await axios.post('https://backend.dslcommerce.com/api/product/', formData)
+
+
+
+
+    const data = {
+      addedBy: "Admin",
+      status: true,
+      productName: productName,
+      images: selectedImage,
+      brand: brand,
+      color: color,
+      category: category,
+      type: type,
+      price: price,
+      offeringProduct: offeringProduct,
+      availableProduct: availableProduct,
+      createdAt: createdAt,
+      description: description,
+
+    }
+    console.log(data)
+    await axios.post('https://backend.dslcommerce.com/api/product/', data)
       .then(res => {
         if (res.status === 200) {
+          console.log("submited", res)
           swal({
-            // title: "Success",
-            text: `${res.data.message}`,
+            title: "Success",
+            // text: `${res.data.message}`,
             icon: "success",
             button: "OK!",
-            className: "modal_class_success swal-text swal-footer",
+            // className: "modal_class_success swal-text swal-footer",
           });
           e.target.reset();
           navigate("/admin/products");
         }
       })
       .catch(error => {
+        console.dir(error)
         swal({
           title: "Attention",
           text: `Something went wrong.Try again`,
           icon: "warning",
           button: "OK!",
-          className: "modal_class_success swal-text swal-footer",
+          // className: "modal_class_success swal-text swal-footer",
         });
       });
   }
+
+
+  const handleRemoveImage = (image, index) => {
+    const filterdImages = selectedImage.filter((img) => img !== image);
+
+    setSelectedImage(filterdImages);
+
+
+  };
+
+
 
   const cancel = () => {
     navigate("/admin/products");
@@ -121,19 +184,51 @@ const CreateProduct = () => {
         <form id="contactForm" className="form" onSubmit={onSubmitForm}>
           <div className="row">
 
-            <div className="mb-3 ms-1">
+            <div className="mb-3 ms-1 d-flex">
 
-              <img src={image} width={200} height={200} className='d-flex justify-content-center' alt="" />
+              {/* {
+                <img src={image} width={200} height={200} className='d-flex justify-content-center me-2' alt="" />}
+              <img src={image} width={200} height={200} className='d-flex justify-content-center' alt="" /> */}
             </div>
+
+
+            <>
+
+              {selectedImage?.length > 0 && (
+                <div className="selected-video-container">
+                  {selectedImage?.map((image, index) => (
+                    <div key={index} className='each-selected-video-for-priview'>
+                      <div className="each-selected-video-container">
+                        <img
+                          className="each-selected-image"
+                          // src={URL.createObjectURL(image)}
+                          src={image}
+                          alt=""
+                        />
+                        <Close
+                          className="selected-image-remove-button"
+                          fontSize="small"
+                          onClick={() => handleRemoveImage(image, index)}
+                        />
+                      </div>
+
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+
+
 
             <div className="col-lg-12 col-md-12">
               <div className="form-group text-white">
-                <p className='mb-1 text-white'>Product Image</p>
+                <p className='mb-1 text-white'>{imageLoader ? "Uploading Images.." : "Product Image"}</p>
                 <input
-                  onChange={changePhoto}
+                  onChange={(e) => changePhoto(e)}
                   type="file"
                   name="img"
-                  accept='image/*'
+                  accept=".png,.jpeg,.jpg"
+                  multiple
                   className="form-control bg-transparent"
                   required
                 />
@@ -207,7 +302,7 @@ const CreateProduct = () => {
                   name="type"
                 >
                   {getCategory.map(category => (
-                    <option value={category?._id}>{category?.name}</option>
+                    <option value={category?.name}>{category?.name}</option>
                   ))}
                   {/* <option>Product Type </option>
                   <option value="cameras">Cameras</option>

@@ -1,8 +1,13 @@
-import React from "react";
+import axios from "axios";
+import React, { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { toast } from "react-hot-toast";
 import { BsStarFill } from "react-icons/bs";
+import swal from "sweetalert";
+import { DSLCommerceContext } from "../../../contexts/DSLCommerceContext";
+import { KycContext } from "../../../contexts/KycContext";
 
 const KycPhotoId = () => {
   const [photoIdType, setPhotoIdType] = useState("photoId");
@@ -15,24 +20,236 @@ const KycPhotoId = () => {
   const [drivingLicenseFrontImg, setDrivingLicenseFrontImage] = useState("");
   const [drivingLicenseBackImg, setDrivingLicenseBackImage] = useState("");
   const [passportImg, setPassportImg] = useState("");
+  const { user, openWalletModal } = useContext(DSLCommerceContext);
+  const { kycUser, handleUpdateUser, setisVerifiedPhotId, isVerifiedPhotId } = useContext(KycContext);
 
-  const onSubmit = (e) => {
+  // const onSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log({
+  //     photoIdType,
+  //     photoIdNumber,
+  //     passportNumber,
+  //     drivingLicenseNumber,
+  //     countryOfIssue,
+  //     photoIdFrontImg,
+  //     photoIdBackImg,
+  //     drivingLicenseFrontImg,
+  //     drivingLicenseBackImg,
+  //     passportImg,
+  //   });
+  // };
+
+
+
+  const handlePhotoIdFrontImage = async (e) => {
+
+    const image = e?.target?.files[0];
+
+    const formdata = new FormData();
+    formdata.append("file", image);
+
+
+    await axios
+      .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+
+          setPhotoIdFrontImage(res.data.result)
+        }
+      })
+      .catch((err) => {
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      });
+  }
+  const handlePhotoIdBackImage = async (e) => {
+    const image = e?.target?.files[0];
+
+    const formdata = new FormData();
+    formdata.append("file", image);
+
+
+    await axios
+      .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+
+          setPhotoIdBackImage(res.data.result)
+        }
+      })
+      .catch((err) => {
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      });
+  }
+  const handleDrivingFrontImage = async (e) => {
+    const image = e?.target?.files[0];
+
+    const formdata = new FormData();
+    formdata.append("file", image);
+
+
+    await axios
+      .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+
+          setDrivingLicenseFrontImage(res.data.result)
+        }
+      })
+      .catch((err) => {
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      });
+
+  }
+  const handleDrivingBackImage = async (e) => {
+    const image = e?.target?.files[0];
+
+    const formdata = new FormData();
+    formdata.append("file", image);
+
+
+    await axios
+      .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+
+          setDrivingLicenseBackImage(res.data.result)
+        }
+      })
+      .catch((err) => {
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      });
+  }
+  const handlePassportImage = async (e) => {
+    const image = e?.target?.files[0];
+
+    const formdata = new FormData();
+    formdata.append("file", image);
+
+
+    await axios
+      .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+
+          setPassportImg(res.data.result)
+        }
+      })
+      .catch((err) => {
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      });
+  }
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    console.log({
-      photoIdType,
-      photoIdNumber,
-      passportNumber,
-      drivingLicenseNumber,
-      countryOfIssue,
-      photoIdFrontImg,
-      photoIdBackImg,
-      drivingLicenseFrontImg,
-      drivingLicenseBackImg,
-      passportImg,
-    });
+
+    const dataObj =
+    {
+      walletAddress: user?.walletAddress,
+      photoId: photoIdNumber,
+      photoIdType: photoIdType,
+      countryOfIssue: countryOfIssue,
+      photoIdFrontImg: photoIdFrontImg,
+      photoIdBackImg: photoIdBackImg,
+      passportNum: passportNumber,
+      passportImg: passportImg,
+      drivingNum: drivingLicenseNumber,
+      drivingFrontImg: drivingLicenseFrontImg,
+      drivingBackImg: drivingLicenseBackImg,
+
+    }
+
+
+
+
+    await axios
+      .post(`https://backend.dslcommerce.com/api/photo-id`, dataObj, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          setisVerifiedPhotId(!isVerifiedPhotId);
+          setPassportImg("")
+          setDrivingLicenseBackImage("")
+          setDrivingLicenseFrontImage("")
+          setPhotoIdBackImage("")
+          setPhotoIdFrontImage("")
+          setCountryOfIssue("")
+          setDrivingLicenseNumber("")
+          setPassportNumber("")
+          // setPhotoIdType("")
+          setPhotoIdNumber("")
+
+          // setRefetch(!refetch);
+          toast.success("Successfully updated your photo id.");
+        }
+      })
+      .catch((err) => {
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      });
   };
 
-  useEffect(() => {}, []);
+
+
+
+  // useEffect(() => {}, []);
 
   return (
     <div className="">
@@ -69,7 +286,7 @@ const KycPhotoId = () => {
               <Form.Control
                 name="photoIdNumber"
                 type="text"
-                placeholder="01687874697"
+                placeholder="Photo ID Number"
                 required
                 onChange={(e) => setPhotoIdNumber(e.target.value)}
               />
@@ -87,7 +304,7 @@ const KycPhotoId = () => {
               <Form.Control
                 name="passportNumber"
                 type="text"
-                placeholder="01687874697"
+                placeholder="Passport Number"
                 required
                 onChange={(e) => setPassportNumber(e.target.value)}
               />
@@ -105,7 +322,7 @@ const KycPhotoId = () => {
               <Form.Control
                 name="drivingLicenseNumber"
                 type="text"
-                placeholder="01687874697"
+                placeholder="Driving license Number"
                 required
                 onChange={(e) => setDrivingLicenseNumber(e.target.value)}
               />
@@ -140,7 +357,7 @@ const KycPhotoId = () => {
             name="countryOfIssue"
             required
             type="text"
-            placeholder="01687874697"
+            placeholder="Country of issue"
             onChange={(e) => setCountryOfIssue(e.target.value)}
           />
 
@@ -160,7 +377,7 @@ const KycPhotoId = () => {
                 type="file"
                 placeholder=""
                 required
-                onChange={(e) => setPhotoIdFrontImage(e?.target?.files[0])}
+                onChange={(e) => handlePhotoIdFrontImage(e)}
               />
               <Form.Label className="text-uppercase mt-4">
                 Photo id back image{" "}
@@ -175,7 +392,7 @@ const KycPhotoId = () => {
                 type="file"
                 placeholder=""
                 required
-                onChange={(e) => setPhotoIdBackImage(e?.target?.files[0])}
+                onChange={(e) => handlePhotoIdBackImage(e)}
               />
             </>
           )}
@@ -197,7 +414,7 @@ const KycPhotoId = () => {
                 accept=".jpg, .jpeg, .png"
                 required
                 onChange={(e) =>
-                  setDrivingLicenseFrontImage(e?.target?.files[0])
+                  handleDrivingFrontImage(e)
                 }
               />
               <Form.Label className="text-uppercase mt-4">
@@ -214,7 +431,7 @@ const KycPhotoId = () => {
                 accept=".jpg, .jpeg, .png"
                 required
                 onChange={(e) =>
-                  setDrivingLicenseBackImage(e?.target?.files[0])
+                  handleDrivingBackImage(e)
                 }
               />
             </>
@@ -236,7 +453,7 @@ const KycPhotoId = () => {
                 accept=".jpg, .jpeg, .png"
                 placeholder=""
                 required
-                onChange={(e) => setPassportImg(e?.target?.files[0])}
+                onChange={(e) => handlePassportImage(e)}
               />
             </>
           )}

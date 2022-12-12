@@ -1,11 +1,12 @@
 import axios from 'axios';
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import PhoneInput from 'react-phone-number-input';
 import { useTimer } from 'react-timer-hook';
 import swal from 'sweetalert';
+import { KycContext } from '../../../contexts/KycContext';
 import MobileVerifyModal from '../../../pages/Profile/MobileVerifyModal';
 
 const KycMobile = ({ expiryTimestamp }) => {
@@ -15,7 +16,8 @@ const KycMobile = ({ expiryTimestamp }) => {
   const [mobile, setMobile] = useState();
   const [disableAfterActivationMobile, setDisableAfterActivationMobile] = useState(false);
   const [disableAfterActivation, setDisableAfterActivation] = useState(false);
-  const [mobileNoVerify, setmobileNoVerify] = useState(false);
+  // const [mobileNoVerify, setmobileNoVerify] = useState(false);
+  const { kycUser, handleUpdateUser, setmobileNoVerify, mobileNoVerify, setRefetch, refetch } = useContext(KycContext);
 
 
   const { seconds, minutes, restart } = useTimer({
@@ -43,6 +45,7 @@ const KycMobile = ({ expiryTimestamp }) => {
         if (res.status === 200) {
           setmobileNoVerify(true);
           setOtpVerify(res.data.message);
+          setRefetch(!refetch);
           swal({
             text: res.data.message,
             icon: "success",
@@ -133,7 +136,7 @@ const KycMobile = ({ expiryTimestamp }) => {
               type="text"
               onChange={setMobile}
               value={mobile}
-              style={{border: 'none'}}
+              style={{ border: 'none' }}
               // disabled={user.mobileNo ? true : false}
               required
               inputProps={{
