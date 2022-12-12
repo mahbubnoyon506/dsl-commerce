@@ -25,7 +25,7 @@ const KYC = () => {
   const { kycUser, handleUpdateUser, emailVerified, mobileNoVerify, isVerifiedAddress, isVerifiedPhotId, isVerifiedProfile } = useContext(KycContext);
   const { user, openWalletModal } = useContext(DSLCommerceContext);
 
-  console.log(userProfileData)
+  console.log(photoIddata, addressData)
   // console.log(kycUser)
 
 
@@ -135,7 +135,7 @@ const KYC = () => {
             </Tab>
             {console.log(isVerifiedPhotId == false, photoIddata?.isVerified)}
             {/* {console.log(isVerifiedPhotId == false, photoIddata?.isVerified == false)} */}
-            
+
             <Tab>
 
               PHOTO ID
@@ -200,11 +200,11 @@ const KYC = () => {
           </TabPanel>
 
           <TabPanel>
-            <KycPhotoId />
+            <KycPhotoId photoIddata={photoIddata} />
           </TabPanel>
 
           <TabPanel>
-            <KycAddress />
+            <KycAddress addressData={addressData} />
           </TabPanel>
 
           <TabPanel>
