@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CheckIcon from '@mui/icons-material/Check';
 import './UserDetails.css'
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 
 
@@ -14,6 +15,10 @@ function UserDetails() {
     const { walletAddress
     } = useParams()
     const [userInfo, setUserInfo] = useState()
+    const [photoId, setPhotoId] = useState()
+
+
+    console.log(walletAddress);
 
     useEffect(() => {
         fetch(`https://backend.dslcommerce.com/api/user-panel/user/${walletAddress}`)
@@ -21,7 +26,12 @@ function UserDetails() {
             .then(data => setUserInfo(data.result))
     }, [walletAddress]);
 
-    console.log(walletAddress, userInfo)
+
+    useEffect(() => {
+        fetch(`https://backend.dslcommerce.com/api/photo-id/data/${walletAddress}`)
+            .then(res => res.json())
+            .then(data => setPhotoId(data.result))
+    }, [walletAddress]);
 
 
 
@@ -258,14 +268,14 @@ function UserDetails() {
                                 <div className="mb-2">
                                     <label htmlFor='photoIdNumber'>Photo Id Number</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='photoIdNumber' name="photoIdNumber" className='form-control bg-transparent text-white' placeholder='photo Id number' />
+                                        <input type="text" id='photoIdNumber' name="photoIdNumber" className='form-control bg-transparent text-white' value={photoId?.photoId} placeholder='photo Id number' />
                                     </div>
                                 </div>
 
                                 <div className="mb-2">
                                     <label htmlFor='photoIdType'>Photo Id Type</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='photoIdType' name="photoIdType" className='form-control bg-transparent text-white' placeholder='photo Id type' />
+                                        <input type="text" id='photoIdType' value={photoId?.photoIdType} name="photoIdType" className='form-control bg-transparent text-white' placeholder='photo Id type' />
                                     </div>
                                 </div>
                             </div>
@@ -273,7 +283,7 @@ function UserDetails() {
 
                             <div className='col-12 col-lg-6 px-4 mt-2'>
                                 <label for="address proof image">Front Image</label>
-                                <img src="https://i.pinimg.com/originals/30/1e/8b/301e8b20ed4c67ba8fdc701322fbfa66.png" alt="address proof" />
+                                <img src={photoId?.photoIdFrontImg} alt="address proof" />
                                 <input className='mt-3 w-100' type="file" accept='image/*' />
                             </div>
 
