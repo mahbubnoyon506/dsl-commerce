@@ -55,7 +55,10 @@ const CustomerOrders = () => {
   }, []);
   return (
     <div className="productBody">
-      <h5 className="text-white-50 text-start pb-2 text-uppercase"> User ORDERS</h5>
+      <h5 className="text-white-50 text-start pb-2 text-uppercase">
+        {" "}
+        User ORDERS
+      </h5>
       <Row className="g-5">
         <Col className="py-2">
           <Card className="customerCard">
@@ -74,9 +77,9 @@ const CustomerOrders = () => {
                     <option>Status</option>
                     <option value="pending">Pending</option>
                     <option value="delivered">Delivered</option>
-                    <option value="processing">Processing</option>
+                    {/* <option value="processing">Processing</option> */}
                   </select>
-                  <select
+                  {/* <select
                     className="py-2 pl-2 border border-white rounded w-100 w-lg-25"
                     style={{ cursor: "pointer", borderRadius: "5px" }}
                   >
@@ -84,7 +87,7 @@ const CustomerOrders = () => {
                     <option value="50">50</option>
                     <option value="100">100</option>
                     <option value="200">200</option>
-                  </select>
+                  </select> */}
                   <button className="w-100 w-lg-25 rounded btn btn-success fs-5">
                     Download All Orders{" "}
                     <AiOutlineCloudDownload className="fs-3" />

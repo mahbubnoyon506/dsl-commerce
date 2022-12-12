@@ -25,20 +25,18 @@ const RecentOrders = () => {
   // ]
 
   const refetchOrder = async () => {
-    await axios.get('https://backend.dslcommerce.com/api/order')
-      .then(res => {
-        if (res.status === 200) {
-          setAllOrder(res.data)
-        } else {
-          return <p>There's an error found.</p>
-        }
-      })
-  }
+    await axios.get("https://backend.dslcommerce.com/api/order").then((res) => {
+      if (res.status === 200) {
+        setAllOrder(res.data);
+      } else {
+        return <p>There's an error found.</p>;
+      }
+    });
+  };
 
   useEffect(() => {
-    refetchOrder()
+    refetchOrder();
   }, []);
-
 
   return (
     <div className="productBody">
@@ -48,18 +46,22 @@ const RecentOrders = () => {
           <Table className="text-white-50 productDataTable ">
             <thead>
               <tr>
-                <th className="text-center">Order Time</th>
-                <th className="text-center">Product Name</th>
-                <th className="text-center">Customer Name</th>
-                <th className="text-center">Phone</th>
-                <th className="text-center ">Payment Method</th>
-                <th className="text-center ">Order Amount</th>
-                <th className="text-center">Status</th>
+                <th className="">Order Time</th>
+                <th className="">Product Name</th>
+                <th className="">Customer Name</th>
+                <th className="">Mobile Number</th>
+                <th className=" ">Payment Method</th>
+                <th className=" ">Order Amount</th>
+                <th className="">Order Status</th>
               </tr>
             </thead>
             <tbody>
               {allOrder?.slice(0, recentNum).map((order) => (
-                <RecentOrderTable key={order._id} order={order} refetchOrder={refetchOrder}></RecentOrderTable>
+                <RecentOrderTable
+                  key={order._id}
+                  order={order}
+                  refetchOrder={refetchOrder}
+                ></RecentOrderTable>
               ))}
             </tbody>
           </Table>
