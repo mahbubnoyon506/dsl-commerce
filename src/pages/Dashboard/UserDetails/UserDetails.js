@@ -8,7 +8,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import './UserDetails.css'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-
+import { format } from 'date-fns';
 
 
 function UserDetails() {
@@ -34,7 +34,7 @@ function UserDetails() {
     }, [walletAddress]);
 
 
-    console.log(userAddress)
+    console.log("userAddress", userAddress)
 
     useEffect(() => {
         fetch(`https://backend.dslcommerce.com/api/photo-id/data/${walletAddress}`)
@@ -42,7 +42,11 @@ function UserDetails() {
             .then(data => setPhotoId(data.result))
     }, [walletAddress]);
 
+    const registrationDate = new Date(userInfo?.createdAt).toLocaleString().split(",")?.[0];
     console.log(userInfo)
+
+
+
 
     return (
         <div style={{ minHeight: '450px' }}>
@@ -67,7 +71,7 @@ function UserDetails() {
                                         <input type="text" id='membershipId' name="membershipId"
                                             className='form-control bg-transparent text-white'
                                             placeholder='membership id'
-                                            value={userInfo?.memberId ? userInfo?.memberId : ''} />
+                                            defaultValue={userInfo?.memberId ? userInfo?.memberId : ''} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -76,7 +80,7 @@ function UserDetails() {
                                         <input type="text" id='fullName' name="fullName"
                                             className='form-control bg-transparent text-white'
                                             placeholder='full name'
-                                            value={userInfo?.name ? userInfo?.name : ''} />
+                                            defaultValue={userInfo?.name ? userInfo?.name : ''} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -85,7 +89,7 @@ function UserDetails() {
                                         <input type="text" id='userName' name="userName"
                                             className='form-control bg-transparent text-white'
                                             placeholder='user name'
-                                            value={userInfo?.username ? userInfo?.username : ''} />
+                                            defaultValue={userInfo?.username ? userInfo?.username : ''} />
                                     </div>
                                 </div>
                                 <div className="mb-2 d-flex py-2">
@@ -93,17 +97,19 @@ function UserDetails() {
 
                                     <form action="" className=' ps-2'>
                                         <select style={{ backgroundColor: '#272D47', border: '1px solid #fff' }} className='p-1 text-white  rounded'>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="Others">Others</option>
+                                            <option value="Male" selected={userInfo?.gender == "Male" && true}>Male</option>
+                                            <option value="Female" selected={userInfo?.gender == "Female" && true}>Female</option>
+                                            <option value="Others" selected={userInfo?.gender == "Others" && true}>Others</option>
                                         </select>
                                     </form>
 
                                 </div>
                                 <div className="mb-2">
-                                    <label htmlFor='registerDate'>Register Date</label>
+                                    <label htmlFor='registerDate'>Register Dates</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='registerDate' name="registerDate"
+                                        <input
+                                            defaultValue={registrationDate}
+                                            type="text" id='registerDate' name="registerDate"
                                             className='form-control bg-transparent text-white'
                                             placeholder='register date  ' />
                                     </div>
@@ -113,17 +119,17 @@ function UserDetails() {
                                     <div className='d-flex  input-group'>
                                         <input type="text" id='lastLoginIp' name="lastLoginIp"
                                             className='form-control bg-transparent text-white'
-                                            value={userInfo?.ip ? userInfo?.ip : ''} />
+                                            defaultValue={userInfo?.ip ? userInfo?.ip : ''} />
                                     </div>
                                 </div>
-                                <div className="mb-2">
+                                {/* <div className="mb-2">
                                     <label htmlFor='remark'>Remark</label>
                                     <div className='d-flex  input-group'>
                                         <input type="text" id='remark' name="remark"
                                             className='form-control bg-transparent text-white'
                                             placeholder='remark' />
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
 
 
@@ -141,16 +147,17 @@ function UserDetails() {
                                         <input type="email" id='email' name="email"
                                             className='form-control bg-transparent text-white'
                                             placeholder='email '
-                                            value={userInfo?.email ? userInfo?.email : ''} />
+                                            defaultValue={userInfo?.email ? userInfo?.email : ''} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
                                     <label htmlFor='mobile'>Mobile <CheckIcon
                                         style={{ color: 'green', fontSize: '20px' }} /></label>
                                     <div className='d-flex  input-group'>
-                                        <input type="number" id='mobile' name="mobile"
+                                        <input type="text" id='mobile' name="mobile"
                                             className='form-control bg-transparent text-white'
-                                            value={userInfo?.mobile ? userInfo?.mobile : ''} />
+                                            value={userInfo?.mobile} />
+                                        {console.log("userInfo?.mobile", userInfo?.mobile)}
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -158,7 +165,7 @@ function UserDetails() {
                                     <div className='d-flex  input-group'>
                                         <input type="text" id='dob' name="dob"
                                             className='form-control bg-transparent text-white'
-                                            value={userInfo?.birthday ? userInfo?.birthday : ''}
+                                            defaultValue={userInfo?.birthday ? userInfo?.birthday : ''}
                                         />
                                     </div>
                                 </div>
@@ -167,18 +174,18 @@ function UserDetails() {
                                     <div className='d-flex  input-group'>
                                         <input type="text" id='nationality' name="nationality"
                                             className='form-control bg-transparent text-white'
-                                            value={userInfo?.nationality ? userInfo?.nationality : ''}
+                                            defaultValue={userInfo?.nationality ? userInfo?.nationality : ''}
                                         />
                                     </div>
                                 </div>
-                                <div className="mb-2">
+                                {/* <div className="mb-2">
                                     <label htmlFor='lastLogin'>Last Login</label>
                                     <div className='d-flex  input-group'>
                                         <input type="text" id='lastLogin' name="lastLogin"
                                             className='form-control bg-transparent text-white'
                                             placeholder='last login' />
                                     </div>
-                                </div>
+                                </div> */}
 
                             </div>
 
@@ -188,7 +195,7 @@ function UserDetails() {
                                         <button className=' btn btn-primary  px-4 me-2 rounded text-uppercase '>UPDATE</button>
                                     </div>
                                     <div className='text-center pt-2'>
-                                        <button className=' btn btn-warning px-4 me-2 rounded text-uppercase'>DISABLE </button>
+                                        <button className=' btn btn-warning px-4 me-2 rounded text-uppercase'>PENDING </button>
                                     </div>
                                     <div className='text-center pt-2'>
                                         <button className=' btn btn-success px-4 me-2 rounded text-uppercase'>VERIFY</button>
@@ -221,26 +228,26 @@ function UserDetails() {
                                 <div className="mb-2">
                                     <label htmlFor='address1'>Address 1</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='address1' name="address1" className='form-control bg-transparent text-white' value={userAddress?.address1} />
+                                        <input type="text" id='address1' name="address1" className='form-control bg-transparent text-white' defaultValue={userAddress?.address1} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
                                     <label htmlFor='address2'>Address 2</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='postaladdress2Code' name="address2" className='form-control bg-transparent text-white' value={userAddress?.address2} />
+                                        <input type="text" id='postaladdress2Code' name="address2" className='form-control bg-transparent text-white' defaultValue={userAddress?.address2} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
                                     <label htmlFor='postalCode'>Postal Code</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='postalCode' name="postalCode" className='form-control bg-transparent text-white' value={userAddress?.zipCode} />
+                                        <input type="text" id='postalCode' name="postalCode" className='form-control bg-transparent text-white' defaultValue={userAddress?.zipCode} />
                                     </div>
                                 </div>
 
                                 <div className="mb-2">
                                     <label htmlFor='country'>Country</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='country' name="country" className='form-control bg-transparent text-white' value={userAddress?.country} />
+                                        <input type="text" id='country' name="country" className='form-control bg-transparent text-white' defaultValue={userAddress?.country} />
                                     </div>
                                 </div>
 
@@ -278,14 +285,14 @@ function UserDetails() {
                                 <div className="mb-2">
                                     <label htmlFor='photoIdNumber'>Photo Id Number</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='photoIdNumber' name="photoIdNumber" className='form-control bg-transparent text-white' value={photoId?.photoId} placeholder='photo Id number' />
+                                        <input type="text" id='photoIdNumber' name="photoIdNumber" className='form-control bg-transparent text-white' defaultValue={photoId?.photoId} placeholder='photo Id number' />
                                     </div>
                                 </div>
 
                                 <div className="mb-2">
                                     <label htmlFor='photoIdType'>Photo Id Type</label>
                                     <div className='d-flex  input-group'>
-                                        <input type="text" id='photoIdType' value={photoId?.photoIdType} name="photoIdType" className='form-control bg-transparent text-white' placeholder='photo Id type' />
+                                        <input type="text" id='photoIdType' defaultValue={photoId?.photoIdType} name="photoIdType" className='form-control bg-transparent text-white' placeholder='photo Id type' />
                                     </div>
                                 </div>
                             </div>

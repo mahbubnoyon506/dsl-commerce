@@ -25,7 +25,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useRef } from "react";
-
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Menu from '@mui/material/Menu';
 
 
@@ -146,6 +146,7 @@ function Dashboard(props) {
               <MdOutlineUnsubscribe style={{ fontSize: "20px" }} />
             </span>
             MERCHANTS
+            <ArrowDropDownIcon />
           </NavLink>
 
           <Menu

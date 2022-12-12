@@ -39,16 +39,17 @@ const KycAddress = ({ addressData }) => {
 
     const data = {
       walletAddress: user?.walletAddress,
-      address1: address1,
-      address2: address2,
-      city: city,
-      state: state,
-      country: country,
-      zipCode: zipCode,
-      file: file
+      address1: address1 || addressData?.address1,
+      address2: address2 || addressData?.address2,
+      city: city || addressData?.city,
+      state: state || addressData?.state,
+      country: country || addressData?.country,
+      zipCode: zipCode || addressData?.zipCode,
+      file: file || addressData?.file
     };
 
 
+    console.log(data)
     await axios
       .post(`https://backend.dslcommerce.com/api/address`, data, {
         headers: {
@@ -57,6 +58,7 @@ const KycAddress = ({ addressData }) => {
       })
       .then((res) => {
         if (res.status === 200) {
+          console.log(res)
           setisVerifiedAddress(!isVerifiedAddress);
           // setRefetch(!refetch);
           toast.success("Successfully updated your address .");
@@ -225,7 +227,7 @@ const KycAddress = ({ addressData }) => {
           type="submit
         
         ">
-          SAVEs
+          SAVE
         </Button>
 
       </Form>
