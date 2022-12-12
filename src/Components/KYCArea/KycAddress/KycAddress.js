@@ -9,7 +9,7 @@ import { KycContext } from '../../../contexts/KycContext';
 import { countryName } from '../CountryName/cData';
 import './KycAddress.css'
 
-const KycAddress = () => {
+const KycAddress = ({ addressData }) => {
 
   const { kycUser, handleAddress, refetch, setRefetch, isVerifiedAddress, setisVerifiedAddress } = useContext(KycContext)
   const { user, openWalletModal } = useContext(DSLCommerceContext);
@@ -23,7 +23,7 @@ const KycAddress = () => {
   const [file, setFile] = useState("");
 
 
-
+  console.log("addressData", addressData)
 
   useEffect(() => {
     setAddress1(kycUser?.address1)
@@ -186,7 +186,7 @@ const KycAddress = () => {
           <>
 
             {file && (
-              <div className="selected-video-container">
+              <div className="selected-video-container mb-3">
                 {/* {selectedImage?.map((image, index) => ( */}
                 <div
                   // key={index}
@@ -225,7 +225,7 @@ const KycAddress = () => {
           type="submit
         
         ">
-          SAVE
+          SAVEs
         </Button>
 
       </Form>

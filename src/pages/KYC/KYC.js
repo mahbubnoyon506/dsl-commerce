@@ -33,7 +33,7 @@ const KYC = () => {
   } = useContext(KycContext);
   const { user, openWalletModal } = useContext(DSLCommerceContext);
 
-  console.log(userProfileData);
+  console.log(photoIddata, addressData);
   // console.log(kycUser)
 
   useEffect(() => {
@@ -245,11 +245,11 @@ const KYC = () => {
           </TabPanel>
 
           <TabPanel>
-            <KycPhotoId />
+            <KycPhotoId photoIddata={photoIddata} />
           </TabPanel>
 
           <TabPanel>
-            <KycAddress />
+            <KycAddress addressData={addressData} />
           </TabPanel>
 
           <TabPanel>

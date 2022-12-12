@@ -10,7 +10,7 @@ import swal from "sweetalert";
 import { DSLCommerceContext } from "../../../contexts/DSLCommerceContext";
 import { KycContext } from "../../../contexts/KycContext";
 
-const KycPhotoId = () => {
+const KycPhotoId = ({ photoIddata }) => {
   const [photoIdType, setPhotoIdType] = useState("photoId");
   const [photoIdNumber, setPhotoIdNumber] = useState("");
   const [passportNumber, setPassportNumber] = useState("");
@@ -30,23 +30,7 @@ const KycPhotoId = () => {
   const { user, openWalletModal } = useContext(DSLCommerceContext);
   const { kycUser, handleUpdateUser, setisVerifiedPhotId, isVerifiedPhotId } = useContext(KycContext);
 
-  // const onSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log({
-  //     photoIdType,
-  //     photoIdNumber,
-  //     passportNumber,
-  //     drivingLicenseNumber,
-  //     countryOfIssue,
-  //     photoIdFrontImg,
-  //     photoIdBackImg,
-  //     drivingLicenseFrontImg,
-  //     drivingLicenseBackImg,
-  //     passportImg,
-  //   });
-  // };
-
-
+  console.log("photoIddata", photoIddata)
 
   const handlePhotoIdFrontImage = async (e) => {
 
@@ -314,6 +298,7 @@ const KycPhotoId = () => {
                 />
               </Form.Label>
               <Form.Control
+                defaultValue={photoIddata?.photoId}
                 name="photoIdNumber"
                 type="text"
                 placeholder="Photo ID Number"
@@ -332,6 +317,7 @@ const KycPhotoId = () => {
                 />
               </Form.Label>
               <Form.Control
+                defaultValue={photoIddata?.passportNum}
                 name="passportNumber"
                 type="text"
                 placeholder="Passport Number"
@@ -350,6 +336,7 @@ const KycPhotoId = () => {
                 />
               </Form.Label>
               <Form.Control
+                defaultValue={photoIddata?.drivingNum}
                 name="drivingLicenseNumber"
                 type="text"
                 placeholder="Driving license Number"
@@ -371,9 +358,9 @@ const KycPhotoId = () => {
             onChange={(e) => setPhotoIdType(e.target.value)}
             aria-label="Default select example"
           >
-            <option value="photoId">Photo ID</option>
-            <option value="passport">Passport</option>
-            <option value="drivingLicense">Driving license</option>
+            <option value="photoId" selected={photoIddata.photoIdType == "photoId" && true}>Photo ID</option>
+            <option value="passport" selected={photoIddata.photoIdType == "passport" && true}>Passport</option>
+            <option value="drivingLicense" selected={photoIddata.photoIdType == "drivingLicense" && true}>Driving license</option>
           </Form.Select>
 
           <Form.Label className="text-uppercase mt-4">
@@ -384,6 +371,7 @@ const KycPhotoId = () => {
             />
           </Form.Label>
           <Form.Control
+            defaultValue={photoIddata?.countryOfIssue}
             name="countryOfIssue"
             required
             type="text"
