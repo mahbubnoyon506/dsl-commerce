@@ -5,13 +5,23 @@ import Search from "../../../Components/Widgets/Search";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Pagination from "../../../Components/Pagination/Pagination";
 import { AllCustomers } from "./customerData";
+import axios from "axios";
+import swal from "sweetalert";
 
 const FilterableTable = require("react-filterable-table");
 
-const Customers = () => {
-  const [allCustomers, setAllCustomers] = useState(AllCustomers);
 
+
+const Customers = () => {
+  const [allCustomers, setAllCustomers] = useState([]);
+  const [refetch,setRefetch] = useState(false)
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch(`https://backend.dslcommerce.com/api/users/all`)
+      .then(res => res.json())
+      .then(data => setAllCustomers(data))
+  }, [refetch])
 
   const search = (e, searchText) => {
     e.preventDefault();
@@ -32,9 +42,9 @@ const Customers = () => {
   //****************************** Pagination Start ******************************/
   const { customerPerPage } = useParams();
   const [getPage, setPage] = useState(1);
-  const [show, setShow] = useState(5);
+  const [show, setShow] = useState(10);
   const [lastPage, setLastPage] = useState(0);
-  const [sliceOrders, setSliceOrders] = useState([]);
+  const [sliceCustomers, setSliceCustomers] = useState([]);
   // console.log(sliceProducts)
 
   useEffect(() => {
@@ -51,11 +61,11 @@ const Customers = () => {
       );
       console.log("getSlicingCategory");
       console.log(getSlicingCategory);
-      setSliceOrders([...getSlicingCategory]);
+      setSliceCustomers([...getSlicingCategory]);
       setPage(parseInt(page));
     } else {
       const getSlicingProduct = allCustomers.slice(0, show);
-      setSliceOrders([...getSlicingProduct]);
+      setSliceCustomers([...getSlicingProduct]);
     }
   }, [allCustomers, show, customerPerPage]);
 
@@ -64,6 +74,41 @@ const Customers = () => {
     setPage(parseInt(jump));
   };
   //****************************** Pagination End ******************************/
+
+  //****************************** Delete ******************************/
+  const handleDelete = (walletAddress) => {
+    console.log(walletAddress)
+    const confirmDelete = window.confirm(
+      "Are you sure, you want to delete this Product?"
+    );
+    if (confirmDelete) {
+      axios
+        .delete(`https://backend.dslcommerce.com/api/users/${walletAddress}`)
+        .then((res) => {
+          if (res.status === 200) {
+            // alert(res.data.message);
+            swal({
+              // title: "Success",
+              text: res.data.message,
+              icon: "success",
+              button: "OK!",
+              className: "modal_class_success",
+            });
+            setAllCustomers(allCustomers.filter((c) => c.walletAddress !== walletAddress));
+          }
+        })
+        .catch((error) => {
+          // alert(error.response.data.message);
+          swal({
+            title: "Attention",
+            text: error.response.data.message,
+            icon: "warning",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+        });
+    }
+  }
 
   return (
     <>
@@ -84,19 +129,28 @@ const Customers = () => {
               </tr>
             </thead>
             <tbody>
-              {/* {sliceOrders?.map((sliceOrder) => (
-                <tr className="tableRow" key={sliceOrder?.USER_ID}>
+              {sliceCustomers?.map((sliceCustomer) => (
+                <tr className="tableRow" key={sliceCustomer?.USER_ID}>
                   <td className="text-left text-capitalize productHidden">
-                    {sliceOrder.USER_ID}
+                    {sliceCustomer?.myReferralCode ? (
+                      <div>{sliceCustomer?.myReferralCode}</div>
+                    ) : (
+                      <div>User id</div>
+                    )}
                   </td>
                   <td className="text-left productHidden">
-                    {sliceOrder.WALLET_ADDRESS}
-                  </td>
-                  <td className="text-left text-capitalize productHidden">
-                    {sliceOrder.PHONE}
+                    {sliceCustomer?.walletAddress ? (
+                      <div>{sliceCustomer?.walletAddress}</div>
+                    ) : (
+                      <div>WalletAddress</div>
+                    )}
                   </td>
                   <td className="text-left text-capitalize ">
-                    {sliceOrder.EMAIL}
+                    {sliceCustomer?.email ? (
+                      <div>{sliceCustomer?.email}</div>
+                    ) : (
+                      <div>Email Address</div>
+                    )}
                   </td>
                   <td className="action col-sm-12 d-flex">
                     <div className="actionDiv text-left">
@@ -106,20 +160,23 @@ const Customers = () => {
                       >
                         <i className="fas fa-eye"></i>
                       </button>
-                      <button className="deleteBtn">
+                      <button 
+                      className="deleteBtn" 
+                      onClick={() => handleDelete(sliceCustomer?.walletAddress)}
+                      >
                         <i className="fas fa-trash"></i>
                       </button>
                     </div>
                   </td>
                 </tr>
-              ))} */}
+              ))}
             </tbody>
           </Table>
         </div>
       </div>
       {/*********************************** Pagination  Start***********************************/}
       <div className="">
-        {sliceOrders?.length ? (
+        {sliceCustomers?.length ? (
           <Pagination
             lastPage={lastPage}
             page={getPage}
@@ -132,52 +189,6 @@ const Customers = () => {
 
       {/*********************************** Pagination  End *************************************/}
 
-      {/* <div className="row">
-        <div className="col-lg-6 col-md-6">
-          <p>Showing 4 of 4</p>
-        </div>
-        <div className="col-lg-6 col-md-6">
-          <div className="pagination-area float-end">
-            <a href="#" className="prev page-numbers">
-              <i className="flaticon-left-arrow"></i>
-            </a>
-            <a href="#" className="page-numbers current">
-              1
-            </a>
-            <a href="#" className="next page-numbers">
-              <i className="flaticon-right-arrow"></i>
-            </a>
-          </div>
-        </div>
-      </div> */}
-
-      {/* <div className="pagination-area">
-        <Link to={`/page/${page - 1}`} className="prev page-numbers">
-          <i className="flaticon-left-arrow"></i>
-        </Link>
-
-        {[...Array(pages).keys()].map((x) => (
-          <div key={x + 1}>
-            <Link
-              to={
-                keyword ? `/search/${keyword}/page/${x + 1}` : `/page/${x + 1}`
-              }
-            >
-              <span
-                className={
-                  x + 1 === page ? "current page-numbers" : "page-numbers"
-                }
-              >
-                {x + 1}
-              </span>
-            </Link>
-          </div>
-        ))}
-
-        <Link to={`/page/${page + 1}`} className="next page-numbers">
-          <i className="flaticon-right-arrow"></i>
-        </Link>
-      </div> */}
     </>
   );
 };
