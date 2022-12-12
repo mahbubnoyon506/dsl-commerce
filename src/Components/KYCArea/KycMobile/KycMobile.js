@@ -1,14 +1,14 @@
-import axios from 'axios';
-import React, { useContext } from 'react'
-import { useState } from 'react';
-import { Button } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
-import { toast } from 'react-hot-toast';
-import PhoneInput from 'react-phone-number-input';
-import { useTimer } from 'react-timer-hook';
-import swal from 'sweetalert';
-import { KycContext } from '../../../contexts/KycContext';
-import MobileVerifyModal from '../../../pages/Profile/MobileVerifyModal';
+import axios from "axios";
+import React, { useContext } from "react";
+import { useState } from "react";
+import { Button } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+import { toast } from "react-hot-toast";
+import PhoneInput from "react-phone-number-input";
+import { useTimer } from "react-timer-hook";
+import swal from "sweetalert";
+import { KycContext } from "../../../contexts/KycContext";
+import MobileVerifyModal from "../../../pages/Profile/MobileVerifyModal";
 
 const KycMobile = ({ expiryTimestamp }) => {
   const [otpCode, setOtpCode] = useState();
@@ -16,11 +16,18 @@ const KycMobile = ({ expiryTimestamp }) => {
   const [otpVerify, setOtpVerify] = useState();
   const [isError, setError] = useState(false);
   const [mobile, setMobile] = useState();
-  const [disableAfterActivationMobile, setDisableAfterActivationMobile] = useState(false);
+  const [disableAfterActivationMobile, setDisableAfterActivationMobile] =
+    useState(false);
   const [disableAfterActivation, setDisableAfterActivation] = useState(false);
   // const [mobileNoVerify, setmobileNoVerify] = useState(false);
-  const { kycUser, setmobileNoVerify, mobileNoVerify, setRefetch, refetch, setisVerifiedProfile } = useContext(KycContext);
-
+  const {
+    kycUser,
+    setmobileNoVerify,
+    mobileNoVerify,
+    setRefetch,
+    refetch,
+    setisVerifiedProfile,
+  } = useContext(KycContext);
 
   const { seconds, minutes, restart } = useTimer({
     expiryTimestamp,
@@ -123,15 +130,13 @@ const KycMobile = ({ expiryTimestamp }) => {
     }
   };
 
-
   const handleUpdateUser = async () => {
-
     const data = {
       mobile: mobile,
-      otp: otpCode
-    }
+      otp: otpCode,
+    };
 
-    console.log(data)
+    console.log(data);
 
     await axios
       .put(
@@ -141,7 +146,6 @@ const KycMobile = ({ expiryTimestamp }) => {
       .then((res) => {
         console.log(res, "inside the update");
         if (res.status === 200) {
-
           setisVerifiedProfile(!refetch);
           setRefetch(!refetch);
           toast.success("Successfully updated your profile .");
@@ -162,51 +166,66 @@ const KycMobile = ({ expiryTimestamp }) => {
 
   return (
     <div>
-      <Form className='default-width-container'>
+      <Form className="default-width-container">
         <Form.Group className="mb-3 customStyle" controlId="formBasicEmail">
-          <Form.Label >mobile number <span>★</span> </Form.Label>
-          <div className='d-flex'>
+          <Form.Label>
+            mobile number <span>★</span>{" "}
+          </Form.Label>
+          <div className="d-flex">
             <PhoneInput
               international
               defaultCountry="SG"
               countryCallingCodeEditable={true}
-              className='form-control'
-
+              className="form-control"
               type="text"
               onChange={setMobile}
               value={mobile}
-              style={{ border: 'none' }}
+              style={{ border: "none" }}
               // disabled={user.mobileNo ? true : false}
               required
               inputProps={{
-                name: 'phone',
+                name: "phone",
                 required: true,
-                autoFocus: true
+                autoFocus: true,
               }}
             />
             <Button
               type="button"
               onClick={handleVerifyMobile}
               disabled={
-                mobile?.length === 0 ||
-                  disableAfterActivationMobile
+                mobile?.length === 0 || disableAfterActivationMobile
                   ? true
                   : false
               }
               className={
-                (mobile?.length === 0 ||
-                  disableAfterActivationMobile) &&
+                (mobile?.length === 0 || disableAfterActivationMobile) &&
                 "border bg-secondary text-white"
               }
-              style={{ marginLeft: '-68px' }}
-              variant="secondary">Verify</Button>
+              style={{
+                marginLeft: "-68px",
+                borderBottomLeftRadius: "0px",
+                borderTopLeftRadius: "0px",
+              }}
+              variant="secondary"
+            >
+              Verify
+            </Button>
           </div>
-          {
-            !mobileNoVerify ? <Button className='mt-4 text-uppercase' variant="primary" disabled> Submit</Button> :
-              <Button
-                onClick={handleUpdateUser}
-                className='mt-4 text-uppercase' variant="primary"> Submit</Button>
-          }
+          {!mobileNoVerify ? (
+            <Button className="mt-4 text-uppercase" variant="primary" disabled>
+              {" "}
+              Submit
+            </Button>
+          ) : (
+            <Button
+              onClick={handleUpdateUser}
+              className="mt-4 text-uppercase"
+              variant="primary"
+            >
+              {" "}
+              Submit
+            </Button>
+          )}
         </Form.Group>
       </Form>
       <MobileVerifyModal
@@ -225,7 +244,7 @@ const KycMobile = ({ expiryTimestamp }) => {
         setDisableAfterActivationMobile={setDisableAfterActivationMobile}
       />
     </div>
-  )
-}
+  );
+};
 
-export default KycMobile
+export default KycMobile;

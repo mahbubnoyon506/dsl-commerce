@@ -23,18 +23,18 @@
   color: #fff;
   background-color: #415059;
   border-color: transparent;
-  border-bottom: 3px solid #992C95;
+  border-bottom: 3px solid #992c95;
 }
 
 .nav-tabs .nav-link.active {
   color: #fff;
   background-color: #415059;
-  border-bottom: 3px solid #992C95;
+  border-bottom: 3px solid #992c95;
 }
 
 .nav-tabs .nav-link:focus,
 .nav-tabs .nav-link:hover {
-  border-bottom: 3px solid #992C95;
+  border-bottom: 3px solid #992c95;
   color: #fff;
 }
 
@@ -42,4 +42,8 @@
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
   border: none;
+}
+
+.react-tabs__tab:focus:after {
+  content: unset;
 }
