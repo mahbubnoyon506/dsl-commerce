@@ -1,3 +1,4 @@
+import { Close } from "@mui/icons-material";
 import axios from "axios";
 import React, { useContext } from "react";
 import { useEffect } from "react";
@@ -246,7 +247,27 @@ const KycPhotoId = () => {
       });
   };
 
+  const handleRemoveImage = (img) => {
 
+    if (img == "photoIdFrontImg") {
+
+      setPhotoIdFrontImage("")
+    }
+    else if (img == "photoIdBackImage") {
+      setPhotoIdBackImage("");
+    }
+    else if (img == "drivingLicenseFrontImg") {
+      setDrivingLicenseFrontImage("")
+    }
+    else if (img == "drivingLicenseBackImg") {
+      setDrivingLicenseBackImage("")
+    }
+    else if (img == "passportImg") {
+      setPassportImg("")
+    }
+
+
+  };
 
 
   // useEffect(() => {}, []);
@@ -364,6 +385,37 @@ const KycPhotoId = () => {
           {/* If the photo id type is photo id */}
           {photoIdType === "photoId" && (
             <>
+
+              <>
+                {console.log(photoIdFrontImg)}
+                {photoIdFrontImg && (
+                  <div className="selected-video-container mt-4">
+                    {/* {selectedImage?.map((image, index) => ( */}
+                    <div
+                      // key={index}
+                      className='each-selected-video-for-priview'>
+                      <div className="each-selected-video-container">
+                        <img
+                          className="each-selected-image"
+                          // src={URL.createObjectURL(image)}
+                          src={photoIdFrontImg}
+                          alt=""
+                        />
+                        <Close
+                          className="selected-image-remove-button"
+                          fontSize="small"
+                          onClick={() => handleRemoveImage("photoIdFrontImage")}
+                        />
+                      </div>
+
+                    </div>
+                    {/* ))} */}
+                  </div>
+                )}
+              </>
+
+
+
               <Form.Label className="text-uppercase mt-4">
                 Photo id front image{" "}
                 <BsStarFill
@@ -379,6 +431,35 @@ const KycPhotoId = () => {
                 required
                 onChange={(e) => handlePhotoIdFrontImage(e)}
               />
+
+              <>
+
+                {photoIdBackImg && (
+                  <div className="selected-video-container mt-4">
+                    {/* {selectedImage?.map((image, index) => ( */}
+                    <div
+                      // key={index}
+                      className='each-selected-video-for-priview'>
+                      <div className="each-selected-video-container">
+                        <img
+                          className="each-selected-image"
+                          // src={URL.createObjectURL(image)}
+                          src={photoIdBackImg}
+                          alt=""
+                        />
+                        <Close
+                          className="selected-image-remove-button"
+                          fontSize="small"
+                          onClick={() => handleRemoveImage("photoIdBackImage")}
+                        />
+                      </div>
+
+                    </div>
+                    {/* ))} */}
+                  </div>
+                )}
+              </>
+
               <Form.Label className="text-uppercase mt-4">
                 Photo id back image{" "}
                 <BsStarFill
@@ -400,6 +481,37 @@ const KycPhotoId = () => {
           {/* If the photo id type is driving license */}
           {photoIdType === "drivingLicense" && (
             <>
+
+              <>
+
+                {drivingLicenseFrontImg && (
+                  <div className="selected-video-container mt-4">
+                    {/* {selectedImage?.map((image, index) => ( */}
+                    <div
+                      // key={index}
+                      className='each-selected-video-for-priview'>
+                      <div className="each-selected-video-container">
+                        <img
+                          className="each-selected-image"
+                          // src={URL.createObjectURL(image)}
+                          src={drivingLicenseFrontImg}
+                          alt=""
+                        />
+                        <Close
+                          className="selected-image-remove-button"
+                          fontSize="small"
+                          onClick={() => handleRemoveImage("drivingLicenseFrontImg")}
+                        />
+                      </div>
+
+                    </div>
+                    {/* ))} */}
+                  </div>
+                )}
+              </>
+
+
+
               <Form.Label className="text-uppercase mt-4">
                 Driving license front image{" "}
                 <BsStarFill
@@ -417,6 +529,36 @@ const KycPhotoId = () => {
                   handleDrivingFrontImage(e)
                 }
               />
+
+              <>
+
+                {drivingLicenseBackImg && (
+                  <div className="selected-video-container mt-4">
+                    {/* {selectedImage?.map((image, index) => ( */}
+                    <div
+                      // key={index}
+                      className='each-selected-video-for-priview'>
+                      <div className="each-selected-video-container">
+                        <img
+                          className="each-selected-image"
+                          // src={URL.createObjectURL(image)}
+                          src={drivingLicenseBackImg}
+                          alt=""
+                        />
+                        <Close
+                          className="selected-image-remove-button"
+                          fontSize="small"
+                          onClick={() => handleRemoveImage("drivingLicenseBackImg")}
+                        />
+                      </div>
+
+                    </div>
+                    {/* ))} */}
+                  </div>
+                )}
+              </>
+
+
               <Form.Label className="text-uppercase mt-4">
                 Driving license back image{" "}
                 <BsStarFill
@@ -440,6 +582,35 @@ const KycPhotoId = () => {
           {/* If the photo id type is passport */}
           {photoIdType === "passport" && (
             <>
+
+              <>
+
+                {passportImg && (
+                  <div className="selected-video-container mt-4">
+                    {/* {selectedImage?.map((image, index) => ( */}
+                    <div
+                      // key={index}
+                      className='each-selected-video-for-priview'>
+                      <div className="each-selected-video-container">
+                        <img
+                          className="each-selected-image"
+                          // src={URL.createObjectURL(image)}
+                          src={passportImg}
+                          alt=""
+                        />
+                        <Close
+                          className="selected-image-remove-button"
+                          fontSize="small"
+                          onClick={() => handleRemoveImage("passportImg")}
+                        />
+                      </div>
+
+                    </div>
+                    {/* ))} */}
+                  </div>
+                )}
+              </>
+
               <Form.Label className="text-uppercase mt-4">
                 Passport image{" "}
                 <BsStarFill

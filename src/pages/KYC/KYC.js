@@ -24,18 +24,19 @@ const KYC = () => {
   const { kycUser, handleUpdateUser, emailVerified, mobileNoVerify, isVerifiedAddress, isVerifiedPhotId, isVerifiedProfile } = useContext(KycContext);
   const { user, openWalletModal } = useContext(DSLCommerceContext);
 
-  console.log(kycUser)
+  console.log(userProfileData)
 
 
   useEffect(() => {
     const getPhotoIddata = async () => {
       await axios
-        .get(`https://backend.dslcommerce.com/api/photo-id/data/${user?.walletAddress}`, {
+        .get(`https://backend.dslcommerce.com/api/photo-id/data/${kycUser?.walletAddress}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
           },
         })
         .then((res) => {
+          console.log(res.data)
           setphotoIddata(res.data.result);
 
         });
@@ -46,7 +47,7 @@ const KYC = () => {
   useEffect(() => {
     const getAddressData = async () => {
       await axios
-        .get(`https://backend.dslcommerce.com/api/photo-id/data/${user?.walletAddress}`, {
+        .get(`https://backend.dslcommerce.com/api/photo-id/data/${kycUser?.walletAddress}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
           },
@@ -62,12 +63,13 @@ const KYC = () => {
   useEffect(() => {
     const getProfile = async () => {
       await axios
-        .get(`https://backend.dslcommerce.com/api/user-panel/user/${user?.walletAddress}`, {
+        .get(`https://backend.dslcommerce.com/api/user-panel/user/${kycUser?.walletAddress}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
           },
         })
         .then((res) => {
+          console.log(res.data)
           setuserProfileData(res.data.result);
 
         });
@@ -94,7 +96,7 @@ const KYC = () => {
             <Tab>
 
               PROFILE
-              {(isVerifiedProfile == false && !userProfileData.nationality) &&
+              {(isVerifiedProfile == false && !userProfileData?.nationality) &&
                 <CloseIcon className="text-danger ms-1" style={{ fontSize: "18px" }} />
               }
 
@@ -102,7 +104,7 @@ const KYC = () => {
                 < ErrorIcon className="text-warning" />
               } */}
 
-              {(isVerifiedProfile == true || userProfileData.nationality) &&
+              {(isVerifiedProfile == true || userProfileData?.nationality) &&
                 <DoneIcon className="text-success ms-1" style={{ fontSize: "18px" }} />
               }
             </Tab>
@@ -129,11 +131,11 @@ const KYC = () => {
                 <DoneIcon className="text-success ms-1" style={{ fontSize: "18px" }} />
               }
             </Tab>
-            {console.log(isVerifiedPhotId == false, photoIddata?.isVerified == false)}
+            {console.log(isVerifiedPhotId == false, photoIddata?.isVerified)}
             <Tab>
 
               PHOTO ID
-              {(isVerifiedPhotId == false && photoIddata?.isVerified == false) &&
+              {(isVerifiedPhotId == false && (photoIddata?.isVerified == undefined || photoIddata?.isVerified == false)) &&
                 <CloseIcon className="text-danger ms-1" style={{ fontSize: "18px" }} />
               }
 
@@ -145,10 +147,11 @@ const KYC = () => {
                 <DoneIcon className="text-success ms-1" style={{ fontSize: "18px" }} />
               }
             </Tab>
+            {console.log(isVerifiedAddress == false, addressData?.isVerified, "test")}
             <Tab>
 
               ADDRESS PROOF
-              {(isVerifiedAddress == false && addressData?.isVerified == false) &&
+              {(isVerifiedAddress == false && (addressData?.isVerified == undefined || addressData?.isVerified == false)) &&
                 <CloseIcon className="text-danger ms-1" style={{ fontSize: "18px" }} />
               }
 

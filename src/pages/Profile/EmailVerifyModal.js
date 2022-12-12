@@ -20,9 +20,9 @@ const style = {
   p: 4
 };
 
-export default function EmailVerifyModal({ open, userRefetch, handleVerifyOTP, setOpenEmail, updateProfile, otpVerify, setError, handleVerifyEmail, minutes, seconds }) {
+export default function EmailVerifyModal({ open, userRefetch, handleVerifyOTP, setOpenEmail, updateProfile, otpVerify, setError, handleVerifyEmail, minutes, seconds, otpCode, setOtpCode }) {
 
-  const [otpCode, setOtpCode] = useState()
+
   const [isOtpError, setOtpError] = useState(false)
 
   const handleClose = () => setOpenEmail(false);

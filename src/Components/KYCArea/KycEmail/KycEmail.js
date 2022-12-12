@@ -19,7 +19,8 @@ const KycEmail = ({ expiryTimestamp }) => {
   const [otpVerify, setOtpVerify] = useState();
   const [openEmail, setOpenEmail] = useState(false);
   const [isError, setError] = useState(false);
-  const { kycUser, handleUpdateUser, emailVerified, setEmailVerified, setRefetch, refetch } = useContext(KycContext);
+  const [otpCode, setOtpCode] = useState()
+  const { kycUser, emailVerified, setEmailVerified, setRefetch, refetch, setisVerifiedProfile, isVerifiedProfile } = useContext(KycContext);
 
   useEffect(() => {
     if (kycUser) {
@@ -120,22 +121,62 @@ const KycEmail = ({ expiryTimestamp }) => {
       });
   };
 
-  console.log(emailVerified)
 
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log("controleed")
 
-    if (!emailVerified) {
-      return toast.error("Please verify the email.");
-    } else {
-      const data = {
-        emailVerified: true,
-      };
-      setRefetch(!refetch);
-      console.log(data, "heres the data to update");
-      handleUpdateUser(data);
-    }
+    // if (!emailVerified) {
+    //   return toast.error("Please verify the email.");
+    // } else {
+    //   const data = {
+    //     emailVerified: true,
+    //   };
+    //   setRefetch(!refetch);
+    //   console.log(data, "heres the data to update");
+    //   handleUpdateUser(data);
+    // }
   };
+
+
+
+
+  // ************************************User Update ************************************
+  const handleUpdateUser = async () => {
+
+    const data = {
+      email: email,
+      otp: otpCode
+    }
+
+
+    await axios
+      .put(
+        `https://backend.dslcommerce.com/api/user-panel/user/update/${kycUser?.walletAddress}`,
+        data
+      )
+      .then((res) => {
+        console.log(res, "inside the update");
+        if (res.status === 200) {
+
+          setisVerifiedProfile(!refetch);
+          setRefetch(!refetch);
+          toast.success("Successfully updated your profile .");
+        }
+      })
+      .catch((err) => {
+        console.log(err, "inside the update erro");
+        console.dirxml(err);
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      });
+  };
+
 
   return (
     <div>
@@ -181,8 +222,11 @@ const KycEmail = ({ expiryTimestamp }) => {
               {!emailVerified ? "Verify" : "Verified"}
             </Button>
           </div>
-
+          {
+            console.log(kycUser)
+          }
           <Button
+            onClick={handleUpdateUser}
             className="mt-3 text-uppercase"
             as="input"
             type="submit"
@@ -216,6 +260,8 @@ const KycEmail = ({ expiryTimestamp }) => {
         open={openEmail}
         setOpenEmail={setOpenEmail}
         otpVerify={otpVerify}
+        otpCode={otpCode}
+        setOtpCode={setOtpCode}
         setError={setError}
         email={setEmail}
         setOtpVerify={setOtpVerify}

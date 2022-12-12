@@ -83,34 +83,34 @@ export default function KycProvider({ children }) {
       });
   };
 
-  // ************************************User Update ************************************
-  const handleUpdateUser = async (dataUser) => {
-    console.log(dataUser, "data to update");
-    await axios
-      .put(
-        `https://backend.dslcommerce.com/api/user-panel/user/update/${kycUser?.walletAddress}`,
-        dataUser
-      )
-      .then((res) => {
-        console.log(res, "inside the update");
-        if (res.status === 200) {
+  // // ************************************User Update ************************************
+  // const handleUpdateUser = async (dataUser) => {
+  //   console.log(dataUser, "data to update");
+  //   await axios
+  //     .put(
+  //       `https://backend.dslcommerce.com/api/user-panel/user/update/${kycUser?.walletAddress}`,
+  //       dataUser
+  //     )
+  //     .then((res) => {
+  //       console.log(res, "inside the update");
+  //       if (res.status === 200) {
 
-          setisVerifiedProfile(!refetch);
-          setRefetch(!refetch);
-          toast.success("Successfully updated your profile .");
-        }
-      })
-      .catch((err) => {
-        console.log(err, "inside the update erro");
-        swal({
-          title: "Attention",
-          text: `${err.response.data.message}`,
-          icon: "warning",
-          button: "OK!",
-          className: "modal_class_success",
-        });
-      });
-  };
+  //         setisVerifiedProfile(!refetch);
+  //         setRefetch(!refetch);
+  //         toast.success("Successfully updated your profile .");
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err, "inside the update erro");
+  //       swal({
+  //         title: "Attention",
+  //         text: `${err.response.data.message}`,
+  //         icon: "warning",
+  //         button: "OK!",
+  //         className: "modal_class_success",
+  //       });
+  //     });
+  // };
 
   // //************************************ User Address ***********************************
   // const handleAddress = async (data) => {
@@ -151,7 +151,7 @@ export default function KycProvider({ children }) {
         handleUserLogin,
         setKycUser,
         kycUser,
-        handleUpdateUser,
+        // handleUpdateUser,
         // handleAddress,
         refetch,
         setRefetch,

@@ -67,9 +67,6 @@ const Customers = () => {
 
   return (
     <>
-      {/* <div className="d-flex justify-content-center align-items-center">
-        <h2 className="text-white">Customers </h2>
-      </div> */}
       <h5 className="text-white text-start text-uppercase pb-1">CUSTOMERS</h5>
 
       <Search submit={search} />
@@ -82,7 +79,6 @@ const Customers = () => {
                 {/* <th className="text-left d-md-block d-none">USER ID</th> */}
                 <th className="text-left productHidden">USER ID</th>
                 <th className="text-left productHidden">WALLET ADDRESS</th>
-                <th className="text-left productHidden">PHONE</th>
                 <th className="text-left ">EMAIL</th>
                 <th className="text-left">ACTIONS</th>
               </tr>

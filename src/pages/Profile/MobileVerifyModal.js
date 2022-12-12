@@ -34,8 +34,10 @@ export default function MobileVerifyModal({
   handleVerifyOTP,
   setOtpVerify,
   setDisableAfterActivationMobile,
+  otpCode,
+  setOtpCode
 }) {
-  const [otpCode, setOtpCode] = useState();
+
   const [isOtpError, setOtpError] = useState(false);
 
   const handleClose = () => {
@@ -160,7 +162,7 @@ export default function MobileVerifyModal({
     <div>
       <Modal
         open={open}
-        P
+
         onClose={otpVerify == otpCode && handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -186,7 +188,7 @@ export default function MobileVerifyModal({
             component="h2"
             align="center"
           >
-            Verify Mobile
+            Verify Mobiles
           </Typography>
           <Typography id="modal-modal-description text-light" sx={{ mt: 2 }}>
             Check your mobile for OTP
