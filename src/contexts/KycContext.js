@@ -30,7 +30,7 @@ export default function KycProvider({ children }) {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setKycUser(res.data.result);
       });
   }, [refetch, user]);
@@ -43,7 +43,7 @@ export default function KycProvider({ children }) {
         if (res.status === 200) {
           setRefetch(!refetch);
           localStorage.setItem("kycUserToken", res.data.token);
-          console.log(res.data.token);
+          // console.log(res.data.token);
           toast.success("Register Success .");
           navigate("/kyc/profile");
         }
@@ -67,7 +67,7 @@ export default function KycProvider({ children }) {
         if (res.status === 200) {
           setRefetch(!refetch);
           localStorage.setItem("kycUserToken", res.data.token);
-          console.log(res.data.token);
+          // console.log(res.data.token);
           toast.success("Welcome to your profile .");
           navigate("/kyc/profile");
         }
@@ -111,6 +111,7 @@ export default function KycProvider({ children }) {
   //       });
   //     });
   // };
+
 
   // //************************************ User Address ***********************************
   // const handleAddress = async (data) => {

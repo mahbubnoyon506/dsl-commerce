@@ -80,13 +80,18 @@ function BestSellers({
                           >
                             <img
                               src={
-                                products.filter(
-                                  (product) => product.category === catId
-                                )[0]?.product_images
+                                products.filter((product) => product.category === catId)[0]?.images[0]
                               }
                               style={{ width: "300px", height: "250px" }}
                               alt=""
                             />
+                            {/* <img
+                              src={
+                                products.filter((product) => product.category === catId)[0]?.product_images
+                              }
+                              style={{ width: "300px", height: "250px" }}
+                              alt=""
+                            /> */}
                           </Link>
                           <div className="tag">New</div>
                           <ul className="bestsellers-action">

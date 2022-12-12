@@ -16,6 +16,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { KycContext } from "../../contexts/KycContext";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 import axios from "axios";
+import KycAddProduct from "../../Components/KYCArea/KycAddProduct/KycAddProduct";
 const KYC = () => {
   const [key, setKey] = useState("profile");
   const [photoIddata, setphotoIddata] = useState({});
@@ -25,6 +26,7 @@ const KYC = () => {
   const { user, openWalletModal } = useContext(DSLCommerceContext);
 
   console.log(userProfileData)
+  // console.log(kycUser)
 
 
   useEffect(() => {
@@ -132,6 +134,8 @@ const KYC = () => {
               }
             </Tab>
             {console.log(isVerifiedPhotId == false, photoIddata?.isVerified)}
+            {/* {console.log(isVerifiedPhotId == false, photoIddata?.isVerified == false)} */}
+            
             <Tab>
 
               PHOTO ID
@@ -148,6 +152,7 @@ const KYC = () => {
               }
             </Tab>
             {console.log(isVerifiedAddress == false, addressData?.isVerified, "test")}
+
             <Tab>
 
               ADDRESS PROOF
@@ -164,23 +169,48 @@ const KYC = () => {
               }
             </Tab>
 
+            <Tab>
+
+              ADD PRODUCTS
+              {/* {(isVerifiedAddress == false && addressData?.isVerified == false) &&
+                <CloseIcon className="text-danger ms-1" style={{ fontSize: "18px" }} />
+              }
+
+              {(isVerifiedAddress == true && addressData?.isVerified == false) &&
+                <ErrorIcon className="text-warning ms-1" style={{ fontSize: "18px" }} />
+              }
+
+              {addressData?.isVerified == true &&
+                <DoneIcon className="text-success ms-1" style={{ fontSize: "18px" }} />
+              } */}
+            </Tab>
+
           </TabList>
 
           <TabPanel>
             <KycProfile />
           </TabPanel>
+
           <TabPanel>
             <KycEmail />
           </TabPanel>
+
           <TabPanel>
             <KycMobile />
           </TabPanel>
+
           <TabPanel>
             <KycPhotoId />
           </TabPanel>
+
           <TabPanel>
             <KycAddress />
           </TabPanel>
+
+          <TabPanel>
+            <KycAddProduct />
+          </TabPanel>
+
         </Tabs>
 
         {/* <Tabs

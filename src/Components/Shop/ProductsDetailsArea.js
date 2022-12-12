@@ -40,7 +40,7 @@ function ProductsDetailsArea() {
     useContext(DSLCommerceContext);
   const [userReviews, setUserReviews] = useState([]);
   const navigate = useNavigate();
-  console.log(userReviews);
+  // console.log(userReviews);
 
   const writeReview = (product) => {
     setIsOpen(true);
@@ -56,13 +56,14 @@ function ProductsDetailsArea() {
     axios
       .get(`https://backend.dslcommerce.com/api/product/${productId}`)
       .then((res) => {
+        console.log('eeeeeeeeeeefd' , res.data.newData);
         setProduct(res.data.newData);
         setUserReviews(res.data.newData.reviews.reverse());
         setDescriptionData(res.data.newData.description);
         setAvailable(parseInt(res.data.newData.availableProduct));
       })
       .catch((err) => console.log(err));
-  }, [productId, refetch]);
+  }, []);
 
   console.log('single product', product)
 
@@ -88,43 +89,33 @@ function ProductsDetailsArea() {
           <div className="row align-items-center">
             <div className="col-lg-6 col-md-6">
               <div className="main-products-image">
-                {/* <div className="slider slider-for">
-                  <div>
-                    <Image
-                      key={product.image_public_id}
-                      cloudName={process.env.REACT_APP_CLOUDINARY_NAME}
-                      publicId={product.image_public_id}
-                      width="500"
-                      crop="scale"
-                    />
-                  </div>
-                </div> */}
-                <Carousel>
+                {/* <Carousel>
                   <div>
                     <img
-                      src={product?.product_images}
+                      src={product?.images[0]}
                       alt={product.productName}
                     />
                   </div>
                   <div>
                     <img
-                      src={product?.product_images}
+                      src={product?.images[1]}
                       alt={product.productName}
                     />
                   </div>
                   <div>
                     <img
-                      src={product?.product_images}
+                      src={product?.images[2]}
                       alt={product.productName}
                     />
                   </div>
-                  {/* <div>
+                  <div>
                     <img
-                      src={product?.product_images}
+                      src={product?.images[3]}
                       alt={product.productName}
                     />
-                  </div> */}
-                </Carousel>
+                  </div>
+                </Carousel> */}
+                {/* {console.log('ssssssss' , product?.images)} */}
               </div>
             </div>
 
