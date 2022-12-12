@@ -29,7 +29,6 @@ function Footer() {
   //   }
   // }
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     // const email = e.target.email.value;
@@ -42,8 +41,7 @@ function Footer() {
         button: "OK!",
         className: "modal_class_success",
       });
-    }
-    else {
+    } else {
       await axios
         .post(`https://backend.dslcommerce.com/api/subscribe/`, {
           email: email,
@@ -56,7 +54,7 @@ function Footer() {
               button: "OK!",
               className: "modal_class_success",
             });
-            e.target.reset()
+            e.target.reset();
           }
         })
         .catch((err) => {
@@ -69,8 +67,6 @@ function Footer() {
           });
         });
     }
-
-
   };
 
   useEffect(() => {
@@ -92,11 +88,8 @@ function Footer() {
                 <ul className="footer-contact-info">
                   <li>
                     <span>Address:</span>
-                    <>
-                      22 Sin Ming Lane #06-76 Midview City Singapore 573969
-                    </>
+                    <>22 Sin Ming Lane #06-76 Midview City Singapore 573969</>
                   </li>
-
 
                   <li>
                     <span>Email:</span>
@@ -110,8 +103,6 @@ function Footer() {
                     </p>
                   </li>
                 </ul>
-
-
               </div>
             </div>
 
@@ -120,7 +111,6 @@ function Footer() {
                 <h2>Policies</h2>
 
                 <ul className="quick-links">
-
                   <li>
                     <Link
                       onClick={() => {
@@ -186,16 +176,19 @@ function Footer() {
                         Order Tracking
                       </Link>
                     ) : (
-                      <Link
-                        onClick={() => openWalletModal()}
-                        to="/"
-                      >
+                      <Link onClick={() => openWalletModal()} to="/">
                         Order Tracking
                       </Link>
                     )}
                   </li>
                   <li>
-                    <a href="https://dsl.sg/contact" target="_blank" rel="noopener noreferrer">Contact Us</a>
+                    <a
+                      href="https://dsl.sg/contact"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Contact Us
+                    </a>
                   </li>
                   <li>
                     <Link
@@ -231,11 +224,12 @@ function Footer() {
                       type="email"
                       id="email"
                       className="input-newsletter border-dark rounded"
-                      style={{ textTransform: 'lowercase' }}
                       placeholder="Email address"
                       name="email"
                       // onChange={handleEmail}
-                      onChange={e => setEmail(e.target.value)}
+                      onChange={(e) =>
+                        setEmail(e.target.value.toLocaleLowerCase())
+                      }
                       // onBlur={handleEmail}
                       required
                       autoComplete="off"

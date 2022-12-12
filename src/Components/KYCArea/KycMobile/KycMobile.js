@@ -127,7 +127,7 @@ const KycMobile = ({ expiryTimestamp }) => {
   const handleUpdateUser = async () => {
 
     const data = {
-      phone: mobile,
+      mobile: mobile,
       otp: otpCode
     }
 

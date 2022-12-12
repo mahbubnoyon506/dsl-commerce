@@ -182,7 +182,7 @@ const Profile2 = () => {
   );
   const handleEmailChange = (e) => {
     const data = e.target.value;
-    setEmail(data);
+    setEmail(data.toLocaleLowerCase());
   };
 
   const handleEmail = (e) => {
@@ -297,12 +297,13 @@ const Profile2 = () => {
                 </p>
                 <div className="profileUser">
                   <input
-                    style={{ textTransform: "lowercase" }}
                     type="text"
                     id="username"
                     name="username"
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e) =>
+                      setUsername(e.target.value.toLocaleLowerCase())
+                    }
                     placeholder="Enter Username"
                     className="form-control profileInput"
                   />
@@ -330,7 +331,6 @@ const Profile2 = () => {
                 </label>
                 <div className="profileUser">
                   <input
-                    style={{ textTransform: "lowercase" }}
                     type="email"
                     id="email"
                     name="email"

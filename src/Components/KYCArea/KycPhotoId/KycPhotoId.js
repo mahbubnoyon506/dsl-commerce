@@ -21,6 +21,12 @@ const KycPhotoId = () => {
   const [drivingLicenseFrontImg, setDrivingLicenseFrontImage] = useState("");
   const [drivingLicenseBackImg, setDrivingLicenseBackImage] = useState("");
   const [passportImg, setPassportImg] = useState("");
+  const [passportImgLoader, setPassportImgLoader] = useState(false);
+  const [photoIdFrontLoader, setphotoIdFrontLoader] = useState(false);
+  const [photoIdBackLoader, setphotoIdBackLoader] = useState(false);
+  const [drivingBackLoader, setdrivingBackLoader] = useState(false);
+  const [drivingFrontLoader, setdrivingFrontLoader] = useState(false);
+
   const { user, openWalletModal } = useContext(DSLCommerceContext);
   const { kycUser, handleUpdateUser, setisVerifiedPhotId, isVerifiedPhotId } = useContext(KycContext);
 
@@ -49,7 +55,7 @@ const KycPhotoId = () => {
     const formdata = new FormData();
     formdata.append("file", image);
 
-
+    setphotoIdFrontLoader(true);
     await axios
       .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
         headers: {
@@ -58,7 +64,7 @@ const KycPhotoId = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-
+          setphotoIdFrontLoader(false);
           setPhotoIdFrontImage(res.data.result)
         }
       })
@@ -78,7 +84,7 @@ const KycPhotoId = () => {
     const formdata = new FormData();
     formdata.append("file", image);
 
-
+    setphotoIdBackLoader(true);
     await axios
       .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
         headers: {
@@ -87,7 +93,7 @@ const KycPhotoId = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-
+          setphotoIdBackLoader(false);
           setPhotoIdBackImage(res.data.result)
         }
       })
@@ -107,7 +113,7 @@ const KycPhotoId = () => {
     const formdata = new FormData();
     formdata.append("file", image);
 
-
+    setdrivingFrontLoader(true);
     await axios
       .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
         headers: {
@@ -116,7 +122,7 @@ const KycPhotoId = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-
+          setdrivingFrontLoader(false);
           setDrivingLicenseFrontImage(res.data.result)
         }
       })
@@ -137,7 +143,7 @@ const KycPhotoId = () => {
     const formdata = new FormData();
     formdata.append("file", image);
 
-
+    setdrivingBackLoader(true);
     await axios
       .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
         headers: {
@@ -146,7 +152,7 @@ const KycPhotoId = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-
+          setdrivingBackLoader(false);
           setDrivingLicenseBackImage(res.data.result)
         }
       })
@@ -160,13 +166,14 @@ const KycPhotoId = () => {
         });
       });
   }
+
   const handlePassportImage = async (e) => {
     const image = e?.target?.files[0];
 
     const formdata = new FormData();
     formdata.append("file", image);
 
-
+    setPassportImgLoader(true);
     await axios
       .post(`https://backend.dslcommerce.com/api/photo-id/upload`, formdata, {
         headers: {
@@ -175,7 +182,7 @@ const KycPhotoId = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-
+          setPassportImgLoader(false);
           setPassportImg(res.data.result)
         }
       })
@@ -189,6 +196,8 @@ const KycPhotoId = () => {
         });
       });
   }
+
+
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -249,7 +258,7 @@ const KycPhotoId = () => {
 
   const handleRemoveImage = (img) => {
 
-    if (img == "photoIdFrontImg") {
+    if (img == "photoIdFrontImage") {
 
       setPhotoIdFrontImage("")
     }
@@ -387,7 +396,7 @@ const KycPhotoId = () => {
             <>
 
               <>
-                {console.log(photoIdFrontImg)}
+
                 {photoIdFrontImg && (
                   <div className="selected-video-container mt-4">
                     {/* {selectedImage?.map((image, index) => ( */}
@@ -417,7 +426,7 @@ const KycPhotoId = () => {
 
 
               <Form.Label className="text-uppercase mt-4">
-                Photo id front image{" "}
+                {photoIdFrontLoader ? "Uploading image..." : "Photo id front image"}{" "}
                 <BsStarFill
                   size={8}
                   style={{ color: "#FF0000", marginTop: "-10px" }}
@@ -461,7 +470,7 @@ const KycPhotoId = () => {
               </>
 
               <Form.Label className="text-uppercase mt-4">
-                Photo id back image{" "}
+                {photoIdBackLoader ? "Uploading image..." : "Photo id back image"}{" "}
                 <BsStarFill
                   size={8}
                   style={{ color: "#FF0000", marginTop: "-10px" }}
@@ -513,7 +522,7 @@ const KycPhotoId = () => {
 
 
               <Form.Label className="text-uppercase mt-4">
-                Driving license front image{" "}
+                {drivingFrontLoader ? "Uploading image..." : "Driving license front image"}{" "}
                 <BsStarFill
                   size={8}
                   style={{ color: "#FF0000", marginTop: "-10px" }}
@@ -560,7 +569,7 @@ const KycPhotoId = () => {
 
 
               <Form.Label className="text-uppercase mt-4">
-                Driving license back image{" "}
+                {drivingBackLoader ? "Uploading image..." : "Driving license back image"}{" "}
                 <BsStarFill
                   size={8}
                   style={{ color: "#FF0000", marginTop: "-10px" }}
@@ -612,7 +621,7 @@ const KycPhotoId = () => {
               </>
 
               <Form.Label className="text-uppercase mt-4">
-                Passport image{" "}
+                {passportImgLoader ? "Uploading image..." : " Passport image"}{" "}
                 <BsStarFill
                   size={8}
                   style={{ color: "#FF0000", marginTop: "-10px" }}

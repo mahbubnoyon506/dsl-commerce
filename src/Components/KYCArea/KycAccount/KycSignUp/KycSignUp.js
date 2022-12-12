@@ -11,11 +11,10 @@ import { KycContext } from "../../../../contexts/KycContext";
 const KycSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { handleRegister } = useContext(KycContext)
+  const { handleRegister } = useContext(KycContext);
 
   const { user } = useContext(DSLCommerceContext);
-  const [userName, setUserName] = useState('')
-
+  const [userName, setUserName] = useState("");
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -26,8 +25,8 @@ const KycSignUp = () => {
     const confirmPassword = e.target.confirmPassword?.value;
 
     if (password !== confirmPassword) {
-      toast.error('Password Not Match')
-      return
+      toast.error("Password Not Match");
+      return;
     }
 
     const data = {
@@ -35,11 +34,10 @@ const KycSignUp = () => {
       walletAddress: user?.walletAddress,
       email: email,
       username: userName,
-      password: password
+      password: password,
     };
     // console.log(data)
-    handleRegister(data)
-
+    handleRegister(data);
   };
 
   return (
@@ -63,7 +61,6 @@ const KycSignUp = () => {
       >
         <Card.Body>
           <Form onSubmit={(e) => handleFormSubmit(e)}>
-
             <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
               <Form.Label className="fw-bold">
                 Enter your Full Name as per your PhotoId
@@ -81,7 +78,9 @@ const KycSignUp = () => {
               <Form.Control
                 name="userName"
                 value={userName}
-                onChange={(e) => setUserName(e.target.value.toLocaleLowerCase())}
+                onChange={(e) =>
+                  setUserName(e.target.value.toLocaleLowerCase())
+                }
                 type="text"
                 placeholder="Enter your User Name"
                 required

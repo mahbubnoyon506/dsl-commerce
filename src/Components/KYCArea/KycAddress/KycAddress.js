@@ -1,3 +1,4 @@
+import { Close } from '@mui/icons-material';
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Form } from "react-bootstrap";
@@ -77,6 +78,16 @@ const KycAddress = () => {
 
 
   }
+
+
+
+
+  const handleRemoveImage = () => {
+
+
+    setFile("")
+
+  };
   return (
     <div>
 
@@ -171,6 +182,36 @@ const KycAddress = () => {
             <li>Bank Statement</li>
             <li>Government Letter</li>
           </ol>
+
+          <>
+
+            {file && (
+              <div className="selected-video-container">
+                {/* {selectedImage?.map((image, index) => ( */}
+                <div
+                  // key={index}
+                  className='each-selected-video-for-priview'>
+                  <div className="each-selected-video-container">
+                    <img
+                      className="each-selected-image"
+                      src={URL.createObjectURL(file)}
+
+                      alt=""
+                    />
+                    <Close
+                      className="selected-image-remove-button"
+                      fontSize="small"
+                      onClick={handleRemoveImage}
+                    />
+                  </div>
+
+                </div>
+                {/* ))} */}
+              </div>
+            )}
+          </>
+
+
           <Form.Control
             type="file"
             defaultValue={file}
