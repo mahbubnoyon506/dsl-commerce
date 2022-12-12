@@ -113,7 +113,7 @@ console.log(userInfo)
                                     <div className='d-flex  input-group'>
                                         <input type="text" id='lastLoginIp' name="lastLoginIp"
                                             className='form-control bg-transparent text-white'
-                                            placeholder='last login ip' />
+                                            value={userInfo?.ip ? userInfo?.ip : ''} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -150,7 +150,7 @@ console.log(userInfo)
                                     <div className='d-flex  input-group'>
                                         <input type="number" id='mobile' name="mobile"
                                             className='form-control bg-transparent text-white'
-                                            value={userInfo?.mobile} />
+                                            value={userInfo?.mobile ? userInfo?.mobile : ''} />
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -158,7 +158,7 @@ console.log(userInfo)
                                     <div className='d-flex  input-group'>
                                         <input type="text" id='dob' name="dob"
                                             className='form-control bg-transparent text-white'
-                                            value={userInfo?.birthday}
+                                            value={userInfo?.birthday ? userInfo?.birthday : ''}
                                              />
                                     </div>
                                 </div>
@@ -167,7 +167,7 @@ console.log(userInfo)
                                     <div className='d-flex  input-group'>
                                         <input type="text" id='nationality' name="nationality"
                                             className='form-control bg-transparent text-white'
-                                            value={userInfo?.nationality}
+                                            value={userInfo?.nationality ? userInfo?.nationality : ''}
                                              />
                                     </div>
                                 </div>
