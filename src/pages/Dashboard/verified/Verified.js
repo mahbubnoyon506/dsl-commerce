@@ -13,6 +13,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 import PortraitIcon from '@mui/icons-material/Portrait';
 import { Link } from 'react-router-dom';
+import { CSVLink } from "react-csv";
 
 
 
@@ -45,8 +46,9 @@ const Verified = () => {
         <div className="">
             {/* <p className='text-start text-white fs-2 mb-3 p-0'>VERIFIED</p> */}
             <h5 className="text-white mb-3 text-start text-uppercase">VERIFIED</h5>
-            <span className='my-3 mb-5 text-white bolder bg-primary p-2 my-2 rounded' >GENNERATE CSV</span>
-
+            <CSVLink data={verifiedUser} className="mt-4">
+                <span className='my-3 text-white bolder bg-primary p-2 my-2 rounded' >GENNERATE CSV</span>
+            </CSVLink>
             <TableContainer component={Paper} className="mt-4">
                 <Table className='text-white' sx={{ minWidth: 800, maxWidth: "1300px", bgcolor: "#272D47" }} aria-label="simple table">
 

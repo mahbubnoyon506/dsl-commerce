@@ -45,25 +45,14 @@ const CreateProduct = () => {
   // }, [selectedImage])
 
 
-  console.log(selectedImage)
+
 
   const changePhoto = async (e) => {
-    // if (!e.target.files || e.target.files.length === 0) {
-    //   setSelectedImage(undefined)
-    //   return
-    // }
 
-    // // I've kept this example simple by using the first image instead of multiple
-    // setSelectedImage(e.target.files[0])
 
     if (e.target.files[0] !== 0) {
       const newImages = Object.values(e.target.files);
       console.log(newImages)
-      // const images = [...selectedImage, ...newImages];
-
-      // console.log(images)
-
-
 
       const formData = new FormData();
       for (const image of newImages) {
@@ -129,6 +118,8 @@ const CreateProduct = () => {
 
 
     const data = {
+      addedBy: "Admin",
+      status: true,
       productName: productName,
       images: selectedImage,
       brand: brand,
@@ -269,7 +260,7 @@ const CreateProduct = () => {
                   required
                 >
                   {getCategory.map(category => (
-                    <option value={category?.name}>{category?.name}</option>
+                    <option value={category?._id}>{category?.name}</option>
                   ))}
                 </select>
 

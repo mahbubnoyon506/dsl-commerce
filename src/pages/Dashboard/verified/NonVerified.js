@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import { AiFillDelete, AiFillEye } from 'react-icons/ai';
 import { BiUserPlus } from 'react-icons/bi';
 
+import { CSVLink } from "react-csv";
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
@@ -48,7 +49,10 @@ const NonVerified = () => {
             <h5 className="text-white mb-3 text-start text-uppercase">NON VERIFIED</h5>
             <div className='d-flex gap-3'>
 
-                <span className='my-3 text-white bolder bg-primary p-2 my-2 rounded' >GENNERATE CSV</span>
+                <CSVLink data={NonVerifiedUser} className="mt-4">
+                    <span className='my-3 text-white bolder bg-primary p-2 my-2 rounded' >GENNERATE CSV</span>
+                </CSVLink>
+
                 <span className='my-3 text-white bolder bg-danger p-2 my-2 rounded' >DELETE</span>
 
             </div>

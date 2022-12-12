@@ -9,7 +9,7 @@ import PortraitIcon from '@mui/icons-material/Portrait';
 import { AiFillDelete, AiFillEye } from 'react-icons/ai';
 import { BiUserPlus } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
-
+import { CSVLink } from "react-csv";
 
 
 const data = [
@@ -37,8 +37,9 @@ const Pending = () => {
             <h5 className="text-white mb-3 text-start text-uppercase">Pending</h5>
             {/* <p className='text-start fs-2 text-white my-0 mb-3 py-0'>Pending</p> */}
             <div className='mb-3'>
-                <span className='  text-white bolder bg-primary p-2  rounded me-2' >GENNERATE CSV</span>
-                <span className=' text-white bolder bg-danger p-2  px-2 rounded' >DELETE</span>
+            <CSVLink data={data} className="mt-4">
+                <span className='my-3 text-white bolder bg-primary p-2 my-2 rounded' >GENNERATE CSV</span>
+            </CSVLink> <span className=' text-white bolder bg-danger p-2  px-2 rounded' >DELETE</span>
             </div>
 
             <div className='text-white row d-flex g-2 mb-2 justify-content-between align-items-center py-2'>

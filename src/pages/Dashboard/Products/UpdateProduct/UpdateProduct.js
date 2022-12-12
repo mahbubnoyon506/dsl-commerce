@@ -7,6 +7,7 @@ import draftToHtml from "draftjs-to-html";
 import htmlToDraft from 'html-to-draftjs';
 import axios from 'axios';
 import swal from 'sweetalert';
+import { Close } from '@mui/icons-material';
 
 const UpdateProduct = () => {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ const UpdateProduct = () => {
   const [firstValue, setFirstValue] = useState(() => EditorState.createEmpty());
   const stepOne = draftToHtml(convertToRaw(firstValue.getCurrentContent()));
 
+  const [selectedImage, setSelectedImage] = useState()
+  const [imageLoader, setimageLoader] = useState(false)
 
   useEffect(() => {
     if (id) {
@@ -32,6 +35,52 @@ const UpdateProduct = () => {
         })
     }
   }, [id])
+
+
+
+
+  const changePhoto = async (e) => {
+
+
+    if (e.target.files[0] !== 0) {
+      const newImages = Object.values(e.target.files);
+      console.log(newImages)
+
+      const formData = new FormData();
+      for (const image of newImages) {
+        formData.append("images", image);
+      }
+
+      setimageLoader(true);
+
+      await axios
+        .post(`https://backend.dslcommerce.com/api/product/upload`, formData)
+        .then((res) => {
+          console.log("image form data", res.data)
+          // setImg(res?.data?.images);
+          setSelectedImage(res?.data?.images);
+          setimageLoader(false);
+
+        })
+        .catch((err) => {
+          console.error(err)
+          setimageLoader(false);
+        }
+        );
+
+    }
+
+  }
+
+  const handleRemoveImage = (image, index) => {
+    const filterdImages = selectedImage.filter((img) => img !== image);
+
+    setSelectedImage(filterdImages);
+
+
+  };
+
+
 
   const onSubmitForm = async e => {
     e.preventDefault();
@@ -62,7 +111,22 @@ const UpdateProduct = () => {
 
     // console.log(...formData)
 
-    axios.put(`https://backend.dslcommerce.com/api/product/${id}`, formData)
+    const data = {
+      productName: productName,
+      images: selectedImage,
+      brand: brand,
+      color: color,
+      // category: category,
+      type: type,
+      price: price,
+      offeringProduct: offeringProduct,
+      availableProduct: availableProduct,
+      // createdAt: createdAt,
+      description: description,
+
+    }
+
+    axios.put(`https://backend.dslcommerce.com/api/product/${id}`, data)
       .then(res => {
         if (res.status === 200) {
           // alert(res.data.message);
@@ -103,16 +167,70 @@ const UpdateProduct = () => {
         <div>
           <form id="contactForm" className="form" onSubmit={onSubmitForm}>
             <div className="row">
-
+              {/* 
               <div className="mb-3 ms-1">
 
                 <img src={productDetail?.product_images} width={200} height={180} className='d-flex justify-content-center' alt="" />
-              </div>
+              </div> */}
+
+              <>
+                {console.log(selectedImage?.length, productDetail?.images)}
+                {selectedImage?.length == undefined && (
+                  <div className="selected-video-container">
+                    {productDetail?.images?.map((image, index) => (
+                      <div key={index} className='each-selected-video-for-priview'>
+                        <div className="each-selected-video-container">
+                          <img
+                            className="each-selected-image"
+                            // src={URL.createObjectURL(image)}
+                            src={image}
+                            alt=""
+                          />
+                          <Close
+                            className="selected-image-remove-button"
+                            fontSize="small"
+                            onClick={() => handleRemoveImage(image, index)}
+                          />
+                        </div>
+
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+              <>
+
+                {selectedImage?.length > 0 && (
+                  <div className="selected-video-container">
+                    {selectedImage?.map((image, index) => (
+                      <div key={index} className='each-selected-video-for-priview'>
+                        <div className="each-selected-video-container">
+                          <img
+                            className="each-selected-image"
+                            // src={URL.createObjectURL(image)}
+                            src={image}
+                            alt=""
+                          />
+                          <Close
+                            className="selected-image-remove-button"
+                            fontSize="small"
+                            onClick={() => handleRemoveImage(image, index)}
+                          />
+                        </div>
+
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
 
               <div className="col-lg-12 col-md-12">
                 <div className="form-group text-white">
-                  <p className='mb-1 text-white'>Product Image</p>
+                  <p className='mb-1 text-white'>{imageLoader ? "Uploading Images.." : "Product Image"}</p>
                   <input
+                    accept=".png,.jpeg,.jpg"
+                    multiple
+                    onChange={(e) => changePhoto(e)}
                     type="file"
                     name="img"
                     className="form-control bg-transparent"

@@ -139,7 +139,7 @@ const AllProduct = () => {
                     {" "}
                     <img
                       className="imgProduct"
-                      src={product?.product_images}
+                      src={product?.images?.[0]}
                       alt="Product Img"
                     />
                   </td>
@@ -151,6 +151,7 @@ const AllProduct = () => {
                     {
                       getCategory?.find((cat) => cat?._id === product?.category)?.name
                     }
+                    {/* {product?.category} */}
                   </td>
                   <td className="action">
                     <div className="actionDiv text-left">
