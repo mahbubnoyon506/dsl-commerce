@@ -73,7 +73,7 @@ const CustomerOrders = () => {
     setAllOrder(
       newArray.filter(
         // (item) =>console.log('eeeeee',item)
-        (item) => item.orderItems[0]?.name?.includes(searchInput)
+        (item) => item.orderItems[0]?.productName?.includes(searchInput)
       )
     );
   }
@@ -192,14 +192,11 @@ const CustomerOrders = () => {
 
                     {order?.orderItems?.slice(0, 1).map((item) => (
                       <div>
-                        {item?.name}
+                        {item?.productName}
                       </div>
                     ))}
 
                   </td>
-                  {/* <td className="text-left text-capitalize">
-                    {order.productName}
-                  </td> */}
                   <td className="text-left ">{order?.email}</td>
                   <td className="text-left text-capitalize ">
                     {order?.paymentMethod}
