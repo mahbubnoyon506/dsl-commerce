@@ -20,7 +20,7 @@ const style = {
     p: 4
 };
 
-export default function TrackingMailVerify({ open, userRefetch, setOpenEmail,setEmailVerify,  otpVerify, setError, handleVerifyEmail, minutes, seconds }) {
+export default function TrackingMailVerify({ open, userRefetch, setOpenEmail, setEmailVerify, otpVerify, setError, handleVerifyEmail, minutes, seconds }) {
 
     const [otpCode, setOtpCode] = useState()
     const [isOtpError, setOtpError] = useState(false)
@@ -123,9 +123,9 @@ export default function TrackingMailVerify({ open, userRefetch, setOpenEmail,set
                         component="h2"
                         align="left"
                     >
-                        Verify Email test
+                        Verify Email
                     </Typography>
-                    <Typography id="modal-modal-description text-light" sx={{ mt: 2 }} style={{textAlign:"left"}}>
+                    <Typography id="modal-modal-description text-light" sx={{ mt: 2 }} style={{ textAlign: "left" }}>
                         Check your email for OTP
                     </Typography>
                     <form className="d-flex input-group mt-2 mb-2">

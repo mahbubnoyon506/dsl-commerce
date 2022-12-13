@@ -67,7 +67,7 @@ function CheckoutArea({ expiryTimestamp }) {
     payByTestnetQuest,
   } = useContext(DSLCommerceContext);
   const { carts } = useContext(CartContext);
-  console.log(carts);
+  console.log("user info", user);
 
   const [name, setName] = useState("");
   const [country, setCountry] = useState("");
@@ -912,9 +912,8 @@ function CheckoutArea({ expiryTimestamp }) {
         {message !== "" && (
           <div
             className={`
-        ${
-          message === "Order successfully added"
-        } ? alert alert-success : alert alert-danger 
+        ${message === "Order successfully added"
+              } ? alert alert-success : alert alert-danger 
       `}
             role="alert"
           >
@@ -1042,7 +1041,7 @@ function CheckoutArea({ expiryTimestamp }) {
                             onClick={handleVerifyMobile}
                             disabled={
                               mobile?.length === 0 ||
-                              disableAfterActivationMobile
+                                disableAfterActivationMobile
                                 ? true
                                 : false
                             }
@@ -1401,7 +1400,7 @@ function CheckoutArea({ expiryTimestamp }) {
                     style={{ alignItems: "flex-end", justifyContent: "start" }}
                   >
                     {!user.walletAddress ||
-                    user.walletAddress === "undefined" ? (
+                      user.walletAddress === "undefined" ? (
                       <button
                         type="submit"
                         className="default-btn"

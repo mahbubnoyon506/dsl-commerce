@@ -116,6 +116,13 @@ const Subscribers = () => {
         setRefetch(true)
       }
     } catch (error) {
+      swal({
+        // title: "Success",
+        text: error.data.message,
+        icon: "warning",
+        button: "OK!",
+        className: "modal_class_success",
+      });
       // console.log("error");
     }
   };

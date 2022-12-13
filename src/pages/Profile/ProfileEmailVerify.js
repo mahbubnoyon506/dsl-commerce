@@ -123,9 +123,9 @@ export default function ProfileEmailVerify({ open, userRefetch, setOpenEmail, up
                         component="h2"
                         align="left"
                     >
-                        Verify Email test
+                        Verify Email
                     </Typography>
-                    <Typography id="modal-modal-description text-light" sx={{ mt: 2 }} style={{textAlign:"left"}}>
+                    <Typography id="modal-modal-description text-light" sx={{ mt: 2 }} style={{ textAlign: "left" }}>
                         Check your email for OTP
                     </Typography>
                     <form className="d-flex input-group mt-2 mb-2">
