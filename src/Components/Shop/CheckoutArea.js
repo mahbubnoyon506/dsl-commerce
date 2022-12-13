@@ -88,7 +88,7 @@ function CheckoutArea({ expiryTimestamp }) {
     useState(false);
   const [otpVerify, setOtpVerify] = useState();
   const [openEmail, setOpenEmail] = useState(false);
-  const [openMobile, setopenMobile] = useState(false);
+  const [openMobile, setOpenMobile] = useState(false);
   const [otpCode, setOtpCode] = useState(false);
   const [isError, setError] = useState(false);
   const [cryptoPayment, setCryptoPayment] = useState("on");
@@ -209,35 +209,36 @@ function CheckoutArea({ expiryTimestamp }) {
       });
   };
 
-  const handleVerifyMobileOTP = async (otpCode) => {
-    console.log("handleVerifyMobileOTP", otpCode);
+  // const handleVerifyMobileOTP = async (otpCode) => {
+  //   console.log("handleVerifyMobileOTP", otpCode);
 
-    await axios
-      .post(`https://backend.dslcommerce.com/api/number/otp`, {
-        phone: mobile,
-        otp: otpCode,
-      })
+  //   await axios
+  //     .post(`https://backend.dslcommerce.com/api/number/otp`, {
+  //       phone: mobile,
+  //       otp: otpCode,
+  //     })
 
-      .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
+  //     .then((res) => {
+  //       console.log(res);
+  //       if (res.status === 200) {
 
-          console.log(res.data.message)
-          setmobileNoVerify(true);
-          setOtpVerify(res.data.message);
-          swal({
-            text: res.data.message,
-            icon: "success",
-            button: "OK!",
-            className: "modal_class_success",
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err.response.data.message);
-        setOtpVerify(err.response.data.message);
-      });
-  };
+  //         console.log(res.data.message)
+  //         setmobileNoVerify(true);
+  //         setOpenMobile(false);
+  //         setOtpVerify(res.data.message);
+  //         swal({
+  //           text: res.data.message,
+  //           icon: "success",
+  //           button: "OK!",
+  //           className: "modal_class_success",
+  //         });
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.response.data.message);
+  //       setOtpVerify(err.response.data.message);
+  //     });
+  // };
 
   const handleVerifyMobile = async (e) => {
     // console.log("handleVerifyMobile");
@@ -271,12 +272,12 @@ function CheckoutArea({ expiryTimestamp }) {
               setDisableAfterActivation(false);
             }, 120000);
           }
-          console.log("setopenMobile");
-          setopenMobile(true);
+          console.log("setOpenMobile");
+          setOpenMobile(true);
         })
         .catch((err) => {
           console.log(err.response.data.message);
-          setopenMobile(false);
+          setOpenMobile(false);
           swal({
             title: "Attention",
             text: err.response.data.message,
@@ -1539,15 +1540,16 @@ function CheckoutArea({ expiryTimestamp }) {
           otpCode={otpCode}
           setOtpCode={setOtpCode}
           handleVerifyMobile={handleVerifyMobile}
-          handleVerifyOTP={handleVerifyMobileOTP}
+          // handleVerifyOTP={handleVerifyMobileOTP}
           minutes={minutes}
           seconds={seconds}
           open={openMobile}
-          setOpenMobile={setopenMobile}
+          setOpenMobile={setOpenMobile}
           otpVerify={otpVerify}
           setError={setError}
-          mobile={setMobile}
+          mobile={mobile}
           setOtpVerify={setOtpVerify}
+          setmobileNoVerify={setmobileNoVerify}
           setDisableAfterActivationMobile={setDisableAfterActivationMobile}
         />
       </div>
