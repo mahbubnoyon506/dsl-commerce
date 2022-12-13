@@ -123,7 +123,7 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!emailVerify) {
+    if (!user.email) {
       swal({
         title: "Attention",
         text: "Please verify your email ",
@@ -179,10 +179,10 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
                         user?.email
                           ? { textTransform: "unset" }
                           : {
-                              textTransform: "unset",
-                              borderTopRightRadius: "inherit",
-                              borderBottomRightRadius: "inherit",
-                            }
+                            textTransform: "unset",
+                            borderTopRightRadius: "inherit",
+                            borderBottomRightRadius: "inherit",
+                          }
                       }
                       type="email"
                       name="email"
