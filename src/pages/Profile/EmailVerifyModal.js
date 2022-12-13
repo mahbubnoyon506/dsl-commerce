@@ -156,17 +156,17 @@ export default function EmailVerifyModal({
           ) : (
             ""
           )}
-          <div className="d-flex" style={{ justifyContent: "center" }}>
+          <div
+            className="d-flex"
+            style={{ justifyContent: "center", marginTop: "18px" }}
+          >
             <button
               disabled={minutes == 0 && seconds == 0 ? false : true}
               type="submit"
               onClick={handleVerifyEmail}
-              className="submit banner-button2 font14 text-decoration-none p-2"
-              style={
-                minutes == 0 && seconds == 0
-                  ? { backgroundColor: "#007bff", color: "#fff" }
-                  : { backgroundColor: "#7b7b94", color: "#fff" }
-              }
+              className={`submit banner-button2 font14 text-decoration-none text-white p-2 rounded ${
+                minutes == 0 && seconds == 0 ? "bg-primary" : "bg-secondary"
+              }`}
               id="font14"
             >
               Resend OTP
