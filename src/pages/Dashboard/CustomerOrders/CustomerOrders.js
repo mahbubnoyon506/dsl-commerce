@@ -4,15 +4,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import "./CustomerOrders.css";
 import { GrView } from "react-icons/gr";
 import { AiFillDelete } from "react-icons/ai";
-import { allOrders } from "./orderData";
 import { useEffect, useState } from "react";
 import Pagination from "../../../Components/Pagination/Pagination";
 import axios from "axios";
+import { CSVLink } from "react-csv";
 
 const CustomerOrders = () => {
   const [allOrder, setAllOrder] = useState([]);
-  // const [orderStatus, setOrderStatus] = useState(allOrders.status);
-  const [orderStatus, setOrderStatus] = useState("");
   const [searchInput, setSearchInput] = useState('');
 
   //*************************** Emtiaz ***************************
@@ -152,10 +150,14 @@ const CustomerOrders = () => {
                     <option value="100">100</option>
                     <option value="200">200</option>
                   </select> */}
+
                   <button className="w-100 w-lg-25 rounded btn btn-success fs-5">
-                    Download All Orders{" "}
-                    <AiOutlineCloudDownload className="fs-3" />
+                    <CSVLink data={sliceOrders} style={{color:"white"}}>
+                      Download All Orders
+                      <AiOutlineCloudDownload className="fs-3" />
+                    </CSVLink>
                   </button>
+
                 </div>
               </Card.Text>
             </Card.Body>
