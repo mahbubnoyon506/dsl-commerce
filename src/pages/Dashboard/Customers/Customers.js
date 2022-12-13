@@ -64,7 +64,7 @@ const Customers = () => {
   const handleDelete = (walletAddress) => {
     console.log(walletAddress)
     const confirmDelete = window.confirm(
-      "Are you sure, you want to delete this Product?"
+      "Are you sure, you want to delete this Customer?"
     );
     if (confirmDelete) {
       axios
