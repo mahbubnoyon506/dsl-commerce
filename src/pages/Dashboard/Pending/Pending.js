@@ -39,7 +39,8 @@ const Pending = () => {
             <div className='mb-3'>
                 <CSVLink data={data} className="mt-4">
                     <span className='my-3 text-white bolder bg-primary p-2 my-2 rounded' >GENNERATE CSV</span>
-                </CSVLink> <span className=' text-white bolder bg-danger p-2  px-2 rounded' >DELETE</span>
+                </CSVLink> 
+                <span className=' text-white bolder bg-danger p-2  px-2 rounded' >DELETE</span>
             </div>
 
             <div className='text-white row d-flex g-2 mb-2 justify-content-between align-items-center py-2'>

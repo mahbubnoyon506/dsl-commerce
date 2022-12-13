@@ -14,7 +14,7 @@ const FilterableTable = require("react-filterable-table");
 
 const Customers = () => {
   const [allCustomers, setAllCustomers] = useState([]);
-  const [refetch,setRefetch] = useState(false)
+  const [refetch, setRefetch] = useState(false)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const Customers = () => {
       .then(data => setAllCustomers(data))
   }, [refetch])
 
-  
+
   //****************************** Pagination Start ******************************/
   const { customerPerPage } = useParams();
   const [getPage, setPage] = useState(1);
@@ -101,10 +101,12 @@ const Customers = () => {
     // console.log(newArray);
     setAllCustomers(
       newArray.filter(
-        (item) =>item.email?.includes(searchText)
+        (item) => item.email?.includes(searchText)
       )
     );
   };
+
+  console.log("allCustomers", allCustomers)
 
   return (
     <>
@@ -156,9 +158,9 @@ const Customers = () => {
                       >
                         <i className="fas fa-eye"></i>
                       </button>
-                      <button 
-                      className="deleteBtn" 
-                      onClick={() => handleDelete(sliceCustomer?.walletAddress)}
+                      <button
+                        className="deleteBtn"
+                        onClick={() => handleDelete(sliceCustomer?.walletAddress)}
                       >
                         <i className="fas fa-trash"></i>
                       </button>
@@ -169,6 +171,12 @@ const Customers = () => {
             </tbody>
           </Table>
         </div>
+
+      </div>
+      <div>
+        <button className="btn btn-primary">
+          SHOW ALL
+        </button>
       </div>
       {/*********************************** Pagination  Start***********************************/}
       <div className="">
