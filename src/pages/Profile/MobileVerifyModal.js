@@ -52,60 +52,60 @@ export default function MobileVerifyModal({
   const [disabled, setDisabled] = useState(false);
   const [otpVerified, setotpVerified] = useState();
 
-  useEffect(() => {
-    console.log("useEffect", otpVerify);
-    if (otpVerify) {
-      setCount(count - 1);
+  // useEffect(() => {
+  //   console.log("useEffect", otpVerify);
+  //   if (otpVerify) {
+  //     setCount(count - 1);
 
-      if (otpVerify == "OTP verified") {
-        swal({
-          text: "Verified!.",
-          icon: "success",
-          button: "OK!",
-          className: "modal_class_success",
-        });
-        setOtpError(false);
-        setError(false);
-        handleClose(false);
-        return;
-      }
-      if (count > 0) {
-        console.log("count if");
-        console.log(count);
-        let content2 = document.createElement("p");
-        content2.innerHTML =
-          'You have entered wrong OTP. Please try again. You have another <br/><span style="color: #0d6efd;">0' +
-          count +
-          "</span> more tries .";
-        swal({
-          content: content2,
-          icon: "warning",
-          button: "OK!",
-          className: "modal_class_success",
-        });
+  //     if (otpVerify == "OTP verified") {
+  //       swal({
+  //         text: "Verified!.",
+  //         icon: "success",
+  //         button: "OK!",
+  //         className: "modal_class_success",
+  //       });
+  //       setOtpError(false);
+  //       setError(false);
+  //       handleClose(false);
+  //       return;
+  //     }
+  //     if (count > 0) {
 
-        setDisableAfterActivationMobile(false);
-        setCount(2);
-        setOtpVerify("");
-        setDisabled(false);
-        setOtpError(false);
-      } else {
-        setDisabled(true);
-        swal({
-          text: "You have entered wrong OTP, And you have no more tries left. You can request another OTP again",
-          icon: "warning",
-          button: "OK!",
-          className: "modal_class_success",
-        });
-      }
+  //       console.log(count);
+  //       let content2 = document.createElement("p");
+  //       content2.innerHTML =
+  //         'You have entered wrong OTP. Please try again. You have another <br/><span style="color: #0d6efd;">0' +
+  //         count +
+  //         "</span> more tries .";
+  //       swal({
+  //         content: content2,
+  //         icon: "warning",
+  //         button: "OK!",
+  //         className: "modal_class_success",
+  //       });
 
-      setOtpVerify("");
-      setError("Mobile OTP Code not matched");
-      setOtpError(true);
-    }
-  }, [otpVerify]);
+  //       setDisableAfterActivationMobile(false);
+  //       setCount(2);
+  //       setOtpVerify("");
+  //       setDisabled(false);
+  //       setOtpError(false);
+  //     } else {
+  //       setDisabled(true);
+  //       swal({
+  //         text: "You have entered wrong OTP, And you have no more tries left. You can request another OTP again",
+  //         icon: "warning",
+  //         button: "OK!",
+  //         className: "modal_class_success",
+  //       });
+  //     }
 
-  console.log(otpCode)
+  //     setOtpVerify("");
+  //     setError("Mobile OTP Code not matched");
+  //     setOtpError(true);
+  //   }
+  // }, [otpVerify]);
+
+  // console.log(otpCode)
 
   const hendelSubmit = async (e) => {
     // setCount(count - 1);
@@ -113,47 +113,60 @@ export default function MobileVerifyModal({
     e.preventDefault();
     await handleVerifyOTP(otpCode);
 
-    // if (otpVerify == "OTP verified") {
-    //   swal({
-    //     text: "Mobile Verified.",
-    //     icon: "success",
-    //     button: "OK!",
-    //     className: "modal_class_success",
-    //   });
-    //   setOtpError(false);
-    //   setError(false);
-    //   handleClose(false);
-    //   return;
-    // }
+    // if (otpVerify) {
+    setCount(count - 1);
 
-    // if (count > 0) {
-    //   let content2 = document.createElement("p");
-    //   content2.innerHTML =
-    //     'You have entered wrong OTP. Please try again. You have another <br/><span style="color: #0d6efd;">0' +
-    //     count +
-    //     "</span> more tries .";
-    //   swal({
-    //     content: content2,
-    //     icon: "warning",
-    //     button: "OK!",
-    //     className: "modal_class_success",
-    //   });
-    // } else {
-    //   setDisabled(true);
-    //   swal({
-    //     text: "You have entered wrong OTP, And you have no more tries left. You can request another OTP again",
-    //     icon: "warning",
-    //     button: "OK!",
-    //     className: "modal_class_success",
-    //   });
+    if (otpVerify == "OTP verified") {
+      swal({
+        text: "Verified!.",
+        icon: "success",
+        button: "OK!",
+        className: "modal_class_success",
+      });
+      setOtpError(false);
+      setError(false);
+      handleClose(false);
+      return;
+    }
+    if (count > 0) {
+
+      console.log(count);
+      let content2 = document.createElement("p");
+      content2.innerHTML =
+        'You have entered wrong OTP. Please try again. You have another <br/><span style="color: #0d6efd;">0' +
+        count +
+        "</span> more tries .";
+      swal({
+        content: content2,
+        icon: "warning",
+        button: "OK!",
+        className: "modal_class_success",
+      });
+
+      setDisableAfterActivationMobile(false);
+      // setCount(2);
+      setOtpVerify("");
+      // setDisabled(false);
+      setOtpError(false);
+    } else {
+      setDisabled(true);
+      swal({
+        text: "You have entered wrong OTP, And you have no more tries left. You can request another OTP again",
+        icon: "warning",
+        button: "OK!",
+        className: "modal_class_success",
+      });
+    }
+
+    setOtpVerify("");
+    setError("Mobile OTP Code not matched");
+    setOtpError(true);
     // }
-    // setError("Mobile OTP Code not matched");
-    // setOtpError(true);
   };
 
   const verifyAlert = () => {
     swal({
-      text: "Please verify your mobile address before closing!",
+      text: "Please verify your mobile number before closing!",
       icon: "warning",
       button: "OK!",
       className: "modal_class_success",
@@ -190,7 +203,7 @@ export default function MobileVerifyModal({
             component="h2"
             align="center"
           >
-            Verify Mobiles
+            Verify Mobile
           </Typography>
           <Typography id="modal-modal-description text-light" sx={{ mt: 2 }}>
             Check your mobile for OTP
