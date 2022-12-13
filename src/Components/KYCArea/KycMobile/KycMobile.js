@@ -11,7 +11,7 @@ import { KycContext } from "../../../contexts/KycContext";
 import MobileVerifyModal from "../../../pages/Profile/MobileVerifyModal";
 
 const KycMobile = ({ expiryTimestamp }) => {
-  const [otpCode, setOtpCode] = useState();
+  const [otpCode, setOtpCode] = useState("");
   const [openMobile, setopenMobile] = useState(false);
   const [otpVerify, setOtpVerify] = useState();
   const [isError, setError] = useState(false);
