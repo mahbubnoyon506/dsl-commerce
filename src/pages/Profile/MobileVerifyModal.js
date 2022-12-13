@@ -7,19 +7,15 @@ import swal from "sweetalert";
 import Button from "react-bootstrap/Button";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
+import { Dialog } from "@mui/material";
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 300,
   bgcolor: "#1a1a25",
-  // border: '2px solid white',
   boxShadow: 24,
   color: "white",
-  borderRadius: "5px",
-  p: 4,
+  paddingInline: "20px",
+  position: "relative",
+  paddingBlock: "16px",
 };
 
 export default function MobileVerifyModal({
@@ -35,9 +31,8 @@ export default function MobileVerifyModal({
   setOtpVerify,
   setDisableAfterActivationMobile,
   otpCode,
-  setOtpCode
+  setOtpCode,
 }) {
-
   const [isOtpError, setOtpError] = useState(false);
 
   const handleClose = () => {
@@ -129,7 +124,6 @@ export default function MobileVerifyModal({
       return;
     }
     if (count > 0) {
-
       console.log(count);
       let content2 = document.createElement("p");
       content2.innerHTML =
@@ -175,27 +169,32 @@ export default function MobileVerifyModal({
 
   return (
     <div>
-      <Modal
+      <Dialog
         open={open}
-
         onClose={otpVerify == otpCode && handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         className="text-center"
+        maxWidth="xs"
+        fullWidth
       >
         <Box sx={style} id="">
-          <div className="closeD text-right">
-            <button
-              style={{
-                color: "white",
-                backgroundColor: "transparent",
-                border: "none",
-              }}
-              onClick={otpVerify == otpCode ? handleClose : verifyAlert}
-            >
-              <CloseIcon className="iconClose" />
-            </button>
-          </div>
+          {/* <div className="closeD text-right"> */}
+          <button
+            style={{
+              color: "white",
+              backgroundColor: "transparent",
+              border: "none",
+              textAlign: "right",
+              position: "absolute",
+              top: "6px",
+              right: "6px",
+            }}
+            onClick={otpVerify == otpCode ? handleClose : verifyAlert}
+          >
+            <CloseIcon className="iconClose" />
+          </button>
+          {/* </div> */}
           <Typography
             id="modal-modal-title text-light"
             className="text-light pt-1"
@@ -205,7 +204,10 @@ export default function MobileVerifyModal({
           >
             Verify Mobile
           </Typography>
-          <Typography id="modal-modal-description text-light" sx={{ mt: 2 }}>
+          <Typography
+            id="modal-modal-description text-light"
+            sx={{ mt: 2, mb: "14px" }}
+          >
             Check your mobile for OTP
           </Typography>
           <form className="d-flex input-group mt-2 mb-2">
@@ -215,14 +217,13 @@ export default function MobileVerifyModal({
               placeholder="OTP code"
               aria-label="OTP code !!"
               aria-describedby="button-addon2"
-              onChange={(e) =>
-
-                setOtpCode(e.target.value)
-              }
+              onChange={(e) => setOtpCode(e.target.value)}
             />
             <button
               disabled={disabled ? true : false}
-              className="btn btn-outline-secondary bg-danger text-light"
+              className={`btn btn-outline-secondary ${
+                otpCode !== "" ? "bg-danger" : "bg-secondary"
+              } text-light`}
               onClick={hendelSubmit}
               type="submit"
               id="button-addon2"
@@ -236,28 +237,25 @@ export default function MobileVerifyModal({
           ) : (
             ""
           )}
-          <div className="d-flex" style={{ justifyContent: "center" }}>
+          <div
+            className="d-flex"
+            style={{ justifyContent: "center", marginTop: "14px" }}
+          >
             <button
               disabled={minutes == 0 && seconds == 0 ? false : true}
               type="submit"
               onClick={handleVerifyMobile}
-              className="submit banner-button2 font14 text-decoration-none p-2"
-              style={
-                minutes == 0 && seconds == 0
-                  ? { backgroundColor: "#007bff", color: "#fff" }
-                  : { backgroundColor: "#7b7b94", color: "#fff" }
-              }
+              className={`submit banner-button2 font14 text-decoration-none rounded text-white p-2 ${
+                minutes == 0 && seconds == 0 ? "bg-primary" : "bg-secondary"
+              }`}
               id="font14"
             >
-              Resend OTP
+              Resend OTP (<span>{minutes}</span>:
+              <span>{seconds < 10 ? `0${seconds}` : seconds}</span>)
             </button>
           </div>
-          <div className="text-center text-white mt-3">
-            <span>{minutes}</span>:
-            <span>{seconds < 10 ? `0${seconds}` : seconds}</span>
-          </div>
         </Box>
-      </Modal>
+      </Dialog>
     </div>
   );
 }

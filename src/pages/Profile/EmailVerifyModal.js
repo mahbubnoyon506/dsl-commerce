@@ -5,19 +5,15 @@ import { useState } from "react";
 import swal from "sweetalert";
 import Button from "react-bootstrap/Button";
 import CloseIcon from "@mui/icons-material/Close";
+import { Dialog, IconButton } from "@mui/material";
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 300,
   bgcolor: "#1a1a25",
-  // border: '2px solid white',
   boxShadow: 24,
   color: "white",
-  borderRadius: "5px",
-  p: 4,
+  paddingInline: "20px",
+  position: "relative",
+  paddingBlock: "16px",
 };
 
 export default function EmailVerifyModal({
@@ -96,27 +92,33 @@ export default function EmailVerifyModal({
     //   </Modal>
     // </div>
     <div>
-      <Modal
+      {/* <Modal */}
+      <Dialog
         open={open}
         onClose={otpVerify == otpCode && handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         className="text-center"
+        maxWidth="xs"
+        fullWidth
       >
         <Box sx={style} id="">
-          <div className="closeD text-right">
-            <button
-              style={{
-                color: "white",
-                backgroundColor: "transparent",
-                border: "none",
-                textAlign: "right",
-              }}
-              onClick={otpVerify == otpCode ? handleClose : verifyAlert}
-            >
-              <CloseIcon className="iconClose" />
-            </button>
-          </div>
+          {/* <div className="closeD text-right"> */}
+          <button
+            style={{
+              color: "white",
+              backgroundColor: "transparent",
+              border: "none",
+              textAlign: "right",
+              position: "absolute",
+              top: "6px",
+              right: "6px",
+            }}
+            onClick={otpVerify == otpCode ? handleClose : verifyAlert}
+          >
+            <CloseIcon className="iconClose" />
+          </button>
+          {/* </div> */}
           <Typography
             id="modal-modal-title text-light"
             className="text-light pt-1"
@@ -126,7 +128,10 @@ export default function EmailVerifyModal({
           >
             Verify Email
           </Typography>
-          <Typography id="modal-modal-description text-light" sx={{ mt: 2 }}>
+          <Typography
+            id="modal-modal-description text-light"
+            sx={{ mt: 2, mb: "14px" }}
+          >
             Check your email for OTP
           </Typography>
           <form className="d-flex input-group mt-2 mb-2">
@@ -169,15 +174,17 @@ export default function EmailVerifyModal({
               }`}
               id="font14"
             >
-              Resend OTP
+              Resend OTP (<span>{minutes}</span>:
+              <span>{seconds < 10 ? `0${seconds}` : seconds}</span>)
             </button>
           </div>
-          <div className="text-center text-white mt-3">
+          {/* <div className="text-center text-white mt-3">
             <span>{minutes}</span>:
             <span>{seconds < 10 ? `0${seconds}` : seconds}</span>
-          </div>
+          </div> */}
         </Box>
-      </Modal>
+      </Dialog>
+      {/* </Modal> */}
     </div>
   );
 }
