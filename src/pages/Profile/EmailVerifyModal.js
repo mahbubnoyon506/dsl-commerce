@@ -178,10 +178,6 @@ export default function EmailVerifyModal({
               <span>{seconds < 10 ? `0${seconds}` : seconds}</span>)
             </button>
           </div>
-          {/* <div className="text-center text-white mt-3">
-            <span>{minutes}</span>:
-            <span>{seconds < 10 ? `0${seconds}` : seconds}</span>
-          </div> */}
         </Box>
       </Dialog>
       {/* </Modal> */}
