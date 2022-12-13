@@ -585,7 +585,7 @@ function CheckoutArea({ expiryTimestamp }) {
         dangerMode: true,
         className: "modal_class_success",
       });
-    } else if (!emailVerify || !mobileNoVerify) {
+    } else if (!user.email || !mobileNoVerify) {
       swal({
         title: "Attention",
         text: "Please verify your email and mobile number",

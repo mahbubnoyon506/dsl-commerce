@@ -95,7 +95,7 @@ function LoginArea({ customClass = "" }) {
 
         <div className="row align-items-center">
           <div className="col-lg-6 col-md-6 col-sm-6">
-            <div className="form-check">
+            {/* <div className="form-check">
               <input
                 type="checkbox"
                 className="form-check-input"
@@ -104,7 +104,7 @@ function LoginArea({ customClass = "" }) {
               <label className="form-check-label" htmlFor="checkme">
                 Remember me
               </label>
-            </div>
+            </div> */}
           </div>
 
           <div className="col-lg-6 col-md-6 col-sm-6 lost-your-password">

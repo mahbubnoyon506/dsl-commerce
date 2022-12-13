@@ -7,7 +7,7 @@ import { KycContext } from '../../../../contexts/KycContext'
 
 const KycLogin = () => {
   const [isVisible, setVisible] = useState(false);
-  const {handleUserLogin} = useContext(KycContext)
+  const { handleUserLogin } = useContext(KycContext)
 
   const handleShow = () => {
     setVisible(!isVisible);
@@ -50,9 +50,9 @@ const KycLogin = () => {
                   <Link to='#'>Forgot Password?</Link>
                 </div>
                 <div className='d-flex align-items-center'>
-                  <Form.Control 
-                  name='password'
-                  type={!isVisible ? "password" : "text"} 
+                  <Form.Control
+                    name='password'
+                    type={!isVisible ? "password" : "text"}
                   />
                   <div onClick={handleShow} style={{ marginLeft: '-40px', background: 'transparent', cursor: 'pointer' }} >
                     {isVisible ? <AiFillEye size={30} className='text-dark' /> : <AiFillEyeInvisible size={30} className='text-dark' />}
@@ -60,13 +60,13 @@ const KycLogin = () => {
                 </div>
               </div>
 
-              <div className='mb-3'>
+              {/* <div className='mb-3'>
                 <Form.Check
                   type='checkbox'
                   id='checkbox'
                   label='Remember me on this computer'
                 />
-              </div>
+              </div> */}
 
               <Button className='mt-1 w-100 bg-primary' as="input" type="submit" value="LOG IN" />
             </Form.Group>
