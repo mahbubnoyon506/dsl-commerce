@@ -67,7 +67,7 @@ function CheckoutArea({ expiryTimestamp }) {
     payByTestnetQuest,
   } = useContext(DSLCommerceContext);
   const { carts } = useContext(CartContext);
-  console.log(carts);
+  console.log("user info", user);
 
   const [name, setName] = useState("");
   const [country, setCountry] = useState("");
@@ -89,6 +89,7 @@ function CheckoutArea({ expiryTimestamp }) {
   const [otpVerify, setOtpVerify] = useState();
   const [openEmail, setOpenEmail] = useState(false);
   const [openMobile, setopenMobile] = useState(false);
+  const [otpCode, setOtpCode] = useState(false);
   const [isError, setError] = useState(false);
   const [cryptoPayment, setCryptoPayment] = useState("on");
   const [payNowPayment, setPayNowPayment] = useState(null);
@@ -209,7 +210,7 @@ function CheckoutArea({ expiryTimestamp }) {
   };
 
   const handleVerifyMobileOTP = async (otpCode) => {
-    console.log("handleVerifyMobileOTP");
+    console.log("handleVerifyMobileOTP", otpCode);
 
     await axios
       .post(`https://backend.dslcommerce.com/api/number/otp`, {
@@ -220,6 +221,8 @@ function CheckoutArea({ expiryTimestamp }) {
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
+
+          console.log(res.data.message)
           setmobileNoVerify(true);
           setOtpVerify(res.data.message);
           swal({
@@ -582,7 +585,7 @@ function CheckoutArea({ expiryTimestamp }) {
         dangerMode: true,
         className: "modal_class_success",
       });
-    } else if (!emailVerify || !mobileNoVerify) {
+    } else if (!user.email || !mobileNoVerify) {
       swal({
         title: "Attention",
         text: "Please verify your email and mobile number",
@@ -912,9 +915,8 @@ function CheckoutArea({ expiryTimestamp }) {
         {message !== "" && (
           <div
             className={`
-        ${
-          message === "Order successfully added"
-        } ? alert alert-success : alert alert-danger 
+        ${message === "Order successfully added"
+              } ? alert alert-success : alert alert-danger 
       `}
             role="alert"
           >
@@ -1042,7 +1044,7 @@ function CheckoutArea({ expiryTimestamp }) {
                             onClick={handleVerifyMobile}
                             disabled={
                               mobile?.length === 0 ||
-                              disableAfterActivationMobile
+                                disableAfterActivationMobile
                                 ? true
                                 : false
                             }
@@ -1401,7 +1403,7 @@ function CheckoutArea({ expiryTimestamp }) {
                     style={{ alignItems: "flex-end", justifyContent: "start" }}
                   >
                     {!user.walletAddress ||
-                    user.walletAddress === "undefined" ? (
+                      user.walletAddress === "undefined" ? (
                       <button
                         type="submit"
                         className="default-btn"
@@ -1534,6 +1536,8 @@ function CheckoutArea({ expiryTimestamp }) {
         />
 
         <MobileVerifyModal
+          otpCode={otpCode}
+          setOtpCode={setOtpCode}
           handleVerifyMobile={handleVerifyMobile}
           handleVerifyOTP={handleVerifyMobileOTP}
           minutes={minutes}
