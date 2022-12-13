@@ -8,10 +8,10 @@ import { useEffect, useState } from "react";
 import Pagination from "../../../Components/Pagination/Pagination";
 import axios from "axios";
 import { CSVLink } from "react-csv";
+import swal from "sweetalert";
 
 const CustomerOrders = () => {
   const [allOrder, setAllOrder] = useState([]);
-  // console.log('first', allOrder)
 
   //*************************** Emtiaz ***************************
   const fetchAllOrders = () => {
@@ -58,6 +58,36 @@ const CustomerOrders = () => {
 
   const handleOrderDelete = (id) => {
     console.log("Delete Order", id);
+    const confirmDelete = window.confirm(
+      "Are you sure, you want to delete this Order?"
+    );
+    if (confirmDelete) {
+      axios
+        .delete(`https://backend.dslcommerce.com/api/order/${id}`)
+        .then((res) => {
+          if (res.status === 200) {
+            // alert(res.data.message);
+            swal({
+              // title: "Success",
+              text: res.data.message,
+              icon: "success",
+              button: "OK!",
+              className: "modal_class_success",
+            });
+            setAllOrder(allOrder.filter((c) => c._id !== id));
+          }
+        })
+        .catch((error) => {
+          // alert(error.response.data.message);
+          swal({
+            title: "Attention",
+            text: error.response.data.message,
+            icon: "warning",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+        });
+    }
   };
 
   
