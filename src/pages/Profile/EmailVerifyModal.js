@@ -1,32 +1,42 @@
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Typography from '@mui/material/Typography';
-import { useState } from 'react';
-import swal from 'sweetalert';
-import Button from 'react-bootstrap/Button';
-import CloseIcon from '@mui/icons-material/Close';
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
+import { useState } from "react";
+import swal from "sweetalert";
+import Button from "react-bootstrap/Button";
+import CloseIcon from "@mui/icons-material/Close";
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 300,
-  bgcolor: '#1a1a25',
+  bgcolor: "#1a1a25",
   // border: '2px solid white',
   boxShadow: 24,
   color: "white",
-  borderRadius: '5px',
-  p: 4
+  borderRadius: "5px",
+  p: 4,
 };
 
-export default function EmailVerifyModal({ open, userRefetch, handleVerifyOTP, setOpenEmail, updateProfile, otpVerify, setError, handleVerifyEmail, minutes, seconds, otpCode, setOtpCode }) {
-
-
-  const [isOtpError, setOtpError] = useState(false)
+export default function EmailVerifyModal({
+  open,
+  userRefetch,
+  handleVerifyOTP,
+  setOpenEmail,
+  updateProfile,
+  otpVerify,
+  setError,
+  handleVerifyEmail,
+  minutes,
+  seconds,
+  otpCode,
+  setOtpCode,
+}) {
+  const [isOtpError, setOtpError] = useState(false);
 
   const handleClose = () => setOpenEmail(false);
-
 
   // Re-send OTP states
   const [forEnable, setForEnable] = useState(false);
@@ -34,16 +44,13 @@ export default function EmailVerifyModal({ open, userRefetch, handleVerifyOTP, s
   const [count, setCount] = useState(2);
   const [disabled, setDisabled] = useState(false);
 
-
   const hendelSubmit = (e) => {
-    setCount(count - 1)
+    setCount(count - 1);
     e.preventDefault();
     // console.log('otpVerify',otpVerify);
     // console.log('otpCode', otpCode);
-    handleVerifyOTP(otpCode)
-
-
-  }
+    handleVerifyOTP(otpCode);
+  };
 
   const verifyAlert = () => {
     swal({
@@ -51,8 +58,8 @@ export default function EmailVerifyModal({ open, userRefetch, handleVerifyOTP, s
       icon: "warning",
       button: "OK!",
       className: "modal_class_success",
-    })
-  }
+    });
+  };
 
   return (
     // <div>
@@ -129,11 +136,13 @@ export default function EmailVerifyModal({ open, userRefetch, handleVerifyOTP, s
               placeholder="OTP code"
               aria-label="OTP code !!"
               aria-describedby="button-addon2"
-              onChange={e => setOtpCode(e.target.value)}
+              onChange={(e) => setOtpCode(e.target.value)}
             />
             <button
               disabled={disabled ? true : false}
-              className="btn btn-outline-secondary bg-danger text-light"
+              className={`btn btn-outline-secondary ${
+                otpCode !== "" ? "bg-danger" : "bg-secondary"
+              } text-light`}
               onClick={hendelSubmit}
               type="submit"
               id="button-addon2"

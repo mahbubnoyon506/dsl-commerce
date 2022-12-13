@@ -57,7 +57,7 @@ const CustomerOrders = () => {
     <div className="productBody">
       <h5 className="text-white-50 text-start pb-2 text-uppercase">
         {" "}
-        User ORDERS
+        CUSTOMER ORDERS
       </h5>
       <Row className="g-5">
         <Col className="py-2">

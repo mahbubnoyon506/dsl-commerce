@@ -9,7 +9,6 @@ import "./CategoryModal.css";
 import { useNavigate, useParams } from "react-router-dom";
 import Pagination from "../../../../Components/Pagination/Pagination";
 
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -23,7 +22,7 @@ const style = {
 };
 
 const AllCategory = () => {
-  const { categoryPerPage } = useParams()
+  const { categoryPerPage } = useParams();
   const [open, setOpen] = React.useState(false);
   const [modal, setModal] = useState(false);
   const [name, setCategoryName] = useState("");
@@ -34,9 +33,8 @@ const AllCategory = () => {
     value: null,
   });
 
-
   //****************************** Pagination Start ******************************/
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [getPage, setPage] = useState(1);
   const [show, setShow] = useState(10);
   const [lastPage, setLastPage] = useState(0);
@@ -48,22 +46,19 @@ const AllCategory = () => {
     setLastPage(lastPage);
   }, [categories, show]);
 
-
   useEffect(() => {
     if (categoryPerPage) {
-      const page = parseInt(categoryPerPage)
+      const page = parseInt(categoryPerPage);
       const getSlicingCategory = categories.slice(
         (page - 1) * show,
         page * show
       );
       setSliceCategories([...getSlicingCategory]);
       setPage(parseInt(page));
-    }
-    else {
+    } else {
       const getSlicingProduct = categories.slice(0, show);
       setSliceCategories([...getSlicingProduct]);
     }
-
   }, [categories, show, categoryPerPage]);
 
   const pageHandle = (jump) => {
@@ -72,7 +67,6 @@ const AllCategory = () => {
   };
 
   //****************************** Pagination End ******************************/
-
 
   const getCategory = () => {
     fetch(`https://backend.dslcommerce.com/api/category/`)
@@ -204,7 +198,6 @@ const AllCategory = () => {
   const handleClose = () => setOpen(false);
   return (
     <>
-
       <h5 className="text-white text-start text-uppercase pt-1">CATEGORIES</h5>
       <div className="d-flex flex-column flex-lg-row mb-3 justify-content-lg-between align-items-center">
         <Button
@@ -284,7 +277,7 @@ const AllCategory = () => {
           </Box>
         </Modal>
       </div>
-      <div>
+      <div className="productCard py-2">
         <Table style={{ color: "white" }}>
           <thead>
             <tr>
@@ -331,20 +324,16 @@ const AllCategory = () => {
 
         {/* Pagination  */}
         <div className="">
-          {sliceCategories?.length ?
-            (
-              <Pagination
-                lastPage={lastPage}
-                page={getPage}
-                pageHandle={pageHandle}
-              />
-            )
-            :
-            (<></>)
-          }
+          {sliceCategories?.length ? (
+            <Pagination
+              lastPage={lastPage}
+              page={getPage}
+              pageHandle={pageHandle}
+            />
+          ) : (
+            <></>
+          )}
         </div>
-
-
       </div>
 
       {categoryUpdate.show && (

@@ -178,7 +178,7 @@ function Dashboard(props) {
           <span className="navIconAdmin">
             <GiShoppingBag style={{ fontSize: "20px" }} />
           </span>
-          User Orders
+          CUSTOMER ORDERS
         </NavLink>
         <br />
 
