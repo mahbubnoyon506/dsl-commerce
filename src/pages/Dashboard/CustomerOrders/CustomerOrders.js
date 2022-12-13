@@ -7,11 +7,21 @@ import { AiFillDelete } from "react-icons/ai";
 import { allOrders } from "./orderData";
 import { useEffect, useState } from "react";
 import Pagination from "../../../Components/Pagination/Pagination";
+import axios from "axios";
 
 const CustomerOrders = () => {
-  const [allOrder, setAllOrder] = useState(allOrders);
+  const [allOrder, setAllOrder] = useState([]);
   // const [orderStatus, setOrderStatus] = useState(allOrders.status);
   const [orderStatus, setOrderStatus] = useState("");
+  const [searchInput, setSearchInput] = useState('');
+
+  //*************************** Emtiaz ***************************
+  useEffect(() => {
+
+    axios.get(`https://backend.dslcommerce.com/api/order`)
+      .then(res => setAllOrder(res.data))
+
+  }, []);
 
   //****************************** Pagination Start ******************************/
   const { orderPerPage } = useParams();
@@ -20,7 +30,7 @@ const CustomerOrders = () => {
   const [show, setShow] = useState(10);
   const [lastPage, setLastPage] = useState(0);
   const [sliceOrders, setSliceOrders] = useState([]);
-  const [sliceOrderss] = useState([]);
+  // const [sliceOrderss] = useState([]);
   // console.log(sliceProducts)
 
   useEffect(() => {
@@ -31,11 +41,11 @@ const CustomerOrders = () => {
   useEffect(() => {
     if (orderPerPage) {
       const page = parseInt(orderPerPage);
-      const getSlicingCategory = allOrder.slice((page - 1) * show, page * show);
+      const getSlicingCategory = allOrder?.slice((page - 1) * show, page * show);
       setSliceOrders([...getSlicingCategory]);
       setPage(parseInt(page));
     } else {
-      const getSlicingProduct = allOrder.slice(0, show);
+      const getSlicingProduct = allOrder?.slice(0, show);
       setSliceOrders([...getSlicingProduct]);
     }
   }, [allOrder, show, orderPerPage]);
@@ -49,15 +59,62 @@ const CustomerOrders = () => {
   const handleOrderDelete = (id) => {
     console.log("Delete Order", id);
   };
+
   useEffect(() => {
-    console.log("allOrders");
-    console.log(allOrders);
+    // console.log("allOrders", allOrders);
   }, []);
+
+  //*****************  Handle Search By Product Name */
+  const handleSearch = (e) => {
+    e.preventDefault()
+    // console.log(searchInput)
+    const newArray = [...allOrder];
+    // console.log(newArray);
+    setAllOrder(
+      newArray.filter(
+        // (item) =>console.log('eeeeee',item)
+        (item) => item.orderItems[0]?.productName?.includes(searchInput)
+      )
+    );
+  }
+
+  //*************************************** Sort Handle **************************************
+  const sortHandle = (e) => {
+    const method = e?.target?.value || e;
+    console.log(method);
+    if (method == 'pending') {
+      // console.log('first' , method)
+      axios.get(`https://backend.dslcommerce.com/api/order/data/pending/all`)
+        .then(res => setAllOrder(res.data.result))
+      return;
+    }
+    else if (method == 'processing') {
+      // console.log('second')
+      axios.get(`https://backend.dslcommerce.com/api/order/data/processing/all`)
+        .then(res => setAllOrder(res.data.result))
+      return;
+    }
+
+    else if (method == 'delivered') {
+      // console.log('third')
+      axios.get(`https://backend.dslcommerce.com/api/order/data/delivered/all`)
+        .then(res => setAllOrder(res.data.result))
+      return;
+    }
+    else {
+      const getSlicingProduct = allOrder?.slice(0, show);
+      setSliceOrders([...getSlicingProduct]);
+      return;
+    }
+  }
+
+
+
   return (
     <div className="productBody">
       <h5 className="text-white-50 text-start pb-2 text-uppercase">
         {" "}
-        User ORDERS
+        Customer ORDERS
       </h5>
       <Row className="g-5">
         <Col className="py-2">
@@ -65,17 +122,24 @@ const CustomerOrders = () => {
             <Card.Body>
               <Card.Text className="dashboardTxt">
                 <div className="d-flex flex-column flex-lg-row justify-content-evenly gap-3">
-                  <input
-                    type="number"
-                    placeholder="Search By Name"
-                    className="py-2 pl-2 w-100 w-lg-25 border border-white rounded "
-                  />
+
+                  <form onSubmit={handleSearch} className=" w-100 w-lg-25  rounded ">
+                    <input
+                      type="text"
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      placeholder="Search By Name"
+                      className="py-3 pl-2 w-100"
+                    />
+                  </form>
+
                   <select
+                    onChange={sortHandle}
                     className="py-2 pl-2 border border-white rounded w-100 w-lg-25"
                     style={{ cursor: "pointer", borderRadius: "5px" }}
                   >
-                    <option>Status</option>
+                    <option value="default">Status</option>
                     <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
                     <option value="delivered">Delivered</option>
                     {/* <option value="processing">Processing</option> */}
                   </select>
@@ -103,43 +167,55 @@ const CustomerOrders = () => {
           <Table className="text-white-50 productDataTable ">
             <thead>
               <tr>
-                <th className="text-center">Order Time</th>
-                {/* <th className="text-center">Product Name</th> */}
-                <th className="text-center">Phone</th>
-                <th className="text-center ">Method</th>
-                <th className="text-center ">Amount</th>
-                <th className="text-center">Status</th>
-                <th className="text-center">Action</th>
-                <th className="text-center">View / Del</th>
+                <th className="text-left">Product Name</th>
+                <th className="text-left">Email</th>
+                <th className="text-left ">Method</th>
+                <th className="text-left ">Amount</th>
+                <th className="text-left">Status</th>
+                <th className="text-left">Action</th>
+                <th className="text-left">View / Del</th>
               </tr>
             </thead>
             <tbody>
-              {sliceOrderss?.map((order, index) => (
+              {sliceOrders?.map((order, index) => (
                 <tr className="tableRow" key={order?._id}>
-                  <td className="text-center text-transparent">
-                    {order.orderTime}
+                  <td className="text-left text-transparent">
+                    {/* {order.date.slice(0, 10)} */}
+                    {/* {product?.images?.slice(0, 4)?.map((img) => (
+                      <div>
+                        <img
+                          src={img}
+                          alt={product.productName}
+                        />
+                      </div>
+                    ))} */}
+
+                    {order?.orderItems?.slice(0, 1).map((item) => (
+                      <div>
+                        {item?.productName}
+                      </div>
+                    ))}
+
                   </td>
-                  {/* <td className="text-center text-capitalize">
-                    {order.productName}
-                  </td> */}
-                  <td className="text-center ">{order?.phone}</td>
-                  <td className="text-center text-capitalize ">
+                  <td className="text-left ">{order?.email}</td>
+                  <td className="text-left text-capitalize ">
                     {order?.paymentMethod}
                   </td>
-                  <td className="text-center text-capitalize ">
-                    ${order?.orderAmount}
+                  <td className="text-left text-capitalize ">
+                    ${order?.amount}
                   </td>
-                  <td className="text-center">
+                  <td className="text-left">
                     <button
                       className="btn btn-sm bg-danger text-white"
                       style={{ borderRadius: "20px" }}
                     >
-                      {/* Pending */}
-                      {/* {orderStatus} */}
-                      {order?.status}
+                      {order?.pendingStatus === true && (<>Pending</>)}
+                      {order?.processingStatus === true && (<>Processing</>)}
+                      {order?.deliveredStatus === true && (<>Delivered</>)}
+
                     </button>
                   </td>
-                  <td className="text-center">
+                  <td className="text-left">
                     <select
                       className="bg-white-50"
                       style={{ cursor: "pointer", borderRadius: "5px" }}
@@ -170,8 +246,8 @@ const CustomerOrders = () => {
                       </option>
                     </select>
                   </td>
-                  <td className="action d-flex justify-content-center">
-                    <div className="actionDiv text-center">
+                  <td className="action d-flex justify-content-left">
+                    <div className="actionDiv text-left">
                       <Link to={`/admin/orderDetail/${order?._id}`}>
                         <button className="editBtn">
                           <GrView />
