@@ -39,7 +39,7 @@ function Search(props) {
           className="search-form w-100"
           onSubmit={(e) => props.submit(e, searchText)}
         >
-          <div className="input-group mb-3 ">
+          {/* <div className="input-group d-flex mb-3 ">
             <input
               type="search"
               className="form-control"
@@ -47,17 +47,25 @@ function Search(props) {
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
             />
-            {/* <button
-            className="btn btn-outline-secondary"
-            type="button"
-            id="button-addon2"
-          >
-            Button
-          </button> */}
             <button type="submit" className="p-2">
               <i className="bx bx-search-alt "></i>
             </button>
+          </div> */}
+
+          {/****************************  Emtiaz Code  ******************/}
+          <div class="input-group mb-3">
+            <input
+              type="search"
+              class="form-control"
+              placeholder="Search..."
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              aria-label="Search..."
+              aria-describedby="basic-addon2"
+            />
+            <button type="submit" class="input-group-text" id="basic-addon2">Search</button>
           </div>
+          {/****************************  Emtiaz Code  ******************/}
         </form>
       </div>
     </>

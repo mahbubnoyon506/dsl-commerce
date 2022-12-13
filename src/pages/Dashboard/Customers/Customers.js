@@ -23,22 +23,7 @@ const Customers = () => {
       .then(data => setAllCustomers(data))
   }, [refetch])
 
-  const search = (e, searchText) => {
-    e.preventDefault();
-    const newary = [...allCustomers];
-    console.log(searchText);
-    console.log("search");
-    setAllCustomers(
-      newary.filter(
-        (item) =>
-          item.EMAIL.includes(searchText) ||
-          item.PHONE.includes(searchText) ||
-          item.USER_ID.includes(searchText) ||
-          item.WALLET_ADDRESS.includes(searchText)
-      )
-    );
-  };
-
+  
   //****************************** Pagination Start ******************************/
   const { customerPerPage } = useParams();
   const [getPage, setPage] = useState(1);
@@ -110,6 +95,17 @@ const Customers = () => {
     }
   }
 
+  const search = (e, searchText) => {
+    e.preventDefault();
+    const newArray = [...allCustomers];
+    // console.log(newArray);
+    setAllCustomers(
+      newArray.filter(
+        (item) =>item.email?.includes(searchText)
+      )
+    );
+  };
+
   return (
     <>
       <h5 className="text-white text-start text-uppercase pb-1">CUSTOMERS</h5>
@@ -145,7 +141,7 @@ const Customers = () => {
                       <div>WalletAddress</div>
                     )}
                   </td>
-                  <td className="text-left text-capitalize ">
+                  <td className="text-left  ">
                     {sliceCustomer?.email ? (
                       <div>{sliceCustomer?.email}</div>
                     ) : (
