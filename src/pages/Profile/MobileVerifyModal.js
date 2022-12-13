@@ -53,7 +53,7 @@ export default function MobileVerifyModal({
   const [otpVerified, setotpVerified] = useState();
 
   useEffect(() => {
-    console.log("useEffect");
+    console.log("useEffect", otpVerify);
     if (otpVerify) {
       setCount(count - 1);
 
@@ -105,9 +105,11 @@ export default function MobileVerifyModal({
     }
   }, [otpVerify]);
 
+  console.log(otpCode)
+
   const hendelSubmit = async (e) => {
     // setCount(count - 1);
-    console.log("hendelSubmit");
+    console.log("hendelSubmit", otpCode);
     e.preventDefault();
     await handleVerifyOTP(otpCode);
 
@@ -200,10 +202,10 @@ export default function MobileVerifyModal({
               placeholder="OTP code"
               aria-label="OTP code !!"
               aria-describedby="button-addon2"
-              onChange={(e) => {
-                const value = e.target.value;
-                setOtpCode(value);
-              }}
+              onChange={(e) =>
+
+                setOtpCode(e.target.value)
+              }
             />
             <button
               disabled={disabled ? true : false}
