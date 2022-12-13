@@ -31,7 +31,6 @@ const CustomerOrders = () => {
   const [show, setShow] = useState(10);
   const [lastPage, setLastPage] = useState(0);
   const [sliceOrders, setSliceOrders] = useState([]);
-  // const [sliceOrderss] = useState([]);
   // console.log(sliceProducts)
 
   useEffect(() => {
