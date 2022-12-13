@@ -133,7 +133,6 @@ export default function MobileVerifyModal({
         fullWidth
       >
         <Box sx={style} id="">
-          {/* <div className="closeD text-right"> */}
           <button
             style={{
               color: "white",
@@ -148,7 +147,6 @@ export default function MobileVerifyModal({
           >
             <CloseIcon className="iconClose" />
           </button>
-          {/* </div> */}
           <Typography
             id="modal-modal-title text-light"
             className="text-light pt-1"

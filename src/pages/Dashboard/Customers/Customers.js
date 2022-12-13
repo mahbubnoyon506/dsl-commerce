@@ -17,11 +17,15 @@ const Customers = () => {
   const [refetch, setRefetch] = useState(false)
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const fetchAllCustomers = () => {
     fetch(`https://backend.dslcommerce.com/api/users/all`)
       .then(res => res.json())
       .then(data => setAllCustomers(data))
-  }, [refetch])
+  }
+
+  useEffect(() => {
+    fetchAllCustomers()
+  }, []);
 
 
   //****************************** Pagination Start ******************************/
@@ -95,16 +99,35 @@ const Customers = () => {
     }
   }
 
-  const search = (e, searchText) => {
-    e.preventDefault();
+  // const search = (e, searchText) => {
+  //   e.preventDefault();
+  //   const newArray = [...allCustomers];
+  //   // console.log(newArray);
+  //   setAllCustomers(
+  //     newArray.filter(
+  //       (item) => item.email?.includes(searchText)
+  //     )
+  //   );
+  // };
+
+  const handleSearch = (e) => {
+    // e.preventDefault()
+    const value = e.target.value;
+
+    console.log(value)
+    if (value === "") {
+      fetchAllCustomers()
+    }
     const newArray = [...allCustomers];
-    // console.log(newArray);
     setAllCustomers(
       newArray.filter(
-        (item) => item.email?.includes(searchText)
+        // (item) =>console.log('eeeeee',item)
+        (customer) =>
+          customer.email?.toLocaleLowerCase().includes(value.toLocaleLowerCase())
       )
     );
-  };
+  }
+
 
   console.log("allCustomers", allCustomers)
 
@@ -112,7 +135,7 @@ const Customers = () => {
     <>
       <h5 className="text-white text-start text-uppercase pb-1">CUSTOMERS</h5>
 
-      <Search submit={search} />
+      <Search handleSearch={handleSearch} />
 
       <div className="productCard py-2">
         <div className="tableNormal ">
