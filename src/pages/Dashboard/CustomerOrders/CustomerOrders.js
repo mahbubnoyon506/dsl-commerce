@@ -12,7 +12,6 @@ import swal from "sweetalert";
 
 const CustomerOrders = () => {
   const [allOrder, setAllOrder] = useState([]);
-  // console.log('first', allOrder)
 
   //*************************** Emtiaz ***************************
   const fetchAllOrders = () => {
