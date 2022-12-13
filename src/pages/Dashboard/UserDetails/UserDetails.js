@@ -43,10 +43,15 @@ function UserDetails() {
     }, [walletAddress]);
 
     const registrationDate = new Date(userInfo?.createdAt).toLocaleString().split(",")?.[0];
-    console.log(userInfo)
+    console.log(registrationDate)
 
+    let validRegDate;
 
-
+    if (registrationDate == "Invalid Date") {
+        validRegDate = ""
+    } else {
+        validRegDate = registrationDate;
+    }
 
     return (
         <div style={{ minHeight: '450px' }}>
@@ -105,10 +110,10 @@ function UserDetails() {
 
                                 </div>
                                 <div className="mb-2">
-                                    <label htmlFor='registerDate'>Register Dates</label>
+                                    <label htmlFor='registerDate'>Registration Date</label>
                                     <div className='d-flex  input-group'>
                                         <input
-                                            defaultValue={registrationDate}
+                                            defaultValue={validRegDate || ''}
                                             type="text" id='registerDate' name="registerDate"
                                             className='form-control bg-transparent text-white'
                                             placeholder='register date  ' />
@@ -255,7 +260,7 @@ function UserDetails() {
 
                             <div className='col-12 col-lg-6 max-w-100 px-4 mt-2'>
                                 <label for="address proof image">Address Proof Image</label>
-                                <img className='max-w-100' src={photoId?.photoIdFrontImg} alt="address proof" />
+                                <img className='max-w-100' src={userAddress?.file} alt="address proof" />
                                 <input className='mt-3 ms-1 w-100' type="file" accept='image/*' />
                             </div>
 

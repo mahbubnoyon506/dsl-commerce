@@ -22,7 +22,8 @@ const AdminDashboard = () => {
   const [pendingOrders, setPendingOrders] = useState([]);
   const [processingOrders, setProcessingOrders] = useState([]);
   const [delivered, setDeliverd] = useState([]);
-  const [allOrder, setAllOrder] = useState(allOrders);
+  const [allOrder, setAllOrder] = useState([]);
+  console.log("Watching orders", allOrder);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,6 +41,12 @@ const AdminDashboard = () => {
   useEffect(() => {
     axios.get("https://backend.dslcommerce.com/api/category/").then((res) => {
       setCategories(res.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get("https://backend.dslcommerce.com/api/order/").then((res) => {
+      setAllOrder(res.data);
     });
   }, []);
 
@@ -140,7 +147,7 @@ const AdminDashboard = () => {
                 </div>
                 <Card.Text className="">
                   <p className="text-white-50 p-0 m-0">Total Order</p>
-                  <h2 className="text-start text-white">{allOrder.length}</h2>
+                  <h2 className="text-start text-white">{allOrder?.length}</h2>
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -156,7 +163,6 @@ const AdminDashboard = () => {
                 </div>
                 <Card.Text className="">
                   <p className="text-white-50 p-0 m-0">Order Pending</p>
-                  <p className="text-warning p-0 m-0">(2000.00)</p>
                   <h2 className="text-start text-white">
                     {
                       allOrder.filter((item) => item.status === "pending")
@@ -168,7 +174,7 @@ const AdminDashboard = () => {
             </Card>
           </Col>
 
-          <Col xs={12} md={6} lg={4} xl={3}>
+          {/* <Col xs={12} md={6} lg={4} xl={3}>
             <Card className="cardDash " style={{ borderRadius: "20px" }}>
               <Card.Body className="d-flex gap-2 align-items-center justify-content-evenly">
                 <div className="iconDas">
@@ -187,7 +193,7 @@ const AdminDashboard = () => {
                 </Card.Text>
               </Card.Body>
             </Card>
-          </Col>
+          </Col> */}
 
           <Col xs={12} md={6} lg={4} xl={3}>
             <Card className="cardDash " style={{ borderRadius: "20px" }}>

@@ -14,7 +14,7 @@ function MiddleHeader() {
   const { carts } = useContext(CartContext);
   const { wishlistProducts } = useContext(WishlistContext);
   // console.log(wishlistProducts);
-  
+
   useEffect(() => {
     fetch("https://backend.dslcommerce.com/api/category/")
       .then((res) => res.json())
@@ -52,7 +52,7 @@ function MiddleHeader() {
                         style={{ cursor: "pointer", background: "#15407F" }}
                         name="category"
                       >
-                        <option value="">All Category</option>
+                        <option value="">All Catagory</option>
                         {getCategory.map((category, index) => (
                           <option
                             key={index}
