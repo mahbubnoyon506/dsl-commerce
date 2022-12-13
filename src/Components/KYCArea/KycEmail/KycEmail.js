@@ -274,7 +274,7 @@ const KycEmail = ({ expiryTimestamp }) => {
         otpCode={otpCode}
         setOtpCode={setOtpCode}
         setError={setError}
-        email={setEmail}
+        email={email}
         setOtpVerify={setOtpVerify}
         setDisableAfterActivation={setDisableAfterActivation}
       />

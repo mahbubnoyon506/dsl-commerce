@@ -1,11 +1,13 @@
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import swal from "sweetalert";
 import Button from "react-bootstrap/Button";
 import CloseIcon from "@mui/icons-material/Close";
 import { Dialog, IconButton } from "@mui/material";
+import { KycContext } from "../../contexts/KycContext";
+import axios from "axios";
 
 const style = {
   bgcolor: "#1a1a25",
@@ -26,9 +28,12 @@ export default function EmailVerifyModal({
   setError,
   handleVerifyEmail,
   minutes,
+  setOtpVerify,
   seconds,
   otpCode,
   setOtpCode,
+  email,
+  setDisableAfterActivation
 }) {
   const [isOtpError, setOtpError] = useState(false);
 
@@ -39,13 +44,78 @@ export default function EmailVerifyModal({
   const [againEnable, setAgainEnable] = useState(true);
   const [count, setCount] = useState(2);
   const [disabled, setDisabled] = useState(false);
+  const {
+    kycUser,
+    emailVerified,
+    setEmailVerified,
+    setRefetch,
+    refetch,
+    setisVerifiedProfile,
+    isVerifiedProfile,
+  } = useContext(KycContext);
 
-  const hendelSubmit = (e) => {
+  const hendelSubmit = async (e) => {
     setCount(count - 1);
     e.preventDefault();
-    // console.log('otpVerify',otpVerify);
-    // console.log('otpCode', otpCode);
-    handleVerifyOTP(otpCode);
+
+    await axios
+      .post(`https://backend.dslcommerce.com/api/email/otp/${email}`, {
+        otp: otpCode,
+      })
+
+      .then((res) => {
+        if (res.status === 200) {
+          setOtpVerify(res.data.message);
+          setEmailVerified(true);
+          setRefetch(!refetch);
+          swal({
+            text: res.data.message,
+            icon: "success",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+        }
+        setOpenEmail(false);
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+        setOtpVerify(err.response.data.message);
+
+
+        if (count > 0) {
+          console.log(count);
+          let content2 = document.createElement("p");
+          content2.innerHTML =
+            'You have entered wrong OTP. Please try again. You have another <br/><span style="color: #0d6efd;">0' +
+            count +
+            "</span> more tries .";
+          swal({
+            content: content2,
+            icon: "warning",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+
+          setDisableAfterActivation(false);
+          // setCount(2);
+          setOtpVerify("");
+          // setDisabled(false);
+          setOtpError(false);
+        } else {
+          setDisabled(true);
+          swal({
+            text: "You have entered wrong OTP, And you have no more tries left. You can request another OTP again",
+            icon: "warning",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+        }
+
+        setOtpVerify("");
+        setError("Mobile OTP Code not matched");
+        setOtpError(true);
+      });
+
   };
 
   const verifyAlert = () => {
@@ -145,9 +215,8 @@ export default function EmailVerifyModal({
             />
             <button
               disabled={disabled ? true : false}
-              className={`btn btn-outline-secondary ${
-                otpCode !== "" ? "bg-danger" : "bg-secondary"
-              } text-light`}
+              className={`btn btn-outline-secondary ${otpCode !== "" ? "bg-danger" : "bg-secondary"
+                } text-light`}
               onClick={hendelSubmit}
               type="submit"
               id="button-addon2"
@@ -169,9 +238,8 @@ export default function EmailVerifyModal({
               disabled={minutes == 0 && seconds == 0 ? false : true}
               type="submit"
               onClick={handleVerifyEmail}
-              className={`submit banner-button2 font14 text-decoration-none text-white p-2 rounded ${
-                minutes == 0 && seconds == 0 ? "bg-primary" : "bg-secondary"
-              }`}
+              className={`submit banner-button2 font14 text-decoration-none text-white p-2 rounded ${minutes == 0 && seconds == 0 ? "bg-primary" : "bg-secondary"
+                }`}
               id="font14"
             >
               Resend OTP (<span>{minutes}</span>:
