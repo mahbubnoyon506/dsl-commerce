@@ -20,15 +20,13 @@ import { RiAdminFill } from "react-icons/ri";
 import { GiShoppingBag } from "react-icons/gi";
 import { BsMinecartLoaded } from "react-icons/bs";
 import { useEffect } from "react";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import { useRef } from "react";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import Menu from '@mui/material/Menu';
-
-
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import Menu from "@mui/material/Menu";
 
 const menuLinkStyles = ({ isActive }) => {
   return {
@@ -38,18 +36,15 @@ const menuLinkStyles = ({ isActive }) => {
 const drawerWidth = 280;
 
 function Dashboard(props) {
-
   const { admin, logout } = React.useContext(AdminContext);
   const navigate = useNavigate();
-  const [kycMenu, setKycMenu] = useState('');
+  const [kycMenu, setKycMenu] = useState("");
 
   useEffect(() => {
     if (admin?.role !== "admin") {
       navigate("/");
     }
-  }, [admin, navigate])
-
-
+  }, [admin, navigate]);
 
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -67,12 +62,8 @@ function Dashboard(props) {
     navigate("/");
   };
 
-
-
-
   const handleChange = (event) => {
     setKycMenu(event.target.value);
-
   };
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -80,10 +71,9 @@ function Dashboard(props) {
     setAnchorEl(event.currentTarget);
   };
   const handleClose2 = () => {
-    handleClose()
+    handleClose();
     setAnchorEl(null);
   };
-
 
   const drawer = (
     <div className="sideBar">
@@ -131,16 +121,15 @@ function Dashboard(props) {
           Customers
         </NavLink>
 
-
         <div>
           <NavLink
             id="demo-positioned-button"
-            aria-controls={open ? 'demo-positioned-menu' : undefined}
+            aria-controls={open ? "demo-positioned-menu" : undefined}
             aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
+            aria-expanded={open ? "true" : undefined}
             onClick={handleClick}
-
-            style={{ color: '#BABBC0', cursor: 'pointer' }} sx={{ color: '#BABBC0' }}
+            style={{ color: "#BABBC0", cursor: "pointer" }}
+            sx={{ color: "#BABBC0" }}
           >
             <span className="navIconAdmin">
               <MdOutlineUnsubscribe style={{ fontSize: "20px" }} />
@@ -156,13 +145,28 @@ function Dashboard(props) {
             open={open}
             onClose={handleClose2}
           >
-            <Link onClick={handleClose2} to='verified'><MenuItem sx={{ color: 'black' }} value={10}>Verified </MenuItem></Link>
-            <Link onClick={handleClose2} to='non-verified'><MenuItem sx={{ color: 'black' }} value={20}>Non Verified</MenuItem></Link>
-            <Link onClick={handleClose2} to='pending'><MenuItem sx={{ color: 'black' }} value={30}>Pending</MenuItem></Link>
-            <Link onClick={handleClose2} to='added-products'><MenuItem sx={{ color: 'black' }} value={40}>Added products</MenuItem></Link>
+            <Link onClick={handleClose2} to="verified">
+              <MenuItem sx={{ color: "black" }} value={10}>
+                Verified{" "}
+              </MenuItem>
+            </Link>
+            <Link onClick={handleClose2} to="non-verified">
+              <MenuItem sx={{ color: "black" }} value={20}>
+                Non Verified
+              </MenuItem>
+            </Link>
+            <Link onClick={handleClose2} to="pending">
+              <MenuItem sx={{ color: "black" }} value={30}>
+                Pending
+              </MenuItem>
+            </Link>
+            <Link onClick={handleClose2} to="added-products">
+              <MenuItem sx={{ color: "black" }} value={40}>
+                Added products
+              </MenuItem>
+            </Link>
           </Menu>
         </div>
-
 
         <NavLink
           className="dashboardMenu"
@@ -230,8 +234,6 @@ function Dashboard(props) {
         </NavLink>
         <br />
 
-
-
         <Button
           variant="danger"
           onClick={() => handleLogout()}
@@ -285,7 +287,6 @@ function Dashboard(props) {
             </div> */}
           </Typography>
         </Toolbar>
-
       </AppBar>
 
       <Box
@@ -337,7 +338,9 @@ function Dashboard(props) {
       >
         <Toolbar />
         <div className="contentAllDiv">
-          <Outlet />
+          <div className="outletContainer">
+            <Outlet />
+          </div>
           <div className="copyrightAdmin mt-4 ">
             <p className="my-2">Copyright © 2022 - DS Legends Pte. Ltd.</p>
           </div>
