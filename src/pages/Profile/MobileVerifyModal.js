@@ -32,6 +32,7 @@ export default function MobileVerifyModal({
   setDisableAfterActivationMobile,
   otpCode,
   setOtpCode,
+  setmobileNoVerify,
 }) {
   const [isOtpError, setOtpError] = useState(false);
 
@@ -47,115 +48,68 @@ export default function MobileVerifyModal({
   const [disabled, setDisabled] = useState(false);
   const [otpVerified, setotpVerified] = useState();
 
-  // useEffect(() => {
-  //   console.log("useEffect", otpVerify);
-  //   if (otpVerify) {
-  //     setCount(count - 1);
-
-  //     if (otpVerify == "OTP verified") {
-  //       swal({
-  //         text: "Verified!.",
-  //         icon: "success",
-  //         button: "OK!",
-  //         className: "modal_class_success",
-  //       });
-  //       setOtpError(false);
-  //       setError(false);
-  //       handleClose(false);
-  //       return;
-  //     }
-  //     if (count > 0) {
-
-  //       console.log(count);
-  //       let content2 = document.createElement("p");
-  //       content2.innerHTML =
-  //         'You have entered wrong OTP. Please try again. You have another <br/><span style="color: #0d6efd;">0' +
-  //         count +
-  //         "</span> more tries .";
-  //       swal({
-  //         content: content2,
-  //         icon: "warning",
-  //         button: "OK!",
-  //         className: "modal_class_success",
-  //       });
-
-  //       setDisableAfterActivationMobile(false);
-  //       setCount(2);
-  //       setOtpVerify("");
-  //       setDisabled(false);
-  //       setOtpError(false);
-  //     } else {
-  //       setDisabled(true);
-  //       swal({
-  //         text: "You have entered wrong OTP, And you have no more tries left. You can request another OTP again",
-  //         icon: "warning",
-  //         button: "OK!",
-  //         className: "modal_class_success",
-  //       });
-  //     }
-
-  //     setOtpVerify("");
-  //     setError("Mobile OTP Code not matched");
-  //     setOtpError(true);
-  //   }
-  // }, [otpVerify]);
-
-  // console.log(otpCode)
-
   const hendelSubmit = async (e) => {
-    // setCount(count - 1);
-    console.log("hendelSubmit", otpCode);
-    e.preventDefault();
-    await handleVerifyOTP(otpCode);
-
-    // if (otpVerify) {
     setCount(count - 1);
+    e.preventDefault();
 
-    if (otpVerify == "OTP verified") {
-      swal({
-        text: "Verified!.",
-        icon: "success",
-        button: "OK!",
-        className: "modal_class_success",
-      });
-      setOtpError(false);
-      setError(false);
-      handleClose(false);
-      return;
-    }
-    if (count > 0) {
-      console.log(count);
-      let content2 = document.createElement("p");
-      content2.innerHTML =
-        'You have entered wrong OTP. Please try again. You have another <br/><span style="color: #0d6efd;">0' +
-        count +
-        "</span> more tries .";
-      swal({
-        content: content2,
-        icon: "warning",
-        button: "OK!",
-        className: "modal_class_success",
-      });
+    await axios
+      .post(`https://backend.dslcommerce.com/api/number/otp`, {
+        phone: mobile,
+        otp: otpCode,
+      })
 
-      setDisableAfterActivationMobile(false);
-      // setCount(2);
-      setOtpVerify("");
-      // setDisabled(false);
-      setOtpError(false);
-    } else {
-      setDisabled(true);
-      swal({
-        text: "You have entered wrong OTP, And you have no more tries left. You can request another OTP again",
-        icon: "warning",
-        button: "OK!",
-        className: "modal_class_success",
-      });
-    }
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          console.log(res.data.message);
+          setmobileNoVerify(true);
+          setOpenMobile(false);
+          setOtpVerify(res.data.message);
+          swal({
+            text: res.data.message,
+            icon: "success",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+        setOtpVerify(err.response.data.message);
 
-    setOtpVerify("");
-    setError("Mobile OTP Code not matched");
-    setOtpError(true);
-    // }
+        if (count > 0) {
+          console.log(count);
+          let content2 = document.createElement("p");
+          content2.innerHTML =
+            'You have entered wrong OTP. Please try again. You have another <br/><span style="color: #0d6efd;">0' +
+            count +
+            "</span> more tries .";
+          swal({
+            content: content2,
+            icon: "warning",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+
+          setDisableAfterActivationMobile(false);
+          // setCount(2);
+          setOtpVerify("");
+          // setDisabled(false);
+          setOtpError(false);
+        } else {
+          setDisabled(true);
+          swal({
+            text: "You have entered wrong OTP, And you have no more tries left. You can request another OTP again",
+            icon: "warning",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+        }
+
+        setOtpVerify("");
+        setError("Mobile OTP Code not matched");
+        setOtpError(true);
+      });
   };
 
   const verifyAlert = () => {
