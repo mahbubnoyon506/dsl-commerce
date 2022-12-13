@@ -23,6 +23,8 @@ const Customers = () => {
       .then(data => setAllCustomers(data))
   }
 
+
+
   useEffect(() => {
     fetchAllCustomers()
   }, []);
@@ -99,19 +101,8 @@ const Customers = () => {
     }
   }
 
-  // const search = (e, searchText) => {
-  //   e.preventDefault();
-  //   const newArray = [...allCustomers];
-  //   // console.log(newArray);
-  //   setAllCustomers(
-  //     newArray.filter(
-  //       (item) => item.email?.includes(searchText)
-  //     )
-  //   );
-  // };
-
   const handleSearch = (e) => {
-    // e.preventDefault()
+
     const value = e.target.value;
 
     console.log(value)
@@ -121,15 +112,13 @@ const Customers = () => {
     const newArray = [...allCustomers];
     setAllCustomers(
       newArray.filter(
-        // (item) =>console.log('eeeeee',item)
+
         (customer) =>
           customer.email?.toLocaleLowerCase().includes(value.toLocaleLowerCase())
       )
     );
   }
 
-
-  console.log("allCustomers", allCustomers)
 
   return (
     <>
@@ -196,11 +185,7 @@ const Customers = () => {
         </div>
 
       </div>
-      <div>
-        <button className="btn btn-primary">
-          SHOW ALL
-        </button>
-      </div>
+
       {/*********************************** Pagination  Start***********************************/}
       <div className="">
         {sliceCustomers?.length ? (
