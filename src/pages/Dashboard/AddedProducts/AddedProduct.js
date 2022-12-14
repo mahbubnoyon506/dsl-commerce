@@ -137,7 +137,7 @@ const AddedProducts = () => {
                     {" "}
                     <img
                       className="imgProduct"
-                      src={product?.product_images}
+                      src={product?.images[0]}
                       alt="Product Img"
                     />
                   </td>

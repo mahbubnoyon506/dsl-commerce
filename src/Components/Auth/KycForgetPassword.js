@@ -1,19 +1,19 @@
+import React from "react";
 import { Button } from "@mui/material";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
-import { FiSend } from "react-icons/fi";
-import { AiOutlineLogin, AiOutlineMail } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import swal from "sweetalert";
-import "./ForgetPassword.css";
+import { InputGroup } from "react-bootstrap";
 import MailIcon from "@mui/icons-material/Mail";
+import { FiSend } from "react-icons/fi";
+import swal from "sweetalert";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Form from "react-bootstrap/Form";
+import { AiOutlineLogin } from "react-icons/ai";
 
-const ForgetPassword = () => {
+const KycForgetPassword = () => {
   const navigate = useNavigate();
 
   const handleGoToLogin = () => {
-    navigate("/admin/login");
+    navigate("/kyc/login");
   };
 
   const sendResetLink = async (e) => {
@@ -24,7 +24,7 @@ const ForgetPassword = () => {
 
     await axios
       .post(
-        "https://backend.dslcommerce.com/api/admin/send-reset-password-link/",
+        "https://backend.dslcommerce.com/api/user-panel/user/send-reset-password-link/",
         { email }
       )
       .then((res) => {
@@ -37,7 +37,7 @@ const ForgetPassword = () => {
             button: "OK!",
             className: "modal_class_success",
           });
-          navigate("/admin/login");
+          navigate("/kyc/login");
         }
       })
       .catch((err) => {
@@ -123,4 +123,4 @@ const ForgetPassword = () => {
   );
 };
 
-export default ForgetPassword;
+export default KycForgetPassword;

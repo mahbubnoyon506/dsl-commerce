@@ -75,10 +75,10 @@ import AddedProducts from "./pages/Dashboard/AddedProducts/AddedProduct";
 import UserDetails from "./pages/Dashboard/UserDetails/UserDetails";
 import KycLogin from "./Components/KYCArea/KycAccount/KycLogin/KycLogin";
 import KycSignUp from "./Components/KYCArea/KycAccount/KycSignUp/KycSignUp";
+import KycForgetPassword from "./Components/Auth/KycForgetPassword";
 
 export const ProductContext = createContext();
 function App() {
-
   const time = new Date();
   time.setSeconds(time.getSeconds() + 180);
   const [isLoading, setIsLoading] = useState(true);
@@ -91,9 +91,8 @@ function App() {
   }, []);
 
   if (isLoading) {
-    return <Preloader />
+    return <Preloader />;
   }
-
 
   return (
     <>
@@ -116,7 +115,10 @@ function App() {
 
           {/* <Route path="/my-account" element={<MyAccount />} /> */}
           <Route path="/profile" element={<Profile expiryTimestamp={time} />} />
-          <Route path="/tracking-order" element={<TrackingOrder expiryTimestamp={time} />} />
+          <Route
+            path="/tracking-order"
+            element={<TrackingOrder expiryTimestamp={time} />}
+          />
 
           {/* SHOP START */}
 
@@ -149,7 +151,6 @@ function App() {
           <Route path="/verify-email/" element={<SubscriptionVerify />} />
           <Route path="/user" element={<User />} />
         </Route>
-
         {/*************************** Login System ****************************** */}
         <Route path="/admin/login" element={<Login />} />
         <Route path="/admin/register" element={<Register />} />
@@ -158,25 +159,26 @@ function App() {
           element={<ForgetPassword />}
         />
         /admin
-        <Route path="/admin/otp/:token" element={<Otp expiryTimestamp={time} />} />
-
-
-
+        <Route
+          path="/admin/otp/:token"
+          element={<Otp expiryTimestamp={time} />}
+        />
         {/*******************************  KYC Start ***************************** */}
         <Route path="/kyc/login" element={<KycLogin />} />
+        <Route
+          path="/kyc/login/forgetPassword"
+          element={<KycForgetPassword />}
+        />
         <Route path="/kyc/sign-up" element={<KycSignUp />} />
         <Route path="/kyc/profile" element={<KYC />} />
         {/****************************** KYC Start End ******************************/}
-
-
-
         {/*************************** Dashboard Start************************** */}
         <Route
           path="/admin"
           element={
-            <AdminRoutes>
+            // <AdminRoutes>
               <Dashboard />
-            </AdminRoutes>
+            // </AdminRoutes>
           }
         >
           <Route index element={<AdminDashboard />} />
@@ -186,8 +188,6 @@ function App() {
             path="/admin/adminprofile/:id"
             element={<DashboardAdminEditProfile />}
           />
-
-
 
           {/*************************** Customers  ***************************/}
           <Route path="customers" element={<Customers />} />
@@ -201,14 +201,12 @@ function App() {
             element={<SingleOrderDetail />}
           />
 
-
           {/* *************************   KYC pages    ****************************** */}
           <Route path="verified" element={<Verified />} />
           <Route path="non-verified" element={<NonVerified />} />
           <Route path="pending" element={<Pending />} />
           <Route path="added-products" element={<AddedProducts />} />
           <Route path="userDetails/:walletAddress" element={<UserDetails />} />
-
 
           {/*************************** Product  ***************************/}
           <Route path="products" element={<AllProduct />} />
@@ -219,14 +217,17 @@ function App() {
 
           {/*************************** Category  ***************************/}
           <Route path="all-category" element={<AllCategory />} />
-          <Route path="all-category/:categoryPerPage" element={<AllCategory />} />
+          <Route
+            path="all-category/:categoryPerPage"
+            element={<AllCategory />}
+          />
           <Route path="add-category" element={<AddCategory />} />
 
           <Route path="all-subscribers" element={<Subscribers />} />
-          <Route path="all-subscribers/:emailPerPage" element={<Subscribers />} />
-
-
-
+          <Route
+            path="all-subscribers/:emailPerPage"
+            element={<Subscribers />}
+          />
 
           <Route path="data" element={<Data />} />
           <Route path="help-desk-dashboard" element={<HelpDeskDashborad />} />
@@ -235,9 +236,7 @@ function App() {
             element={<CustomerServicesDashboard />}
           />
         </Route>
-
         {/*************************** Dashboard End************************** */}
-
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/products" element={<Products />} />
         <Route path="/reset" element={<ResetPassword />} />
@@ -260,8 +259,6 @@ function App() {
         > */}
         {/* </CartContext.Provider> */}
         {/* </AuthContext.Provider> */}
-
-
       </Routes>
 
       <Toaster />

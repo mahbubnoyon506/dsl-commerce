@@ -18,6 +18,7 @@ import { Typography } from "@mui/material";
 import { useEffect } from "react";
 import { BigNumber, ethers } from "ethers";
 import CheckoutAreaEmailVerifyModal from "./CheckoutAreaEmailVerifyModal";
+import { toast } from "react-hot-toast";
 
 const selectOptions = [
   {
@@ -78,8 +79,8 @@ function CheckoutArea({ expiryTimestamp }) {
   const [orderNotes, setOrderNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [emailVerify, setEmailVerify] = useState(false);
-  const [email1, setEmail] = useState("");
+  // const [emailVerify, setEmailVerify] = useState(false);
+  // const [email1, setEmail] = useState("");
   const [tokenId, setTokenId] = useState();
   // const [mobileNo, setmobileNo] = useState("");
   const [mobile, setMobile] = useState();
@@ -185,30 +186,30 @@ function CheckoutArea({ expiryTimestamp }) {
     restart(time);
   };
 
-  const handleVerifyOTP = async (otpCode) => {
-    await axios
-      .post(`https://backend.dslcommerce.com/api/email/otp/${email1}`, {
-        otp: otpCode,
-      })
+  // const handleVerifyOTP = async (otpCode) => {
+  //   await axios
+  //     .post(`https://backend.dslcommerce.com/api/email/otp/${email1}`, {
+  //       otp: otpCode,
+  //     })
 
-      .then((res) => {
-        if (res.status === 200) {
-          setOtpVerify(res.data.message);
-          setEmailVerify(true);
-          swal({
-            text: res.data.message,
-            icon: "success",
-            button: "OK!",
-            className: "modal_class_success",
-          });
-        }
-        setOpenEmail(false);
-      })
-      .catch((err) => {
-        // console.log(err.response.data.message);
-        setOtpVerify(err.response.data.message);
-      });
-  };
+  //     .then((res) => {
+  //       if (res.status === 200) {
+  //         setOtpVerify(res.data.message);
+  //         setEmailVerify(true);
+  //         swal({
+  //           text: res.data.message,
+  //           icon: "success",
+  //           button: "OK!",
+  //           className: "modal_class_success",
+  //         });
+  //       }
+  //       setOpenEmail(false);
+  //     })
+  //     .catch((err) => {
+  //       // console.log(err.response.data.message);
+  //       setOtpVerify(err.response.data.message);
+  //     });
+  // };
 
   // const handleVerifyMobileOTP = async (otpCode) => {
   //   console.log("handleVerifyMobileOTP", otpCode);
@@ -241,121 +242,113 @@ function CheckoutArea({ expiryTimestamp }) {
   //     });
   // };
 
-  const handleVerifyMobile = async (e) => {
-    // console.log("handleVerifyMobile");
-    setDisableAfterActivationMobile(true);
-    // console.log("mobileNo" , value);
-    if (mobile.length > 0) {
-      // setLoading(true);
-      // setEmailVerify(true);
-      await axios
-        .post("https://backend.dslcommerce.com/api/number/", {
-          phone: mobile,
-        })
-        .then((res) => {
-          // console.log("res");
-          // console.log(res);
+  // const handleVerifyMobile = async (e) => {
+  //   // console.log("handleVerifyMobile");
+  //   setDisableAfterActivationMobile(true);
+  //   // console.log("mobileNo" , value);
+  //   if (mobile.length > 0) {
+  //     // setLoading(true);
+  //     // setEmailVerify(true);
+  //     await axios
+  //       .post("https://backend.dslcommerce.com/api/number/", {
+  //         phone: mobile,
+  //       })
+  //       .then((res) => {
+  //         // console.log("res");
+  //         // console.log(res);
 
-          if (res.status === 200) {
-            // alert(res.data.message);
-            // setSendMail(res.data.email)
-            restarting(180);
-            swal({
-              text: res.data.message,
-              icon: "success",
-              button: "OK!",
-              className: "modal_class_success",
-            });
+  //         if (res.status === 200) {
+  //           // alert(res.data.message);
+  //           // setSendMail(res.data.email)
+  //           restarting(180);
+  //           swal({
+  //             text: res.data.message,
+  //             icon: "success",
+  //             button: "OK!",
+  //             className: "modal_class_success",
+  //           });
 
-            setOtpVerify(res.data.otp);
+  //           setOtpVerify(res.data.otp);
 
-            setTimeout(() => {
-              setDisableAfterActivation(false);
-            }, 120000);
-          }
-          console.log("setOpenMobile");
-          setOpenMobile(true);
-        })
-        .catch((err) => {
-          console.log(err.response.data.message);
-          setOpenMobile(false);
-          swal({
-            title: "Attention",
-            text: err.response.data.message,
-            icon: "warning",
-            button: "OK!",
-            className: "modal_class_success",
-          });
-        })
-        .finally(() => {
-          console.log("finally");
-          // setLoading(false);
-        });
-    } else {
-      swal({
-        title: "Attention",
-        text: "Please enter a valid email address",
-        icon: "warning",
-        button: "OK!",
-        className: "modal_class_success",
-      });
-    }
-  };
+  //           setTimeout(() => {
+  //             setDisableAfterActivation(false);
+  //           }, 120000);
+  //         }
+  //         console.log("setOpenMobile");
+  //         setOpenMobile(true);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //         setOpenMobile(false);
+  //         swal({
+  //           title: "Attention",
+  //           text: err.response.data.message,
+  //           icon: "warning",
+  //           button: "OK!",
+  //           className: "modal_class_success",
+  //         });
+  //       })
+  //       .finally(() => {
+  //         console.log("finally");
+  //         // setLoading(false);
+  //       });
+  //   } 
+  // };
 
-  const handleVerifyEmail = async (e) => {
-    // check if email is valid
-    setDisableAfterActivation(true);
-    if (email1.length > 0 && email1.includes("@" && ".")) {
-      // setLoading(true);
-      setEmailVerify(true);
-      await axios
-        .post("https://backend.dslcommerce.com/api/users/email", {
-          email: email1,
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            // alert(res.data.message);
-            // setSendMail(res.data.email)
-            restarting(180);
-            swal({
-              text: res.data.message,
-              icon: "success",
-              button: "OK!",
-              className: "modal_class_success",
-            });
-            console.log("emtiaz", res.data);
-            setOtpVerify(res.data.otp);
+  // const handleVerifyEmail = async (e) => {
+  //   // check if email is valid
+  //   setDisableAfterActivation(true);
+  //   if (email1.length > 0 && email1.includes("@" && ".")) {
+  //     // setLoading(true);
+  //     setEmailVerify(true);
+  //     await axios
+  //       .post("https://backend.dslcommerce.com/api/users/email", {
+  //         email: email1,
+  //       })
+  //       .then((res) => {
+  //         if (res.status === 200) {
+  //           // alert(res.data.message);
+  //           // setSendMail(res.data.email)
+  //           restarting(180);
+  //           swal({
+  //             text: res.data.message,
+  //             icon: "success",
+  //             button: "OK!",
+  //             className: "modal_class_success",
+  //           });
+  //           console.log("emtiaz", res.data);
+  //           setOtpVerify(res.data.otp);
 
-            setTimeout(() => {
-              setDisableAfterActivation(false);
-            }, 120000);
-          }
-          setOpenEmail(true);
-        })
-        .catch((err) => {
-          // alert(err.response.data.message);
-          setEmailVerify(false);
-          swal({
-            title: "Attention",
-            text: err.response.data.message,
-            icon: "warning",
-            button: "OK!",
-            className: "modal_class_success",
-          });
-        })
-        .finally(() => {
-          // setLoading(false);
-        });
-    } else {
-      swal({
-        title: "Attention",
-        text: "Please enter a valid email address",
-        icon: "warning",
-        button: "OK!",
-        className: "modal_class_success",
-      });
-    }
-  };
+  //           setTimeout(() => {
+  //             setDisableAfterActivation(false);
+  //           }, 120000);
+  //         }
+  //         setOpenEmail(true);
+  //       })
+  //       .catch((err) => {
+  //         // alert(err.response.data.message);
+  //         setEmailVerify(false);
+  //         swal({
+  //           title: "Attention",
+  //           text: err.response.data.message,
+  //           icon: "warning",
+  //           button: "OK!",
+  //           className: "modal_class_success",
+  //         });
+  //       })
+  //       .finally(() => {
+  //         // setLoading(false);
+  //       });
+  //   } else {
+  //     swal({
+  //       title: "Attention",
+  //       text: "Please enter a valid email address",
+  //       icon: "warning",
+  //       button: "OK!",
+  //       className: "modal_class_success",
+  //     });
+  //   }
+  // };
 
   // minting part
 
@@ -509,9 +502,10 @@ function CheckoutArea({ expiryTimestamp }) {
   const handleSubmit = async (urlByPayment, priceAmmount, orderID) => {
     // console.log("token", tokenId, TokeNID);
     // const NFTID = TokeNID;
+    
     const transactionURL = urlByPayment;
     const id = orderID;
-    const email = email1;
+    const email = user?.email;
     const price = priceAmmount + " " + selectedOption.label;
     const orderItems = carts.map((cart) => cart.productName);
     const estimatedArrival = "10 Days";
@@ -551,33 +545,34 @@ function CheckoutArea({ expiryTimestamp }) {
     tokenAddress,
     affiliateWalletAddress
   ) => {
-    // if (!user.email) {
-    //   return swal({
-    //     text: "Before payment please update your profile. We will send the details to you.",
-    //     icon: "warning",
-    //     button: true,
-    //     dangerMode: true,
-    //     className: "modal_class_success",
-    //   })
-    //     .then((willDelete) => {
-    //       if (willDelete) {
-    //         navigate(`/profile`)
+    if (!user.email) {
+      return swal({
+        text: "Before payment please update your profile. We will send the details to you.",
+        icon: "warning",
+        button: true,
+        dangerMode: true,
+        className: "modal_class_success",
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+            navigate(`/profile`)
 
-    //       } else {
-    //         console.log("ok")
-    //       }
-    //     });
-    // }
+          } else {
+            console.log("ok")
+          }
+        });
+    }
     // setIsClickedMint(true)
     if (
       !name &&
       !country &&
       !address &&
       !city &&
+      !user?.email &&
       !postCode &&
-      !orderNotes &&
-      !email1 &&
-      !mobile
+      !orderNotes 
+      // &&
+      // !mobile
     ) {
       swal({
         title: "Attention",
@@ -588,26 +583,16 @@ function CheckoutArea({ expiryTimestamp }) {
         className: "modal_class_success",
       });
     }
-    else if (!user.email || !mobileNoVerify) {
-      swal({
-        title: "Attention",
-        text: "Please verify your email and mobile number",
-        icon: "warning",
-        button: "OK",
-        dangerMode: true,
-        className: "modal_class_success",
-      });
-    }
-    else if (!user.email || !mobileNoVerify) {
-      swal({
-        title: "Attention",
-        text: "Please verify your email and mobile number",
-        icon: "warning",
-        button: "OK",
-        dangerMode: true,
-        className: "modal_class_success",
-      });
-    }
+    // else if (!mobileNoVerify) {
+    //   swal({
+    //     title: "Attention",
+    //     text: "Please verify your mobile number",
+    //     icon: "warning",
+    //     button: "OK",
+    //     dangerMode: true,
+    //     className: "modal_class_success",
+    //   });
+    // }
     else {
       setRequestLoading(true);
       console.log(USDSCtokenAddressTestnet);
@@ -626,7 +611,7 @@ function CheckoutArea({ expiryTimestamp }) {
       // ************************ Data *************************//
       const walletAddress = user?.walletAddress;
       const phone = mobile;
-      const email = email1;
+      const email = user?.email;
       const orderItems = carts;
       const status = "pending";
       const date = newDate;
@@ -675,7 +660,7 @@ function CheckoutArea({ expiryTimestamp }) {
             const oId = generateId.toString();
             const price = priceByToken + " " + selectedOption.label;
 
-            // console.log("After Order Order ID Emtiaz ", oId, price);
+            console.log("After Order Order ID Emtiaz ", oId, price);
             const data3 = {
               name: name,
               email: email,
@@ -693,7 +678,7 @@ function CheckoutArea({ expiryTimestamp }) {
               paymentMethod: "crypto",
             };
 
-            // console.log("Data 3 bro", data3);
+            console.log("Data 3 bro", data3);
             // after confirm payment, items added to order list
             axios
               .post("https://backend.dslcommerce.com/api/order", data3)
@@ -962,123 +947,11 @@ function CheckoutArea({ expiryTimestamp }) {
 
                   {/* Email */}
 
-                  <div className="col-md-12">
-                    <div className="form-group">
-                      <label
-                        htmlFor="email"
-                        className="text-dark d-flex pb-1 pt-2"
-                      >
-                        Email Address
-                      </label>
-                      <div className="d-flex">
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          placeholder="Email Address"
-                          onChange={(e) => {
-                            setEmail(e.target.value.toLocaleLowerCase());
-                            setEmailVerify(false);
-                          }}
-                          value={user?.email ? user?.email : email1}
-                          disabled={user.email ? true : false}
-                          required
-                          className="form-control profileInput"
-                        />
-                        {!user.email && (
-                          <button
-                            type="button"
-                            onClick={handleVerifyEmail}
-                            disabled={
-                              email1.length === 0 || disableAfterActivation
-                                ? true
-                                : false
-                            }
-                            style={{
-                              backgroundColor: "#15407f",
-                              color: "#fff",
-                            }}
-                            className={
-                              (email1.length === 0 || disableAfterActivation) &&
-                              "border bg-secondary text-white"
-                            }
-                          >
-                            {" "}
-                            Verify
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  
 
                   {/* Phone */}
 
-                  <div className="col-lg-12 col-md-12">
-                    <div className="form-group">
-                      <label
-                        htmlFor="Mobile"
-                        className="text-dark d-flex pb-1 pt-2"
-                      >
-                        Phone
-                      </label>
-                      <div className="d-flex">
-                        {/* <input
-                          type="tel"
-                          id="Mobile"
-                          name="Mobile"
-                          placeholder="Enter Mobile Number"
-                          className="form-control profileInput"
-                          onChange={(e) => {
-                            setmobileNo(e.target.value);
-                            setmobileNoVerify(false);
-                          }}
-                          value={user.mobileNo ? user.mobileNo : mobileNo}
-                          disabled={user.mobileNo ? true : false}
-                          required
-                        /> */}
-                        <PhoneInput
-                          international
-                          defaultCountry="SG"
-                          countryCallingCodeEditable={true}
-                          className="form-control "
-                          type="text"
-                          onChange={setMobile}
-                          value={mobile}
-                          disabled={user.mobileNo ? true : false}
-                          required
-                          inputProps={{
-                            name: "phone",
-                            required: true,
-                            autoFocus: true,
-                          }}
-                        />
-                        {!user.mobileNo && (
-                          <button
-                            type="button"
-                            onClick={handleVerifyMobile}
-                            disabled={
-                              mobile?.length === 0 ||
-                                disableAfterActivationMobile
-                                ? true
-                                : false
-                            }
-                            style={{
-                              backgroundColor: "#15407f",
-                              color: "#fff",
-                            }}
-                            className={
-                              (mobile?.length === 0 ||
-                                disableAfterActivationMobile) &&
-                              "border bg-secondary text-white"
-                            }
-                          >
-                            {" "}
-                            Verify
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                
 
                   <div className="col-lg-12 col-md-12">
                     <div className="form-group">
@@ -1535,7 +1408,7 @@ function CheckoutArea({ expiryTimestamp }) {
           </div>
         </form>
 
-        <CheckoutAreaEmailVerifyModal
+        {/* <CheckoutAreaEmailVerifyModal
           handleVerifyEmail={handleVerifyEmail}
           minutes={minutes}
           seconds={seconds}
@@ -1545,9 +1418,9 @@ function CheckoutArea({ expiryTimestamp }) {
           setError={setError}
           otpCode={otpCode}
           setOtpCode={setOtpCode}
-        />
+        /> */}
 
-        <MobileVerifyModal
+        {/* <MobileVerifyModal
           otpCode={otpCode}
           setOtpCode={setOtpCode}
           handleVerifyMobile={handleVerifyMobile}
@@ -1562,7 +1435,7 @@ function CheckoutArea({ expiryTimestamp }) {
           setOtpVerify={setOtpVerify}
           setmobileNoVerify={setmobileNoVerify}
           setDisableAfterActivationMobile={setDisableAfterActivationMobile}
-        />
+        /> */}
       </div>
     </section>
   );
