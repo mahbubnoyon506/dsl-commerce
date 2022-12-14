@@ -20,11 +20,12 @@ function CartArea() {
   useEffect(() => {
     let getSubTotal = 0
     carts?.forEach((element) => {
-      getSubTotal = (Number(getSubTotal + element.price * element.count))
+      getSubTotal = (Number(getSubTotal + (element.price * element.count)))
       // console.log(getSubTotal);
       setShipping(parseFloat((getSubTotal * 2.5) / 100))
     });
     setSubTotal(getSubTotal)
+    console.log(getSubTotal)
     setTotal(Number(getSubTotal + parseFloat((getSubTotal * 2.5) / 100)))
   }, [carts])
 

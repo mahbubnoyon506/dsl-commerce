@@ -7,6 +7,7 @@ import Pagination from "../../../Components/Pagination/Pagination";
 import { AllCustomers } from "./customerData";
 import axios from "axios";
 import swal from "sweetalert";
+import { FaSearch } from "react-icons/fa";
 
 const FilterableTable = require("react-filterable-table");
 

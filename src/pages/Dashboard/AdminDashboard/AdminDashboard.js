@@ -55,6 +55,11 @@ const AdminDashboard = () => {
   //   console.log(allOrders);
   // }, []);
 
+
+  const key = 'walletAddress';
+  const totalCustomers = [...new Map(allOrder.map(item => [item[key], item])).values()];
+  // console.log(totalCustomers)
+
   const handleClickOpenAdmin = () => {
     navigate("/admin/adminUser");
   };
@@ -67,6 +72,7 @@ const AdminDashboard = () => {
   const handleClickOpenCategories = () => {
     navigate("/admin/all-category");
   };
+
 
   return (
     <div>
@@ -94,7 +100,7 @@ const AdminDashboard = () => {
               <Card.Body className="d-flex align-items-center justify-content-between">
                 <Card.Text className="dashboardTxt">
                   <p>Customers</p>
-                  <h2 className="text-start">{customers.length}</h2>
+                  <h2 className="text-start">{totalCustomers.length}</h2>
                 </Card.Text>
                 <div className="iconDas">
                   <p className="text-white coinsIcon ">
@@ -165,8 +171,7 @@ const AdminDashboard = () => {
                   <p className="text-white-50 p-0 m-0">Order Pending</p>
                   <h2 className="text-start text-white">
                     {
-                      allOrder.filter((item) => item.status === "pending")
-                        .length
+                      allOrder.filter((item) => item.pendingStatus === false).length
                     }
                   </h2>
                 </Card.Text>
@@ -207,8 +212,7 @@ const AdminDashboard = () => {
                   <p className="text-white-50 p-0 m-0">Order Delivered</p>
                   <h2 className="text-start text-white">
                     {
-                      allOrder.filter((item) => item.status === "delivered")
-                        .length
+                      allOrder.filter((item) => item.deliveredStatus === true).length
                     }
                   </h2>
                 </Card.Text>

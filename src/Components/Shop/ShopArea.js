@@ -220,6 +220,8 @@ function ShopArea({
   // 6397267ad851e0e93a8affde
   // 6397267ad851e0e93a8affde
 
+
+
   return (
     <section className="shop-area bg-ffffff pt-50 pb-50">
       <div className="container">
