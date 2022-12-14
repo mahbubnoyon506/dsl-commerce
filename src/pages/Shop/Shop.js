@@ -35,10 +35,11 @@ function Shop({ page = 1, query = undefined, keyword = undefined }) {
       productName: product?.productName,
       count: 1,
     };
-    // console.log(currentItem);
+    console.log(currentItem);
 
     addItemToCart(currentItem);
   };
+
 
   return (
     <div className="shop-wrapper">
