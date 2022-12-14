@@ -10,7 +10,7 @@ import Button from "react-bootstrap/Button";
 import Typography from "@mui/material/Typography";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import "./Dashboard.css";
-import logo from "./logo1.png";
+import logo from "../../assets/img/logoDSL.jpeg";
 import { Divider } from "@mui/material";
 import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
 import { AdminContext } from "../../contexts/AdminContext";
