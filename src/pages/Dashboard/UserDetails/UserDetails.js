@@ -16,9 +16,12 @@ function UserDetails() {
     const [userInfo, setUserInfo] = useState();
     const [userAddress, setUserAddress] = useState();
     const [photoId, setPhotoId] = useState()
+    // console.log('eeeeeeeeeeee', userInfo)
+    // console.log('eeeeeeeeeeee', userAddress)
+    console.log('eeeeeeeeeeee', photoId)
 
 
-    console.log(walletAddress);
+    // console.log(walletAddress);
 
     useEffect(() => {
         fetch(`https://backend.dslcommerce.com/api/user-panel/user/${walletAddress}`)
@@ -43,7 +46,7 @@ function UserDetails() {
     }, [walletAddress]);
 
     const registrationDate = new Date(userInfo?.createdAt).toLocaleString().split(",")?.[0];
-    console.log(registrationDate)
+    // console.log(registrationDate)
 
     let validRegDate;
 
@@ -162,7 +165,7 @@ function UserDetails() {
                                         <input type="text" id='mobile' name="mobile"
                                             className='form-control bg-transparent text-white'
                                             value={userInfo?.mobile} />
-                                        {console.log("userInfo?.mobile", userInfo?.mobile)}
+                                        {/* {console.log("userInfo?.mobile", userInfo?.mobile)} */}
                                     </div>
                                 </div>
                                 <div className="mb-2">
@@ -305,8 +308,8 @@ function UserDetails() {
 
                             <div className='col-12 col-lg-6 px-4 mt-2'>
                                 <label for="address proof image">Front Image</label>
-                                <img src={photoId?.photoIdFrontImg} alt="address proof" />
-                                <input className='mt-3 w-100' type="file" accept='image/*' />
+                                <img src={photoId?.file} alt="address proof" />
+                                {/* <input className='mt-3 w-100' type="file" accept='image/*' /> */}
                             </div>
 
                         </div>
