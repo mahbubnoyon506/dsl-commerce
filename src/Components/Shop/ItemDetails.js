@@ -14,9 +14,9 @@ const ItemDetails = ({ cartItem, removeCartItem, user, setCartRefetch }) => {
 
       await axios.put(`https://backend.dslcommerce.com/api/cart/${user?.walletAddress}`, body)
         .then(res => {
-          // console.log('count' , res.data)
+          console.log('count' , res.data)
           if (res.status === 200) {
-            setQuantity(res.data.result.count)
+            setQuantity(res.data?.result?.count)
             setCartRefetch(true)
           }
         })
@@ -28,6 +28,7 @@ const ItemDetails = ({ cartItem, removeCartItem, user, setCartRefetch }) => {
       setQuantity(quantity)
     }
   }
+  // console.log('cartdsdsdsdsd' , cartItem)
 
   const increaseItem = async (id) => {
     if (quantity < parseInt(cartItem.availableProduct)) {
@@ -35,7 +36,7 @@ const ItemDetails = ({ cartItem, removeCartItem, user, setCartRefetch }) => {
       await axios.put(`https://backend.dslcommerce.com/api/cart/${user?.walletAddress}`, body)
         .then(res => {
           if (res.status === 200) {
-            setQuantity(res.data.result.count)
+            setQuantity(res.data?.result?.count)
             setCartRefetch(true)
           }
         })
@@ -60,7 +61,7 @@ const ItemDetails = ({ cartItem, removeCartItem, user, setCartRefetch }) => {
         </span>
         <Link to={`/shop/products-details/${cartItem?.product}`}>
           <img
-            src={cartItem?.images?.[0]}
+            src={cartItem?.images[0]}
             alt=""
             style={{ width: "80px" }}
           />
@@ -75,7 +76,7 @@ const ItemDetails = ({ cartItem, removeCartItem, user, setCartRefetch }) => {
 
       <td className="product-price">
         <span className="unit-amount">
-          ${cartItem.price}
+          ${cartItem?.price}
         </span>
       </td>
 

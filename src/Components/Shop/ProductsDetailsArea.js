@@ -36,8 +36,7 @@ function ProductsDetailsArea() {
   const [available, setAvailable] = useState("");
   const [refetch, setRefetch] = useState(false);
   // const [price,setPrice] = useState()
-  const { user, openWalletModal } =
-    useContext(DSLCommerceContext);
+  const { user, openWalletModal } = useContext(DSLCommerceContext);
   const [userReviews, setUserReviews] = useState([]);
   const navigate = useNavigate();
   // console.log(userReviews);
@@ -56,7 +55,7 @@ function ProductsDetailsArea() {
     axios
       .get(`https://backend.dslcommerce.com/api/product/${productId}`)
       .then((res) => {
-        console.log('eeeeeeeeeeefd', res.data.newData);
+        // console.log('eeeeeeeeeeefd', res.data.newData);
         setProduct(res.data.newData);
         setUserReviews(res.data.newData.reviews.reverse());
         setDescriptionData(res.data.newData.description);
@@ -65,7 +64,7 @@ function ProductsDetailsArea() {
       .catch((err) => console.log(err));
   }, []);
 
-  console.log('single product', product)
+  // console.log('single product', product)
 
   const addToCart = (product) => {
     let currentItem = {
@@ -119,7 +118,7 @@ function ProductsDetailsArea() {
                 <div className="price">
                   <span className="old-price">${product?.price}</span>
                   {/* <span className="new-price">${product?.price}</span> */}
-                  <span className="new-price">${product?.price - ((product?.price * product?.offeringProduct) / 100)}0</span>
+                  <span className="new-price">${product?.price - ((product?.price * product?.offeringProduct) / 100)}</span>
                   <span className="new-price pl-3">
                     {/* <small> Discount {product?.offeringProduct} %</small> */}
                   </span>

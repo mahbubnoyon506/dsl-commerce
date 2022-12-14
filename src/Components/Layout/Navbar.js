@@ -67,7 +67,7 @@ function Navbar() {
       .then((data) => setGetCategory(data));
   }, []);
 
-  console.log("getCategory", getCategory, getCategory.sort());
+  // console.log("getCategory", getCategory, getCategory.sort())
 
   const toggleHotline = () => {
     setActive(!active);
