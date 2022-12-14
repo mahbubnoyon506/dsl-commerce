@@ -1467,15 +1467,15 @@
     -webkit-box-shadow: unset;
     box-shadow: unset;
     left: 0;
-    width: 98%;
+    width: 100%;
     opacity: 1;
     visibility: visible;
     border: 1px solid #eee;
     border-radius: 0;
     margin-top: 0;
     padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
+    /* padding-left: 10px;
+    padding-right: 10px; */
     padding-bottom: 10px;
   }
   .navbar-area .main-navbar .navbar .navbar-nav .nav-item .dropdown-menu li a {

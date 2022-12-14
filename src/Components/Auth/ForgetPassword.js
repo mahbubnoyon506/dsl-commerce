@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
 import "./ForgetPassword.css";
+import MailIcon from "@mui/icons-material/Mail";
 
 const ForgetPassword = () => {
   const navigate = useNavigate();
@@ -61,16 +62,12 @@ const ForgetPassword = () => {
                 style={{
                   width: "80px",
                   marginTop: "-20px",
-                  borderRadius: "100%",
                 }}
                 src="https://testnet.grighund.net/static/media/logo192.ea779dfe5e580c22a76f.png"
                 alt="logo"
               />
-              <p className="py-1" style={{ fontSize: "28px" }}>
-                Password Reset
-              </p>
-              <p className="pb-2">
-                Enter your email address to receive Reset Password link.
+              <p className="py-1" style={{ fontSize: "34px" }}>
+                Forget Password
               </p>
             </div>
             <hr />
@@ -78,7 +75,7 @@ const ForgetPassword = () => {
               <form onSubmit={sendResetLink}>
                 <InputGroup className="mb-3 mt-3">
                   <InputGroup.Text className=" border fs-3 bg-dark">
-                    <AiOutlineMail style={{ fontSize: "20px" }} />
+                    <MailIcon style={{ fontSize: "20px", color: "white" }} />
                   </InputGroup.Text>
                   <Form.Control
                     aria-label="Amount (to the nearest dollar)"
@@ -101,16 +98,16 @@ const ForgetPassword = () => {
                   }}
                 >
                   <Button
-                    style={{ backgroundColor: "#f74545" }}
-                    className="button-34 px-4 pt-2 pb-2"
+                    style={{ backgroundColor: "#f74545", height: "28px" }}
+                    className="button-34 px-4"
                     type="submit"
                     onClick={handleGoToLogin}
                   >
                     <FiSend></FiSend> Send
                   </Button>
                   <Button
-                    style={{ backgroundColor: "#f74545" }}
-                    className="button-34 px-4 pt-2 pb-2"
+                    style={{ backgroundColor: "#f74545", height: "28px" }}
+                    className="button-34 px-4"
                     type="button"
                     onClick={handleGoToLogin}
                   >

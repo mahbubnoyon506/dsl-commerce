@@ -1,5 +1,5 @@
-import axios from 'axios';
-import React, { useEffect, useState, createContext } from 'react';
+import axios from "axios";
+import React, { useEffect, useState, createContext } from "react";
 import { ethers, Contract, BigNumber } from "ethers";
 import { v4 as uuidv4 } from "uuid";
 import abi from "../utils/nftAbi.json";
@@ -18,7 +18,7 @@ import {
   QuesttokenAddressTestnet,
   QuesttokenABITestnet,
   RPC,
-  chainId
+  chainId,
 } from "../utils/constant";
 
 export const DSLCommerceContext = createContext();
@@ -100,7 +100,7 @@ const getAllItemBlockchain = async () => {
   return {
     provider,
     // deployer: new ethers.Wallet(private_key, provider),
-    NFTContract: new Contract(mintAddressTestnet, abi, provider)
+    NFTContract: new Contract(mintAddressTestnet, abi, provider),
   };
 };
 
@@ -109,13 +109,13 @@ const genSignature = async (types, voucher, auth) => {
     name: "NFT-Voucher",
     version: "1",
     verifyingContract: auth.contract,
-    chainId: chainId
+    chainId: chainId,
   };
   const BuyNFTVoucher = {
     id: voucher.id,
     price: voucher.price,
     tokenAddress: voucher.tokenAddress,
-    nonce: voucher.nonce
+    nonce: voucher.nonce,
   };
 
   // const signature = await auth.signer._signTypedData(domain, types, BuyNFTVoucher);
@@ -127,7 +127,6 @@ const genSignature = async (types, voucher, auth) => {
 };
 
 const signBuyFunction = async (id, price, tokenAddress, refAddress, uri) => {
-
   const contracts = await getAllItemBlockchain();
   const auth = {
     signer: contracts.deployer,
@@ -142,7 +141,7 @@ const signBuyFunction = async (id, price, tokenAddress, refAddress, uri) => {
       { name: "nonce", type: "string" },
     ],
   };
-  console.log('111111111111111: ', id, price, tokenAddress, refAddress, uri)
+  console.log("111111111111111: ", id, price, tokenAddress, refAddress, uri);
 
   // Generate nonce as transaction id
   const nonce = uuidv4();
@@ -150,7 +149,10 @@ const signBuyFunction = async (id, price, tokenAddress, refAddress, uri) => {
     id: id,
     price: BigNumber.from(price),
     tokenAddress: tokenAddress,
-    refAddress: refAddress.length !== 0 ? refAddress : "0x0000000000000000000000000000000000000000",
+    refAddress:
+      refAddress.length !== 0
+        ? refAddress
+        : "0x0000000000000000000000000000000000000000",
     nonce: nonce,
     uri: uri,
   };
@@ -158,7 +160,7 @@ const signBuyFunction = async (id, price, tokenAddress, refAddress, uri) => {
     ...(await genSignature(types, voucher, auth)),
     price: price.toString(),
   };
-}
+};
 
 export default function DslProvider({ children }) {
   const [loginModal, setLoginModal] = useState(false);
@@ -168,7 +170,7 @@ export default function DslProvider({ children }) {
   const [requestLoading, setRequestLoading] = useState(false);
   const [walletModal, setWalletModal] = useState(false);
   const [Id, setId] = useState();
-  const [chain, setChain] = useState('');
+  const [chain, setChain] = useState("");
   const [payAmount, setPayAmount] = useState(null);
   const [pageLoading, setPageLoading] = useState(true);
   const [metamaskBalance, setMetamaskBalance] = useState({});
@@ -176,12 +178,13 @@ export default function DslProvider({ children }) {
   const [coinbaseModal, setCoinbaseModal] = useState(false);
   const [userRefetch, setUserRefetch] = useState(false);
 
-  window.addEventListener('load', () => {
+  window.addEventListener("load", () => {
     setPageLoading(false);
   });
 
   const openWalletModal = () => {
-    (!user?.walletAddress || user?.walletAddress === "walletAddress undefined") &&
+    (!user?.walletAddress ||
+      user?.walletAddress === "walletAddress undefined") &&
       setWalletModal(true);
   };
   const closeWalletModal = () => setWalletModal(false);
@@ -232,8 +235,8 @@ export default function DslProvider({ children }) {
   window.addEventListener("load", function () {
     if (window.ethereum) {
       // detect Metamask account change
-      window.ethereum.on('accountsChanged', function (accounts) {
-        console.log('account is Changed', accounts);
+      window.ethereum.on("accountsChanged", function (accounts) {
+        console.log("account is Changed", accounts);
         // logOut();
         // return swal({
         //   title: "Attention",
@@ -246,8 +249,8 @@ export default function DslProvider({ children }) {
       });
 
       // detect Network account change
-      window.ethereum.on('networkChanged', function (networkId) {
-        console.log('network is changed: ', networkId);
+      window.ethereum.on("networkChanged", function (networkId) {
+        console.log("network is changed: ", networkId);
         // logOut();
         // return swal({
         //   title: "Attention",
@@ -262,7 +265,6 @@ export default function DslProvider({ children }) {
     } else {
       throw new Error("No ethereum object");
     }
-
   });
 
   const logOut = async () => {
@@ -270,8 +272,6 @@ export default function DslProvider({ children }) {
     setUser({});
     localStorage.removeItem("token");
   };
-
-
 
   const payByTestnetBNB = async (data) => {
     try {
@@ -296,12 +296,14 @@ export default function DslProvider({ children }) {
             refAddress: data.refAddress,
             nonce: data.nonce,
             uri: data.uri,
-            signature: data.signature
-          }
-          console.log("valueeee", object)
+            signature: data.signature,
+          };
+          console.log("valueeee", object);
 
-          const Val = await MintNFTContract.buyNFT(object, { value: BigNumber.from(object.price) })
-          await Val.wait()
+          const Val = await MintNFTContract.buyNFT(object, {
+            value: BigNumber.from(object.price),
+          });
+          await Val.wait();
           let txn_test = await provider.getTransaction(Val.hash);
           while (txn_test.blockNumber === null) {
             console.log("Minting...");
@@ -324,7 +326,6 @@ export default function DslProvider({ children }) {
             mintPrice: data.price,
             address: "0x0000000000000000000000000000000000000000",
           };
-
         } else {
           console.log("No ethereum object");
           console.log("enter8");
@@ -345,8 +346,11 @@ export default function DslProvider({ children }) {
         const USDSCTokenContract = getUSDSCtokenContractTestnet();
         console.log(USDSCTokenContract);
         const provider = new ethers.providers.Web3Provider(ethereum);
-        console.log("USDC", MintNFTContract.address,
-          BigNumber.from(ethers.constants.MaxUint256))
+        console.log(
+          "USDC",
+          MintNFTContract.address,
+          BigNumber.from(ethers.constants.MaxUint256)
+        );
         const payment = await USDSCTokenContract.approve(
           MintNFTContract.address,
           BigNumber.from(ethers.constants.MaxUint256)
@@ -367,12 +371,12 @@ export default function DslProvider({ children }) {
           refAddress: data.refAddress,
           nonce: data.nonce,
           uri: data.uri,
-          signature: data.signature
-        }
-        console.log("valueeee", object)
+          signature: data.signature,
+        };
+        console.log("valueeee", object);
 
-        const Val = await MintNFTContract.buyNFT(object)
-        await Val.wait()
+        const Val = await MintNFTContract.buyNFT(object);
+        await Val.wait();
         let txn_test = await provider.getTransaction(Val.hash);
         if (txn_test) {
           const wrapper = document.createElement("div");
@@ -399,7 +403,6 @@ export default function DslProvider({ children }) {
           mintPrice: data.price,
           address: USDSCtokenAddressTestnet,
         };
-
       }
     } catch (error) {
       console.log(error);
@@ -442,8 +445,11 @@ export default function DslProvider({ children }) {
           console.log(DSLTokenContract);
           const provider = new ethers.providers.Web3Provider(ethereum);
 
-          console.log("USDC", MintNFTContract.address,
-            BigNumber.from(ethers.constants.MaxUint256))
+          console.log(
+            "USDC",
+            MintNFTContract.address,
+            BigNumber.from(ethers.constants.MaxUint256)
+          );
           const payment = await DSLTokenContract.approve(
             MintNFTContract.address,
             BigNumber.from(ethers.constants.MaxUint256)
@@ -464,12 +470,12 @@ export default function DslProvider({ children }) {
             refAddress: data.refAddress,
             nonce: data.nonce,
             uri: data.uri,
-            signature: data.signature
-          }
-          console.log("valueeee", object)
+            signature: data.signature,
+          };
+          console.log("valueeee", object);
 
-          const Val = await MintNFTContract.buyNFT(object)
-          await Val.wait()
+          const Val = await MintNFTContract.buyNFT(object);
+          await Val.wait();
           let txn_test = await provider.getTransaction(Val.hash);
           while (txn_test.blockNumber === null) {
             console.log("Minting...");
@@ -513,8 +519,11 @@ export default function DslProvider({ children }) {
           console.log(S39TokenContract);
           const provider = new ethers.providers.Web3Provider(ethereum);
 
-          console.log("USDC", MintNFTContract.address,
-            BigNumber.from(ethers.constants.MaxUint256))
+          console.log(
+            "USDC",
+            MintNFTContract.address,
+            BigNumber.from(ethers.constants.MaxUint256)
+          );
           const payment = await S39TokenContract.approve(
             MintNFTContract.address,
             BigNumber.from(ethers.constants.MaxUint256)
@@ -536,12 +545,12 @@ export default function DslProvider({ children }) {
             refAddress: data.refAddress,
             nonce: data.nonce,
             uri: data.uri,
-            signature: data.signature
-          }
-          console.log("valueeee", object)
+            signature: data.signature,
+          };
+          console.log("valueeee", object);
 
-          const Val = await MintNFTContract.buyNFT(object)
-          await Val.wait()
+          const Val = await MintNFTContract.buyNFT(object);
+          await Val.wait();
           let txn_test = await provider.getTransaction(Val.hash);
           while (txn_test.blockNumber === null) {
             console.log("Minting...");
@@ -577,8 +586,11 @@ export default function DslProvider({ children }) {
         const MintNFTContract = getMintContractTestnet();
         const USDSCTokenContract = getQuesttokenContractTestnet();
         const provider = new ethers.providers.Web3Provider(ethereum);
-        console.log("USDC", MintNFTContract.address,
-          BigNumber.from(ethers.constants.MaxUint256))
+        console.log(
+          "USDC",
+          MintNFTContract.address,
+          BigNumber.from(ethers.constants.MaxUint256)
+        );
         const payment = await USDSCTokenContract.approve(
           MintNFTContract.address,
           BigNumber.from(ethers.constants.MaxUint256)
@@ -599,11 +611,11 @@ export default function DslProvider({ children }) {
           refAddress: data.refAddress,
           nonce: data.nonce,
           uri: data.uri,
-          signature: data.signature
-        }
-        console.log("valueeee", object)
+          signature: data.signature,
+        };
+        console.log("valueeee", object);
 
-        const Val = await MintNFTContract.buyNFT(object)
+        const Val = await MintNFTContract.buyNFT(object);
         await Val.wait();
         let txn_test = await provider.getTransaction(Val.hash);
         if (txn_test) {
@@ -750,7 +762,6 @@ export default function DslProvider({ children }) {
     }
   };
 
-
   const connectToCoinbase = async () => {
     getBalanceTestnet();
 
@@ -822,7 +833,6 @@ export default function DslProvider({ children }) {
   };
 
   const connectToMetamask = async () => {
-
     getBalanceTestnet();
     if (typeof window.ethereum === "undefined") {
       // ask the user to install the extension
@@ -871,7 +881,7 @@ export default function DslProvider({ children }) {
                 closeWalletModal();
                 localStorage.setItem("tokendslcommerce", res.data.token);
                 const wrapper = document.createElement("div");
-                wrapper.innerHTML = `<p class='text-break text-white fs-6'>You have succesfully logged in with <br/>Binance Chain.</p>`;
+                wrapper.innerHTML = `<p class='text-break text-white fs-6'>You have succesfully logged in with <br/>Binance (Testnet).</p>`;
                 return swal({
                   // title: "Success",
                   // text: "You have succesfully logged in with Binance Chain.",
@@ -904,8 +914,6 @@ export default function DslProvider({ children }) {
     return provider;
   };
 
-
-
   const setID = async () => {
     try {
       if (ethereum) {
@@ -919,17 +927,17 @@ export default function DslProvider({ children }) {
 
   useEffect(() => {
     checkIfWalletIsConnect();
-  }, [])
-
+  }, []);
 
   useEffect(() => {
     if (currentAccount && localStorage.getItem("tokendslcommerce")) {
       setLoading(true);
-      axios.get(`https://backend.dslcommerce.com/api/users/`, {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("tokendslcommerce")}`,
-        },
-      })
+      axios
+        .get(`https://backend.dslcommerce.com/api/users/`, {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("tokendslcommerce")}`,
+          },
+        })
         .then((res) => {
           setUser(res.data);
         })
@@ -956,52 +964,54 @@ export default function DslProvider({ children }) {
   }, [requestLoading]);
 
   return (
-    <DSLCommerceContext.Provider value={{
-      connectWallet,
-      currentAccount,
-      loginModal,
-      setLoginModal,
-      requestLoading,
-      setRequestLoading,
-      walletModal,
-      user,
-      setUser,
-      logOut,
-      loading,
-      Id,
-      // signBuyFunction,
-      setID,
-      setUserRefetch,
-      chain,
-      pageLoading,
-      payAmount,
-      setPayAmount,
-      metamaskBalance,
-      coinbaseModal,
-      metamaskBalanceLoading,
-      getBalanceTestnet,
-      closeWalletModal,
-      closeCoinbaseModal,
-      openWalletModal,
-      openCoinbaseModal,
-      openLoginModal,
-      closeLoginModal,
-      setMetamaskBalanceLoading,
-      connectToCoinbase,
-      connectToMetamask,
-      mintAddressTestnet,
-      DSLtokenAddressTestnet,
-      USDSCtokenAddressTestnet,
-      S39tokenAddressTestnet,
-      QuesttokenAddressTestnet,
-      payByTestnetBNB,
-      payByTestnetUSDSC,
-      payByTestnetDSL,
-      payByTestnetS39,
-      signBuyFunction,
-      payByTestnetQuest,
-    }}>
+    <DSLCommerceContext.Provider
+      value={{
+        connectWallet,
+        currentAccount,
+        loginModal,
+        setLoginModal,
+        requestLoading,
+        setRequestLoading,
+        walletModal,
+        user,
+        setUser,
+        logOut,
+        loading,
+        Id,
+        // signBuyFunction,
+        setID,
+        setUserRefetch,
+        chain,
+        pageLoading,
+        payAmount,
+        setPayAmount,
+        metamaskBalance,
+        coinbaseModal,
+        metamaskBalanceLoading,
+        getBalanceTestnet,
+        closeWalletModal,
+        closeCoinbaseModal,
+        openWalletModal,
+        openCoinbaseModal,
+        openLoginModal,
+        closeLoginModal,
+        setMetamaskBalanceLoading,
+        connectToCoinbase,
+        connectToMetamask,
+        mintAddressTestnet,
+        DSLtokenAddressTestnet,
+        USDSCtokenAddressTestnet,
+        S39tokenAddressTestnet,
+        QuesttokenAddressTestnet,
+        payByTestnetBNB,
+        payByTestnetUSDSC,
+        payByTestnetDSL,
+        payByTestnetS39,
+        signBuyFunction,
+        payByTestnetQuest,
+      }}
+    >
       {children}
     </DSLCommerceContext.Provider>
-  )
+  );
 }
