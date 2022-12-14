@@ -71,6 +71,7 @@ const KycAddress = ({ addressData }) => {
       .then((res) => {
         if (res.status === 200) {
           console.log(res)
+          localStorage.setItem("addressPosted", true);
           setisVerifiedAddress(!isVerifiedAddress);
           // setRefetch(!refetch);
           toast.success("Successfully updated your address .");
