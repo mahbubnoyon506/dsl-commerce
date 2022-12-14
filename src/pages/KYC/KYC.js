@@ -20,8 +20,11 @@ import KycAddProduct from "../../Components/KYCArea/KycAddProduct/KycAddProduct"
 const KYC = () => {
   const [key, setKey] = useState("profile");
   const [photoIddata, setphotoIddata] = useState({});
+  const [photoIddataRefetch, setphotoIddataRefetch] = useState(false);
+  const [addressDataRefetch, setaddressDataRefetch] = useState(false);
   const [addressData, setaddressData] = useState({});
   const [userProfileData, setuserProfileData] = useState({});
+  const [userProfileDataRefetch, setuserProfileDataRefetch] = useState(false);
   const {
     kycUser,
     handleUpdateUser,
@@ -33,7 +36,7 @@ const KYC = () => {
   } = useContext(KycContext);
   const { user, openWalletModal } = useContext(DSLCommerceContext);
 
-  console.log(photoIddata, addressData, kycUser);
+  console.log("from kycs", photoIddata, addressData, "user", kycUser);
   // console.log(kycUser)
 
   useEffect(() => {
@@ -53,7 +56,7 @@ const KYC = () => {
         });
     };
     getPhotoIddata();
-  }, [kycUser?.walletAddress]);
+  }, [kycUser?.walletAddress, isVerifiedPhotId]);
 
   useEffect(() => {
     const getAddressData = async () => {
@@ -71,7 +74,7 @@ const KYC = () => {
         });
     };
     getAddressData();
-  }, [kycUser?.walletAddress]);
+  }, [kycUser?.walletAddress, isVerifiedAddress]);
 
   useEffect(() => {
     const getProfile = async () => {
@@ -90,7 +93,7 @@ const KYC = () => {
         });
     };
     getProfile();
-  }, [kycUser?.walletAddress]);
+  }, [kycUser?.walletAddress, isVerifiedProfile]);
 
   const isPhotoidPosted = localStorage.getItem("photoIdPosted");
   const isaddressPosted = localStorage.getItem("addressPosted");
@@ -162,19 +165,34 @@ const KYC = () => {
                 />
               )}
             </Tab>
-            {console.log(isVerifiedPhotId == false, photoIddata?.isVerified)}
+            {console.log(
+              "testnet",
+              isPhotoidPosted != "true",
+              isPhotoidPosted,
+              // isVerifiedPhotId == false,  
+              photoIddata?.isVerified == false,
+              photoIddata?.isVerified == undefined,
+              // photoIddata?.isPending == true,
+              // photoIddata?.isPending == undefined,
+              // photoIddata?.isVerified == undefined
+            )}
             {/* {console.log(isVerifiedPhotId == false, photoIddata?.isVerified == false)} */}
 
             <Tab>
               PHOTO ID
-              {isPhotoidPosted != true && isVerifiedPhotId == false &&
+              {isPhotoidPosted != "true" &&
+                isVerifiedPhotId == false &&
                 (photoIddata?.isVerified == undefined ||
-                  photoIddata?.isVerified == false) && photoIddata?.isPending == true && (
+                  photoIddata?.isVerified == false) && (
                   <CloseIcon
                     className="text-danger ms-1"
                     style={{ fontSize: "18px" }}
                   />
                 )}
+
+              {console.log(
+                photoIddata?.isVerified == false, photoIddata?.isPending == true
+              )}
               {photoIddata?.isVerified == false && photoIddata?.isPending == true && (
                 <ErrorIcon
                   className="text-warning ms-1"
@@ -196,7 +214,7 @@ const KYC = () => {
 
             <Tab>
               ADDRESS PROOF
-              {isaddressPosted != true && isVerifiedAddress == false &&
+              {isaddressPosted != "true" && isVerifiedAddress == false &&
                 (addressData?.isVerified == undefined ||
                   addressData?.isVerified == false) && (
                   <CloseIcon
@@ -236,7 +254,7 @@ const KYC = () => {
           </TabList>
 
           <TabPanel>
-            <KycProfile />
+            <KycProfile setuserProfileDataRefetch={setuserProfileDataRefetch} userProfileDataRefetch={userProfileDataRefetch} />
           </TabPanel>
 
           <TabPanel>
@@ -248,11 +266,11 @@ const KYC = () => {
           </TabPanel>
 
           <TabPanel>
-            <KycPhotoId photoIddata={photoIddata} />
+            <KycPhotoId photoIddata={photoIddata} setphotoIddataRefetch={setphotoIddataRefetch} photoIddataRefetch={photoIddataRefetch} />
           </TabPanel>
 
           <TabPanel>
-            <KycAddress addressData={addressData} />
+            <KycAddress addressData={addressData} setaddressDataRefetch={setaddressDataRefetch} addressDataRefetch={addressDataRefetch} />
           </TabPanel>
 
           <TabPanel>

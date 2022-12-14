@@ -36,7 +36,7 @@ const KycProfile = () => {
       const selectedCountry = time_zone.find(
         (country) => country.country === nationality
       );
-      console.log(selectedCountry);
+
       setTimeZone(selectedCountry.zones);
     } else {
       setTimeZone([]);

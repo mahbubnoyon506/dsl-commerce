@@ -48,7 +48,7 @@ const KycPhotoId = ({ photoIddata }) => {
       })
       .then((res) => {
         if (res.status === 200) {
-          localStorage.setItem("photoIdPosted", true);
+
           setphotoIdFrontLoader(false);
           setPhotoIdFrontImage(res.data.result);
         }
@@ -206,6 +206,7 @@ const KycPhotoId = ({ photoIddata }) => {
       })
       .then((res) => {
         if (res.status === 200) {
+          localStorage.setItem("photoIdPosted", true)
           setisVerifiedPhotId(!isVerifiedPhotId);
           setPassportImg("");
           setDrivingLicenseBackImage("");

@@ -22,6 +22,8 @@ const KycAddress = ({ addressData }) => {
   const [zipCode, setZipCode] = useState("");
   const [file, setFile] = useState("");
 
+  console.log("addressData", addressData)
+
 
 
 
@@ -61,7 +63,7 @@ const KycAddress = ({ addressData }) => {
     };
 
 
-    console.log(data, ...formData)
+
     await axios
       .post(`https://backend.dslcommerce.com/api/address`, formData, {
         headers: {
