@@ -37,26 +37,40 @@ const KycAddress = ({ addressData }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault()
 
+
+
+    const formData = new FormData();
+    formData.append("walletAddress", user?.walletAddress);
+    formData.append("address1", address1 || addressData?.address1);
+    formData.append("address2", address2 || addressData?.address2);
+    formData.append("city", city || addressData?.city);
+    formData.append("state", state || addressData?.state);
+    formData.append("country", country || addressData?.country);
+    formData.append("zipCode", zipCode || addressData?.zipCode);
+    formData.append("file", file);
+
     const data = {
       walletAddress: user?.walletAddress,
-      address1: address1,
-      address2: address2,
-      city: city,
-      state: state,
-      country: country,
-      zipCode: zipCode,
+      address1: address1 || addressData?.address1,
+      address2: address2 || addressData?.address2,
+      city: city || addressData?.city,
+      state: state || addressData?.state,
+      country: country || addressData?.country,
+      zipCode: zipCode || addressData?.zipCode,
       file: file
     };
 
 
+    console.log(data, ...formData)
     await axios
-      .post(`https://backend.dslcommerce.com/api/address`, data, {
+      .post(`https://backend.dslcommerce.com/api/address`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("kycUserToken")}`,
         },
       })
       .then((res) => {
         if (res.status === 200) {
+          console.log(res)
           setisVerifiedAddress(!isVerifiedAddress);
           // setRefetch(!refetch);
           toast.success("Successfully updated your address .");
@@ -225,7 +239,7 @@ const KycAddress = ({ addressData }) => {
           type="submit
         
         ">
-          SAVEs
+          SAVE
         </Button>
 
       </Form>

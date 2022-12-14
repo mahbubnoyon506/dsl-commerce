@@ -67,6 +67,9 @@ function Navbar() {
       .then((data) => setGetCategory(data));
   }, []);
 
+
+  // console.log("getCategory", getCategory, getCategory.sort())
+
   const toggleHotline = () => {
     setActive(!active);
   };
@@ -124,7 +127,7 @@ function Navbar() {
                           }
                         }}
                       >
-                        <option value="">All Category</option>
+                        <option value="">All Catagory</option>
                         {getCategory.map((category, index) => (
                           <option
                             key={index}

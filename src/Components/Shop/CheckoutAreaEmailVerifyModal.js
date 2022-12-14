@@ -1,12 +1,10 @@
-import React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import swal from "sweetalert";
 import Button from "react-bootstrap/Button";
 import CloseIcon from "@mui/icons-material/Close";
-import axios from "axios";
 import { Dialog } from "@mui/material";
 
 const style = {
@@ -18,103 +16,81 @@ const style = {
   paddingBlock: "16px",
 };
 
-export default function MobileVerifyModal({
+export default function CheckoutAreaEmailVerifyModal({
   open,
-  setOpenMobile,
+  userRefetch,
+  setOpenEmail,
+  updateProfile,
   otpVerify,
   setError,
-  handleVerifyMobile,
+  handleVerifyEmail,
   minutes,
   seconds,
-  mobile,
-  handleVerifyOTP,
-  setOtpVerify,
-  setDisableAfterActivationMobile,
   otpCode,
   setOtpCode,
-  setmobileNoVerify,
 }) {
   const [isOtpError, setOtpError] = useState(false);
 
-  const handleClose = () => {
-    setOpenMobile(false);
-    setOtpError(false);
-  };
+  const handleClose = () => setOpenEmail(false);
 
   // Re-send OTP states
   const [forEnable, setForEnable] = useState(false);
   const [againEnable, setAgainEnable] = useState(true);
   const [count, setCount] = useState(2);
   const [disabled, setDisabled] = useState(false);
-  const [otpVerified, setotpVerified] = useState();
 
-  const hendelSubmit = async (e) => {
+  const hendelSubmit = (e) => {
     setCount(count - 1);
     e.preventDefault();
-
-    await axios
-      .post(`https://backend.dslcommerce.com/api/number/otp`, {
-        phone: mobile,
-        otp: otpCode,
-      })
-
-      .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          console.log(res.data.message);
-          setmobileNoVerify(true);
-          setOpenMobile(false);
-          setOtpVerify(res.data.message);
-          swal({
-            text: res.data.message,
-            icon: "success",
-            button: "OK!",
-            className: "modal_class_success",
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err.response.data.message);
-        setOtpVerify(err.response.data.message);
-
-        if (count > 0) {
-          console.log(count);
-          let content2 = document.createElement("p");
-          content2.innerHTML =
-            'You have entered wrong OTP. Please try again. You have another <br/><span style="color: #0d6efd;">0' +
-            count +
-            "</span> more tries .";
-          swal({
-            content: content2,
-            icon: "warning",
-            button: "OK!",
-            className: "modal_class_success",
-          });
-
-          setDisableAfterActivationMobile(false);
-          // setCount(2);
-          setOtpVerify("");
-          // setDisabled(false);
-          setOtpError(false);
-        } else {
-          setDisabled(true);
-          swal({
-            text: "You have entered wrong OTP, And you have no more tries left. You can request another OTP again",
-            icon: "warning",
-            button: "OK!",
-            className: "modal_class_success",
-          });
-        }
-
-        setOtpVerify("");
-        setError("Mobile OTP Code not matched");
-        setOtpError(true);
+    if (otpVerify != otpCode) {
+      return swal({
+        title: "Warning",
+        text: "Please verify your email!",
+        icon: "warning",
+        button: "OK",
+        dangerMode: true,
+        className: "modal_class_success",
       });
+    } else if (otpVerify == otpCode) {
+      swal({
+        text: "Email Verified .",
+        icon: "success",
+        button: "OK!",
+        className: "modal_class_success",
+      });
+      handleClose();
+      setOtpError(false);
+      setError(false);
+      return;
+    }
+    if (count > 0) {
+      let content2 = document.createElement("p");
+      content2.innerHTML =
+        'You have entered wrong OTP. Please try again. You have another <br/><span style="color: #0d6efd;">0' +
+        count +
+        "</span> more tries .";
+      swal({
+        content: content2,
+        icon: "warning",
+        button: "OK!",
+        className: "modal_class_success",
+      });
+    } else {
+      setDisabled(true);
+      swal({
+        text: "You have entered wrong OTP, And you have no more tries left. You can request another OTP again",
+        icon: "warning",
+        button: "OK!",
+        className: "modal_class_success",
+      });
+    }
+    setError("Email OTP Code not matched");
+    setOtpError(true);
   };
 
   const verifyAlert = () => {
     swal({
-      text: "Please verify your mobile number before closing!",
+      text: "Please verify your email address before closing!",
       icon: "warning",
       button: "OK!",
       className: "modal_class_success",
@@ -125,6 +101,7 @@ export default function MobileVerifyModal({
     <div>
       <Dialog
         open={open}
+        P
         onClose={otpVerify == otpCode && handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -147,20 +124,22 @@ export default function MobileVerifyModal({
           >
             <CloseIcon className="iconClose" />
           </button>
+
           <Typography
             id="modal-modal-title text-light"
             className="text-light pt-1"
             variant="h6"
             component="h2"
-            align="center"
+            align="left"
           >
-            Verify Mobile
+            Verify Email
           </Typography>
           <Typography
             id="modal-modal-description text-light"
-            sx={{ mt: 2, mb: "14px" }}
+            sx={{ mt: 2 }}
+            style={{ textAlign: "left" }}
           >
-            Check your mobile for OTP
+            Check your email for OTP
           </Typography>
           <form className="d-flex input-group mt-2 mb-2">
             <input
@@ -174,7 +153,9 @@ export default function MobileVerifyModal({
             <button
               disabled={disabled ? true : false}
               className={`btn btn-outline-secondary ${
-                otpCode !== "" ? "bg-danger" : "bg-secondary"
+                otpCode !== "" || otpCode !== undefined
+                  ? "bg-danger"
+                  : "bg-secondary"
               } text-light`}
               onClick={hendelSubmit}
               type="submit"
@@ -189,15 +170,16 @@ export default function MobileVerifyModal({
           ) : (
             ""
           )}
+
           <div
             className="d-flex"
-            style={{ justifyContent: "center", marginTop: "14px" }}
+            style={{ justifyContent: "center", marginTop: "18px" }}
           >
             <button
               disabled={minutes == 0 && seconds == 0 ? false : true}
               type="submit"
-              onClick={handleVerifyMobile}
-              className={`submit banner-button2 font14 text-decoration-none rounded text-white p-2 ${
+              onClick={handleVerifyEmail}
+              className={`submit banner-button2 font14 text-decoration-none text-white p-2 rounded ${
                 minutes == 0 && seconds == 0 ? "bg-primary" : "bg-secondary"
               }`}
               id="font14"

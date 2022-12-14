@@ -1,5 +1,5 @@
 .dashboardDiv {
-  background-color: #1A1C33;
+  background-color: #1a1c33;
   height: 100%;
   width: 100%;
 }
@@ -9,8 +9,8 @@
   line-height: 10px;
 }
 
-.dashboardTxt>p,
-.dashboardTxt>h2 {
+.dashboardTxt > p,
+.dashboardTxt > h2 {
   color: #ffffff !important;
 }
 
@@ -19,7 +19,7 @@
 }
 
 .cardDash {
-  background-color: #272D47;
+  background-color: #272d47;
   cursor: pointer;
   min-height: 140px;
 }
@@ -76,7 +76,7 @@ svg {
 
 @media only screen and (max-width: 994px) {
   .dashboardDiv {
-    background-color: #1A1C33;
+    background-color: #1a1c33;
     height: auto;
     background-size: cover;
   }
@@ -84,6 +84,4 @@ svg {
   .coinsIcon {
     padding-top: 0px;
   }
-
-
 }

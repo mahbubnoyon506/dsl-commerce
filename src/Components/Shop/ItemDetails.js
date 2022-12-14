@@ -2,48 +2,49 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const ItemDetails = ({ cartItem, removeCartItem ,user , setCartRefetch }) => {
+const ItemDetails = ({ cartItem, removeCartItem, user, setCartRefetch }) => {
   const { count } = cartItem
 
   const [quantity, setQuantity] = useState(count);
 
-  const decreaseItem = async(id) => {
+  const decreaseItem = async (id) => {
     if (quantity > 1) {
-      const body =  { "count": quantity -1 , "id" : id }
+      const body = { "count": quantity - 1, "id": id }
       // console.log(body);
 
-      await axios.put(`https://backend.dslcommerce.com/api/cart/${user?.walletAddress}` , body)
-      .then(res => {
-        // console.log('count' , res.data)
-        if (res.status === 200) {
-          setQuantity(res.data.result.count)
-          setCartRefetch(true)
-        }
-      })
-      .catch(error => {
-        alert('Something went wrong, Try Again .');
-      })
+      await axios.put(`https://backend.dslcommerce.com/api/cart/${user?.walletAddress}`, body)
+        .then(res => {
+          console.log('count' , res.data)
+          if (res.status === 200) {
+            setQuantity(res.data?.result?.count)
+            setCartRefetch(true)
+          }
+        })
+        .catch(error => {
+          alert('Something went wrong, Try Again .');
+        })
     }
-    else{
+    else {
       setQuantity(quantity)
     }
   }
+  // console.log('cartdsdsdsdsd' , cartItem)
 
-  const increaseItem = async(id) => {
+  const increaseItem = async (id) => {
     if (quantity < parseInt(cartItem.availableProduct)) {
-      const body =  { "count": quantity + 1 , "id" : id }
-      await axios.put(`https://backend.dslcommerce.com/api/cart/${user?.walletAddress}` , body)
-      .then(res => {
-        if (res.status === 200) {
-          setQuantity(res.data.result.count)
-          setCartRefetch(true)
-        }
-      })
-      .catch(error => {
-        alert('Something went wrong, Try Again .');
-      })
+      const body = { "count": quantity + 1, "id": id }
+      await axios.put(`https://backend.dslcommerce.com/api/cart/${user?.walletAddress}`, body)
+        .then(res => {
+          if (res.status === 200) {
+            setQuantity(res.data?.result?.count)
+            setCartRefetch(true)
+          }
+        })
+        .catch(error => {
+          alert('Something went wrong, Try Again .');
+        })
     }
-    else{
+    else {
       setQuantity(parseInt(cartItem.availableProduct))
     }
   }
@@ -60,7 +61,7 @@ const ItemDetails = ({ cartItem, removeCartItem ,user , setCartRefetch }) => {
         </span>
         <Link to={`/shop/products-details/${cartItem?.product}`}>
           <img
-            src={cartItem?.product_images}
+            src={cartItem?.images[0]}
             alt=""
             style={{ width: "80px" }}
           />
@@ -75,7 +76,7 @@ const ItemDetails = ({ cartItem, removeCartItem ,user , setCartRefetch }) => {
 
       <td className="product-price">
         <span className="unit-amount">
-          ${cartItem.price}
+          ${cartItem?.price}
         </span>
       </td>
 

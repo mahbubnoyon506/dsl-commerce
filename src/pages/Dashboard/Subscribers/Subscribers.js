@@ -19,6 +19,7 @@ const Subscribers = () => {
   const { emailPerPage } = useParams();
 
   const [open, setOpen] = useState(false);
+  const [inputMessage, setinputMessage] = useState("");
   const [allEmail, setALlEmail] = useState([]);
   const [refetch, setRefetch] = useState(false);
 
@@ -93,7 +94,7 @@ const Subscribers = () => {
       if (willDelete) {
         handleDelete(email?.email);
       } else {
-        swal("Your imaginary file is safe!");
+        swal("Cancelled!");
       }
     });
   };
@@ -116,11 +117,55 @@ const Subscribers = () => {
         setRefetch(true)
       }
     } catch (error) {
+      swal({
+        // title: "Success",
+        text: error.data.message,
+        icon: "warning",
+        button: "OK!",
+        className: "modal_class_success",
+      });
       // console.log("error");
     }
   };
 
+  const handleSendMessage = async () => {
+    const messageData = {
+      email: "mohammadjahid0007@gmail.com",
+      message: inputMessage
+    }
 
+
+    await axios
+      .post("https://backend.dslcommerce.com/api/support", messageData, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("adminDslCommerce")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          handleClose();
+          swal({
+
+            text: res.data.message,
+            icon: "success",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+        }
+      })
+      .catch((error) => {
+
+        swal({
+          title: "Attention",
+          text: error.response.data.message,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+
+      });
+
+  };
 
   return (
     <div className="productBody">
@@ -183,13 +228,17 @@ const Subscribers = () => {
 
                       <div className=' text-white'>
                         <label htmlFor="">To: </label>
-                        <input type="email" value={email} className="p-1 ms-2 rounded mt-2 border-1 bolder w-75" style={{ background: "#1a1c33", color: '#fff', border: '2px solid #fff' }} />
+                        <input type="email" defaultValue={email} className="p-1 ms-2 rounded mt-2 border-1 bolder w-75" style={{ background: "#1a1c33", color: '#fff', border: '2px solid #fff' }} />
 
                         <div className="mt-2">
                           <label htmlFor="">Message: </label>
-                          <textarea className="" name="" id="" cols="30" rows="6" placeholder="Write Message"></textarea>
+                          <textarea
+                            onChange={(e) => setinputMessage(e.target.value)}
+                            className="" name="" id="" cols="30" rows="6" placeholder="Write Message"></textarea>
                         </div>
-                        <button className="btn btn-sm px-3 text-white btn-primary">Send</button>
+                        <button
+                          onClick={handleSendMessage}
+                          className="btn btn-sm px-3 text-white btn-primary">Send</button>
 
                       </div>
                     </DialogContentText>

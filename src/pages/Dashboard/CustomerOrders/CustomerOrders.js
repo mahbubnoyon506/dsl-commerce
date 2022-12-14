@@ -4,14 +4,25 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import "./CustomerOrders.css";
 import { GrView } from "react-icons/gr";
 import { AiFillDelete } from "react-icons/ai";
-import { allOrders } from "./orderData";
 import { useEffect, useState } from "react";
 import Pagination from "../../../Components/Pagination/Pagination";
+import axios from "axios";
+import { CSVLink } from "react-csv";
+import swal from "sweetalert";
 
 const CustomerOrders = () => {
-  const [allOrder, setAllOrder] = useState(allOrders);
-  // const [orderStatus, setOrderStatus] = useState(allOrders.status);
-  const [orderStatus, setOrderStatus] = useState("");
+  const [allOrder, setAllOrder] = useState([]);
+
+  //*************************** Emtiaz ***************************
+  const fetchAllOrders = () => {
+    axios.get(`https://backend.dslcommerce.com/api/order`)
+      .then(res => {
+        setAllOrder(res.data)
+      })
+  }
+  useEffect(() => {
+    fetchAllOrders()
+  }, []);
 
   //****************************** Pagination Start ******************************/
   const { orderPerPage } = useParams();
@@ -20,7 +31,6 @@ const CustomerOrders = () => {
   const [show, setShow] = useState(10);
   const [lastPage, setLastPage] = useState(0);
   const [sliceOrders, setSliceOrders] = useState([]);
-  const [sliceOrderss] = useState([]);
   // console.log(sliceProducts)
 
   useEffect(() => {
@@ -31,11 +41,11 @@ const CustomerOrders = () => {
   useEffect(() => {
     if (orderPerPage) {
       const page = parseInt(orderPerPage);
-      const getSlicingCategory = allOrder.slice((page - 1) * show, page * show);
+      const getSlicingCategory = allOrder?.slice((page - 1) * show, page * show);
       setSliceOrders([...getSlicingCategory]);
       setPage(parseInt(page));
     } else {
-      const getSlicingProduct = allOrder.slice(0, show);
+      const getSlicingProduct = allOrder?.slice(0, show);
       setSliceOrders([...getSlicingProduct]);
     }
   }, [allOrder, show, orderPerPage]);
@@ -48,35 +58,119 @@ const CustomerOrders = () => {
 
   const handleOrderDelete = (id) => {
     console.log("Delete Order", id);
+    const confirmDelete = window.confirm(
+      "Are you sure, you want to delete this Order?"
+    );
+    if (confirmDelete) {
+      axios
+        .delete(`https://backend.dslcommerce.com/api/order/${id}`)
+        .then((res) => {
+          if (res.status === 200) {
+            // alert(res.data.message);
+            swal({
+              // title: "Success",
+              text: res.data.message,
+              icon: "success",
+              button: "OK!",
+              className: "modal_class_success",
+            });
+            setAllOrder(allOrder.filter((c) => c._id !== id));
+          }
+        })
+        .catch((error) => {
+          // alert(error.response.data.message);
+          swal({
+            title: "Attention",
+            text: error.response.data.message,
+            icon: "warning",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+        });
+    }
   };
-  useEffect(() => {
-    console.log("allOrders");
-    console.log(allOrders);
-  }, []);
+
+  
+
+  //*****************  Handle Search By Product Name */
+  const handleSearch = (e) => {
+    e.preventDefault()
+    const value = e.target.value
+    if (value === "") {
+      fetchAllOrders()
+    }
+    const newArray = [...allOrder];
+    setAllOrder(
+      newArray.filter(
+        // (item) =>console.log('eeeeee',item)
+        (item) => item.orderItems[0]?.productName?.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+      )
+    );
+  }
+
+  //*************************************** Sort Handle **************************************
+  const sortHandle = (e) => {
+    const method = e?.target?.value || e;
+    console.log(method);
+    if (method == 'pending') {
+      // console.log('first' , method)
+      axios.get(`https://backend.dslcommerce.com/api/order/data/pending/all`)
+        .then(res => setAllOrder(res.data.result))
+      return;
+    }
+    else if (method == 'processing') {
+      // console.log('second')
+      axios.get(`https://backend.dslcommerce.com/api/order/data/processing/all`)
+        .then(res => setAllOrder(res.data.result))
+      return;
+    }
+
+    else if (method == 'delivered') {
+      // console.log('third')
+      axios.get(`https://backend.dslcommerce.com/api/order/data/delivered/all`)
+        .then(res => setAllOrder(res.data.result))
+      return;
+    }
+    else {
+      fetchAllOrders()
+      return;
+    }
+  }
+
+
   return (
     <div className="productBody">
-      <h5 className="text-white-50 text-start pb-2 text-uppercase"> User ORDERS</h5>
+      <h5 className="text-white-50 text-start pb-2 text-uppercase">
+        {" "}
+
+        CUSTOMER ORDERS
+      </h5>
       <Row className="g-5">
         <Col className="py-2">
           <Card className="customerCard">
             <Card.Body>
               <Card.Text className="dashboardTxt">
                 <div className="d-flex flex-column flex-lg-row justify-content-evenly gap-3">
+
                   <input
-                    type="number"
+                    type="text"
+                    onChange={(e) => handleSearch(e)}
                     placeholder="Search By Name"
-                    className="py-2 pl-2 w-100 w-lg-25 border border-white rounded "
+                    className="py-3 pl-2 w-100 w-100 w-lg-25  rounded"
                   />
+
                   <select
+                    onChange={sortHandle}
                     className="py-2 pl-2 border border-white rounded w-100 w-lg-25"
                     style={{ cursor: "pointer", borderRadius: "5px" }}
                   >
-                    <option>Status</option>
+                    <option value="default">Status</option>
                     <option value="pending">Pending</option>
-                    <option value="delivered">Delivered</option>
                     <option value="processing">Processing</option>
+                    <option value="delivered">Delivered</option>
+                    {/* <option value="processing">Processing</option> */}
                   </select>
-                  <select
+                  {/* <select
                     className="py-2 pl-2 border border-white rounded w-100 w-lg-25"
                     style={{ cursor: "pointer", borderRadius: "5px" }}
                   >
@@ -84,111 +178,136 @@ const CustomerOrders = () => {
                     <option value="50">50</option>
                     <option value="100">100</option>
                     <option value="200">200</option>
-                  </select>
+                  </select> */}
+
                   <button className="w-100 w-lg-25 rounded btn btn-success fs-5">
-                    Download All Orders{" "}
-                    <AiOutlineCloudDownload className="fs-3" />
+                    <CSVLink data={sliceOrders} style={{ color: "white" }}>
+                      Download All Orders
+                      <AiOutlineCloudDownload className="fs-3" />
+                    </CSVLink>
                   </button>
+
                 </div>
               </Card.Text>
             </Card.Body>
           </Card>
         </Col>
       </Row>
-      <div className="productCard py-2">
-        <div className="tableNormal ">
-          <Table className="text-white-50 productDataTable ">
-            <thead>
-              <tr>
-                <th className="text-center">Order Time</th>
-                {/* <th className="text-center">Product Name</th> */}
-                <th className="text-center">Phone</th>
-                <th className="text-center ">Method</th>
-                <th className="text-center ">Amount</th>
-                <th className="text-center">Status</th>
-                <th className="text-center">Action</th>
-                <th className="text-center">View / Del</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sliceOrderss?.map((order, index) => (
-                <tr className="tableRow" key={order?._id}>
-                  <td className="text-center text-transparent">
-                    {order.orderTime}
-                  </td>
-                  {/* <td className="text-center text-capitalize">
-                    {order.productName}
-                  </td> */}
-                  <td className="text-center ">{order?.phone}</td>
-                  <td className="text-center text-capitalize ">
-                    {order?.paymentMethod}
-                  </td>
-                  <td className="text-center text-capitalize ">
-                    ${order?.orderAmount}
-                  </td>
-                  <td className="text-center">
-                    <button
-                      className="btn btn-sm bg-danger text-white"
-                      style={{ borderRadius: "20px" }}
-                    >
-                      {/* Pending */}
-                      {/* {orderStatus} */}
-                      {order?.status}
-                    </button>
-                  </td>
-                  <td className="text-center">
-                    <select
-                      className="bg-white-50"
-                      style={{ cursor: "pointer", borderRadius: "5px" }}
-                      onChange={(e) => {
-                        const temp = [...allOrder];
-                        temp[index].status = e.target.value;
-                        setAllOrder(temp);
-                        // setOrderStatus(e.target.value)
-                      }}
-                    >
-                      <option
-                        value="pending"
-                        selected={order?.status === "pending"}
-                      >
-                        Pending
-                      </option>
-                      <option
-                        value="delivered"
-                        selected={order?.status === "delivered"}
-                      >
-                        Delivered
-                      </option>
-                      <option
-                        value="processing"
-                        selected={order?.status === "processing"}
-                      >
-                        Processing
-                      </option>
-                    </select>
-                  </td>
-                  <td className="action d-flex justify-content-center">
-                    <div className="actionDiv text-center">
-                      <Link to={`/admin/orderDetail/${order?._id}`}>
-                        <button className="editBtn">
-                          <GrView />
-                        </button>
-                      </Link>
+      {sliceOrders?.length > 0 ? (
+        <>
+          <div className="productCard py-2">
+            <div className="tableNormal ">
+              <Table className="text-white-50 productDataTable ">
+                <thead>
+                  <tr>
+                    <th className="text-left">Product Name</th>
+                    <th className="text-left">Email</th>
+                    <th className="text-left ">Method</th>
+                    <th className="text-left ">Amount</th>
+                    <th className="text-left">Status</th>
+                    <th className="text-left">Action</th>
+                    <th className="text-left">View / Del</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sliceOrders?.map((order, index) => (
+                    <tr className="tableRow" key={order?._id}>
+                      <td className="text-left text-transparent">
+                        {/* {order.date.slice(0, 10)} */}
+                        {/* {product?.images?.slice(0, 4)?.map((img) => (
+                      <div>
+                        <img
+                          src={img}
+                          alt={product.productName}
+                        />
+                      </div>
+                    ))} */}
 
-                      <button
-                        onClick={() => handleOrderDelete(order?._id)}
-                        className="deleteBtn text-white "
-                      >
-                        <AiFillDelete />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+                        {order?.orderItems?.slice(0, 1).map((item) => (
+                          <div>
+                            {item?.productName}
+                          </div>
+                        ))}
+
+                      </td>
+                      <td className="text-left ">{order?.email}</td>
+                      <td className="text-left text-capitalize ">
+                        {order?.paymentMethod}
+                      </td>
+                      <td className="text-left text-capitalize ">
+                        ${order?.amount}
+                      </td>
+                      <td className="text-left">
+                        <button
+                          className="btn btn-sm bg-danger text-white"
+                          style={{ borderRadius: "20px" }}
+                        >
+                          {order?.pendingStatus === true && (<>Pending</>)}
+                          {order?.processingStatus === true && (<>Processing</>)}
+                          {order?.deliveredStatus === true && (<>Delivered</>)}
+
+                        </button>
+                      </td>
+                      <td className="text-left">
+                        <select
+                          className="bg-white-50"
+                          style={{ cursor: "pointer", borderRadius: "5px" }}
+                          onChange={(e) => {
+                            const temp = [...allOrder];
+                            temp[index].status = e.target.value;
+                            setAllOrder(temp);
+                            // setOrderStatus(e.target.value)
+                          }}
+                        >
+                          <option
+                            value="pending"
+                            selected={order?.status === "pending"}
+                          >
+                            Pending
+                          </option>
+                          <option
+                            value="delivered"
+                            selected={order?.status === "delivered"}
+                          >
+                            Delivered
+                          </option>
+                          <option
+                            value="processing"
+                            selected={order?.status === "processing"}
+                          >
+                            Processing
+                          </option>
+                        </select>
+                      </td>
+                      <td className="action d-flex justify-content-left">
+                        <div className="actionDiv text-left">
+                          <Link to={`/admin/orderDetail/${order?._id}`}>
+                            <button className="editBtn">
+                              <GrView />
+                            </button>
+                          </Link>
+
+                          <button
+                            onClick={() => handleOrderDelete(order?._id)}
+                            className="deleteBtn text-white "
+                          >
+                            <AiFillDelete />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div>
+          <h2 className="text-center font-weight-bold py-5 text-white">No Order Found</h2>
         </div>
-      </div>
+      )}
+
 
       {/*********************************** Pagination  Start***********************************/}
       <div className="">

@@ -11,8 +11,8 @@ import { KycContext } from "../../../contexts/KycContext";
 import MobileVerifyModal from "../../../pages/Profile/MobileVerifyModal";
 
 const KycMobile = ({ expiryTimestamp }) => {
-  const [otpCode, setOtpCode] = useState();
-  const [openMobile, setopenMobile] = useState(false);
+  const [otpCode, setOtpCode] = useState("");
+  const [openMobile, setOpenMobile] = useState(false);
   const [otpVerify, setOtpVerify] = useState();
   const [isError, setError] = useState(false);
   const [mobile, setMobile] = useState();
@@ -40,34 +40,34 @@ const KycMobile = ({ expiryTimestamp }) => {
     restart(time);
   };
 
-  const handleVerifyMobileOTP = async (otpCode) => {
-    console.log("handleVerifyMobileOTP", mobile, otpCode);
+  // const handleVerifyMobileOTP = async (otpCode) => {
+  //   console.log("handleVerifyMobileOTP", mobile, otpCode);
 
-    await axios
-      .post(`https://backend.dslcommerce.com/api/number/otp`, {
-        phone: mobile,
-        otp: otpCode,
-      })
+  //   await axios
+  //     .post(`https://backend.dslcommerce.com/api/number/otp`, {
+  //       phone: mobile,
+  //       otp: otpCode,
+  //     })
 
-      .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          setmobileNoVerify(true);
-          setOtpVerify(res.data.message);
-          setRefetch(!refetch);
-          swal({
-            text: res.data.message,
-            icon: "success",
-            button: "OK!",
-            className: "modal_class_success",
-          });
-        }
-      })
-      .catch((err) => {
-        console.dir(err);
-        setOtpVerify(err.response.data.message);
-      });
-  };
+  //     .then((res) => {
+  //       console.log(res);
+  //       if (res.status === 200) {
+  //         setmobileNoVerify(true);
+  //         setOtpVerify(res.data.message);
+  //         setRefetch(!refetch);
+  //         swal({
+  //           text: res.data.message,
+  //           icon: "success",
+  //           button: "OK!",
+  //           className: "modal_class_success",
+  //         });
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.dir(err);
+  //       setOtpVerify(err.response.data.message);
+  //     });
+  // };
 
   const handleVerifyMobile = async (e) => {
     // console.log("handleVerifyMobile");
@@ -102,11 +102,11 @@ const KycMobile = ({ expiryTimestamp }) => {
             }, 120000);
           }
           console.log("setopenMobile");
-          setopenMobile(true);
+          setOpenMobile(true);
         })
         .catch((err) => {
           console.log(err.response.data.message);
-          setopenMobile(false);
+          setOpenMobile(false);
           swal({
             title: "Attention",
             text: err.response.data.message,
@@ -228,19 +228,37 @@ const KycMobile = ({ expiryTimestamp }) => {
           )}
         </Form.Group>
       </Form>
-      <MobileVerifyModal
+      {/* <MobileVerifyModal
         handleVerifyMobile={handleVerifyMobile}
         handleVerifyOTP={handleVerifyMobileOTP}
         minutes={minutes}
         seconds={seconds}
         open={openMobile}
-        setOpenMobile={setopenMobile}
+        setOpenMobile={setOpenMobile}
         otpVerify={otpVerify}
         otpCode={otpCode}
         setOtpCode={setOtpCode}
         setError={setError}
         mobile={setMobile}
         setOtpVerify={setOtpVerify}
+        setDisableAfterActivationMobile={setDisableAfterActivationMobile}
+      /> */}
+
+
+      <MobileVerifyModal
+        otpCode={otpCode}
+        setOtpCode={setOtpCode}
+        handleVerifyMobile={handleVerifyMobile}
+        // handleVerifyOTP={handleVerifyMobileOTP}
+        minutes={minutes}
+        seconds={seconds}
+        open={openMobile}
+        setOpenMobile={setOpenMobile}
+        otpVerify={otpVerify}
+        setError={setError}
+        mobile={mobile}
+        setOtpVerify={setOtpVerify}
+        setmobileNoVerify={setmobileNoVerify}
         setDisableAfterActivationMobile={setDisableAfterActivationMobile}
       />
     </div>

@@ -40,6 +40,9 @@ const Verified = () => {
             .then(data => setVerifiedUser(data?.result))
     }, [])
 
+
+    console.log("verifiedUser", verifiedUser)
+
     return (
         <div className="">
             {/* <p className='text-start text-white fs-2 mb-3 p-0'>VERIFIED</p> */}
@@ -73,8 +76,8 @@ const Verified = () => {
                                         <span><PortraitIcon /></span>
                                     </td> */}
                                     <td className='text-start' style={{ textTransform: 'uppercase' }} >{d.name}</td>
-                                    <td className='text-start '>{d.email}</td>
-                                    <td className='text-start '>01776254965</td>
+                                    <td className='text-start '>{d?.email}</td>
+                                    <td className='text-start '>{d?.mobile}</td>
                                     {/* <td className='text-start adminHidden'>{d.kycPending === true ? 'PENDING' : ''}</td> */}
                                     <td className='text-start '>
 

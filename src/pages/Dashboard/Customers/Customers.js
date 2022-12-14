@@ -18,27 +18,18 @@ const Customers = () => {
   const [refetch, setRefetch] = useState(false)
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const fetchAllCustomers = () => {
     fetch(`https://backend.dslcommerce.com/api/users/all`)
       .then(res => res.json())
       .then(data => setAllCustomers(data))
-  }, [refetch])
+  }
 
-  const search = (e, searchText) => {
-    e.preventDefault();
-    const newary = [...allCustomers];
-    console.log(searchText);
-    console.log("search");
-    setAllCustomers(
-      newary.filter(
-        (item) =>
-          item.EMAIL.includes(searchText) ||
-          item.PHONE.includes(searchText) ||
-          item.USER_ID.includes(searchText) ||
-          item.WALLET_ADDRESS.includes(searchText)
-      )
-    );
-  };
+
+
+  useEffect(() => {
+    fetchAllCustomers()
+  }, []);
+
 
   //****************************** Pagination Start ******************************/
   const { customerPerPage } = useParams();
@@ -80,7 +71,7 @@ const Customers = () => {
   const handleDelete = (walletAddress) => {
     console.log(walletAddress)
     const confirmDelete = window.confirm(
-      "Are you sure, you want to delete this Product?"
+      "Are you sure, you want to delete this Customer?"
     );
     if (confirmDelete) {
       axios
@@ -111,11 +102,30 @@ const Customers = () => {
     }
   }
 
+  const handleSearch = (e) => {
+
+    const value = e.target.value;
+
+    console.log(value)
+    if (value === "") {
+      fetchAllCustomers()
+    }
+    const newArray = [...allCustomers];
+    setAllCustomers(
+      newArray.filter(
+
+        (customer) =>
+          customer.email?.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+      )
+    );
+  }
+
+
   return (
     <>
       <h5 className="text-white text-start text-uppercase pb-1">CUSTOMERS</h5>
 
-      <Search submit={search} />
+      <Search handleSearch={handleSearch} />
 
       <div className="productCard py-2">
         <div className="tableNormal ">
@@ -146,7 +156,7 @@ const Customers = () => {
                       <div>WalletAddress</div>
                     )}
                   </td>
-                  <td className="text-left text-capitalize ">
+                  <td className="text-left  ">
                     {sliceCustomer?.email ? (
                       <div>{sliceCustomer?.email}</div>
                     ) : (
@@ -174,7 +184,9 @@ const Customers = () => {
             </tbody>
           </Table>
         </div>
+
       </div>
+
       {/*********************************** Pagination  Start***********************************/}
       <div className="">
         {sliceCustomers?.length ? (

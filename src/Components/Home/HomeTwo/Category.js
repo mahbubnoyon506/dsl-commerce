@@ -4,12 +4,6 @@ import { Link } from "react-router-dom";
 function Category() {
   return (
     <ul className="slider-categories">
-      <li>
-        <Link to="/shop/cat/634835bca20a55c0675ab4ce/page/1" className="nav-link">
-          <i className="flaticon-desktop-computer"></i>
-          Computers & Accessories
-        </Link>
-      </li>
 
       <li>
         <Link to="/shop/cat/634dbff29f477aab3d45d3ec/page/1" className="nav-link">
@@ -17,6 +11,14 @@ function Category() {
           Cameras
         </Link>
       </li>
+      <li>
+        <Link to="/shop/cat/634835bca20a55c0675ab4ce/page/1" className="nav-link">
+          <i className="flaticon-desktop-computer"></i>
+          Computers & Accessories
+        </Link>
+      </li>
+
+
 
       <li>
         <Link to="/shop/cat/634941db2cfb54eb164110c6/page/1" className="nav-link">
@@ -74,7 +76,7 @@ function Category() {
         </Link>
       </li> */}
 
-      
+
     </ul>
   );
 }

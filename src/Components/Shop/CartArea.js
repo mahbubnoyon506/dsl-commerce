@@ -28,6 +28,7 @@ function CartArea() {
     setTotal(Number(getSubTotal + parseFloat((getSubTotal * 2.5) / 100)))
   }, [carts])
 
+  // console.log("carts", carts)
 
   // Remove Item To Cart
   const removeCartItem = async (id) => {

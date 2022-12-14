@@ -17,6 +17,7 @@ import Select from "react-select";
 import { Typography } from "@mui/material";
 import { useEffect } from "react";
 import { BigNumber, ethers } from "ethers";
+import CheckoutAreaEmailVerifyModal from "./CheckoutAreaEmailVerifyModal";
 
 const selectOptions = [
   {
@@ -67,7 +68,7 @@ function CheckoutArea({ expiryTimestamp }) {
     payByTestnetQuest,
   } = useContext(DSLCommerceContext);
   const { carts } = useContext(CartContext);
-  console.log(carts);
+  console.log("user info", user);
 
   const [name, setName] = useState("");
   const [country, setCountry] = useState("");
@@ -88,7 +89,8 @@ function CheckoutArea({ expiryTimestamp }) {
     useState(false);
   const [otpVerify, setOtpVerify] = useState();
   const [openEmail, setOpenEmail] = useState(false);
-  const [openMobile, setopenMobile] = useState(false);
+  const [openMobile, setOpenMobile] = useState(false);
+  const [otpCode, setOtpCode] = useState(false);
   const [isError, setError] = useState(false);
   const [cryptoPayment, setCryptoPayment] = useState("on");
   const [payNowPayment, setPayNowPayment] = useState(null);
@@ -203,38 +205,41 @@ function CheckoutArea({ expiryTimestamp }) {
         setOpenEmail(false);
       })
       .catch((err) => {
-        console.log(err.response.data.message);
+        // console.log(err.response.data.message);
         setOtpVerify(err.response.data.message);
       });
   };
 
-  const handleVerifyMobileOTP = async (otpCode) => {
-    console.log("handleVerifyMobileOTP");
+  // const handleVerifyMobileOTP = async (otpCode) => {
+  //   console.log("handleVerifyMobileOTP", otpCode);
 
-    await axios
-      .post(`https://backend.dslcommerce.com/api/number/otp`, {
-        phone: mobile,
-        otp: otpCode,
-      })
+  //   await axios
+  //     .post(`https://backend.dslcommerce.com/api/number/otp`, {
+  //       phone: mobile,
+  //       otp: otpCode,
+  //     })
 
-      .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          setmobileNoVerify(true);
-          setOtpVerify(res.data.message);
-          swal({
-            text: res.data.message,
-            icon: "success",
-            button: "OK!",
-            className: "modal_class_success",
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err.response.data.message);
-        setOtpVerify(err.response.data.message);
-      });
-  };
+  //     .then((res) => {
+  //       console.log(res);
+  //       if (res.status === 200) {
+
+  //         console.log(res.data.message)
+  //         setmobileNoVerify(true);
+  //         setOpenMobile(false);
+  //         setOtpVerify(res.data.message);
+  //         swal({
+  //           text: res.data.message,
+  //           icon: "success",
+  //           button: "OK!",
+  //           className: "modal_class_success",
+  //         });
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.response.data.message);
+  //       setOtpVerify(err.response.data.message);
+  //     });
+  // };
 
   const handleVerifyMobile = async (e) => {
     // console.log("handleVerifyMobile");
@@ -248,8 +253,8 @@ function CheckoutArea({ expiryTimestamp }) {
           phone: mobile,
         })
         .then((res) => {
-          console.log("res");
-          console.log(res);
+          // console.log("res");
+          // console.log(res);
 
           if (res.status === 200) {
             // alert(res.data.message);
@@ -268,12 +273,12 @@ function CheckoutArea({ expiryTimestamp }) {
               setDisableAfterActivation(false);
             }, 120000);
           }
-          console.log("setopenMobile");
-          setopenMobile(true);
+          console.log("setOpenMobile");
+          setOpenMobile(true);
         })
         .catch((err) => {
           console.log(err.response.data.message);
-          setopenMobile(false);
+          setOpenMobile(false);
           swal({
             title: "Attention",
             text: err.response.data.message,
@@ -298,18 +303,18 @@ function CheckoutArea({ expiryTimestamp }) {
   };
 
   const handleVerifyEmail = async (e) => {
-    console.log("handleVerifyEmail");
+    // check if email is valid
     setDisableAfterActivation(true);
     if (email1.length > 0 && email1.includes("@" && ".")) {
       // setLoading(true);
+      setEmailVerify(true);
       await axios
-        .post("https://backend.dslcommerce.com/api/email/emailsend", {
+        .post("https://backend.dslcommerce.com/api/users/email", {
           email: email1,
         })
         .then((res) => {
           if (res.status === 200) {
             // alert(res.data.message);
-
             // setSendMail(res.data.email)
             restarting(180);
             swal({
@@ -318,7 +323,7 @@ function CheckoutArea({ expiryTimestamp }) {
               button: "OK!",
               className: "modal_class_success",
             });
-
+            console.log("emtiaz", res.data);
             setOtpVerify(res.data.otp);
 
             setTimeout(() => {
@@ -582,7 +587,8 @@ function CheckoutArea({ expiryTimestamp }) {
         dangerMode: true,
         className: "modal_class_success",
       });
-    } else if (!emailVerify || !mobileNoVerify) {
+    }
+    else if (!user.email || !mobileNoVerify) {
       swal({
         title: "Attention",
         text: "Please verify your email and mobile number",
@@ -591,11 +597,22 @@ function CheckoutArea({ expiryTimestamp }) {
         dangerMode: true,
         className: "modal_class_success",
       });
-    } else {
+    }
+    else if (!user.email || !mobileNoVerify) {
+      swal({
+        title: "Attention",
+        text: "Please verify your email and mobile number",
+        icon: "warning",
+        button: "OK",
+        dangerMode: true,
+        className: "modal_class_success",
+      });
+    }
+    else {
       setRequestLoading(true);
       console.log(USDSCtokenAddressTestnet);
 
-      console.log("222222", priceByToken, tokenAddress, affiliateWalletAddress);
+      // console.log("222222", priceByToken, tokenAddress, affiliateWalletAddress);
 
       const generateId = Math.floor(Math.random() * 1000000000000);
       const data = new FormData();
@@ -631,8 +648,8 @@ function CheckoutArea({ expiryTimestamp }) {
         )
         .then(async (res) => {
           let Obj = {};
-          console.log("111111123: ", data);
-          console.log(res.data.uri);
+          // console.log("111111123: ", data);
+          // console.log(res.data.uri);
           if (res.status === 200) {
             const data1 = await signBuyFunction(
               generateId.toString(),
@@ -658,7 +675,7 @@ function CheckoutArea({ expiryTimestamp }) {
             const oId = generateId.toString();
             const price = priceByToken + " " + selectedOption.label;
 
-            console.log("After Order Order ID Emtiaz ", oId, price);
+            // console.log("After Order Order ID Emtiaz ", oId, price);
             const data3 = {
               name: name,
               email: email,
@@ -676,7 +693,7 @@ function CheckoutArea({ expiryTimestamp }) {
               paymentMethod: "crypto",
             };
 
-            console.log("Data 3 bro", data3);
+            // console.log("Data 3 bro", data3);
             // after confirm payment, items added to order list
             axios
               .post("https://backend.dslcommerce.com/api/order", data3)
@@ -723,10 +740,10 @@ function CheckoutArea({ expiryTimestamp }) {
               orderItems: orderItems,
               refAddress: refAddress,
             };
-            console.log("Emtiaz Emon Data", data2);
+            // console.log("Emtiaz Emon Data", data2);
             data.append("mint_hash", Obj.mint_hash);
             setTokenId(Obj.ID);
-            console.log(data2);
+            // console.log(data2);
             await axios
               .post(
                 "https://backend.dslcommerce.com/api/v1/mint/save-nft",
@@ -912,9 +929,8 @@ function CheckoutArea({ expiryTimestamp }) {
         {message !== "" && (
           <div
             className={`
-        ${
-          message === "Order successfully added"
-        } ? alert alert-success : alert alert-danger 
+        ${message === "Order successfully added"
+              } ? alert alert-success : alert alert-danger 
       `}
             role="alert"
           >
@@ -964,7 +980,7 @@ function CheckoutArea({ expiryTimestamp }) {
                             setEmail(e.target.value.toLocaleLowerCase());
                             setEmailVerify(false);
                           }}
-                          value={user.email ? user.email : email1}
+                          value={user?.email ? user?.email : email1}
                           disabled={user.email ? true : false}
                           required
                           className="form-control profileInput"
@@ -1042,7 +1058,7 @@ function CheckoutArea({ expiryTimestamp }) {
                             onClick={handleVerifyMobile}
                             disabled={
                               mobile?.length === 0 ||
-                              disableAfterActivationMobile
+                                disableAfterActivationMobile
                                 ? true
                                 : false
                             }
@@ -1401,7 +1417,7 @@ function CheckoutArea({ expiryTimestamp }) {
                     style={{ alignItems: "flex-end", justifyContent: "start" }}
                   >
                     {!user.walletAddress ||
-                    user.walletAddress === "undefined" ? (
+                      user.walletAddress === "undefined" ? (
                       <button
                         type="submit"
                         className="default-btn"
@@ -1519,31 +1535,32 @@ function CheckoutArea({ expiryTimestamp }) {
           </div>
         </form>
 
-        <EmailVerifyModal
+        <CheckoutAreaEmailVerifyModal
           handleVerifyEmail={handleVerifyEmail}
-          handleVerifyOTP={handleVerifyOTP}
           minutes={minutes}
           seconds={seconds}
           open={openEmail}
           setOpenEmail={setOpenEmail}
           otpVerify={otpVerify}
           setError={setError}
-          email={setEmail}
-          setOtpVerify={setOtpVerify}
-          setDisableAfterActivation={setDisableAfterActivation}
+          otpCode={otpCode}
+          setOtpCode={setOtpCode}
         />
 
         <MobileVerifyModal
+          otpCode={otpCode}
+          setOtpCode={setOtpCode}
           handleVerifyMobile={handleVerifyMobile}
-          handleVerifyOTP={handleVerifyMobileOTP}
+          // handleVerifyOTP={handleVerifyMobileOTP}
           minutes={minutes}
           seconds={seconds}
           open={openMobile}
-          setOpenMobile={setopenMobile}
+          setOpenMobile={setOpenMobile}
           otpVerify={otpVerify}
           setError={setError}
-          mobile={setMobile}
+          mobile={mobile}
           setOtpVerify={setOtpVerify}
+          setmobileNoVerify={setmobileNoVerify}
           setDisableAfterActivationMobile={setDisableAfterActivationMobile}
         />
       </div>
