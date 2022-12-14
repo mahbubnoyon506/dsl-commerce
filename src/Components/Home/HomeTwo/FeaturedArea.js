@@ -49,8 +49,8 @@ function FeaturedArea() {
   return (
     <section className="featured-area">
       <div className="container">
-        <div className="section-title pt-3 pt-lg-0">
-          <h2>Featured Products test</h2>
+        <div className="section-title pt-0 pt-lg-5">
+          <h2>Featured Products</h2>
         </div>
         <div className="row">
           <Slider className="overflow-hidden" {...settings}>

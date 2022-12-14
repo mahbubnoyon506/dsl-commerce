@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const ItemDetails = ({ cartItem, removeCartItem, user, setCartRefetch }) => {
-  const { count } = cartItem
-
+  const { count } = cartItem;
   const [quantity, setQuantity] = useState(count);
 
   const decreaseItem = async (id) => {
@@ -108,7 +107,7 @@ const ItemDetails = ({ cartItem, removeCartItem, user, setCartRefetch }) => {
 
       <td className="product-subtotal">
         <span className="subtotal-amount">
-          ${quantity * parseInt(cartItem?.price)}
+          ${quantity * cartItem?.price}
         </span>
       </td>
     </tr>
