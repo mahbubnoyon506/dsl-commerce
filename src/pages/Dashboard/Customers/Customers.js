@@ -7,6 +7,7 @@ import Pagination from "../../../Components/Pagination/Pagination";
 import { AllCustomers } from "./customerData";
 import axios from "axios";
 import swal from "sweetalert";
+import { FaSearch } from "react-icons/fa";
 
 const FilterableTable = require("react-filterable-table");
 
@@ -14,7 +15,7 @@ const FilterableTable = require("react-filterable-table");
 
 const Customers = () => {
   const [allCustomers, setAllCustomers] = useState([]);
-  const [refetch,setRefetch] = useState(false)
+  const [refetch, setRefetch] = useState(false)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -160,9 +161,9 @@ const Customers = () => {
                       >
                         <i className="fas fa-eye"></i>
                       </button>
-                      <button 
-                      className="deleteBtn" 
-                      onClick={() => handleDelete(sliceCustomer?.walletAddress)}
+                      <button
+                        className="deleteBtn"
+                        onClick={() => handleDelete(sliceCustomer?.walletAddress)}
                       >
                         <i className="fas fa-trash"></i>
                       </button>
