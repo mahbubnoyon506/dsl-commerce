@@ -250,19 +250,21 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
                 return (
                   <>
                     <div className="row w-100">
-                      <div className="col-6">
-                        <img src={data.orderItems[0].product_images} alt="" />
+                      <div className="col-12 col-lg-6">
+                        {/* {console.log(data)} */}
+                        {data.orderItems[0]?.images?.slice(0, 1)?.map((img) => (
+                          <img src={img} alt="img" />
+                        ))}
+
                       </div>
-                      <div className="col-6">
+                      <div className="col-12 col-lg-6">
                         <p>Name: {data?.name}</p>
                         <p>Product name: {data?.orderItems[0].productName}</p>
                         <p>
                           Status:{" "}
-                          {data?.pendingStatus == false ? (
-                            <span className="">Pending</span>
-                          ) : (
-                            <span className="">Delivered</span>
-                          )}
+                          {data?.pendingStatus === true && (<>Pending</>)}
+                          {data?.processingStatus === true && (<>Processing</>)}
+                          {data?.deliveredStatus === true && (<>Delivered</>)}
                         </p>
                         <p>Order Date: {data?.date.slice(0, 10)}</p>
                         <p> Order Id: {data.orderId}</p>
