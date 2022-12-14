@@ -1,5 +1,5 @@
 .dashboardDiv {
-  background-color: #1A1C33;
+  background-color: #1a1c33;
   height: 100%;
   width: 100%;
 }
@@ -9,8 +9,8 @@
   line-height: 10px;
 }
 
-.dashboardTxt>p,
-.dashboardTxt>h2 {
+.dashboardTxt > p,
+.dashboardTxt > h2 {
   color: #ffffff !important;
 }
 
@@ -19,13 +19,13 @@
 }
 
 .cardDash {
-  background-color: #272D47;
+  background-color: #272d47;
   cursor: pointer;
   min-height: 140px;
 }
 
 svg {
-  color: white;
+  /* color: black; */
 }
 
 .demoP {
@@ -47,38 +47,41 @@ svg {
   text-align: start;
   width: 100%;
 }
-.orderIcon{
+
+.orderIcon {
   border-radius: 100% !important;
   font-size: 50px !important;
-  padding: 10px; 
+  padding: 10px;
 }
-.setBg1{
+
+.setBg1 {
   border: 1px solid rgb(249, 117, 9);
   background-color: rgb(249, 117, 9);
 }
 
-.setBg2{
+.setBg2 {
   border: 1px solid rgb(65, 33, 243);
   background-color: rgb(78, 37, 243);
 }
-.setBg3{
+
+.setBg3 {
   border: 1px solid rgb(36, 175, 206);
   background-color: rgb(36, 167, 197);
 }
-.setBg4{
+
+.setBg4 {
   border: 1px solid rgb(3, 137, 3);
   background-color: rgb(3, 137, 3);
 }
 
 @media only screen and (max-width: 994px) {
   .dashboardDiv {
-    background-color: #1A1C33;
+    background-color: #1a1c33;
     height: auto;
     background-size: cover;
   }
+
   .coinsIcon {
     padding-top: 0px;
   }
-
-
 }

@@ -1,19 +1,19 @@
-import { Button } from '@mui/material';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import { FiSend } from 'react-icons/fi';
-import { AiOutlineLogin, AiOutlineMail } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
+import { Button } from "@mui/material";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import { FiSend } from "react-icons/fi";
+import { AiOutlineLogin, AiOutlineMail } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import swal from 'sweetalert';
-import './ForgetPassword.css'
+import swal from "sweetalert";
+import "./ForgetPassword.css";
 
 const ForgetPassword = () => {
   const navigate = useNavigate();
 
   const handleGoToLogin = () => {
     navigate("/admin/login");
-  }
+  };
 
   const sendResetLink = async (e) => {
     e.preventDefault();
@@ -21,12 +21,16 @@ const ForgetPassword = () => {
     const email = e.target.email.value;
     // console.log(email)
 
-    await axios.post("https://backend.dslcommerce.com/api/admin/send-reset-password-link/", { email })
-      .then(res => {
+    await axios
+      .post(
+        "https://backend.dslcommerce.com/api/admin/send-reset-password-link/",
+        { email }
+      )
+      .then((res) => {
         if (res.status === 200) {
           // alert(res.data.message);
           swal({
-            title: "Success",
+            // title: "Success",
             text: `${res.data.message}`,
             icon: "success",
             button: "OK!",
@@ -35,7 +39,7 @@ const ForgetPassword = () => {
           navigate("/login");
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // alert(err.response.data.message);
         swal({
           title: "Attention",
@@ -44,35 +48,72 @@ const ForgetPassword = () => {
           button: "OK!",
           className: "modal_class_success",
         });
-      })
-  }
+      });
+  };
 
   return (
     <div>
-      <div className='handleTheLoginBody'>
-        <div className='container mx-auto'>
-          <div className=' forCard  w-50 p-5 rounded mx-auto'>
-            <div className='mx-auto text-center'>
-              <img style={{ width: '80px', marginTop: '-20px', borderRadius: '100%' }} src="https://testnet.grighund.net/static/media/logo192.ea779dfe5e580c22a76f.png" alt="logo" />
-              <p className='py-1' style={{ fontSize: '28px' }}>Password Reset</p>
-              <p className='pb-2'>Enter your email address to receive Reset Password link.</p>
+      <div className="handleTheLoginBody">
+        <div className="container mx-auto">
+          <div className=" forCard  w-50 p-5 rounded mx-auto">
+            <div className="mx-auto text-center">
+              <img
+                style={{
+                  width: "80px",
+                  marginTop: "-20px",
+                  borderRadius: "100%",
+                }}
+                src="https://testnet.grighund.net/static/media/logo192.ea779dfe5e580c22a76f.png"
+                alt="logo"
+              />
+              <p className="py-1" style={{ fontSize: "28px" }}>
+                Password Reset
+              </p>
+              <p className="pb-2">
+                Enter your email address to receive Reset Password link.
+              </p>
             </div>
             <hr />
-            <div className='mt-4 pt-2'>
+            <div className="mt-4 pt-2">
               <form onSubmit={sendResetLink}>
-
                 <InputGroup className="mb-3 mt-3">
-                  <InputGroup.Text className=' border fs-3 bg-dark'>
-                    <AiOutlineMail style={{ fontSize: '20px' }} />
+                  <InputGroup.Text className=" border fs-3 bg-dark">
+                    <AiOutlineMail style={{ fontSize: "20px" }} />
                   </InputGroup.Text>
-                  <Form.Control aria-label="Amount (to the nearest dollar)" className='' placeholder='Enter Email' type="email" name="email" required />
+                  <Form.Control
+                    aria-label="Amount (to the nearest dollar)"
+                    className=""
+                    placeholder="Enter Email"
+                    type="email"
+                    name="email"
+                    required
+                  />
                 </InputGroup>
 
-                <div className='mx-auto text-center' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '1rem' }}>
-                  <Button style={{ backgroundColor: '#f74545' }} className='button-34 px-4 pt-2 pb-2' type="submit">
+                <div
+                  className="mx-auto text-center"
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "1rem",
+                  }}
+                >
+                  <Button
+                    style={{ backgroundColor: "#f74545" }}
+                    className="button-34 px-4 pt-2 pb-2"
+                    type="submit"
+                    onClick={handleGoToLogin}
+                  >
                     <FiSend></FiSend> Send
                   </Button>
-                  <Button style={{ backgroundColor: '#f74545' }} className='button-34 px-4 pt-2 pb-2' type="button" onClick={handleGoToLogin}>
+                  <Button
+                    style={{ backgroundColor: "#f74545" }}
+                    className="button-34 px-4 pt-2 pb-2"
+                    type="button"
+                    onClick={handleGoToLogin}
+                  >
                     <AiOutlineLogin /> Login
                   </Button>
                 </div>

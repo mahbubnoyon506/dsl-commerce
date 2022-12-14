@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button, Typography, Modal, Box } from "@mui/material";
 import Table from "react-bootstrap/Table";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import toast from "react-hot-toast";
 import swal from "sweetalert";
 import axios from "axios";
 import CategoryModal from "./CategoryModal";
 import "./AllCatergory.css";
 import "./CategoryModal.css";
-
-// import Box from '@mui/material/Box';
-// import Typography from '@mui/material/Typography';
-// import Modal from '@mui/material/Modal';
+import { useNavigate, useParams } from "react-router-dom";
+import Pagination from "../../../../Components/Pagination/Pagination";
 
 const style = {
   position: "absolute",
@@ -26,6 +22,7 @@ const style = {
 };
 
 const AllCategory = () => {
+  const { categoryPerPage } = useParams();
   const [open, setOpen] = React.useState(false);
   const [modal, setModal] = useState(false);
   const [name, setCategoryName] = useState("");
@@ -35,6 +32,41 @@ const AllCategory = () => {
     loading: false,
     value: null,
   });
+
+  //****************************** Pagination Start ******************************/
+  const navigate = useNavigate();
+  const [getPage, setPage] = useState(1);
+  const [show, setShow] = useState(10);
+  const [lastPage, setLastPage] = useState(0);
+  const [sliceCategories, setSliceCategories] = useState([]);
+  // console.log(sliceProducts)
+
+  useEffect(() => {
+    const lastPage = Math.ceil(categories?.length / show);
+    setLastPage(lastPage);
+  }, [categories, show]);
+
+  useEffect(() => {
+    if (categoryPerPage) {
+      const page = parseInt(categoryPerPage);
+      const getSlicingCategory = categories.slice(
+        (page - 1) * show,
+        page * show
+      );
+      setSliceCategories([...getSlicingCategory]);
+      setPage(parseInt(page));
+    } else {
+      const getSlicingProduct = categories.slice(0, show);
+      setSliceCategories([...getSlicingProduct]);
+    }
+  }, [categories, show, categoryPerPage]);
+
+  const pageHandle = (jump) => {
+    navigate(`/admin/all-category/${jump}`);
+    setPage(parseInt(jump));
+  };
+
+  //****************************** Pagination End ******************************/
 
   const getCategory = () => {
     fetch(`https://backend.dslcommerce.com/api/category/`)
@@ -62,7 +94,7 @@ const AllCategory = () => {
       .then((res) => {
         if (res.status === 201) {
           swal({
-            title: "Success",
+            // title: "Success",
             text: res.data.message,
             icon: "success",
             button: "OK!",
@@ -107,7 +139,7 @@ const AllCategory = () => {
       });
       if (response.status === 200) {
         swal({
-          title: "Success",
+          // title: "Success",
           text: response.data.message,
           icon: "success",
           button: "OK!",
@@ -147,7 +179,7 @@ const AllCategory = () => {
       );
       if (response.status === 200) {
         swal({
-          title: "Success",
+          // title: "Success",
           text: response.data.message,
           icon: "success",
           button: "OK!",
@@ -166,27 +198,17 @@ const AllCategory = () => {
   const handleClose = () => setOpen(false);
   return (
     <>
-      {/* <div className="d-flex justify-content-center align-items-center">
-        <h2 className="text-white">CATEGORIES</h2>
-      </div> */}
-      <h5 className="text-white text-start">CATEGORIES</h5>
-
-      {/* <div className="categoryBtnDiv"> */}
-      <div className="row">
-        <div className="col-md-6"></div>
-        <div className="col-md-6 text-center">
-          <Button
-            variant="contained"
-            xs={{ size: "large" }}
-            sx={{ my: "2rem" }}
-            onClick={handleOpen}
-          >
-            ADD CATEGORY
-          </Button>
-        </div>
+      <h5 className="text-white text-start text-uppercase pt-1">CATEGORIES</h5>
+      <div className="d-flex flex-column flex-lg-row mb-3 justify-content-lg-between align-items-center">
+        <Button
+          variant="contained"
+          xs={{ size: "large" }}
+          sx={{ my: "2rem" }}
+          onClick={handleOpen}
+        >
+          ADD CATEGORY
+        </Button>
       </div>
-
-      {/* </div> */}
 
       <div>
         <Modal
@@ -255,22 +277,22 @@ const AllCategory = () => {
           </Box>
         </Modal>
       </div>
-      <div>
+      <div className="productCard py-2">
         <Table style={{ color: "white" }}>
           <thead>
             <tr>
               <th>CATEGORIES</th>
-              <th className="text-center">ACTIONS</th>
+              <th className="text-end">ACTIONS</th>
             </tr>
           </thead>
           <tbody>
-            {categories &&
-              categories.map((category) => (
+            {sliceCategories &&
+              sliceCategories.map((category) => (
                 <tr key={category._id}>
                   <td>{category.name}</td>
 
                   <td>
-                    <div className="text-center">
+                    <div className="text-end">
                       <button
                         type="button"
                         className="editBtn"
@@ -299,6 +321,19 @@ const AllCategory = () => {
               ))}
           </tbody>
         </Table>
+
+        {/* Pagination  */}
+        <div className="">
+          {sliceCategories?.length ? (
+            <Pagination
+              lastPage={lastPage}
+              page={getPage}
+              pageHandle={pageHandle}
+            />
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
 
       {categoryUpdate.show && (

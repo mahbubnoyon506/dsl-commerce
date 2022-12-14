@@ -3,8 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Preloader from "../Common/Preloader";
 import Pagination from "../Pagination/Pagination";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
-import axios from "axios";
-import swal from "sweetalert";
+import { WishlistContext } from "../../contexts/wishlist-context";
 
 function ShopArea({
   addToCart,
@@ -17,51 +16,16 @@ function ShopArea({
   const navigate = useNavigate();
   const [allProduct, setAllProduct] = useState([]);
   const [searchProducts, setSearchProducts] = useState([]);
-  //SLICE PRODUCT AND SHOW PER PAGE ONLY
+
+  //*******************SLICE PRODUCT AND SHOW PER PAGE ONLY
   const [sliceProducts, setSliceProducts] = useState([]);
   const [sortP, setSortP] = useState('default')
-  const [defaultProduct, setDefaultProduct] = useState([])
 
   const [isLoading, setisLoading] = useState(true);
 
   const { user, openWalletModal } = useContext(DSLCommerceContext);
+  const { addProductToWishlist } = useContext(WishlistContext);
 
-  const createWishlist = async (product) => {
-    console.log("create wishlist shop");
-    let currentItem = {
-      walletAddress: user.walletAddress,
-      productId: product._id,
-    };
-    console.log(currentItem);
-
-    await axios
-      .post(`https://backend.dslcommerce.com/api/wishlist/create`, {
-        walletAddress: user.walletAddress,
-        productId: product._id,
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          swal({
-            title: "Success",
-            // text: `${res.data.message}`,
-            text: "Successfully added to wishlist",
-            icon: "success",
-            button: "OK!",
-            className: "modal_class_success",
-          });
-        }
-      })
-      .catch((err) => {
-        // openWalletModal()
-        swal({
-          title: "Attention",
-          text: `${err.response.data.message}`,
-          icon: "warning",
-          button: "OK!",
-          className: "modal_class_success",
-        });
-      });
-  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -70,7 +34,7 @@ function ShopArea({
     window.scrollTo(0, 0);
   }, []);
 
-  //FILTERING PRODUCT
+  //************************************** FILTERING PRODUCT **************************************
   useEffect(() => {
     if (keyword && !query) {
       if (keyword === "all") {
@@ -108,7 +72,7 @@ function ShopArea({
 
 
 
-
+  //*************************************** Sort Handle **************************************
   const sortHandle = (e) => {
     const method = e?.target?.value || e;
     setSortP(method)
@@ -147,13 +111,11 @@ function ShopArea({
             if (keyword && !query) {
               if (keyword === "all") {
                 setCategoryWiseProduct(result);
-                setDefaultProduct(result);
               } else {
                 const filterByCategory = result.filter(
                   (product) => keyword == product.category
                 );
                 setCategoryWiseProduct(filterByCategory);
-                setDefaultProduct(result);
               }
             } else if (query) {
               const filterByCategory = result.filter((product) => {
@@ -167,10 +129,8 @@ function ShopArea({
               });
               setSearchProducts(filterByCategory);
               setCategoryWiseProduct(filterByCategory);
-              setDefaultProduct(result);
             } else {
               setCategoryWiseProduct(result);
-              setDefaultProduct(result);
             }
           });
         // console.log(allProduct)
@@ -192,9 +152,9 @@ function ShopArea({
     }
   };
 
-  // Pagination
+  //************************************** Pagination **************************************
   const [getPage, setPage] = useState(1);
-  const [show, setShow] = useState(12);
+  const [show, setShow] = useState(20);
   const [lastPage, setLastPage] = useState(0);
 
   useEffect(() => {
@@ -256,17 +216,21 @@ function ShopArea({
     sortHandle(sortP)
     setPage(parseInt(jump));
   };
+  // console.log(sliceProducts);
+  // 6397267ad851e0e93a8affde
+  // 6397267ad851e0e93a8affde
 
   return (
     <section className="shop-area bg-ffffff pt-50 pb-50">
       <div className="container">
-        <div className="products-filter-options">
+        <div className="products-filter-options container text-center text-lg-left ">
           <div className="row align-items-center">
-            <div className="col-lg-9 col-md-9">
-              <p>Total Product {sliceProducts?.length}</p>
+            <div className="col-lg-9 col-md-9 px-lg-0">
+              {/* <p>Total Product {sliceProducts?.length}</p> */}
+              <p>Products </p>
             </div>
 
-            <div className="col-lg-3 col-md-3">
+            <div className="col-lg-3 col-md-3 text-center px-5 px-lg-0">
               <div className="products-ordering-list py-1">
                 <select className="form-control" onChange={sortHandle}>
                   <option value="default" className="py-3">
@@ -288,8 +252,8 @@ function ShopArea({
                 <>
                   {sliceProducts.map((product) => (
                     <div className="col-lg-3 col-sm-6" key={product?._id}>
-                      <div className="single-shop-products">
-                        <div className="shop-products-image">
+                      <div className="single-shop-products ">
+                        <div className="shop-products-image text-center">
                           <Link
                             to={`/shop/products-details/${product?._id}`}
                             onClick={() => {
@@ -297,12 +261,21 @@ function ShopArea({
                             }}
                           >
                             <img
-                              src={product?.product_images}
+                              src={product?.images[0]}
                               style={{ width: "300px", height: "270px" }}
                               alt=""
                             />
                           </Link>
-                          <div className="tag">New</div>
+                          {
+                            new Date(product?.createdAt).getDate() + 7 <= new Date().getDate() ? (
+                              <>
+                              </>
+                            ) : (
+                              <>
+                                <div className="tag">New</div>
+                              </>
+                            )
+                          }
                           <ul className="shop-action">
                             <li>
                               {user?.walletAddress ? (
@@ -325,7 +298,7 @@ function ShopArea({
                               {user?.walletAddress ? (
                                 <span
                                   className="addtocart-icon-wrap"
-                                  onClick={() => createWishlist(product)}
+                                  onClick={() => addProductToWishlist(product)}
                                 >
                                   <i className="flaticon-heart"></i>
                                 </span>

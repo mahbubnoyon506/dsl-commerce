@@ -13,13 +13,14 @@ function QuickView({ isOpen, closeModal, product }) {
   const { user, openWalletModal } = useContext(DSLCommerceContext);
   const { addItemToCart } = useContext(CartContext);
   const navigate = useNavigate();
+  // console.log('object' , product);
 
   useEffect(() => {
     setAvailable(product?.availableProduct)
   }, [product?.availableProduct])
   // console.log(available)
 
-  
+
   const addToCart = (product) => {
     let currentItem = {
       walletAddress: user?.walletAddress,
@@ -43,10 +44,12 @@ function QuickView({ isOpen, closeModal, product }) {
           <Container>
             <Row className="align-items-center">
               <Col xs={12} md={6}>
-                
+
                 <div className="shop-products-image text-center">
                   <Link to={`/shop/products-details/${product?._id}`}>
-                    <img src={product?.product_images} style={{ width: "300px" }} alt="" />
+                    {product?.images?.slice(0, 1)?.map((img) => (
+                      <img src={img} style={{ width: "300px" }} alt="" />
+                    ))}
                   </Link>
                   <div className="tag">{product.productName}</div>
                 </div>
@@ -141,7 +144,7 @@ function QuickView({ isOpen, closeModal, product }) {
             </Row>
           </Container>
         </Modal.Body>
-        <Modal.Footer/>
+        <Modal.Footer />
       </Modal>
     </div>
   );

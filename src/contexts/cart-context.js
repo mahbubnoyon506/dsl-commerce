@@ -10,18 +10,20 @@ export default function CartProvider({ children }) {
   const [carts, setCarts] = useState([]);
   const [cartRefetch, setCartRefetch] = useState(false);
   const { user } = useContext(DSLCommerceContext);
-  const [payablePrice , setPayablePrice] = useState(null)
+  const [payablePrice, setPayablePrice] = useState(null)
 
   const addTotalPrice = (total) => {
     // console.log(total);
     setPayablePrice(total);
   }
 
+  //************************************** Add Item To Cart **************************************
   const addItemToCart = async (item) => {
-    // console.log("cartItem" , item);
+    console.log("cartItem", item);
     await axios
       .post(`https://backend.dslcommerce.com/api/cart/`, item)
       .then((res) => {
+        console.log(res.data)
         if (res.status === 200) {
           swal({
             text: `Successfully added to cart! `,
@@ -43,7 +45,7 @@ export default function CartProvider({ children }) {
       });
   };
 
-  // Get All Cart Item 
+  //************************************** Get All Cart Item **************************************
   useEffect(() => {
     setLoading(true);
     axios
@@ -64,7 +66,7 @@ export default function CartProvider({ children }) {
 
 
   // console.log(carts)
-  
+
 
   return (
     <CartContext.Provider

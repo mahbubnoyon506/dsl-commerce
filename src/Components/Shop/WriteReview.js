@@ -1,23 +1,22 @@
 import axios from 'axios';
 import React, { useContext } from 'react';
-import { useState ,useEffect} from 'react';
 import { Modal, Container } from "react-bootstrap";
 import swal from 'sweetalert';
 import { DSLCommerceContext } from '../../contexts/DSLCommerceContext';
 
-const WriteReview = ({ isOpen, closeModal, product, productId ,refetch,setRefetch}) => {
+const WriteReview = ({ isOpen, closeModal, product, productId, refetch, setRefetch }) => {
   const { user } = useContext(DSLCommerceContext);
-const [userName,setUserName]=useState([]);
-useEffect(() => {
-  // setLoading(true);
-  axios
-    .get("https://backend.dslcommerce.com/api/users/0xb83Cb5C3D8b31e2Db1F9496A5E8B547A98058b0d")
-    .then((res) => {
-      setUserName(res.data.result);
-    })
-    // .finally(() => setLoading(false));
-}, []);
-console.log(userName)
+  // const [userName,setUserName]=useState([]);
+  // useEffect(() => {
+  //   // setLoading(true);
+  //   axios
+  //     .get("https://backend.dslcommerce.com/api/users/0xb83Cb5C3D8b31e2Db1F9496A5E8B547A98058b0d")
+  //     .then((res) => {
+  //       setUserName(res.data?.result?.name);
+  //     })
+  //     // .finally(() => setLoading(false));
+  // }, []);
+  // console.log(userName)
 
   var newDate = new Date();
   let dd = String(newDate.getDate()).padStart(2, '0');
@@ -27,43 +26,30 @@ console.log(userName)
   // console.log(product)
 
   if (min < 10) {
-    newDate = dd + '/' + mm + '/' + yyyy ;
+    newDate = dd + '/' + mm + '/' + yyyy;
 
   } else {
-    newDate = dd + '/' + mm + '/' + yyyy ;
+    newDate = dd + '/' + mm + '/' + yyyy;
   }
 
   const onSubmitForm = async (e) => {
     e.preventDefault();
 
     const data = {
-      name: e.target.walletAddress.value,
+      name: e.target.userName.value,
       rating: e.target.rating.value,
-      // userName: e.target.userName.value,
       message: e.target.message.value,
       date: newDate
     }
 
-
-    // const reviewData = { walletAddress, rating, message, newDate }
-    // console.log(reviewData)
-
-    // const formData = new FormData();
-    // formData.append('name', walletAddress);
-    // formData.append('rating', rating);
-    // formData.append('message', message);
-    // formData.append('date', newDate);
-
     console.log(data)
-    // let userName=user?.walletAddress;
-    // console.log(userName)
 
     await axios.post(`https://backend.dslcommerce.com/api/product/review/${productId}`, data)
       .then(res => {
         if (res.status === 200) {
           swal({
-            title: "Success",
-            text: `Review Added Successfully`,
+            // title: "Success",
+            text: `Review Added Successfully !`,
             icon: "success",
             button: "OK!",
             className: "modal_class_success",
@@ -76,7 +62,7 @@ console.log(userName)
       .catch(error => {
         swal({
           title: "Attention",
-          text: `Something went wrong.Try again`,
+          text: `Something went wrong.Try again !`,
           icon: "warning",
           button: "OK!",
           className: "modal_class_success",
@@ -97,7 +83,7 @@ console.log(userName)
 
               <form onSubmit={onSubmitForm}>
                 <div className="row">
-                  <div className="form-group">
+                  {/* <div className="form-group">
                     <input
                       type="text"
                       name="walletAddress"
@@ -105,26 +91,14 @@ console.log(userName)
                       className="form-control"
                       disabled
                     />
-                  </div>
-                  {/* <div className="form-group row">
-                    <label className='col-sm-2 col-form-label'>Name:</label>
-                    <input
-                      type="text"
-                      name="userName"
-                      value={user.walletAddress}
-                      disabled
-                      className="form-control col-sm-10"
-                      placeholder='User name'
-
-                    />
                   </div> */}
-                   <div className="form-group">
+                  <div className="form-group">
                     <input
                       type="text"
                       name="userName"
-                      value={userName}
                       className="form-control"
-                      disabled
+                      placeholder="Your Name"
+                      required
                     />
                   </div>
 

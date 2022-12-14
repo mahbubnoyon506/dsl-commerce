@@ -11,7 +11,7 @@ const PublicLayout = () => {
   return (
     <div className="app">
       <Toaster />
-      <TopHeader shippingMessage="Free shipping on all orders over USD 50" />
+      <TopHeader shippingMessage="Free worldwide shipping on all orders over USD 50" />
       <MiddleHeader />
       <Navbar />
       <Outlet />

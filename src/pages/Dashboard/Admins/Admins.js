@@ -15,7 +15,7 @@ const Admins = () => {
   const [refetch, setRefetch] = useState(false);
 
   useEffect(() => {
-    axios.get('https://mainnetbackend.indianfilmtitles.com/api/v1/admin/')
+    axios.get('https://backend.dslcommerce.com/api/admin/')
       .then(res => {
         setAllAdmin(res.data);
         // console.log(res.data)
@@ -26,7 +26,7 @@ const Admins = () => {
   const handleAdminDelete = (id) => {
     const confirmDelete = window.confirm('Are you sure, you want to delete this admin?')
     if (confirmDelete) {
-      axios.delete(`https://mainnetbackend.indianfilmtitles.com/api/v1/admin/${id}`, {
+      axios.delete(`https://backend.dslcommerce.com/api/admin/${id}`, {
         headers: {
           'authorization': `Bearer ${localStorage.getItem('admin')}`
         }
@@ -35,7 +35,7 @@ const Admins = () => {
           if (res.status === 200) {
             // alert(res.data.message);
             swal({
-              title: "Success",
+              // title: "Success",
               text: res.data.message,
               icon: "success",
               button: "OK!",
@@ -87,6 +87,7 @@ const Admins = () => {
   //     });
   // }
 
+  console.log(allAdmin);
 
   return (
     <div className='adminBody'>
@@ -113,7 +114,10 @@ const Admins = () => {
               {
                 allAdmin?.map(admin => (
                   <tr className='tableRow' key={admin._id}>
-                    <td align='center'> <img className='imgAdmin' src={`https://mainnetbackend.indianfilmtitles.com/${admin?.avatar}`} alt="" /></td>
+                    <td align='center'>
+                      {admin?.avatar ? <img className='imgAdmin' src={admin?.avatar} alt="profilePic" /> : <img className='imgAdmin' src="https://backend.dslcommerce.com/assets/1660396587217.jpeg" alt="profilePic" />}
+                    </td>
+
                     <td style={{ textTransform: 'lowercase' }} className='text-start'>{admin.username}</td>
                     <td className='text-start adminHidden'>{admin.email}</td>
                     <td className='text-start adminHidden'>{admin.phone}</td>

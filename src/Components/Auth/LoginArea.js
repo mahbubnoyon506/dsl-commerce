@@ -1,71 +1,40 @@
 import React, { useRef, useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Form from 'react-bootstrap/Form';
+import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
+import InputGroup from "react-bootstrap/InputGroup";
+import Form from "react-bootstrap/Form";
 
 import AuthContext from "../../contexts/auth-context";
 import { AdminContext } from "../../contexts/AdminContext";
+import axios from "axios";
+import swal from "sweetalert";
 
 function LoginArea({ customClass = "" }) {
   const [visiblePassword, setVisiblePassword] = useState(false);
-  const email = useRef();
+  const [email, setEmail] = useState("");
   const password = useRef();
   const [alertMsg, setAlertMsg] = useState(null);
   const context = useContext(AuthContext);
-  const admincontext = useContext(AdminContext);
-  const { admin, token, isAuthenticating, login } = admincontext;
+  const { admin, token, isAuthenticating, login } = useContext(AdminContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isAuthenticating) {
-      navigate(`/otp`, { replace: true });
+      navigate(`/admin/otp/${token}`, { replace: true });
     }
     if (admin?._id) {
-      navigate('/admin', { replace: true });
+      navigate("/admin", { replace: true });
     }
-  }, [admin, navigate, isAuthenticating])
-
+  }, [admin, navigate, isAuthenticating, token]);
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    const email = e.target.email.value;
     const password = e.target.password.value;
-    console.log(email)
-    console.log(password)
-
+    // console.log(email);
+    // console.log(password);
     login(email, password);
-    // fetch("https://backend.dslcommerce.com/api/admin/login", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     email: email.current.value,
-    //     password: password.current.value,
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((res) => {
-    //     if (res.id) {
-    //       email.current.value = "";
-    //       password.current.value = "";
-    //       context.login(res.token, res.id, res.tokenExpiration);
-    //       localStorage.setItem("token", JSON.stringify(res.token));
-    //       localStorage.setItem("userId", JSON.stringify(res.id));
-    //       localStorage.setItem(
-    //         "tokenExpiration",
-    //         JSON.stringify(res.tokenExpiration)
-    //       );
-    //       navigate("/");
-    //     } else if (res.error) {
-    //       setAlertMsg(res.error);
-    //     } else if (res.errors) {
-    //       let errors = Object.values(res.errors);
-    //       setAlertMsg(errors);
-    //     }
-    //   })
-    //   .catch((err) => console.log(err));
   };
 
   return (
@@ -88,44 +57,45 @@ function LoginArea({ customClass = "" }) {
         ))}
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
-
         <InputGroup className="mb-3 mt-3">
-          <Form.Control aria-label="Amount (to the nearest dollar)"
-            className=''
-            placeholder='Enter Email'
+          <Form.Control
+            aria-label="Amount (to the nearest dollar)"
+            className=""
+            placeholder="Enter Email"
             type="email"
             name="email"
-            ref={email}
-            required />
+            value={email}
+            onChange={(e) => setEmail(e.target.value.toLocaleLowerCase())}
+            required
+          />
         </InputGroup>
 
         <InputGroup className="mb-3 mt-3">
-          <Form.Control aria-label="Amount (to the nearest dollar)"
-            className=''
-            placeholder='Enter Password'
+          <Form.Control
+            aria-label="Amount (to the nearest dollar)"
+            className=""
+            placeholder="Enter Password"
             type={visiblePassword ? "text" : "password"}
             name="password"
             ref={password}
-            required />
+            required
+          />
           <InputGroup.Text
-            className=' border fs-3 bg-dark'
+            className=" border fs-3 bg-dark"
             onClick={() => setVisiblePassword(!visiblePassword)}
-            style={{ cursor: 'pointer' }}
-          >{
-              visiblePassword ? (
-                <AiOutlineEye style={{ fontSize: '20px' }} />
-              ) : (
-                <AiOutlineEyeInvisible style={{ fontSize: '20px' }} />
-              )
-            }
+            style={{ cursor: "pointer" }}
+          >
+            {visiblePassword ? (
+              <AiOutlineEye style={{ fontSize: "20px" }} />
+            ) : (
+              <AiOutlineEyeInvisible style={{ fontSize: "20px" }} />
+            )}
           </InputGroup.Text>
         </InputGroup>
 
-
-
         <div className="row align-items-center">
           <div className="col-lg-6 col-md-6 col-sm-6">
-            <div className="form-check">
+            {/* <div className="form-check">
               <input
                 type="checkbox"
                 className="form-check-input"
@@ -134,7 +104,7 @@ function LoginArea({ customClass = "" }) {
               <label className="form-check-label" htmlFor="checkme">
                 Remember me
               </label>
-            </div>
+            </div> */}
           </div>
 
           <div className="col-lg-6 col-md-6 col-sm-6 lost-your-password">
@@ -147,11 +117,11 @@ function LoginArea({ customClass = "" }) {
         <button type="submit">Login</button>
       </form>
 
-      <div className="important-text">
+      {/* <div className="important-text">
         <p>
           Don't have an account? <Link to="/admin/register">Register now!</Link>
         </p>
-      </div>
+      </div> */}
     </div>
   );
 }

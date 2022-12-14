@@ -1,9 +1,7 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Image } from "cloudinary-react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
-import axios from "axios";
-import swal from "sweetalert";
+import { WishlistContext } from "../../contexts/wishlist-context";
 
 function NewArrivals({
   paddingClass = "",
@@ -12,45 +10,8 @@ function NewArrivals({
   showQuickView,
   addToCart,
 }) {
-  const navigate = useNavigate();
   const { user, openWalletModal } = useContext(DSLCommerceContext);
-
-  const createWishlist = async (product) => {
-    console.log("create wishlist NA");
-    let currentItem = {
-      walletAddress: user.walletAddress,
-      productId: product._id,
-    };
-    console.log(currentItem);
-
-    await axios
-      .post(`https://backend.dslcommerce.com/api/wishlist/create`, {
-        walletAddress: user.walletAddress,
-        productId: product._id,
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          swal({
-            title: "Success",
-            // text: `${res.data.message}`,
-            text: "Successfully added to wishlist",
-            icon: "success",
-            button: "OK!",
-            className: "modal_class_success",
-          });
-        }
-      })
-      .catch((err) => {
-        // openWalletModal()
-        swal({
-          title: "Attention",
-          text: `${err.response.data.message}`,
-          icon: "warning",
-          button: "OK!",
-          className: "modal_class_success",
-        });
-      });
-  };
+  const { addProductToWishlist } = useContext(WishlistContext);
 
   return (
     <section className={"arrivals-products-area " + paddingClass}>
@@ -61,7 +22,7 @@ function NewArrivals({
 
         <div className="row justify-content-center">
           {products &&
-            products.slice(0, 4).map((product) => {
+            products.slice(0, 4).reverse().map((product) => {
               return (
                 <div className="col-lg-3 col-sm-6" key={product?._id}>
                   <div className="single-arrivals-products ">
@@ -73,13 +34,15 @@ function NewArrivals({
                         to={`/shop/products-details/${product?._id}`}
                       >
                         <img
-                          src={product?.product_images}
+                          src={product?.images[0]}
                           style={{ width: "300px", height: "250px" }}
                           alt="new product"
                         />
                       </Link>
                       <div className="tag">New</div>
                       <ul className="arrivals-action">
+
+                        {/*********************** Add To Cart *************************** */}
                         <li>
                           {user?.walletAddress ? (
                             <span
@@ -97,14 +60,27 @@ function NewArrivals({
                             </span>
                           )}
                         </li>
+
+                        {/***********************WishList *************************** */}
                         <li>
-                          <span
-                            className="addtocart-icon-wrap"
-                            onClick={() => createWishlist(product)}
-                          >
-                            <i className="flaticon-heart"></i>
-                          </span>
+                          {user?.walletAddress ? (
+                            <span
+                              className="addtocart-icon-wrap"
+                              onClick={() => addProductToWishlist(product)}
+                            >
+                              <i className="flaticon-heart"></i>
+                            </span>
+                          ) : (
+                            <span
+                              onClick={() => openWalletModal()}
+                              className="addtocart-icon-wrap"
+                            >
+                              <i className="flaticon-heart"></i>
+                            </span>
+                          )}
                         </li>
+
+                        {/*********************** Quick View *************************** */}
                         <li>
                           <span
                             className="quickview-icon-wrap"
@@ -113,6 +89,7 @@ function NewArrivals({
                             <i className="flaticon-view quick-icon"></i>
                           </span>
                         </li>
+
                       </ul>
                     </div>
 

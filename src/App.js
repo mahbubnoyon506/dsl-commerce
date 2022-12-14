@@ -1,10 +1,10 @@
-import './App.css';
-import { createContext } from "react";
-import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import { createContext, useEffect, useState } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
 import PublicLayout from "./Components/Layout/PublicLayout";
 import HomeTwo from "./pages/Home/HomeTwo";
 import About from "./pages/About/About";
-import Search from './pages/About/Search';
+import Search from "./pages/About/Search";
 import ResetPassword from "./pages/Authentications/ResetPassword";
 import OurTeam from "./pages/About/OurTeam";
 import Faqs from "./pages/About/Faqs";
@@ -21,19 +21,18 @@ import AddProduct from "./pages/Products/AddProduct";
 import User from "./pages/User/User";
 import Products from "./pages/Products/Products";
 import News from "./pages/News/News";
-import './App.css'
+import "./App.css";
 import CheckoutArea from "./Components/Shop/CheckoutArea";
 import SubscriptionVerify from "./Components/Layout/Footer/SubscriptionVerify";
 import Profile from "./pages/Profile/Profile";
 
-
-// Login 
+// Login
 import Login from "./pages/Authentications/Login";
 import Register from "./pages/Authentications/Register";
 import ForgetPassword from "./Components/Auth/ForgetPassword";
 import Otp from "./Components/Auth/Otp";
 
-// Dashboard 
+// Dashboard
 import Dashboard from "./pages/Dashboard/Dashboard";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard/AdminDashboard";
 
@@ -62,9 +61,39 @@ import Page from "./pages/Shop/PathCheck/Page";
 import CatPath from "./pages/Shop/PathCheck/CatPath";
 import SearchPath from "./pages/Shop/PathCheck/SearchPath";
 import SingleOrderDetail from "./pages/Dashboard/CustomerOrders/SingleOrderDetail";
+import MintDetails from "./pages/MintDetails/MintDetails";
+import Subscribers from "./pages/Dashboard/Subscribers/Subscribers";
+import AdminRoutes from "./Components/AdminRoute/AdminRoutes";
+import AdministerOrders from "./pages/Dashboard/AdministerOrders/AdministerOrders";
+import Preloader from "./Components/Common/Preloader";
+import Merchant from "./pages/Merchant/Merchant";
+import KYC from "./pages/KYC/KYC";
+import Verified from "./pages/Dashboard/verified/Verified";
+import NonVerified from "./pages/Dashboard/verified/NonVerified";
+import Pending from "./pages/Dashboard/Pending/Pending";
+import AddedProducts from "./pages/Dashboard/AddedProducts/AddedProduct";
+import UserDetails from "./pages/Dashboard/UserDetails/UserDetails";
+import KycLogin from "./Components/KYCArea/KycAccount/KycLogin/KycLogin";
+import KycSignUp from "./Components/KYCArea/KycAccount/KycSignUp/KycSignUp";
 
-export const ProductContext = createContext()
+export const ProductContext = createContext();
 function App() {
+
+  const time = new Date();
+  time.setSeconds(time.getSeconds() + 180);
+  const [isLoading, setIsLoading] = useState(true);
+  const [modalShow, setModalShow] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
+  if (isLoading) {
+    return <Preloader />
+  }
+
 
   return (
     <>
@@ -73,36 +102,39 @@ function App() {
       <Routes>
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<HomeTwo />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/aboutus" element={<About />} />
+          <Route path="/:affiliateLink" element={<HomeTwo />} />
           <Route path="/our-team" element={<OurTeam />} />
           <Route path="/search" element={<Search />} />
           <Route path="/faqs" element={<Faqs />} />
           <Route path="/news" element={<News />} />
-          <Route path="/contact" element={<ContactArea />} />
-          <Route path="/cart" element={<CartArea />} />
+          <Route path="/merchant-add-product" element={<Merchant />} />
 
           <Route path="/terms-of-use" element={<TermsOfUse />} />
           <Route path="/data-protection-notice" element={<DataProtection />} />
           <Route path="/help-desk" element={<HelpDesk />} />
 
-
           {/* <Route path="/my-account" element={<MyAccount />} /> */}
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/tracking-order" element={<TrackingOrder />} />
-
+          <Route path="/profile" element={<Profile expiryTimestamp={time} />} />
+          <Route path="/tracking-order" element={<TrackingOrder expiryTimestamp={time} />} />
 
           {/* SHOP START */}
 
           <Route path="/shop" element={<MainShop />} />
           <Route path="/shop/page/:page" element={<Page />} />
           <Route path="/shop/cat/:keyword/page/:page" element={<CatPath />} />
-          <Route path="/shop/cat/:keyword/search/:query/:page" element={<SearchPath />} />
+          <Route
+            path="/shop/cat/:keyword/search/:query/:page"
+            element={<SearchPath />}
+          />
 
           {/* SHOP END */}
-
+          <Route path="/contact" element={<ContactArea />} />
+          <Route path="/cart" element={<CartArea />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<Orders />} />
           <Route path="/wishlist" element={<WishList />} />
+          <Route path="/mintednft/:id/:address" element={<MintDetails />} />
           <Route path="/checkout/:totalPrice" element={<CheckoutArea />} />
           <Route
             path="/shop/products-details/:productId"
@@ -116,53 +148,95 @@ function App() {
           {/* <Route path="/coming-soon" element={<ComingSoon />} /> */}
           <Route path="/verify-email/" element={<SubscriptionVerify />} />
           <Route path="/user" element={<User />} />
-
         </Route>
 
-        {/* Login System  */}
-
+        {/*************************** Login System ****************************** */}
         <Route path="/admin/login" element={<Login />} />
         <Route path="/admin/register" element={<Register />} />
-        <Route path="/admin/login/forgetPassword" element={<ForgetPassword />} />
-        <Route path="/admin/otp/:token" element={<Otp />} />
+        <Route
+          path="/admin/login/forgetPassword"
+          element={<ForgetPassword />}
+        />
+        /admin
+        <Route path="/admin/otp/:token" element={<Otp expiryTimestamp={time} />} />
 
 
-        {/* Dashboard  */}
 
-        <Route path="/admin" element={
-          // <AdminRoutes>
-          <Dashboard />
-          // </AdminRoutes>
-        }>
+        {/*******************************  KYC Start ***************************** */}
+        <Route path="/kyc/login" element={<KycLogin />} />
+        <Route path="/kyc/sign-up" element={<KycSignUp />} />
+        <Route path="/kyc/profile" element={<KYC />} />
+        {/****************************** KYC Start End ******************************/}
+
+
+
+        {/*************************** Dashboard Start************************** */}
+        <Route
+          path="/admin"
+          element={
+            <AdminRoutes>
+              <Dashboard />
+            </AdminRoutes>
+          }
+        >
           <Route index element={<AdminDashboard />} />
-          <Route path='dashboard' element={<AdminDashboard />} />
-          <Route path='adminUser' element={<Admins />} />
-          <Route path="/admin/adminprofile/:id" element={<DashboardAdminEditProfile />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="adminUser" element={<Admins />} />
+          <Route
+            path="/admin/adminprofile/:id"
+            element={<DashboardAdminEditProfile />}
+          />
 
-          {/* Customers  */}
-          <Route path='customers' element={<Customers />} />
-          <Route path='customers-update' element={<CustomersUpdate />} />
-          <Route path='orders' element={<CustomerOrders />} />
-          <Route path='/admin/orderDetail/:id' element={<SingleOrderDetail />} />
 
-          {/* Product  */}
-          <Route path='products' element={<AllProduct />} />
-          <Route path='create-product' element={<CreateProduct />} />
-          <Route path='/admin/editProduct/:id' element={<UpdateProduct />} />
 
-          {/* Category  */}
-          <Route path='all-category' element={<AllCategory />} />
-          <Route path='add-category' element={< AddCategory />} />
+          {/*************************** Customers  ***************************/}
+          <Route path="customers" element={<Customers />} />
+          <Route path="customers/:customerPerPage" element={<Customers />} />
+          <Route path="customers-update" element={<CustomersUpdate />} />
+          <Route path="orders" element={<CustomerOrders />} />
+          <Route path="administer-orders" element={<AdministerOrders />} />
+          <Route path="orders/:orderPerPage" element={<CustomerOrders />} />
+          <Route
+            path="/admin/orderDetail/:id"
+            element={<SingleOrderDetail />}
+          />
 
-          <Route path='data' element={< Data />} />
-          <Route path='faq-dashboard' element={< FaqDashboard />} />
-          <Route path='help-desk-dashboard' element={< HelpDeskDashborad />} />
-          <Route path='customer-services-dashboard' element={< CustomerServicesDashboard />} />
 
+          {/* *************************   KYC pages    ****************************** */}
+          <Route path="verified" element={<Verified />} />
+          <Route path="non-verified" element={<NonVerified />} />
+          <Route path="pending" element={<Pending />} />
+          <Route path="added-products" element={<AddedProducts />} />
+          <Route path="userDetails/:walletAddress" element={<UserDetails />} />
+
+
+          {/*************************** Product  ***************************/}
+          <Route path="products" element={<AllProduct />} />
+          <Route path="products/:productPerPage" element={<AllProduct />} />
+
+          <Route path="create-product" element={<CreateProduct />} />
+          <Route path="/admin/editProduct/:id" element={<UpdateProduct />} />
+
+          {/*************************** Category  ***************************/}
+          <Route path="all-category" element={<AllCategory />} />
+          <Route path="all-category/:categoryPerPage" element={<AllCategory />} />
+          <Route path="add-category" element={<AddCategory />} />
+
+          <Route path="all-subscribers" element={<Subscribers />} />
+          <Route path="all-subscribers/:emailPerPage" element={<Subscribers />} />
+
+
+
+
+          <Route path="data" element={<Data />} />
+          <Route path="help-desk-dashboard" element={<HelpDeskDashborad />} />
+          <Route
+            path="customer-services-dashboard"
+            element={<CustomerServicesDashboard />}
+          />
         </Route>
 
-
-
+        {/*************************** Dashboard End************************** */}
 
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/products" element={<Products />} />
@@ -186,6 +260,8 @@ function App() {
         > */}
         {/* </CartContext.Provider> */}
         {/* </AuthContext.Provider> */}
+
+
       </Routes>
 
       <Toaster />

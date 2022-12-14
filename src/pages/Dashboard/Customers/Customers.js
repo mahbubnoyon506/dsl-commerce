@@ -1,94 +1,168 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Typography, Modal, Box } from "@mui/material";
 import Table from "react-bootstrap/Table";
 import Search from "../../../Components/Widgets/Search";
-import { Link, useNavigate } from "react-router-dom";
-// import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Pagination from "../../../Components/Pagination/Pagination";
+import { AllCustomers } from "./customerData";
+import axios from "axios";
+import swal from "sweetalert";
 
 const FilterableTable = require("react-filterable-table");
 
-const Customers = ({ page, pages, keyword }) => {
-  const [tableary, setTableary] = useState([
-    {
-      USER_ID: "7C96",
-      WALLET_ADDRESS: "34jdhajhWIIWEFI86klj",
-      EMAIL: "abc@gmail.com",
-      PHONE: "01555543333",
-    },
-    {
-      USER_ID: "7c56",
-      WALLET_ADDRESS: "H1EIAN@di343kniKHUIlai947",
-      EMAIL: "abc.xyz@gmail.com",
-      PHONE: "01235545423",
-    },
-    {
-      USER_ID: "FCCB",
-      WALLET_ADDRESS: "45YTEklhaUYEmoni097kumar",
-      EMAIL: "abc@gmail.com",
-      PHONE: "01555543333",
-    },
-    {
-      USER_ID: "7C96",
-      WALLET_ADDRESS: "34jdhajhWIIWEFI86klj",
-      EMAIL: "abc@gmail.com",
-      PHONE: "01555543333",
-    },
-  ]);
+
+
+const Customers = () => {
+  const [allCustomers, setAllCustomers] = useState([]);
+  const [refetch, setRefetch] = useState(false)
   const navigate = useNavigate();
 
-  const search = (e, searchText) => {
-    e.preventDefault();
-    const newary = [...tableary];
-    console.log(searchText);
-    console.log("search");
-    setTableary(
-      newary.filter(
-        (item) =>
-          item.EMAIL.includes(searchText) ||
-          item.PHONE.includes(searchText) ||
-          item.USER_ID.includes(searchText) ||
-          item.WALLET_ADDRESS.includes(searchText)
+  const fetchAllCustomers = () => {
+    fetch(`https://backend.dslcommerce.com/api/users/all`)
+      .then(res => res.json())
+      .then(data => setAllCustomers(data))
+  }
+
+
+
+  useEffect(() => {
+    fetchAllCustomers()
+  }, []);
+
+
+  //****************************** Pagination Start ******************************/
+  const { customerPerPage } = useParams();
+  const [getPage, setPage] = useState(1);
+  const [show, setShow] = useState(10);
+  const [lastPage, setLastPage] = useState(0);
+  const [sliceCustomers, setSliceCustomers] = useState([]);
+  // console.log(sliceProducts)
+
+  useEffect(() => {
+    const lastPage = Math.ceil(allCustomers?.length / show);
+    setLastPage(lastPage);
+  }, [allCustomers, show]);
+
+  useEffect(() => {
+    if (customerPerPage) {
+      const page = parseInt(customerPerPage);
+      const getSlicingCategory = allCustomers.slice(
+        (page - 1) * show,
+        page * show
+      );
+      console.log("getSlicingCategory");
+      console.log(getSlicingCategory);
+      setSliceCustomers([...getSlicingCategory]);
+      setPage(parseInt(page));
+    } else {
+      const getSlicingProduct = allCustomers.slice(0, show);
+      setSliceCustomers([...getSlicingProduct]);
+    }
+  }, [allCustomers, show, customerPerPage]);
+
+  const pageHandle = (jump) => {
+    navigate(`/admin/customers/${jump}`);
+    setPage(parseInt(jump));
+  };
+  //****************************** Pagination End ******************************/
+
+  //****************************** Delete ******************************/
+  const handleDelete = (walletAddress) => {
+    console.log(walletAddress)
+    const confirmDelete = window.confirm(
+      "Are you sure, you want to delete this Customer?"
+    );
+    if (confirmDelete) {
+      axios
+        .delete(`https://backend.dslcommerce.com/api/users/${walletAddress}`)
+        .then((res) => {
+          if (res.status === 200) {
+            // alert(res.data.message);
+            swal({
+              // title: "Success",
+              text: res.data.message,
+              icon: "success",
+              button: "OK!",
+              className: "modal_class_success",
+            });
+            setAllCustomers(allCustomers.filter((c) => c.walletAddress !== walletAddress));
+          }
+        })
+        .catch((error) => {
+          // alert(error.response.data.message);
+          swal({
+            title: "Attention",
+            text: error.response.data.message,
+            icon: "warning",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+        });
+    }
+  }
+
+  const handleSearch = (e) => {
+
+    const value = e.target.value;
+
+    console.log(value)
+    if (value === "") {
+      fetchAllCustomers()
+    }
+    const newArray = [...allCustomers];
+    setAllCustomers(
+      newArray.filter(
+
+        (customer) =>
+          customer.email?.toLocaleLowerCase().includes(value.toLocaleLowerCase())
       )
     );
-  };
+  }
+
 
   return (
     <>
-      {/* <div className="d-flex justify-content-center align-items-center">
-        <h2 className="text-white">Customers </h2>
-      </div> */}
       <h5 className="text-white text-start text-uppercase pb-1">CUSTOMERS</h5>
 
-      <Search submit={search} />
+      <Search handleSearch={handleSearch} />
 
       <div className="productCard py-2">
         <div className="tableNormal ">
-          <Table className="text-white productDataTable ">
+          <Table responsive="sm" className="text-white productDataTable ">
             <thead>
               <tr>
-                <th className="text-left d-md-block d-none">USER ID</th>
+                {/* <th className="text-left d-md-block d-none">USER ID</th> */}
+                <th className="text-left productHidden">USER ID</th>
                 <th className="text-left productHidden">WALLET ADDRESS</th>
                 <th className="text-left ">EMAIL</th>
-                <th className="text-left productHidden">PHONE</th>
                 <th className="text-left">ACTIONS</th>
               </tr>
             </thead>
             <tbody>
-              {tableary?.map((tabledata) => (
-                <tr className="tableRow" key={tabledata?.USER_ID}>
-                  <td className="text-left text-capitalize">
-                    {tabledata.USER_ID}
+              {sliceCustomers?.map((sliceCustomer) => (
+                <tr className="tableRow" key={sliceCustomer?.USER_ID}>
+                  <td className="text-left text-capitalize productHidden">
+                    {sliceCustomer?.myReferralCode ? (
+                      <div>{sliceCustomer?.myReferralCode}</div>
+                    ) : (
+                      <div>User id</div>
+                    )}
                   </td>
                   <td className="text-left productHidden">
-                    {tabledata.WALLET_ADDRESS}
+                    {sliceCustomer?.walletAddress ? (
+                      <div>{sliceCustomer?.walletAddress}</div>
+                    ) : (
+                      <div>WalletAddress</div>
+                    )}
                   </td>
-                  <td className="text-left text-capitalize ">
-                    {tabledata.EMAIL}
+                  <td className="text-left  ">
+                    {sliceCustomer?.email ? (
+                      <div>{sliceCustomer?.email}</div>
+                    ) : (
+                      <div>Email Address</div>
+                    )}
                   </td>
-                  <td className="text-left text-capitalize productHidden">
-                    {tabledata.PHONE}
-                  </td>
-                  <td className="action">
+                  <td className="action col-sm-12 d-flex">
                     <div className="actionDiv text-left">
                       <button
                         className="viewBtn"
@@ -96,7 +170,10 @@ const Customers = ({ page, pages, keyword }) => {
                       >
                         <i className="fas fa-eye"></i>
                       </button>
-                      <button className="deleteBtn">
+                      <button
+                        className="deleteBtn"
+                        onClick={() => handleDelete(sliceCustomer?.walletAddress)}
+                      >
                         <i className="fas fa-trash"></i>
                       </button>
                     </div>
@@ -106,65 +183,24 @@ const Customers = ({ page, pages, keyword }) => {
             </tbody>
           </Table>
         </div>
+
       </div>
 
-      <div className="row">
-        <div className="col-lg-6 col-md-6">
-          <p>Showing 4 of 4</p>
-        </div>
-        <div className="col-lg-6 col-md-6">
-          <div className="pagination-area float-end">
-            <a href="#" className="prev page-numbers">
-              <i className="flaticon-left-arrow"></i>
-            </a>
-            <a href="#" className="page-numbers current">
-              1
-            </a>
-            {/* <span className="page-numbers">
-              <a href="#" className="page-numbers">
-                2
-              </a>
-            </span>
-            <a href="#" className="page-numbers">
-              3
-            </a>
-            <a href="#" className="page-numbers">
-              4
-            </a> */}
-            <a href="#" className="next page-numbers">
-              <i className="flaticon-right-arrow"></i>
-            </a>
-          </div>
-        </div>
+      {/*********************************** Pagination  Start***********************************/}
+      <div className="">
+        {sliceCustomers?.length ? (
+          <Pagination
+            lastPage={lastPage}
+            page={getPage}
+            pageHandle={pageHandle}
+          />
+        ) : (
+          <></>
+        )}
       </div>
 
-      {/* <div className="pagination-area">
-        <Link to={`/page/${page - 1}`} className="prev page-numbers">
-          <i className="flaticon-left-arrow"></i>
-        </Link>
+      {/*********************************** Pagination  End *************************************/}
 
-        {[...Array(pages).keys()].map((x) => (
-          <div key={x + 1}>
-            <Link
-              to={
-                keyword ? `/search/${keyword}/page/${x + 1}` : `/page/${x + 1}`
-              }
-            >
-              <span
-                className={
-                  x + 1 === page ? "current page-numbers" : "page-numbers"
-                }
-              >
-                {x + 1}
-              </span>
-            </Link>
-          </div>
-        ))}
-
-        <Link to={`/page/${page + 1}`} className="next page-numbers">
-          <i className="flaticon-right-arrow"></i>
-        </Link>
-      </div> */}
     </>
   );
 };

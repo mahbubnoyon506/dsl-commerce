@@ -4,6 +4,8 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
 import { FaUser } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import companyLogo from "../../assets/img/logoDSL.jpeg";
+import companyLogo from "../../assets/img/logoDSL.jpeg";
 
 // import AuthContext from "../../contexts/auth-context";
 
@@ -65,6 +67,9 @@ function Navbar() {
       .then((data) => setGetCategory(data));
   }, []);
 
+
+  console.log("getCategory", getCategory, getCategory.sort())
+
   const toggleHotline = () => {
     setActive(!active);
   };
@@ -110,7 +115,7 @@ function Navbar() {
                     <div className="">
                       <select
                         className="py-3 px-5 text-white "
-                        style={{ cursor: "pointer", background: "#15407F" }}
+                        style={{ cursor: "pointer", background: "#15407F", width: "286px" }}
                         name="category"
                         required
                         onChange={(e) => {
@@ -122,7 +127,7 @@ function Navbar() {
                           }
                         }}
                       >
-                        <option value="">All Category</option>
+                        <option value="">All Catagory</option>
                         {getCategory.map((category, index) => (
                           <option
                             key={index}
@@ -173,7 +178,7 @@ function Navbar() {
                 </li>
                 <li className="nav-item px-1">
                   <NavLink
-                    to={"/about"}
+                    to={"/aboutus"}
                     onClick={() => {
                       window.scrollTo(0, 0);
                       toggleMenu();
@@ -427,7 +432,7 @@ function Navbar() {
                       <ul className="dropdown-menu">
                         <li className="nav-item">
                           <NavLink to="/profile" className="nav-link">
-                            Profile
+                            PROFILE
                           </NavLink>
                         </li>
                         {/* <li className="nav-item">
@@ -450,7 +455,7 @@ function Navbar() {
                               toggleMenu();
                             }}
                           >
-                            Orders
+                            ORDERS
                           </NavLink>
                         </li>
 
@@ -463,17 +468,19 @@ function Navbar() {
                               toggleMenu();
                             }}
                           >
-                            Wishlist
+                            WISHLIST
                           </NavLink>
                         </li>
                         <hr />
 
                         <li className="nav-item">
                           <button
-                            onClick={handleLogout}
+                            // onClick={handleLogout}
                             className="nav-logout-btn"
                           >
-                            Logout
+                            <Link to="/wishlist">
+                              <i className="flaticon-heart"></i>
+                            </Link>
                           </button>
                         </li>
                       </ul>
@@ -507,8 +514,10 @@ function Navbar() {
               onClick={() => {
                 navigate("/");
               }}
-            >
-              DSLCOMMERCE
+            > <span className="pr-2">
+                {/* <img src={companyLogo} alt="dsl logo" style={{ width: '7%' }} /> */}
+              </span>
+              DSLCOMMERCE.COM
             </span>
           </div>
           <div className="dot-menu" onClick={() => toggleHotline()}>

@@ -1,39 +1,40 @@
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-import { useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import swal from "sweetalert";
 import Button from "react-bootstrap/Button";
 import CloseIcon from "@mui/icons-material/Close";
+import { Dialog, IconButton } from "@mui/material";
+import { KycContext } from "../../contexts/KycContext";
 import axios from "axios";
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 300,
   bgcolor: "#1a1a25",
-  // border: '2px solid white',
   boxShadow: 24,
   color: "white",
-  borderRadius: "5px",
-  p: 4,
+  paddingInline: "20px",
+  position: "relative",
+  paddingBlock: "16px",
 };
 
 export default function EmailVerifyModal({
   open,
+  userRefetch,
+  handleVerifyOTP,
   setOpenEmail,
+  updateProfile,
   otpVerify,
   setError,
   handleVerifyEmail,
   minutes,
-  seconds,
-  email,
-  handleVerifyOTP,
   setOtpVerify,
+  seconds,
+  otpCode,
+  setOtpCode,
+  email,
+  setDisableAfterActivation
 }) {
-  const [otpCode, setOtpCode] = useState();
   const [isOtpError, setOtpError] = useState(false);
 
   const handleClose = () => setOpenEmail(false);
@@ -43,105 +44,78 @@ export default function EmailVerifyModal({
   const [againEnable, setAgainEnable] = useState(true);
   const [count, setCount] = useState(2);
   const [disabled, setDisabled] = useState(false);
-  const [otpVerified, setotpVerified] = useState();
-
-  useEffect(() => {
-    console.log("useEffect");
-    if (otpVerify) {
-      setCount(count - 1);
-
-      if (otpVerify == "OTP verified") {
-        swal({
-          text: "Verified.",
-          icon: "success",
-          button: "OK!",
-          className: "modal_class_success",
-        });
-        setOtpError(false);
-        setError(false);
-        handleClose(false);
-        return;
-      }
-      if (count > 0) {
-        let content2 = document.createElement("p");
-        content2.innerHTML =
-          'You have entered wrong OTP. Please try again. You have another <br/><span style="color: #0d6efd;">0' +
-          count +
-          "</span> more tries .";
-        swal({
-          content: content2,
-          icon: "warning",
-          button: "OK!",
-          className: "modal_class_success",
-        });
-      } else {
-        setDisabled(true);
-        swal({
-          text: "You have entered wrong OTP, And you have no more tries left. You can request another OTP again",
-          icon: "warning",
-          button: "OK!",
-          className: "modal_class_success",
-        });
-      }
-      setOtpVerify("");
-      setError("Email OTP Code not matched");
-      setOtpError(true);
-    }
-  }, [otpVerify]);
+  const {
+    kycUser,
+    emailVerified,
+    setEmailVerified,
+    setRefetch,
+    refetch,
+    setisVerifiedProfile,
+    isVerifiedProfile,
+  } = useContext(KycContext);
 
   const hendelSubmit = async (e) => {
-    // setCount(count - 1);
+    setCount(count - 1);
     e.preventDefault();
-    await handleVerifyOTP(otpCode);
 
-    // if (otpVerify == "OTP verified") {
-    //   swal({
-    //     text: "Email Verified.",
-    //     icon: "success",
-    //     button: "OK!",
-    //     className: "modal_class_success",
-    //   });
-    //   setOtpError(false);
-    //   setError(false);
-    //   handleClose(false);
-    //   return;
-    // }
+    await axios
+      .post(`https://backend.dslcommerce.com/api/email/otp/${email}`, {
+        otp: otpCode,
+      })
 
-    // if (otpVerify == otpCode) {
-    //   swal({
-    //     text: "Email Verified.",
-    //     icon: "success",
-    //     button: "OK!",
-    //     className: "modal_class_success",
-    //   });
-    //   setOtpError(false);
-    //   setError(false);
-    //   handleClose(false);
-    //   return;
-    // }
-    // if (count > 0) {
-    //   let content2 = document.createElement("p");
-    //   content2.innerHTML =
-    //     'You have entered wrong OTP. Please try again. You have another <br/><span style="color: #0d6efd;">0' +
-    //     count +
-    //     "</span> more tries .";
-    //   swal({
-    //     content: content2,
-    //     icon: "warning",
-    //     button: "OK!",
-    //     className: "modal_class_success",
-    //   });
-    // } else {
-    //   setDisabled(true);
-    //   swal({
-    //     text: "You have entered wrong OTP, And you have no more tries left. You can request another OTP again",
-    //     icon: "warning",
-    //     button: "OK!",
-    //     className: "modal_class_success",
-    //   });
-    // }
-    // setError("Email OTP Code not matched");
-    // setOtpError(true);
+      .then((res) => {
+        if (res.status === 200) {
+          setOtpVerify(res.data.message);
+          setEmailVerified(true);
+          setRefetch(!refetch);
+          swal({
+            text: res.data.message,
+            icon: "success",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+        }
+        setOpenEmail(false);
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+        setOtpVerify(err.response.data.message);
+
+
+        if (count > 0) {
+          console.log(count);
+          let content2 = document.createElement("p");
+          content2.innerHTML =
+            'You have entered wrong OTP. Please try again. You have another <br/><span style="color: #0d6efd;">0' +
+            count +
+            "</span> more tries .";
+          swal({
+            content: content2,
+            icon: "warning",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+
+          setDisableAfterActivation(false);
+          // setCount(2);
+          setOtpVerify("");
+          // setDisabled(false);
+          setOtpError(false);
+        } else {
+          setDisabled(true);
+          swal({
+            text: "You have entered wrong OTP, And you have no more tries left. You can request another OTP again",
+            icon: "warning",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+        }
+
+        setOtpVerify("");
+        setError("Mobile OTP Code not matched");
+        setOtpError(true);
+      });
+
   };
 
   const verifyAlert = () => {
@@ -154,28 +128,67 @@ export default function EmailVerifyModal({
   };
 
   return (
+    // <div>
+    //   <Modal
+    //     open={open}
+    //     onClose={otpVerify == otpCode && handleClose}
+    //     aria-labelledby="modal-modal-title"
+    //     aria-describedby="modal-modal-description"
+    //     className="text-center"
+    //   >
+    //     <Box sx={style} id="">
+    //       <div className='closeD'>
+    //         <Button className='iconClose' onClick={otpVerify == otpCode ? handleClose : verifyAlert}><CloseIcon className='iconClose' style={{ color: "red" }} /></Button>
+    //       </div>
+    //       <Typography id="modal-modal-title text-light" className='text-light' variant="h6" component="h2">
+    //         Verify Email
+    //       </Typography>
+    //       <Typography id="modal-modal-description text-light" sx={{ mt: 2 }}>
+    //         Check your email for OTP
+    //       </Typography>
+    //       <form className="input-group mt-2 mb-2" >
+    //         <input type="number" className="form-control" placeholder="OTP code" aria-label="OTP code !!" aria-describedby="button-addon2" onChange={e => setOtpCode(e.target.value)} /> <br />
+    //         <button disabled={disabled ? true : false} className="btn btn-outline-secondary bg-danger text-light" onClick={hendelSubmit} type="submit" id="button-addon2">Verify and Update</button>
+    //       </form>
+
+    //       {isOtpError ? <p style={{ color: 'red' }}>You have entered wrong OTP</p> : ''}
+    //       <div className='d-flex' style={{ justifyContent: 'center' }}>
+    //         <button disabled={minutes == 0 && seconds == 0 ? false : true} type='submit' onClick={handleVerifyEmail} className='submit banner-button2 font14 text-decoration-none pb-2' style={minutes == 0 && seconds == 0 ? { backgroundColor: '#007bff' } : { backgroundColor: '#7b7b94' }} id="font14">Resend OTP</button>
+    //       </div>
+    //       <div className='text-center text-white mt-3'>
+    //         <span>{minutes < 10 ? `0${minutes}` : minutes}</span>:<span>{seconds < 10 ? `0${seconds}` : seconds}</span>
+    //       </div>
+    //     </Box>
+    //   </Modal>
+    // </div>
     <div>
-      <Modal
+      {/* <Modal */}
+      <Dialog
         open={open}
-        P
         onClose={otpVerify == otpCode && handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         className="text-center"
+        maxWidth="xs"
+        fullWidth
       >
         <Box sx={style} id="">
-          <div className="closeD text-right">
-            <button
-              style={{
-                color: "white",
-                backgroundColor: "transparent",
-                border: "none",
-              }}
-              onClick={otpVerify == otpCode ? handleClose : verifyAlert}
-            >
-              <CloseIcon className="iconClose" />
-            </button>
-          </div>
+          {/* <div className="closeD text-right"> */}
+          <button
+            style={{
+              color: "white",
+              backgroundColor: "transparent",
+              border: "none",
+              textAlign: "right",
+              position: "absolute",
+              top: "6px",
+              right: "6px",
+            }}
+            onClick={otpVerify == otpCode ? handleClose : verifyAlert}
+          >
+            <CloseIcon className="iconClose" />
+          </button>
+          {/* </div> */}
           <Typography
             id="modal-modal-title text-light"
             className="text-light pt-1"
@@ -185,7 +198,10 @@ export default function EmailVerifyModal({
           >
             Verify Email
           </Typography>
-          <Typography id="modal-modal-description text-light" sx={{ mt: 2 }}>
+          <Typography
+            id="modal-modal-description text-light"
+            sx={{ mt: 2, mb: "14px" }}
+          >
             Check your email for OTP
           </Typography>
           <form className="d-flex input-group mt-2 mb-2">
@@ -195,14 +211,12 @@ export default function EmailVerifyModal({
               placeholder="OTP code"
               aria-label="OTP code !!"
               aria-describedby="button-addon2"
-              onChange={(e) => {
-                const value = e.target.value;
-                setOtpCode(value);
-              }}
+              onChange={(e) => setOtpCode(e.target.value)}
             />
             <button
               disabled={disabled ? true : false}
-              className="btn btn-outline-secondary bg-danger text-light"
+              className={`btn btn-outline-secondary ${otpCode !== "" ? "bg-danger" : "bg-secondary"
+                } text-light`}
               onClick={hendelSubmit}
               type="submit"
               id="button-addon2"
@@ -216,28 +230,25 @@ export default function EmailVerifyModal({
           ) : (
             ""
           )}
-          <div className="d-flex" style={{ justifyContent: "center" }}>
+          <div
+            className="d-flex"
+            style={{ justifyContent: "center", marginTop: "18px" }}
+          >
             <button
               disabled={minutes == 0 && seconds == 0 ? false : true}
               type="submit"
               onClick={handleVerifyEmail}
-              className="submit banner-button2 font14 text-decoration-none p-2"
-              style={
-                minutes == 0 && seconds == 0
-                  ? { backgroundColor: "#007bff", color: "#fff" }
-                  : { backgroundColor: "#7b7b94", color: "#fff" }
-              }
+              className={`submit banner-button2 font14 text-decoration-none text-white p-2 rounded ${minutes == 0 && seconds == 0 ? "bg-primary" : "bg-secondary"
+                }`}
               id="font14"
             >
-              Resend OTP
+              Resend OTP (<span>{minutes}</span>:
+              <span>{seconds < 10 ? `0${seconds}` : seconds}</span>)
             </button>
           </div>
-          <div className="text-center text-white mt-3">
-            <span>{minutes}</span>:
-            <span>{seconds < 10 ? `0${seconds}` : seconds}</span>
-          </div>
         </Box>
-      </Modal>
+      </Dialog>
+      {/* </Modal> */}
     </div>
   );
 }

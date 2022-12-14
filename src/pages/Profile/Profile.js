@@ -1,12 +1,5 @@
-import axios from "axios";
-import React, { useEffect, useState, useContext } from "react";
-import swal from "sweetalert";
+import React, { useContext, useEffect, useState } from "react";
 import "./Profile.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import { SocialIcon } from "react-social-icons";
 import {
   FacebookShareButton,
   FacebookIcon,
@@ -17,19 +10,47 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
+import { Link, useNavigate } from "react-router-dom";
+import swal from "sweetalert";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 import { useTimer } from "react-timer-hook";
+import { DSLCommerceContext } from "../../contexts/DSLCommerceContext";
+import Preloader from "../../Components/Common/Preloader";
 import EmailVerifyModal from "./EmailVerifyModal";
+import ProfileEmailVerify from "./ProfileEmailVerify";
+import { v4 as uuidv4 } from "uuid";
+import { BigNumber, ethers } from "ethers";
 
 const Profile = ({ expiryTimestamp }) => {
-  const { user, metamaskBalance, logOut, setUserRefetch } =
-    useContext(DSLCommerceContext);
+  const {
+    user,
+    signBuyFunction,
+    mintAddressTestnet,
+    payByTestnetBNB,
+    setRequestLoading,
+    logOut,
+    metamaskBalance,
+    metamaskBalanceLoading,
+    userRefetch,
+    setUserRefetch,
+    getBalanceTestnet,
+    mint,
+  } = useContext(DSLCommerceContext);
   const [email1, setEmail] = useState("");
   const [emailVerify, setEmailVerify] = useState(false);
   const [disableAfterActivation, setDisableAfterActivation] = useState(false);
   const [otpVerify, setOtpVerify] = useState();
   const [openEmail, setOpenEmail] = useState(false);
+  const [openQRModal, setOpenQRModal] = useState(false);
+  const [qRFromDatabase, setQRFromDatabase] = useState("");
+  const [qRFromDatabaseGet, setQRFromDatabaseGet] = useState("");
   const [isError, setError] = useState(false);
+  const [refetch, setRefetch] = useState(false);
+  const [otpCode, setOtpCode] = useState();
   const navigate = useNavigate();
+
   // let history = useHistory();
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
@@ -37,27 +58,45 @@ const Profile = ({ expiryTimestamp }) => {
   };
 
   useEffect(() => {
-    if (!user.email || !user.email === "undefined") {
+    window.scrollTo(0, 0);
+    getBalanceTestnet();
+  }, []);
+
+  useEffect(() => {
+    if (metamaskBalanceLoading) {
+      return <Preloader />;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!user.email || !user.enail === "undefined") {
       swal({
         text: "Please update your email before proceeding further. You stand to win attractive prizes monthly.",
         icon: "warning",
         button: "OK",
         dangerMode: true,
-        className: "modal_class_success swal-text swal-footer",
+        className: "modal_class_success",
       });
     }
   }, [user]);
+
+  // console.log(metamaskBalance)
+  // console.log(user?.email, '--user email');
 
   const LogOut = () => {
     logOut();
     navigate("/");
     swal({
-      title: "Success",
+      // title: "Success",
       text: "You have successfully logged out",
       icon: "success",
       button: "OK",
       className: "modal_class_success",
     });
+  };
+
+  const backNavigate = () => {
+    navigate(-1);
   };
 
   // Re-send OTP functionality
@@ -79,7 +118,7 @@ const Profile = ({ expiryTimestamp }) => {
       // setLoading(true);
       setEmailVerify(true);
       await axios
-        .post("https://backendpub.celebrity.sg/api/v1/verifymint/mail", {
+        .post("https://backend.dslcommerce.com/api/users/email", {
           email: email1,
         })
         .then((res) => {
@@ -93,6 +132,7 @@ const Profile = ({ expiryTimestamp }) => {
               button: "OK!",
               className: "modal_class_success",
             });
+            console.log("emtiaz", res.data);
             setOtpVerify(res.data.otp);
 
             setTimeout(() => {
@@ -126,362 +166,431 @@ const Profile = ({ expiryTimestamp }) => {
     }
   };
 
-  const updateProfile = (e) => {
-    e.preventDefault();
+  const updateProfile = async () => {
+    const verifiedEmail = email1;
+    // console.log(verifiedEmail);
 
-    const verifiedEmail = e.target.email.value;
-    // const VerifiedName = e.target.name.value;
-    console.log(verifiedEmail);
+    const otp = { otp: otpCode };
+    // console.log(otp)
 
-    const email = JSON.stringify({ email: verifiedEmail });
-    // const name = JSON.stringify({ name: VerifiedName });
-
-    if (!otpVerify) {
-      return swal({
-        title: "Warning",
-        text: "Before updating please verify your email!",
-        icon: "warning",
-        button: "OK",
-        dangerMode: true,
-        className: "modal_class_success",
+    await axios
+      .post(
+        `https://backend.dslcommerce.com/api/users/otp/${verifiedEmail}`,
+        otp,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("tokendslcommerce")}`,
+          },
+        }
+      )
+      .then((res) => {
+        // swal({
+        //   title: "Success",
+        //   text: "Successfully updated",
+        //   icon: "success",
+        //   button: "OK!",
+        //   className: "modal_class_success",
+        // });
+        setUserRefetch(!userRefetch);
+        // setUserRefetch(true);
+      })
+      .catch((err) => {
+        swal({
+          title: "Attention",
+          text: `${err.response.data.message}`,
+          icon: "warning",
+          button: "OK!",
+          className: "modal_class_success",
+        });
       });
-    } else {
-      axios
-        .put(
-          `https://backendpub.celebrity.sg/api/v1/user/update/${user?._id}`,
-          email,
-          {
-            headers: {
-              "content-type": "application/json",
-            },
-          }
-        )
-        .then((res) => {
-          if (res.status === 200) {
-            swal({
-              title: "Success",
-              text: "Profile updated successfully",
-              icon: "success",
-              button: "OK!",
-              className: "modal_class_success",
+  };
+
+  const paymentCrypto = async () => {
+    console.log("clicked........");
+    setRequestLoading(true);
+    const generateId = Math.floor(Math.random() * 1000000000000);
+    const data = new FormData();
+    data.append("id", generateId.toString());
+    data.append("price", "0");
+    data.append("tokenAddress", "0x0000000000000000000000000000000000000000");
+    data.append("nonce", uuidv4());
+    data.append("refAddress", "0x0000000000000000000000000000000000000000");
+    data.append("walletAddress", user?.walletAddress);
+    data.append("image", "https://i.ibb.co/gV0CHbj/nftdemo.jpg");
+
+    await axios
+      .post("https://backend.dslcommerce.com/api/v1/mint/uri-json-nft", data, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("tokendslcommerce")}`,
+        },
+      })
+      .then(async (res) => {
+        let Obj = {};
+        if (res.status === 200) {
+          const data1 = await signBuyFunction(
+            generateId.toString(),
+            ethers.utils.parseEther("0"),
+            "0x0000000000000000000000000000000000000000",
+            "0x0000000000000000000000000000000000000000",
+            res.data.uri
+          );
+
+          Obj = await payByTestnetBNB(data1);
+
+          const data2 = {
+            id: generateId.toString(),
+            price: "0",
+            walletAddress: user?.walletAddress,
+            tokenAddress: "0x0000000000000000000000000000000000000000",
+          };
+
+          await axios
+            .post(
+              "https://backend.dslcommerce.com/api/v1/mint/save-nft",
+              data2,
+              {}
+            )
+            .then((res) => {
+              if (res.status === 200) {
+                setRequestLoading(false);
+                const wrapper = document.createElement("div");
+                wrapper.innerHTML = `
+                <a href=${Obj.mint_hash} target="_any" className="link_hash">${Obj.mint_hash}</a>
+                <br/>
+                <p>Use the following information to import the NFT to your wallet</p>
+                <p className="address">Contract Address: <br/> ${mintAddressTestnet}</p>
+                <p>Token ID: ${Obj.ID}</p>
+                `;
+                swal({
+                  title: "Successfully claimed",
+                  content: wrapper,
+                  icon: "success",
+                  button: true,
+                  className: "modal_class_success",
+                });
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              setRequestLoading(false);
+              const wrapper = document.createElement("div");
+              wrapper.innerHTML = `<a href=${Obj.mint_hash} target="_any" className="link_hash text-primary">${Obj.mint_hash}</a> <br/> <p className="success text-light">Your minted has been successful but error in while saving data.</p>`;
+              swal({
+                title: "Warning",
+                content: wrapper,
+                icon: "warning",
+                button: "OK",
+                className: "modal_class_success",
+              });
             });
-            setUserRefetch(true);
-          }
-          setUserRefetch(true);
-        })
-        .catch((err) => {
-          swal({
-            title: "Attention",
-            text: `${err.response.data.message}`,
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setRequestLoading(false);
+        if (err.code === 4001) {
+          return swal({
+            title: "Failed",
+            text: "Minting Failed!",
             icon: "warning",
-            button: "OK!",
+            button: "OK",
+            dangerMode: true,
             className: "modal_class_success",
           });
+        }
+        return swal({
+          title: "Attention",
+          text: "Something went wrong. Please try again later.",
+          icon: "warning",
+          button: "OK",
+          dangerMode: true,
+          className: "modal_class_success",
         });
-    }
+      });
   };
 
   return (
-    <div className="container py-3 profileContainer">
-      <div className="container"></div>
-      <h3 className="text-start text-dark-50 profileTitles mb-3">Profile</h3>
-
-      <form
-        className="mb-5 shadow-lg rounded-lg pt-3 pb-5 px-4 p-md-5 align-items-center"
-        onSubmit={updateProfile}
-      >
-        <div className="text-center">
-          <p>
-            <a style={{ color: "#15407f" }}>
-              <strong>Click here</strong>
-            </a>{" "}
-            for your SFF 2022 Wheel of Fortune QR Code
-          </p>
-        </div>
-
-        <div className="row" style={{ rowGap: "10px" }}>
-          <div className="col-md-6 px-3">
-            <div className="mb-1">
-              <label htmlFor="walletAddress" className="text-dark d-flex pt-2">
-                Wallet Address
-              </label>
-              <div className="d-flex">
-                <input
-                  type="text"
-                  id="walletAddress"
-                  name="walletAddress"
-                  value={user.walletAddress}
-                  className="form-control profileInput text-dark"
-                  disabled
-                />
-                <CopyToClipboard>
-                  <button
-                    className="copyBtn"
-                    style={{ backgroundColor: "#15407f" }}
-                  >
-                    <ContentCopyIcon />
-                  </button>
-                </CopyToClipboard>
-              </div>
-            </div>
-
-            <div className="mb-1">
-              <label htmlFor="email" className="text-dark d-flex pb-1 pt-2">
-                Email Address
-              </label>
-              <div className="d-flex">
-                <input
-                  style={{ textTransform: "lowercase" }}
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="Email Address"
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    setEmailVerify(false);
-                  }}
-                  value={user.email ? user.email : email1}
-                  disabled={user.email ? true : false}
-                  required
-                  className="form-control profileInput"
-                />
-                {!user.email && (
-                  <button
-                    type="button"
-                    onClick={handleVerifyEmail}
-                    disabled={
-                      email1.length === 0 || disableAfterActivation
-                        ? true
-                        : false
-                    }
-                    style={{ backgroundColor: "#15407f", color: "#fff" }}
-                    className={
-                      (email1.length === 0 || disableAfterActivation) &&
-                      "border bg-secondary text-white"
-                    }
-                  >
-                    {" "}
-                    Verify
-                  </button>
-                )}
-              </div>
-            </div>
-
-            <div className="mb-1">
-              <label htmlFor="USDSC" className="text-dark d-flex pb-1 pt-2">
-                USDSC in wallet
-              </label>
-              <input
-                type="number"
-                id="USDSC"
-                name="USDSC"
-                className="form-control profileInput"
-                value={
-                  metamaskBalance?.usdsc
-                    ? parseFloat(metamaskBalance?.usdsc).toFixed(4)
-                    : "0.0000"
-                }
-              />
-            </div>
-            <div className="mb-1">
-              <label htmlFor="BNB" className="text-dark d-flex pb-1 pt-2">
-                BNB in wallet
-              </label>
-              <input
-                type="number"
-                id="BNB"
-                name="BNB"
-                value={
-                  metamaskBalance?.bnb
-                    ? parseFloat(metamaskBalance?.bnb).toFixed(4)
-                    : "0.0000"
-                }
-                className="form-control profileInput"
-              />
-            </div>
-            <div className="mb-1">
-              <label htmlFor="DSL" className="text-dark d-flex pb-1 pt-2">
-                DSL in wallet
-              </label>
-              <input
-                type="number"
-                id="DSL"
-                name="DSL"
-                value={
-                  metamaskBalance?.dsl
-                    ? parseFloat(metamaskBalance?.dsl).toFixed(4)
-                    : "0.0000"
-                }
-                className="form-control profileInput"
-              />
-            </div>
-            <div className="mb-1">
-              <label htmlFor="S39" className="text-dark d-flex pb-1 pt-2">
-                S39 in wallet
-              </label>
-              <input
-                type="number"
-                id="S39"
-                name="S39"
-                value={
-                  metamaskBalance?.s39
-                    ? parseFloat(metamaskBalance?.s39).toFixed(4)
-                    : "0.0000"
-                }
-                className="form-control profileInput"
-              />
-            </div>
-            <div className="mb-1">
-              <label htmlFor="FINQUEST" className="text-dark d-flex pb-1 pt-2">
-                FINQUEST in wallet
-              </label>
-              <input
-                type="number"
-                id="FINQUEST"
-                name="FINQUEST"
-                value={
-                  metamaskBalance?.Quest
-                    ? parseFloat(metamaskBalance?.Quest).toFixed(4)
-                    : "0.0000"
-                }
-                className="form-control profileInput"
-              />
-            </div>
+    <>
+      <div className="handleTheProfileBody ">
+        <div className="container pt-5  ">
+          <div className="position-change text-info ms-md-2 ">
+            <h3 className="mb-4 ms-4 ms-md-5  profileTitile">Profile</h3>
           </div>
-          <div className="col-md-6 px-3">
-            <div className="mb-1">
-              <label htmlFor="Mobile" className="text-dark d-flex pb-1 pt-2">
-                Mobile
-              </label>
-              <div className="d-flex">
-                <input
-                  type="tel"
-                  id="Mobile"
-                  name="Mobile"
-                  placeholder="Enter Mobile Number"
-                  className="form-control profileInput"
-                />
+
+          <div className="shadow-lg rounded-lg py-5 px-4 p-md-5 align-items-center">
+            {/* <p className='text-center'><span onClick={profileClickHere} className='text-primary' style={{ textDecoration: 'underline', cursor: 'pointer' }}>Click here</span> for your SFF 2022 Wheel of Fortune QR Code</p> */}
+            {/* <p className='text-center '><span className='text-primary ' style={{textDecoration: 'underline', cursor: 'pointer'}}>Click here</span> for your SFF 2022 Wheel of Fortune QR Code</p> */}
+            <div className="row" style={{ rowGap: "10px" }}>
+              <div className="col-md-6 px-4">
+                <div className="mb-2">
+                  <label htmlFor="walletAddress">Wallet Address</label>
+                  <div className="d-flex">
+                    <input
+                      type="text"
+                      id="walletAddress"
+                      name="walletAddress"
+                      value={user?.walletAddress}
+                      className="form-control bg-transparent  rounded-0 rounded-start"
+                      disabled
+                    />
+                    <button
+                      type="button"
+                      onClick={() => copyToClipboard(user?.walletAddress)}
+                      className="border bg-success rounded-0 rounded-end"
+                    >
+                      <FontAwesomeIcon icon={faCopy} className="text-white" />
+                    </button>
+                  </div>
+                </div>
+                <div className="mb-2">
+                  <label htmlFor="walletAddress">Email Address</label>
+                  <div className="d-flex">
+                    <input
+                      style={
+                        user.email
+                          ? { textTransform: "unset" }
+                          : {
+                              textTransform: "unset",
+                              borderTopRightRadius: "inherit",
+                              borderBottomRightRadius: "inherit",
+                            }
+                      }
+                      type="email"
+                      name="email"
+                      className="form-control "
+                      placeholder="Email Address"
+                      onChange={(e) => {
+                        setEmail(e.target.value.toLocaleLowerCase());
+                        setEmailVerify(false);
+                      }}
+                      value={user.email ? user.email : email1}
+                      disabled={user.email ? true : false}
+                      required
+                    />
+                    {!user.email && (
+                      <button
+                        type="button"
+                        onClick={handleVerifyEmail}
+                        disabled={
+                          email1.length === 0 || disableAfterActivation
+                            ? true
+                            : false
+                        }
+                        className={
+                          email1.length === 0 || disableAfterActivation
+                            ? "border bg-secondary  rounded-0 text-white rounded-end"
+                            : "border bg-success text-white rounded-0 rounded-end"
+                        }
+                      >
+                        Verify
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <div className="mb-2">
+                  <label htmlFor="bnb">BNB in wallet</label>
+                  <input
+                    type="text"
+                    id="bnb"
+                    name="bnb"
+                    value={
+                      metamaskBalance?.bnb
+                        ? parseFloat(metamaskBalance?.bnb).toFixed(4)
+                        : "0.0000"
+                    }
+                    className="form-control bg-transparent "
+                    disabled
+                  />
+                </div>
+                <div className="mb-2">
+                  <label htmlFor="usdsc">USDSC in wallet</label>
+                  <input
+                    type="text"
+                    id="usdsc"
+                    name="usdsc"
+                    value={
+                      metamaskBalance?.usdsc
+                        ? parseFloat(metamaskBalance?.usdsc).toFixed(4)
+                        : "0.0000"
+                    }
+                    className="form-control bg-transparent "
+                    disabled
+                  />
+                </div>
+
+                <div className="mb-2">
+                  <label htmlFor="bnb">DSL in wallet</label>
+                  <input
+                    type="text"
+                    id="bnb"
+                    name="bnb"
+                    value={
+                      metamaskBalance?.dsl
+                        ? parseFloat(metamaskBalance?.dsl).toFixed(4)
+                        : "0.0000"
+                    }
+                    className="form-control bg-transparent "
+                    disabled
+                  />
+                </div>
+                <div className="mb-2">
+                  <label htmlFor="bnb">S39 in wallet</label>
+                  <input
+                    type="text"
+                    id="bnb"
+                    name="bnb"
+                    value={
+                      metamaskBalance?.s39
+                        ? parseFloat(metamaskBalance?.s39).toFixed(4)
+                        : "0.0000"
+                    }
+                    className="form-control bg-transparent "
+                    disabled
+                  />
+                </div>
+                <div className="mb-2">
+                  <label htmlFor="bnb">FINQUEST in wallet</label>
+                  <input
+                    type="text"
+                    id="bnb"
+                    name="bnb"
+                    value={
+                      metamaskBalance?.Quest
+                        ? parseFloat(metamaskBalance?.Quest).toFixed(4)
+                        : "0.0000"
+                    }
+                    className="form-control bg-transparent "
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="col-md-6 px-4">
+                <div className="mb-2">
+                  <label htmlFor="quantity-input">Claim Membership NFT</label>
+                  <div className="d-flex">
+                    {/* <input type="text" id='quantity-input' name="memberShipNft" className='form-control bg-transparent  rounded-0 rounded-start' value={1} disabled /> */}
+                    <button
+                      type="button"
+                      className="btn btn-success  text-light rounded-0 rounded-end text-uppercase"
+                      onClick={paymentCrypto}
+                    >
+                      Claim Free Now
+                    </button>
+                  </div>
+                </div>
+                <div className="mb-2">
+                  <label htmlFor="referralID">Referral ID</label>
+                  <div className="d-flex">
+                    <input
+                      type="text"
+                      id="referralID"
+                      name="referralID"
+                      value={user?.myReferralCode}
+                      className="form-control bg-transparent  rounded-0 rounded-start"
+                      disabled
+                    />
+                    <button
+                      type="button"
+                      onClick={() => copyToClipboard(user?.myReferralCode)}
+                      className="border bg-success rounded-0 rounded-end"
+                    >
+                      <FontAwesomeIcon icon={faCopy} className="text-white" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="mb-2">
+                  <label htmlFor="referralID">Affiliate Link</label>
+                  <div className="d-flex">
+                    <input
+                      type="text"
+                      id="referralID"
+                      name="referralID"
+                      value={
+                        window.location.origin + "/" + user?.myReferralCode
+                      }
+                      className="form-control bg-transparent  rounded-0 rounded-start"
+                      disabled
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        copyToClipboard(
+                          window.location.origin + "/" + user?.myReferralCode
+                        )
+                      }
+                      className="border bg-success rounded-0 rounded-end"
+                    >
+                      <FontAwesomeIcon icon={faCopy} className="text-white" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="mb-2 social-div">
+                  <div>
+                    <label className="">Share Affiliate Link</label>
+                    <div className="d-flex gap-2 mt-1">
+                      <TwitterShareButton
+                        url={
+                          window.location.origin + "/" + user?.myReferralCode
+                        }
+                        title={`Get 10% discount at dslcommerce.com when you use my code.`}
+                      >
+                        <TwitterIcon size={40} round={true} />
+                      </TwitterShareButton>
+                      <LinkedinShareButton
+                        url={
+                          window.location.origin + "/" + user?.myReferralCode
+                        }
+                        summary={``}
+                        title={`Get 10% discount at dslcommerce.com when you use my code.`}
+                      >
+                        <LinkedinIcon size={40} round={true} />
+                      </LinkedinShareButton>
+                      <WhatsappShareButton
+                        url={
+                          window.location.origin + "/" + user?.myReferralCode
+                        }
+                        title={`Get 10% discount at dslcommerce.com when you use my code.`}
+                      >
+                        <WhatsappIcon size={40} round={true} />
+                      </WhatsappShareButton>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-start">
+                  Share your affiliate code to earn 10% of our sales which comes
+                  from you. Your friend enjoy another 10% too.
+                </p>
+              </div>
+              <div className="col-12 col-md-6 text-center d-flex justify-content-start align-items-center ms-0 button-margin">
+                {/* <button className='btn btn-success  me-2' type='submit' disabled={(user.email) ? true : false}>Update</button> */}
+                <Link to={"/"}>
+                  <button className="btn btn-danger me-2">Cancel</button>
+                </Link>
                 <button
-                  style={{ backgroundColor: "#15407f", color: "#fff" }}
-                  className="border bg-secondary text-white"
+                  className="btn btn-warning text-light mx-2"
                   type="button"
+                  onClick={LogOut}
                 >
-                  Verify
+                  Logout
                 </button>
               </div>
-            </div>
+              {/* <div className='col-4 text-center '>
 
-            <div className="mb-1">
-              <label htmlFor="ReferralID" className="text-dark d-flex pt-2">
-                Referral ID
-              </label>
-              <div className="d-flex">
-                <input
-                  type="text"
-                  id="ReferralID"
-                  name="ReferralID"
-                  value={user?.myReferralCode}
-                  className="form-control profileInput text-dark"
-                  disabled
-                />
-                <CopyToClipboard>
-                  <button
-                    className="copyBtn"
-                    style={{ backgroundColor: "#15407f" }}
-                  >
-                    <ContentCopyIcon />
-                  </button>
-                </CopyToClipboard>
-              </div>
+              
             </div>
-            <div className="mb-1">
-              <label htmlFor="AffiliateLink" className="text-dark d-flex pt-2">
-                Affiliate Link
-              </label>
-              <div className="d-flex">
-                <input
-                  type="text"
-                  id="AffiliateLink"
-                  name="AffiliateLink"
-                  value={window.location.origin + "/" + user?.myReferralCode}
-                  className="form-control profileInput text-dark"
-                  disabled
-                />
-                <CopyToClipboard>
-                  <button
-                    className="copyBtn"
-                    style={{ backgroundColor: "#15407f" }}
-                  >
-                    <ContentCopyIcon />
-                  </button>
-                </CopyToClipboard>
-              </div>
-            </div>
-            <div className="mb-1">
-              <label htmlFor="AffiliateLink" className="text-dark d-flex pt-2">
-                Share Affiliate Link
-              </label>
-              <div>
-                <TwitterShareButton
-                  url={window.location.origin + "/" + user?.myReferralCode}
-                  title={`Get 10% discount at dslcommerce.com when you use my code.`}
-                >
-                  <TwitterIcon size={40} round={true} />
-                </TwitterShareButton>
-                <LinkedinShareButton
-                  url={window.location.origin + "/" + user?.myReferralCode}
-                  summary={``}
-                  title={`Get 10% discount at dslcommerce.com when you use my code.`}
-                >
-                  <LinkedinIcon size={40} round={true} />
-                </LinkedinShareButton>
-                <WhatsappShareButton
-                  url={window.location.origin + "/" + user?.myReferralCode}
-                  title={`Get 10% discount at dslcommerce.com when you use my code.`}
-                >
-                  <WhatsappIcon size={40} round={true} />
-                </WhatsappShareButton>
-              </div>
-              <p className="text-dark">
-                Share your affiliate code to earn 10% of our sales which comes
-                from you. Your friend enjoy another 10% too.
-              </p>
-
-              <div className="d-flex"></div>
+            <div className='col-4 text-center'>
+             
+            </div> */}
             </div>
           </div>
         </div>
-        <div className="row" style={{ rowGap: "10px" }}>
-          <div className="mt-4 d-flex justify-content-center">
-            <Link
-              to={-1}
-              underline="none"
-              style={{ backgroundColor: "#15407f" }}
-              className="profileBtn fw-bold text-decoration-none"
-            >
-              Cancel
-            </Link>
-            <button
-              style={{ backgroundColor: "#15407f" }}
-              type="submit"
-              className="profileBtn fw-bold"
-              disabled={user.email ? true : false}
-            >
-              Update
-            </button>
-            <button
-              style={{ backgroundColor: "#15407f" }}
-              className="profileBtn fw-bold"
-              type="button"
-              onClick={LogOut}
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </form>
+      </div>
 
-      <EmailVerifyModal
+      <ProfileEmailVerify
+        userRefetch={userRefetch}
+        updateProfile={updateProfile}
         handleVerifyEmail={handleVerifyEmail}
         minutes={minutes}
         seconds={seconds}
@@ -489,8 +598,10 @@ const Profile = ({ expiryTimestamp }) => {
         setOpenEmail={setOpenEmail}
         otpVerify={otpVerify}
         setError={setError}
+        otpCode={otpCode}
+        setOtpCode={setOtpCode}
       />
-    </div>
+    </>
   );
 };
 

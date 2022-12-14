@@ -25,7 +25,7 @@ function Support({ paddingClass = null }) {
                 </div>
 
                 <div className="support-content">
-                  <h3>30 Days Money Returns</h3>
+                  <h3>30 Days Guarantee</h3>
                 </div>
               </div>
             </div>
@@ -37,7 +37,7 @@ function Support({ paddingClass = null }) {
                 </div>
 
                 <div className="support-content">
-                  <h3>100% Secure Payment</h3>
+                  <h3>100% Blockchain Payment</h3>
                 </div>
               </div>
             </div>
