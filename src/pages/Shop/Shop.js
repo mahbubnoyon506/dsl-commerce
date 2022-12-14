@@ -31,7 +31,7 @@ function Shop({ page = 1, query = undefined, keyword = undefined }) {
       walletAddress: user?.walletAddress,
       productId: product?._id,
       price: product?.price,
-      product_images: product?.product_images,
+      images: product?.images,
       productName: product?.productName,
       count: 1,
     };

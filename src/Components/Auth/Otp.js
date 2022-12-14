@@ -120,10 +120,9 @@ const Otp = ({ expiryTimestamp }) => {
                 style={{
                   width: "80px",
                   marginTop: "-20px",
-                  borderRadius: "100%",
                 }}
                 src="https://testnet.grighund.net/static/media/logo192.ea779dfe5e580c22a76f.png"
-                className="handleLogoLogin rounded-pill"
+                className="handleLogoLogin"
                 alt="logo"
               />
               <p className="text-dark mt-3 pb-3">

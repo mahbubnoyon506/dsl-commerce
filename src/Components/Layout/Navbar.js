@@ -67,8 +67,7 @@ function Navbar() {
       .then((data) => setGetCategory(data));
   }, []);
 
-
-  console.log("getCategory", getCategory, getCategory.sort())
+  // console.log("getCategory", getCategory, getCategory.sort())
 
   const toggleHotline = () => {
     setActive(!active);
@@ -115,7 +114,11 @@ function Navbar() {
                     <div className="">
                       <select
                         className="py-3 px-5 text-white "
-                        style={{ cursor: "pointer", background: "#15407F", width: "286px" }}
+                        style={{
+                          cursor: "pointer",
+                          background: "#15407F",
+                          width: "286px",
+                        }}
                         name="category"
                         required
                         onChange={(e) => {
@@ -416,6 +419,7 @@ function Navbar() {
                   {user.walletAddress && (
                     <li className="nav-item">
                       <NavLink
+                        style={{ paddingLeft: "25px" }}
                         to="/profile"
                         // isActive={() => shopRoutes.includes(pathname)}
                         className="nav-link"
@@ -514,7 +518,9 @@ function Navbar() {
               onClick={() => {
                 navigate("/");
               }}
-            > <span className="pr-2">
+            >
+              {" "}
+              <span className="pr-2">
                 {/* <img src={companyLogo} alt="dsl logo" style={{ width: '7%' }} /> */}
               </span>
               DSLCOMMERCE.COM

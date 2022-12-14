@@ -36,7 +36,7 @@ function WishListArea() {
       walletAddress: user?.walletAddress,
       productId: product?._id,
       price: product?.price,
-      product_images: product?.product_images,
+      product_images: product?.images[0],
       productName: product?.productName,
       count: 1,
     };
@@ -73,7 +73,7 @@ function WishListArea() {
 
                     <td className="product-thumbnail">
                       <Link to={`/shop/products-details/${wishlist?._id}`}>
-                        <img src={wishlist?.product_images} alt="item" />
+                        <img src={wishlist?.images[0]} alt="item" />
                       </Link>
                     </td>
 
