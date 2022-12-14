@@ -33,7 +33,7 @@ const KYC = () => {
   } = useContext(KycContext);
   const { user, openWalletModal } = useContext(DSLCommerceContext);
 
-  console.log(photoIddata, addressData);
+  console.log(photoIddata, addressData, kycUser);
   // console.log(kycUser)
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const KYC = () => {
         });
     };
     getPhotoIddata();
-  }, []);
+  }, [kycUser?.walletAddress]);
 
   useEffect(() => {
     const getAddressData = async () => {
@@ -71,7 +71,7 @@ const KYC = () => {
         });
     };
     getAddressData();
-  }, []);
+  }, [kycUser?.walletAddress]);
 
   useEffect(() => {
     const getProfile = async () => {
@@ -90,7 +90,10 @@ const KYC = () => {
         });
     };
     getProfile();
-  }, []);
+  }, [kycUser?.walletAddress]);
+
+  const isPhotoidPosted = localStorage.getItem("photoIdPosted");
+  const isaddressPosted = localStorage.getItem("addressPosted");
 
   return (
     <main
@@ -164,21 +167,21 @@ const KYC = () => {
 
             <Tab>
               PHOTO ID
-              {isVerifiedPhotId == false &&
+              {isPhotoidPosted != true && isVerifiedPhotId == false &&
                 (photoIddata?.isVerified == undefined ||
-                  photoIddata?.isVerified == false) && (
+                  photoIddata?.isVerified == false) && photoIddata?.isPending == true && (
                   <CloseIcon
                     className="text-danger ms-1"
                     style={{ fontSize: "18px" }}
                   />
                 )}
-              {isVerifiedPhotId == true && photoIddata?.isVerified == false && (
+              {photoIddata?.isVerified == false && photoIddata?.isPending == true && (
                 <ErrorIcon
                   className="text-warning ms-1"
                   style={{ fontSize: "18px" }}
                 />
               )}
-              {photoIddata?.isVerified == true && (
+              {photoIddata?.isVerified == true && photoIddata?.isPending == false && (
                 <DoneIcon
                   className="text-success ms-1"
                   style={{ fontSize: "18px" }}
@@ -193,7 +196,7 @@ const KYC = () => {
 
             <Tab>
               ADDRESS PROOF
-              {isVerifiedAddress == false &&
+              {isaddressPosted != true && isVerifiedAddress == false &&
                 (addressData?.isVerified == undefined ||
                   addressData?.isVerified == false) && (
                   <CloseIcon
@@ -201,14 +204,14 @@ const KYC = () => {
                     style={{ fontSize: "18px" }}
                   />
                 )}
-              {isVerifiedAddress == true &&
+              {addressData?.isPending == true &&
                 addressData?.isVerified == false && (
                   <ErrorIcon
                     className="text-warning ms-1"
                     style={{ fontSize: "18px" }}
                   />
                 )}
-              {addressData?.isVerified == true && (
+              {addressData?.isVerified == true && addressData?.isPending == false && (
                 <DoneIcon
                   className="text-success ms-1"
                   style={{ fontSize: "18px" }}
