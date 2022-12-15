@@ -95,8 +95,7 @@ const Orders = () => {
                           </span>
                         </td>
                         {
-                          open &&
-                          <OrderDetails open={open} setOpen={setOpen} order={order}></OrderDetails>
+                          open && <OrderDetails open={open} setOpen={setOpen} order={order}></OrderDetails>
                         }
                       </tr>
                     )

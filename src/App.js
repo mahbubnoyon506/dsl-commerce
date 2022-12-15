@@ -78,6 +78,7 @@ import KycSignUp from "./Components/KYCArea/KycAccount/KycSignUp/KycSignUp";
 import KycForgetPassword from "./Components/Auth/KycForgetPassword";
 import KycResetPassword from "./Components/Auth/KycResetPassword";
 import AdminResetPassword from "./Components/Auth/AdminResetPassword";
+import CustomerDetails from "./pages/Dashboard/Customers/CustomerDetails";
 
 export const ProductContext = createContext();
 function App() {
@@ -203,6 +204,7 @@ function App() {
           <Route path="customers" element={<Customers />} />
           <Route path="customers/:customerPerPage" element={<Customers />} />
           <Route path="customers-update" element={<CustomersUpdate />} />
+          <Route path="customers-details/:walletaddress" element={<CustomerDetails />} />
           <Route path="orders" element={<CustomerOrders />} />
           <Route path="administer-orders" element={<AdministerOrders />} />
           <Route path="orders/:orderPerPage" element={<CustomerOrders />} />

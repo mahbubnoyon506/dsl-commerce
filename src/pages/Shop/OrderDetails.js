@@ -8,7 +8,7 @@ const OrderDetails = ({ order, open, setOpen }) => {
     const handleClose = () => {
         setOpen(false);
     };
-    console.log(order.orderItems[0].productName)
+    
     return (
         <div>
             <Dialog

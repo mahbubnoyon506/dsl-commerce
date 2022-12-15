@@ -165,12 +165,12 @@ const Customers = () => {
                   </td>
                   <td className="action col-sm-12 d-flex">
                     <div className="actionDiv text-left">
-                      <button
+                      <Link to={`/admin/customers-details/${sliceCustomer.walletAddress}`}
                         className="viewBtn"
-                        onClick={() => navigate("/admin/customers-update")}
+                        // onClick={() => navigate("/admin/customers-update")}
                       >
-                        <i className="fas fa-eye"></i>
-                      </button>
+                        <i className="fas fa-eye text-dark"></i>
+                      </Link>
                       <button
                         className="deleteBtn"
                         onClick={() => handleDelete(sliceCustomer?.walletAddress)}
