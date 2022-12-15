@@ -207,7 +207,7 @@ function App() {
           <Route path="administer-orders" element={<AdministerOrders />} />
           <Route path="orders/:orderPerPage" element={<CustomerOrders />} />
           <Route
-            path="/admin/orderDetail/:id"
+            path="/admin/orderDetail/:orderId"
             element={<SingleOrderDetail />}
           />
 

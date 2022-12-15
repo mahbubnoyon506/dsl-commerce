@@ -281,7 +281,7 @@ const CustomerOrders = () => {
                       </td>
                       <td className="action d-flex justify-content-left">
                         <div className="actionDiv text-left">
-                          <Link to={`/admin/orderDetail/${order?._id}`}>
+                          <Link to={`/admin/orderDetail/${order?.orderId}`}>
                             <button className="editBtn">
                               <GrView />
                             </button>
