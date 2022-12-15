@@ -47,12 +47,14 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
   };
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (id) => {
+    // console.log(id)
     axios
       .get(
-        `https://backend.dslcommerce.com/api/order/data/${user?.walletAddress}`
+        // `https://backend.dslcommerce.com/api/order/data/${user?.walletAddress}`
+        `https://backend.dslcommerce.com/api/order/data/get/${id}`
       )
-      .then((res) => setTracking(res.data.result))
+      .then((res) => setTracking(res.data))
       .catch((err) => {
         console.log(err);
       });
@@ -139,9 +141,11 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
         walletAddress: user?.walletAddress,
       };
 
-      handleClickOpen();
+      handleClickOpen(orderId);
     }
   };
+
+  console.log(tracking)
 
   return (
     <section className="track-order-area ptb-50">
@@ -246,34 +250,42 @@ const TrackingOrderArea = ({ expiryTimestamp }) => {
           <DialogTitle id="alert-dialog-title">{"Your Order"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              {tracking.map((data) => {
-                return (
-                  <>
-                    <div className="row w-100">
-                      <div className="col-12 col-lg-6">
-                        {/* {console.log(data)} */}
-                        {data.orderItems[0]?.images?.slice(0, 1)?.map((img) => (
-                          <img src={img} alt="img" />
-                        ))}
+              {tracking.length === 0 ? (
+                <>
+                  <p>No Order Found . Please check your email for order details .</p>
+                </>
+              ) : (
+                <>
+                  {tracking.map((data) => {
+                    return (
+                      <>
+                        <div className="row w-100">
+                          <div className="col-12 col-lg-6">
+                            {/* {console.log(data)} */}
+                            {data.orderItems[0]?.images?.slice(0, 1)?.map((img) => (
+                              <img src={img} alt="img" />
+                            ))}
 
-                      </div>
-                      <div className="col-12 col-lg-6">
-                        <p>Name: {data?.name}</p>
-                        <p>Product name: {data?.orderItems[0].productName}</p>
-                        <p>
-                          Status:{" "}
-                          {data?.pendingStatus === true && (<>Pending</>)}
-                          {data?.processingStatus === true && (<>Processing</>)}
-                          {data?.deliveredStatus === true && (<>Delivered</>)}
-                        </p>
-                        <p>Order Date: {data?.date.slice(0, 10)}</p>
-                        <p> Order Id: {data.orderId}</p>
-                        <p>Email:{data.email} </p>
-                      </div>
-                    </div>
-                  </>
-                );
-              })}
+                          </div>
+                          <div className="col-12 col-lg-6">
+                            <p>Name: {data?.name}</p>
+                            <p>Product name: {data?.orderItems[0].productName}</p>
+                            <p>
+                              Status:{" "}
+                              {data?.pendingStatus === true && (<>Pending</>)}
+                              {data?.processingStatus === true && (<>Processing</>)}
+                              {data?.deliveredStatus === true && (<>Delivered</>)}
+                            </p>
+                            <p>Order Date: {data?.date.slice(0, 10)}</p>
+                            <p> Order Id: {data.orderId}</p>
+                            <p>Email:{data.email} </p>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })}
+                </>
+              )}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
