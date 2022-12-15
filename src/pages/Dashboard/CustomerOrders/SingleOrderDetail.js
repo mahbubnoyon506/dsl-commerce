@@ -1,7 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { allOrders } from './orderData';
 
 const SingleOrderDetail = () => {
   const { orderId } = useParams()
@@ -12,7 +11,7 @@ const SingleOrderDetail = () => {
     axios
       .get(`https://backend.dslcommerce.com/api/order/data/get/${orderId}`)
       .then((res) => {
-        console.log('eeeeeeeeeeefd', res.data[0]);
+        // console.log('eeeeeeeeeeefd', res.data[0]);
         setOrderDetail(res.data[0]);
       })
       .catch((err) => console.log(err));

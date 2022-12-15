@@ -12,6 +12,7 @@ import swal from "sweetalert";
 
 const CustomerOrders = () => {
   const [allOrder, setAllOrder] = useState([]);
+  const [refetch,setRefetch] = useState(false)
 
   //*************************** Emtiaz ***************************
   const fetchAllOrders = () => {
@@ -22,7 +23,7 @@ const CustomerOrders = () => {
   }
   useEffect(() => {
     fetchAllOrders()
-  }, []);
+  }, [refetch]);
 
   //****************************** Pagination Start ******************************/
   const { orderPerPage } = useParams();
@@ -90,7 +91,7 @@ const CustomerOrders = () => {
     }
   };
 
-  
+
 
   //*****************  Handle Search By Product Name */
   const handleSearch = (e) => {
@@ -136,6 +137,30 @@ const CustomerOrders = () => {
       return;
     }
   }
+  //***************************************  Handle Status **************************************
+  const statusAction = (e, id) => {
+    const method = e?.target?.value || e;
+    // console.log(method, id);
+    if (method == 'pending') {
+      axios.put(`https://backend.dslcommerce.com/api/order/pending/${id}`)
+      setRefetch(!refetch);
+      fetchAllOrders()
+      return;
+    }
+    else if (method == 'processing') {
+      axios.put(`https://backend.dslcommerce.com/api/order/processing/${id}`)
+      setRefetch(!refetch);
+      fetchAllOrders()
+      return;
+    }
+
+    else if (method == 'delivered') {
+      axios.put(`https://backend.dslcommerce.com/api/order/delivered/${id}`)
+      setRefetch(!refetch);
+      fetchAllOrders()
+      return;
+    }
+  }
 
 
   return (
@@ -168,17 +193,7 @@ const CustomerOrders = () => {
                     <option value="pending">Pending</option>
                     <option value="processing">Processing</option>
                     <option value="delivered">Delivered</option>
-                    {/* <option value="processing">Processing</option> */}
                   </select>
-                  {/* <select
-                    className="py-2 pl-2 border border-white rounded w-100 w-lg-25"
-                    style={{ cursor: "pointer", borderRadius: "5px" }}
-                  >
-                    <option>Orders Limits</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                    <option value="200">200</option>
-                  </select> */}
 
                   <button className="w-100 w-lg-25 rounded btn btn-success fs-5">
                     <CSVLink data={sliceOrders} style={{ color: "white" }}>
@@ -213,16 +228,6 @@ const CustomerOrders = () => {
                   {sliceOrders?.map((order, index) => (
                     <tr className="tableRow" key={order?._id}>
                       <td className="text-left text-transparent">
-                        {/* {order.date.slice(0, 10)} */}
-                        {/* {product?.images?.slice(0, 4)?.map((img) => (
-                      <div>
-                        <img
-                          src={img}
-                          alt={product.productName}
-                        />
-                      </div>
-                    ))} */}
-
                         {order?.orderItems?.slice(0, 1).map((item) => (
                           <div>
                             {item?.productName}
@@ -238,45 +243,41 @@ const CustomerOrders = () => {
                         ${order?.amount}
                       </td>
                       <td className="text-left">
-                        <button
-                          className="btn btn-sm bg-danger text-white"
-                          style={{ borderRadius: "20px" }}
-                        >
-                          {order?.pendingStatus === true && (<>Pending</>)}
-                          {order?.processingStatus === true && (<>Processing</>)}
-                          {order?.deliveredStatus === true && (<>Delivered</>)}
-
-                        </button>
+                        {order?.pendingStatus === true && (
+                          <button
+                            className="btn btn-sm bg-primary cBtn text-white"
+                            style={{ borderRadius: "20px" }}
+                          >
+                            Pending
+                          </button>
+                        )}
+                        {order?.processingStatus === true && (
+                          <button
+                            className="btn btn-sm bg-success cBtn text-white"
+                            style={{ borderRadius: "20px" }}
+                          >
+                            Processing
+                          </button>
+                        )}
+                        {order?.deliveredStatus === true === true && (
+                          <button
+                            className="btn btn-sm bg-danger cBtn text-white"
+                            style={{ borderRadius: "20px" }}
+                          >
+                            Delivered
+                          </button>
+                        )}
                       </td>
                       <td className="text-left">
                         <select
-                          className="bg-white-50"
+                          onClick={(e) => statusAction(e, order?._id)}
+                          className="py-1 pl-2 border border-white rounded "
                           style={{ cursor: "pointer", borderRadius: "5px" }}
-                          onChange={(e) => {
-                            const temp = [...allOrder];
-                            temp[index].status = e.target.value;
-                            setAllOrder(temp);
-                            // setOrderStatus(e.target.value)
-                          }}
                         >
-                          <option
-                            value="pending"
-                            selected={order?.status === "pending"}
-                          >
-                            Pending
-                          </option>
-                          <option
-                            value="delivered"
-                            selected={order?.status === "delivered"}
-                          >
-                            Delivered
-                          </option>
-                          <option
-                            value="processing"
-                            selected={order?.status === "processing"}
-                          >
-                            Processing
-                          </option>
+                          <option value="default">Status</option>
+                          <option value="pending">Pending</option>
+                          <option value="processing">Processing</option>
+                          <option value="delivered">Delivered</option>
                         </select>
                       </td>
                       <td className="action d-flex justify-content-left">

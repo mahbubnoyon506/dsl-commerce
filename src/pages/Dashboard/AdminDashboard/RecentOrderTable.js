@@ -60,20 +60,28 @@ const RecentOrderTable = ({ order, refetchOrder }) => {
         <td className=" text-capitalize ">{paymentMethod}</td>
         <td className=" text-capitalize ">{amount}</td>
         <td className="">
-          {!pendingStatus ? (
+          {order?.pendingStatus === true && (
             <button
-              onClick={handleStatus}
-              className="btn btn-sm bg-danger text-white"
+              className="btn btn-sm bg-primary cBtn text-white"
               style={{ borderRadius: "20px" }}
             >
               Pending
             </button>
-          ) : (
+          )}
+          {order?.processingStatus === true && (
             <button
-              className="btn btn-sm bg-danger text-white"
+              className="btn btn-sm bg-success cBtn text-white"
               style={{ borderRadius: "20px" }}
             >
-              Completed
+              Processing
+            </button>
+          )}
+          {order?.deliveredStatus === true === true && (
+            <button
+              className="btn btn-sm bg-danger cBtn text-white"
+              style={{ borderRadius: "20px" }}
+            >
+              Delivered
             </button>
           )}
         </td>
