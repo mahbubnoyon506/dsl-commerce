@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import Table from "react-bootstrap/Table";
+import { useParams } from "react-router-dom";
 
 const CustomersUpdate = () => {
+  const {id} = useParams();
+  
   const [tableary, setTableary] = useState([
     {
       USER_ID: "7C96",
