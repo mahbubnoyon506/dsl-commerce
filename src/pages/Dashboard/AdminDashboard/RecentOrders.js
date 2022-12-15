@@ -49,7 +49,6 @@ const RecentOrders = () => {
                 <th className="">Order Time</th>
                 <th className="">Product Name</th>
                 <th className="">Customer Name</th>
-                <th className="">Mobile Number</th>
                 <th className=" ">Payment Method</th>
                 <th className=" ">Order Amount</th>
                 <th className="">Order Status</th>

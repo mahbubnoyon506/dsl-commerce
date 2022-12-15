@@ -57,7 +57,6 @@ const RecentOrderTable = ({ order, refetchOrder }) => {
           ))}
         </td>
         <td className=" ">{name}</td>
-        <td className=" ">{phone}</td>
         <td className=" text-capitalize ">{paymentMethod}</td>
         <td className=" text-capitalize ">{amount}</td>
         <td className="">
