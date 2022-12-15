@@ -72,6 +72,9 @@ const AdminDashboard = () => {
   const handleClickOpenCategories = () => {
     navigate("/admin/all-category");
   };
+  const handleClickOpenOrders = () => {
+    navigate("/admin/orders");
+  };
 
 
   return (
@@ -143,7 +146,7 @@ const AdminDashboard = () => {
             </Card>
           </Col>
 
-          <Col xs={12} md={6} lg={4} xl={3}>
+          <Col xs={12} md={6} lg={4} xl={3} onClick={handleClickOpenOrders}>
             <Card className="cardDash " style={{ borderRadius: "20px" }}>
               <Card.Body className="d-flex gap-1 align-items-center justify-content-evenly">
                 <div className="iconDas">
