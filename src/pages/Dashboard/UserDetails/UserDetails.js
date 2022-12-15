@@ -122,14 +122,14 @@ function UserDetails() {
                                             placeholder='register date  ' />
                                     </div>
                                 </div>
-                                <div className="mb-2">
+                                {/* <div className="mb-2">
                                     <label htmlFor='lastLoginIp'>Last Login Ip</label>
                                     <div className='d-flex  input-group'>
                                         <input type="text" id='lastLoginIp' name="lastLoginIp"
                                             className='form-control bg-transparent text-white'
                                             defaultValue={userInfo?.ip ? userInfo?.ip : ''} />
                                     </div>
-                                </div>
+                                </div> */}
                                 {/* <div className="mb-2">
                                     <label htmlFor='remark'>Remark</label>
                                     <div className='d-flex  input-group'>

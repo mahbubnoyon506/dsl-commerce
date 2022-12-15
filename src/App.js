@@ -76,6 +76,8 @@ import UserDetails from "./pages/Dashboard/UserDetails/UserDetails";
 import KycLogin from "./Components/KYCArea/KycAccount/KycLogin/KycLogin";
 import KycSignUp from "./Components/KYCArea/KycAccount/KycSignUp/KycSignUp";
 import KycForgetPassword from "./Components/Auth/KycForgetPassword";
+import KycResetPassword from "./Components/Auth/KycResetPassword";
+import AdminResetPassword from "./Components/Auth/AdminResetPassword";
 
 export const ProductContext = createContext();
 function App() {
@@ -158,6 +160,10 @@ function App() {
           path="/admin/login/forgetPassword"
           element={<ForgetPassword />}
         />
+        <Route
+          path="/admin/login/resetPassword/:token"
+          element={<AdminResetPassword />}
+        />
         /admin
         <Route
           path="/admin/otp/:token"
@@ -168,6 +174,10 @@ function App() {
         <Route
           path="/kyc/login/forgetPassword"
           element={<KycForgetPassword />}
+        />
+        <Route
+          path="/kyc/login/resetPassword/:token"
+          element={<KycResetPassword />}
         />
         <Route path="/kyc/sign-up" element={<KycSignUp />} />
         <Route path="/kyc/profile" element={<KYC />} />
