@@ -4,21 +4,55 @@ import { useParams } from 'react-router-dom'
 import { allOrders } from './orderData';
 
 const SingleOrderDetail = () => {
-  const { id } = useParams()
+  const { orderId } = useParams()
+
+  const [orderDetail, setOrderDetail] = useState({})
+
+  useEffect(() => {
+    axios
+      .get(`https://backend.dslcommerce.com/api/order/data/get/${orderId}`)
+      .then((res) => {
+        console.log('eeeeeeeeeeefd', res.data[0]);
+        setOrderDetail(res.data[0]);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+
+
   return (
     <div className='container '>
-      <h3 className='text-white py-3'> Order Detail For :  {id}</h3>
+      <h3 className='text-white py-3'> Order Detail For :  {orderDetail?.name}</h3>
       <div >
-        <p className='text-white'>Order Id : 123456</p>
-        <p className='text-white'>Product Name : Dummy Product</p>
-        <p className='text-white'>User Email : user@abc.com</p>
-        <p className='text-white'>Contact Number : +1485784554</p>
-        <p className='text-white'>Payment Method : Paypal</p>
-        <p className='text-white'>Order Quantity : 3</p>
-        <p className='text-white'>Total Amount : $ 1324</p>
-        <p className='text-white'>Order Time : 7-1-2022 </p>
-        <p className='text-white'>Payment Status : Paid </p>
-        <p className='text-white'>Shipping Address : 22 Sin Ming Lane #06-76 Midview City Singapore 573969 </p>
+        <p className='text-white'>Order Id : {orderDetail?.orderId} </p>
+        <p className='text-white'>Quantity : {orderDetail?.orderItems?.length}</p>
+        <p className='text-white'> Item Name :
+          <ol className='text-white'>
+            {orderDetail?.orderItems?.map((p) => (
+              <li>{p?.productName}</li>
+            ))}
+          </ol>
+        </p>
+
+        <p className='text-white'>Total Amount : {orderDetail?.amount}</p>
+        <p className='text-white'>User Email : {orderDetail?.email}</p>
+        <p className='text-white'>Contact Number : {orderDetail?.phone}</p>
+        <p className='text-white'>Payment Method : {orderDetail?.paymentMethod}</p>
+        <p className='text-white'>Order Time : {orderDetail?.date?.slice(0, 10)} </p>
+        <p className='text-white'>
+          Payment Status :
+          {orderDetail?.pendingStatus === true && (<>Pending</>)}
+          {orderDetail?.processingStatus === true && (<>Processing</>)}
+          {orderDetail?.deliveredStatus === true && (<>Delivered</>)}
+        </p>
+        <p className='text-white'>
+          Shipping Address : {" "}
+           {orderDetail?.address} ,
+          {orderDetail?.postCode} ,
+          {orderDetail?.town} ,
+          {orderDetail?.country}
+
+        </p>
       </div>
 
     </div>
