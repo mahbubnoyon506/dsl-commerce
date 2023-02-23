@@ -23,7 +23,7 @@ const CustomerDetails = () => {
     console.log(customerData)
 
     return (
-        <div className='container '>
+        <div className=''>
             <h3 className='text-white py-3'> Customer Details: </h3>
             <div >
                 <p className='text-white'>Email: {customerData?.email} </p>
